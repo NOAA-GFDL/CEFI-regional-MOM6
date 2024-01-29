@@ -1,0 +1,23 @@
+FROM ubuntu:22.04 as base
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && \
+    apt install -y \
+    make \
+    gfortran \
+    git \
+    tcsh \
+    netcdf-bin \
+    libnetcdf-dev \
+    libnetcdff-dev \
+    openmpi-bin \
+    libopenmpi-dev \
+    && apt clean -y \
+    && rm -rf /var/lib/apt/lists/*
+RUN useradd -u 1001 builder
+RUN mkdir -p /opt
+WORKDIR /opt
+RUN chown -R builder:builder /opt
+USER builder
+
+FROM base
+COPY --chown=builder:builder ./exps/datasets /opt/datasets

@@ -1,0 +1,19 @@
+! This file was written by the model and records the non-default parameters used at run-time.
+OMEGA = 0.0                     !   The rotation rate of the earth in s-1.
+NIGLOBAL = 4                    !
+                                ! The total number of thickness grid points in the
+                                ! x-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in SIS2_memory.h at compile time.
+NJGLOBAL = 4                  !
+                                ! The total number of thickness grid points in the
+                                ! y-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in SIS2_memory.h at compile time.
+NIHALO = 2
+NJHALO = 2
+GRID_CONFIG = "mosaic"
+GRID_FILE = "ocean_hgrid.nc"
+TOPO_CONFIG = "file"
+TOPO_FILE = "ocean_topog.nc"
+MAXIMUM_DEPTH = 5000.0
+MINIMUM_DEPTH = 0.5
+INPUTDIR = "INPUT"

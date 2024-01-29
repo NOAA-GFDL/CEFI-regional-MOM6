@@ -1,0 +1,4 @@
+stdout.gfdl-ws-gnu6.prod-openmp.n8:Main loop    104.704366    104.704609    104.704573      0.000078  0.837     0     0     7  !reproduce
+stdout.gfdl-ws-gnu6.prod.n8:Main loop           112.102097    112.102351    112.102312      0.000081  0.850     0     0     7
+stdout.gfdl-ws-gnu6.repro.n8:Main loop          138.242430    138.242595    138.242567      0.000052  0.858     0     0     7
+

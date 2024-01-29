@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#SBATCH --nodes=13
+#SBATCH --time=480
+#SBATCH --job-name="NWA12_cobalt"
+#SBATCH --output=NWA12_cobalt_o.%j
+#SBATCH --error=NWA12_cobalt_e.%j
+#SBATCH --qos=normal
+#SBATCH --partition=batch
+#SBATCH --clusters=c5
+#SBATCH --account=cefi
+
+echo "Model started:  " `date`
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+srun --ntasks=1646 --cpus-per-task=1 --export=ALL ./MOM6SIS2
+
+echo "Model ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt

@@ -1,0 +1,19 @@
+grid_mask_file: '../../datasets/grid/ocean_mask.nc'
+grid_mosaic_file: '../../datasets/grid/ocean_mosaic.nc'
+hgrid_file: '../../datasets/grid/ocean_hgrid.nc'
+ldd_file: '/net2/acr/GloFAS_3.1/ldd_glofas.nc'
+
+output_dir: './outputs/'
+start_year: 2000
+end_year: 2001
+
+glofas_files_pattern: '/work/Andrew.C.Ross/glofas/GloFAS_river_discharge_{year}.nc'
+
+# User-specified latitude and longitude extensions
+latitude_range:
+  start: 60
+  end: 0
+
+longitude_range:
+  start: -100
+  end: -30

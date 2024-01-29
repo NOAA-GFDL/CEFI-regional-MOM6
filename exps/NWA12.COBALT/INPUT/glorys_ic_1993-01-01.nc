@@ -1,0 +1,1 @@
+../../datasets/nwa12_input/glorys_ic_1993-01-01.nc

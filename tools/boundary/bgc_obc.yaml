@@ -1,0 +1,14 @@
+output_dir: './outputs'
+grid_file: '../../datasets/grid/ocean_hgrid.nc'
+time0: 1993-01-01
+last_time: 2022-01-01
+woa_file: '/work/acr/woa/WOA18/merged/woa_seasonal_annual_merged.nc'
+esper_file: '/archive/cas/Regional_MOM6/DIC_Alk/DICAlk_ESPER_LIR_GLORYS_NWA025_1993_2019.nc'
+cobalt_file: '/work/acr/cobalt_climo/ocean_cobalt_tracers.1988-2007.ann.nc'
+segments:
+  - id: 1
+    border: 'south'
+  - id: 2
+    border: 'north'
+  - id: 3
+    border: 'east'
