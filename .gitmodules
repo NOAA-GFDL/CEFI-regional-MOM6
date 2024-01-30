@@ -5,7 +5,7 @@
 [submodule "src/FMS"]
 	path = src/FMS
 	url = https://github.com/NOAA-GFDL/FMS.git
-        branch = 2022.04
+	branch = 2022.04
 [submodule "src/icebergs"]
 	path = src/icebergs
 	url = https://github.com/NOAA-GFDL/icebergs.git
@@ -36,5 +36,5 @@
 	branch = dev/cefi
 [submodule "src/ocean_BGC"]
 	path = src/ocean_BGC
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC
 	branch = dev/cefi
