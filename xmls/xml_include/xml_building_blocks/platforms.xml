@@ -1,0 +1,65 @@
+<freInclude xmlns:xi="http://www.w3.org/2003/XInclude">
+  <platform name="ncrc5.intel22">
+    <freVersion>$(FRE_VERSION)</freVersion>
+    <compiler type="intel-classic" version="2022.0.2"/>
+    <project>$(NCRC_GROUP)</project>
+    <directory stem="$(FRE_STEM)">
+      <root>/gpfs/f5/$(project)/scratch/$USER/$(stem)</root>
+      <scripts>$(rootDir)/$(name)/$(platform)-$(target)/scripts</scripts>
+      <state>$(rootDir)/$(name)/$(platform)-$(target)/state</state>
+      <src>$(rootDir)/$(name)/src</src>
+      <exec>$(rootDir)/$(name)/$(platform)-$(target)/exec</exec>
+      <archive>$(rootDir)/$(name)/$(platform)-$(target)/archive</archive>
+      <stdout>$(rootDir)/$(name)/$(platform)-$(target)/stdout</stdout>
+      <work>/gpfs/f5/$(project)/scratch/$USER/work/$FRE_JOBID</work>
+    </directory>
+    <property name="EXEC_ROOT"         value="/gpfs/f5/$(project)/scratch/$USER/$(stem)/$(BUILD_DATE)"/>
+    <property name="F2003_FLAGS"       value=" -DINTERNAL_FILE_NML -g "/>
+    <property name="AWG_INPUT_HOME"    value="$(AWG_INPUT_HOME_GAEA)"/>
+    <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
+    <property name="ARCHIVE_NNZ"        value=""/>
+    <property name="REFERENCE"         value=""/>
+    <property name="FMS_ARCHIVE_ROOT"    value=""/>
+    <property name="CMIP6_ARCHIVE_ROOT"  value=""/>
+    <property name="NCORE_PER_NODE"      value="128"/>
+    <property name="NPES_IO_LAND"         value="18"/>
+    <csh><![CDATA[
+      module load git
+      module unload darshan
+      module unload cray-libsci
+      $(append_to_setup_csh)
+    ]]></csh>
+  </platform>
+  <platform name="gfdl.default">
+    <freVersion>$(FRE_VERSION)</freVersion>
+    <project>$(GFDL_GROUP)</project>
+    <property name="NB_ROOT"  value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/><!--Do not change this! Other platforms use  the same value. -->
+    <directory stem="$(FRE_STEM)">
+      <archive>$ARCHIVE/$(stem)/$(name)/$(platform)-$(target)</archive>
+      <postProcess>$(archiveDir)/pp</postProcess>
+      <ptmp>/ptmp/$USER</ptmp>
+      <analysis>$(NB_ROOT)</analysis><!--Do not change this! frepp translates this to $out_dir. This is also the directory under which  frepp looks for mom6 clone.  -->
+    </directory>
+    <property name="EXEC_ROOT"         value="$(rootDir)"/>
+    <property name="F2003_FLAGS"       value=" -DINTERNAL_FILE_NML"/>
+    <property name="AWG_INPUT_HOME"    value="$(AWG_INPUT_HOME_GFDL)"/>
+    <property name="ARCHIVE_NNZ"       value=""/>
+    <property name="REFERENCE"         value=""/>
+    <property name="FMS_ARCHIVE_ROOT"     value="$CDATA/fms"/>
+    <property name="CMIP6_ARCHIVE_ROOT"   value="$CDATA/cmip6/datasets"/>
+    <property name="NCORE_PER_NODE"      value=""/>
+    <csh><![CDATA[
+      source $MODULESHOME/init/csh
+      module use -a /home/fms/local/modulefiles
+      module purge
+      module load fre/$(FRE_VERSION)
+      module load git
+      setenv FREVERSION fre/$(FRE_VERSION)           
+      setenv NBROOT $(NB_ROOT)
+    ]]>
+    </csh>
+  </platform>
+  <platform name="gfdl.ncrc5-intel22">
+    <xi:include xpointer="xpointer(//freInclude/platform[@name='gfdl.default']/node())" />
+  </platform>
+</freInclude>

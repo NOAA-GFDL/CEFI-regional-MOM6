@@ -1,0 +1,22 @@
+"ocean_neus", 1, "days",  1, "days", "time"
+"ocean_neus_3hr", 3, "hours",  1, "hours", "time"
+
+# Note: diagnostic subsets must be combined after,
+# and mppnccombine will fail if dimensions have different lengths
+# (if some variables are on yh/xh and others are on yq/xq)
+
+# 2D
+"ocean_model", "MLD_003",   "MLD_003",   "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"ocean_model", "MLD_EN1",   "MLD_EN1",   "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"ocean_model", "ustar",     "ustar",     "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"ocean_model", "rsntds",    "rsntds",    "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+
+# 3D
+"ocean_model", "volcello",  "volcello",  "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"ocean_model", "rhopot0",   "rhopot0",   "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"ocean_model", "rhoinsitu", "rhoinsitu", "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"ocean_model", "thetao",    "thetao",    "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"ocean_model", "so",        "so",        "ocean_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+
+# 2D hourly
+"ocean_model", "rsntds",    "rsntds",    "ocean_neus_3hr", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
