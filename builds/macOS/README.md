@@ -45,7 +45,7 @@ The tools will be located at `/Users/$USER/work/FRE-NCtools/build/bin`
 
 ## compile CEFI MOM6-SIS2-cobalt and run 1-D example
 ```console
-git clone -b develop https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive
+git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive
 cd CEFI-regional-MOM6/builds
 ./linux-build.bash -m macOS -p osx-gnu -t repro -f mom6sis2
 cd ../exps
