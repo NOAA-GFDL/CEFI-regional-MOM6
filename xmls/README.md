@@ -2,7 +2,7 @@
 This folder contains example XML files for the CEFI project that can be used by FRE for conducting regional MOM6-cobalt runs on Gaea C5 and running postprocessing/analysis on GFDL PPAN.
 
 # Disclaimer
-The provided XML files are primarily intended for users with access to NOAA Gaea C5 and GFDL PPAN platforms. We cannot guarantee the compatibility of these XML files with any other platforms. Users who wish to implement CEFI configurations on alternative platforms are encouraged to refer to the example configurations located under [exps/NWA12.COBALT](exps/NWA12.COBALT) for guidance.
+The provided XML files are primarily intended for users with access to NOAA Gaea C5 and GFDL PPAN platforms. We cannot guarantee the compatibility of these XML files with any other platforms. Users who wish to implement CEFI configurations on alternative platforms are encouraged to refer to the example configurations located under [exps/NWA12.COBALT](../exps/NWA12.COBALT) for guidance.
 
 # Logging into Gaea
 * `ssh -Y <First.Last>@gaea-rsa.princeton.rdhpcs.noaa.gov` (or `ssh -Y <First.Last>@gaea-rsa.boulder.rdhpcs.noaa.gov`)
