@@ -76,8 +76,12 @@ $(error Options DEBUG and TEST cannot be used together)
 endif
 endif
 
+# Get number of CPUs
+MAKEFLAGS += --jobs=$(shell sysctl -n hw.ncpu)
+
 # Required Preprocessor Macros:
 CPPDEFS += -Duse_netCDF
+CPPDEFS += -DHAVE_GETTID
 
 # Additional Preprocessor Macros needed due to  Autotools and CMake
 
@@ -93,7 +97,7 @@ endif
 FPPFLAGS += $(shell nf-config --fflags)
 
 # Base set of Fortran compiler flags
-FFLAGS := -fcray-pointer -fdefault-double-8 -fdefault-real-8 -Waliasing -ffree-line-length-none -fno-range-check
+FFLAGS := -fcray-pointer -fdefault-double-8 -fdefault-real-8 -Waliasing -ffree-line-length-none -fno-range-check -fallow-invalid-boz -fallow-argument-mismatch
 
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
 FFLAGS_OPT = -O3
@@ -138,6 +142,8 @@ LDFLAGS_COVERAGE :=
 LIBS =
 # NetCDF library flags
 LIBS += $(shell nf-config --flibs)
+# netCDF C library flags, in case installed in a separate directory
+LIBS += $(shell nc-config --libs)
 
 # Get compile flags based on target macros.
 ifdef REPRO
