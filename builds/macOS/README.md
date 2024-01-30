@@ -51,4 +51,4 @@ cd CEFI-regional-MOM6/builds
 cd ../exps
 wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
 cd OM4.single_column.COBALT
-mpirun -np 1 ../../builds/build/macOS-osx-gnu/ocean_ice/prod/MOM6SIS2 
+mpirun -np 1 ../../builds/build/macOS-osx-gnu/ocean_ice/repro/MOM6SIS2 
