@@ -2,9 +2,9 @@ name: mom6_obgc_1d
 
 on:
   push:
-    branches: [ "dev/cefi" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "dev/cefi" ]
+    branches: [ "main" ]
 
 jobs:
   build:
