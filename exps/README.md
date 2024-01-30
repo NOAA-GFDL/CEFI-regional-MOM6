@@ -7,7 +7,7 @@ This folder contains example configurations to run MOM6-SIS2-cobalt
 | ```NWA12.COBALT/```                 | NWA12 MOM6-SIS2-cobalt example |
 
 # OM4.single_column.COBALT
-Users are advised to refer to the Dockerfile located at [ci/docker/Dockerfile.ci](ci/docker/Dockerfile.ci). This Dockerfile includes the necessary steps to compile the code, download required input files, and execute the example 1D test case.
+Users are advised to refer to the Dockerfile located at [ci/docker/Dockerfile.ci](../ci/docker/Dockerfile.ci). This Dockerfile includes the necessary steps to compile the code, download required input files, and execute the example 1D test case.
 
 # NWA12.COBALT
 Users can follow the instructions below to run NWA12 example on Gaea C5.
