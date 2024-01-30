@@ -28,7 +28,7 @@ RUN mpirun -np 1 /opt/MOM6_OBGC_examples/builds/build/docker-linux-gnu/ocean_ice
 
 # create ref folder
 RUN mkdir ref
-RUN cp /opt/MOM6_OBGC_examples/src/ocean_BGC/.github/ref/OM4.single_column.COBALT/docker-linux-gnu/* ./ref/
+RUN cp /opt/MOM6_OBGC_examples/src/ocean_BGC/.github/ref/OM4.single_column.COBALT.p4/docker-linux-gnu/* ./ref/
 
 # check
 RUN diff -q ref/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
