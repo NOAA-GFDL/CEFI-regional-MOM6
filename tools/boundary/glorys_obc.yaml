@@ -1,0 +1,18 @@
+first_year: 1993
+last_year: 1994
+glorys_dir: '/work/acr/glorys/GLOBAL_MULTIYEAR_PHY_001_030/daily/filled'
+output_dir: './outputs'
+hgrid: '../../datasets/grid/ocean_hgrid.nc'
+ncrcat_years: true  # Set to false if you want to skip ncrcat_years
+segments:
+  - id: 1
+    border: 'south'
+  - id: 2
+    border: 'north'
+  - id: 3
+    border: 'east'
+variables:
+  - 'thetao'
+  - 'so'
+  - 'zos'
+  - 'uv'

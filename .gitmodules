@@ -1,0 +1,40 @@
+[submodule "src/mkmf"]
+	path = src/mkmf
+	url = https://github.com/NOAA-GFDL/mkmf.git
+	branch = master
+[submodule "src/FMS"]
+	path = src/FMS
+	url = https://github.com/NOAA-GFDL/FMS.git
+	branch = 2022.04
+[submodule "src/icebergs"]
+	path = src/icebergs
+	url = https://github.com/NOAA-GFDL/icebergs.git
+	branch = dev/gfdl
+[submodule "src/coupler"]
+	path = src/coupler
+	url = https://github.com/NOAA-GFDL/coupler.git
+	branch = 2022.04
+[submodule "src/atmos_null"]
+	path = src/atmos_null
+	url = https://github.com/NOAA-GFDL/atmos_null.git
+	branch = 2021.03
+[submodule "src/land_null"]
+	path = src/land_null
+	url = https://github.com/NOAA-GFDL/land_null.git
+	branch = 2021.03
+[submodule "src/ice_param"]
+	path = src/ice_param
+	url = https://github.com/NOAA-GFDL/ice_param.git
+	branch = 2021.03
+[submodule "src/SIS2"]
+	path = src/SIS2
+	url = https://github.com/NOAA-GFDL/SIS2.git
+	branch = dev/gfdl
+[submodule "src/MOM6"]
+	path = src/MOM6
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
+	branch = dev/cefi
+[submodule "src/ocean_BGC"]
+	path = src/ocean_BGC
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC
+	branch = dev/cefi

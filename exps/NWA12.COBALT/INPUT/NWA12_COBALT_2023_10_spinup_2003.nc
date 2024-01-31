@@ -1,0 +1,1 @@
+../../datasets/nwa12_input/NWA12_COBALT_2023_10_spinup_2003.nc

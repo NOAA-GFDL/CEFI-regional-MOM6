@@ -1,0 +1,7 @@
+vgrid_file: ../../datasets/grid/vgrid_75_2m.nc 
+grid_file: ../../datasets/grid/ocean_static.nc
+woa_file: ../../datasets/woa/WOA18/merged/woa_seasonal_annual_merged.nc 
+esper_file: ../../datasets/DIC_Alk/DICAlk_ESPER_LIR_GLORYS_NWA025_1993_2019.nc
+cobalt_file: ../../datasets/cobalt_climo/monthly/ocean_cobalt_tracers.1988-2007.01.nc 
+output_file: ../../bgc_woa_esper_ics_1993_2023-04.nc
+time0: 1993-01-01

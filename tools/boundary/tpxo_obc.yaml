@@ -1,0 +1,26 @@
+constituents:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+indices:
+  ny_start: 400
+  ny_end: 1500
+  nx_start: 1600
+  nx_end: -1
+segments:
+  - id: 1
+    border: 'south'
+  - id: 2
+    border: 'north'
+  - id: 3
+    border: 'east'
+tpxo_dir: '/work/acr/tpxo9/'
+grid_file: '../../datasets/grid/ocean_hgrid.nc'
+output_dir: './outputs'

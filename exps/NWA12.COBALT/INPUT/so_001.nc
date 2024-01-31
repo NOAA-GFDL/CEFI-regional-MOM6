@@ -1,0 +1,1 @@
+../../datasets/nwa12_input/so_001.nc

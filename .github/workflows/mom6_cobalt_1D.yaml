@@ -1,0 +1,55 @@
+name: mom6_obgc_1d
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      PR_NUMBER: ${{ github.event.number }}
+
+    steps:        
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        
+    - uses: jitterbit/get-changed-files@v1
+      id: abc
+      with:
+        format: space-delimited
+        token: ${{ secrets.GITHUB_TOKEN }}        
+          
+#    - name: Login to DockerHub Registry
+#      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          
+    - name: Build mom6_obgc 1D Docker Image
+      run: |
+        echo "maximize disk space on git-runner ..."
+        df -h 
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        df -h
+        echo "docker image build ..."
+        docker build --file "./ci/docker/Dockerfile.ci" -t mom6_obgc_1d:develop .
+
+    - name: Check mom6_obgc 1D Docker Image build
+      run: | 
+       docker images 
+       if [[ $(docker image inspect mom6_obgc_1d:develop) ]]; then
+            echo "mom6_obgc_1d:develop generated ..."          
+       else
+            echo "mom6_obgc_1d:develop was not generated ..."
+            exit 1
+       fi
+
+#    - name: Docker Logout
+#      run: |
+#       docker logout   

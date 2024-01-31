@@ -1,0 +1,163 @@
+# specific humidity for moist runs
+"TRACER", "atmos_mod", "sphum"
+          "longname",     "specific humidity"
+          "units",        "kg/kg" /
+# prognostic cloud scheme tracers
+"TRACER", "atmos_mod", "liq_wat"
+          "longname",     "cloud liquid specific humidity"
+          "units",        "kg/kg" /
+"TRACER", "atmos_mod", "ice_wat"
+          "longname",     "cloud ice water specific humidity"
+          "units",        "kg/kg" /
+"TRACER", "atmos_mod", "cld_amt"
+          "longname",     "cloud fraction"
+          "units",        "none" /
+# sphum must be present on land as well
+"TRACER", "land_mod",     "sphum"
+          "longname",     "specific humidity"
+          "units",        "kg/kg" /
+###.................................................
+"namelists","ocean_mod","generic_COBALT"
+enforce_src_info = f
+alk_obc_src_file_name = bgc_esper_1993_2022.nc
+alk_obc_lfac_in = 0.03
+alk_obc_lfac_out = 1.0
+cadet_arag_obc_src_file_name = bgc_cobalt.nc
+cadet_arag_obc_lfac_in = 0.03
+cadet_ararg_obc_lfac_out = 1.0
+cadet_calc_obc_src_file_name = bgc_cobalt.nc
+cadet_calc_obc_lfac_in = 0.03
+cadet_calc_obc_lfac_out = 1.0
+dic_obc_src_file_name = bgc_esper_1993_2022.nc
+dic_obc_lfac_in = 0.03
+dic_obc_lfac_out = 1.0
+dic14_obc_src_file_name = bgc_zero.nc
+dic14_obc_lfac_in = 0.03
+dic14_obc_lfac_out = 1.0
+do14_obc_src_file_name = bgc_zero.nc
+do14_obc_lfac_in = 0.03
+do14_obc_lfac_out = 1.0
+do14c_obc_src_file_name = bgc_zero.nc
+do14c_obc_lfac_in = 0.03
+do14c_obc_lfac_out = 1.0
+di14c_obc_src_file_name = bgc_zero.nc
+di14c_obc_lfac_in = 0.03
+di14c_obc_lfac_out = 1.0
+fed_obc_src_file_name = bgc_cobalt.nc
+fed_obc_lfac_in = 0.03
+fed_obc_lfac_out = 1.0
+fedi_obc_src_file_name = bgc_cobalt.nc
+fedi_obc_lfac_in = 0.03
+fedi_obc_lfac_out = 1.0
+felg_obc_src_file_name = bgc_cobalt.nc
+felg_obc_lfac_in = 0.03
+felg_obc_lfac_out = 1.0
+fedet_obc_src_file_name = bgc_cobalt.nc
+fedet_obc_lfac_in = 0.03
+fedet_obc_lfac_out = 1.0
+fesm_obc_src_file_name = bgc_cobalt.nc
+fesm_obc_lfac_in = 0.03
+fesm_obc_lfac_out = 1.0
+ldon_obc_src_file_name = bgc_cobalt.nc
+ldon_obc_lfac_in = 0.03
+ldon_obc_lfac_out = 1.0
+ldop_obc_src_file_name = bgc_cobalt.nc
+ldop_obc_lfac_in = 0.03
+ldop_obc_lfac_out = 1.0
+lith_obc_src_file_name = bgc_cobalt.nc
+lith_obc_lfac_in = 0.03
+lith_obc_lfac_out = 1.0
+lithdet_obc_src_file_name = bgc_cobalt.nc
+lithdet_obc_lfac_in = 0.03
+lithdet_obc_lfac_out = 1.0
+nbact_obc_src_file_name = bgc_cobalt.nc
+nbact_obc_lfac_in = 0.03
+nbact_obc_lfac_out = 1.0
+ndet_obc_src_file_name = bgc_cobalt.nc
+ndet_obc_lfac_in = 0.03
+ndet_obc_lfac_out = 1.0
+ndi_obc_src_file_name = bgc_cobalt.nc
+ndi_obc_lfac_in = 0.03
+ndi_obc_lfac_out = 1.0
+nlg_obc_src_file_name = bgc_cobalt.nc
+nlg_obc_lfac_in = 0.03
+nlg_obc_lfac_out = 1.0
+nsm_obc_src_file_name = bgc_cobalt.nc
+nsm_obc_lfac_in = 0.03
+nsm_obc_lfac_out = 1.0
+nh3_obc_src_file_name = bgc_zero.nc
+nh3_obc_lfac_in = 0.03
+nh3_obc_lfac_out = 1.0
+nh4_obc_src_file_name = bgc_cobalt.nc
+nh4_obc_lfac_in = 0.03
+nh4_obc_lfac_out = 1.0
+no3_obc_src_file_name = bgc_woa.nc
+no3_obc_lfac_in = 0.03
+no3_obc_lfac_out = 1.0
+o2_obc_src_file_name = bgc_woa.nc
+o2_obc_lfac_in = 0.03
+o2_obc_lfac_out = 1.0
+pdet_obc_src_file_name = bgc_cobalt.nc
+pdet_obc_lfac_in = 0.03
+pdet_obc_lfac_out = 1.0
+po4_obc_src_file_name = bgc_woa.nc
+po4_obc_lfac_in = 0.03
+po4_obc_lfac_out = 1.0
+srdon_obc_src_file_name = bgc_cobalt.nc
+srdon_obc_lfac_in = 0.03
+srdon_obc_lfac_out = 1.0
+srdop_obc_src_file_name = bgc_cobalt.nc
+srdop_obc_lfac_in = 0.03
+srdop_obc_lfac_out = 1.0
+sldon_obc_src_file_name = bgc_cobalt.nc
+sldon_obc_lfac_in = 0.03
+sldon_obc_lfac_out = 1.0
+sldop_obc_src_file_name = bgc_cobalt.nc
+sldop_obc_lfac_in = 0.03
+sldop_obc_lfac_out = 1.0
+sidet_obc_src_file_name = bgc_cobalt.nc
+sidet_obc_lfac_in = 0.03
+sidet_obc_lfac_out = 1.0
+silg_obc_src_file_name = bgc_cobalt.nc
+silg_obc_lfac_in = 0.03
+silg_obc_lfac_out = 1.0
+sio4_obc_src_file_name = bgc_woa.nc
+sio4_obc_lfac_in = 0.03
+sio4_obc_lfac_out = 1.0
+nsmz_obc_src_file_name = bgc_cobalt.nc
+nsmz_obc_lfac_in = 0.03
+nsmz_obc_lfac_out = 1.0
+nmdz_obc_src_file_name = bgc_cobalt.nc
+nmdz_obc_lfac_in = 0.03
+nmdz_obc_lfac_out = 1.0
+nlgz_obc_src_file_name = bgc_cobalt.nc
+nlgz_obc_lfac_in = 0.03
+nlgz_obc_lfac_out = 1.0
+nmdp_obc_src_file_name = bgc_cobalt.nc
+nmdp_obc_lfac_in = 0.03
+nmdp_obc_lfac_out = 1.0
+femdp_obc_src_file_name = bgc_cobalt.nc
+femdp_obc_lfac_in = 0.03
+femdp_obc_lfac_out = 1.0
+femd_obc_src_file_name = bgc_cobalt.nc
+femd_obc_lfac_in = 0.03
+femd_obc_lfac_out = 1.0
+simd_obc_src_file_name = bgc_cobalt.nc
+simd_obc_lfac_in = 0.03
+simd_obc_lfac_out = 1.0
+pdi_obc_src_file_name = bgc_cobalt.nc
+pdi_obc_lfac_in = 0.03
+pdi_obc_lfac_out = 1.0
+psm_obc_src_file_name = bgc_cobalt.nc
+psm_obc_lfac_in = 0.03
+psm_obc_lfac_out = 1.0
+pmd_obc_src_file_name = bgc_cobalt.nc
+pmd_obc_lfac_in = 0.03
+pmd_obc_lfac_out = 1.0
+nmd_obc_src_file_name = bgc_cobalt.nc
+nmd_obc_lfac_in = 0.03
+nmd_obc_lfac_out = 1.0
+plg_obc_src_file_name = bgc_cobalt.nc
+plg_obc_lfac_in = 0.03
+plg_obc_lfac_out = 1.0
+/

@@ -1,0 +1,1 @@
+../../datasets/OM4_025.JRA.single_column/rlds_input4MIPs_atmosphericState_OMIP_MRI-JRA55-do-1-4-0_gr_200401010130-200412312230.padded.nc

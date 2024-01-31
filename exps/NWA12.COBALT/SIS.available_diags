@@ -1,0 +1,426 @@
+"ice_model", "SH"  [Unused]
+    ! long_name: sensible heat flux
+    ! units: W/m^2
+"ice_model", "LH"  [Unused]
+    ! long_name: latent heat flux
+    ! units: W/m^2
+"ice_model", "SW"  [Unused]
+    ! long_name: shortwave heat flux
+    ! units: W/m^2
+"ice_model", "LW"  [Unused]
+    ! long_name: longwave heat flux over ice
+    ! units: W/m^2
+"ice_model", "SNOWFL"  [Used]
+    ! long_name: rate of snow fall
+    ! units: kg/(m^2*s)
+"ice_model", "RAIN"  [Unused]
+    ! long_name: rate of rain fall
+    ! units: kg/(m^2*s)
+"ice_model", "RUNOFF"  [Unused]
+    ! long_name: liquid runoff
+    ! units: kg/(m^2*s)
+"ice_model", "CALVING"  [Used]
+    ! long_name: frozen runoff
+    ! units: kg/(m^2*s)
+"ice_model", "RUNOFF_HFLX"  [Unused]
+    ! long_name: liquid runoff sensible heat flux
+    ! units: W/m^2
+"ice_model", "CALVING_HFLX"  [Used]
+    ! long_name: frozen runoff sensible heat flux
+    ! units: W/m^2
+"ice_model", "EVAP"  [Unused]
+    ! long_name: evaporation
+    ! units: kg/(m^2*s)
+"ice_model", "SALTF"  [Used]
+    ! long_name: ice to ocean salt flux
+    ! units: kg/(m^2*s)
+"ice_model", "TMELT"  [Used]
+    ! long_name: upper surface melting energy flux
+    ! units: W/m^2
+"ice_model", "BMELT"  [Used]
+    ! long_name: bottom surface melting energy flux
+    ! units: W/m^2
+"ice_model", "BHEAT"  [Used]
+    ! long_name: ocean to ice heat flux
+    ! units: W/m^2
+"ice_model", "SWDN"  [Unused]
+    ! long_name: Downward shortwave heat flux at the bottom of the atmosphere
+    ! units: W/m^2
+"ice_model", "ALB"  [Used]
+    ! long_name: Shortwave flux weighted surface albedo, or 1 if no SW
+    ! units: 0-1
+"ice_model", "SW_VIS"  [Unused]
+    ! long_name: visible shortwave heat flux
+    ! units: W/m^2
+"ice_model", "SW_DIR"  [Unused]
+    ! long_name: direct shortwave heat flux
+    ! units: W/m^2
+"ice_model", "SW_DIF"  [Unused]
+    ! long_name: diffuse shortwave heat flux
+    ! units: W/m^2
+"ice_model", "SW_VIS_DIR"  [Unused]
+    ! long_name: visible direct shortwave heat flux
+    ! units: W/m^2
+"ice_model", "SW_VIS_DIF"  [Unused]
+    ! long_name: visible diffuse shortwave heat flux
+    ! units: W/m^2
+"ice_model", "SW_NIR_DIR"  [Unused]
+    ! long_name: near IR direct shortwave heat flux
+    ! units: W/m^2
+"ice_model", "SW_NIR_DIF"  [Unused]
+    ! long_name: near IR diffuse shortwave heat flux
+    ! units: W/m^2
+"ice_model", "EVAP_T0"  [Unused]
+    ! long_name: evaporation at 0 degC
+    ! units: kg/(m^2*s)
+"ice_model", "LW_T0"  [Unused]
+    ! long_name: net downward longwave heat flux over ice at 0 degC
+    ! units: W/m^2
+"ice_model", "SH_T0"  [Unused]
+    ! long_name: sensible heat flux at 0 degC
+    ! units: W/m^2
+"ice_model", "dEVAP_dT"  [Unused]
+    ! long_name: partial derivative of evaporation with ice skin temperature
+    ! units: kg/(m^2*s*K)
+"ice_model", "dLW_dT"  [Unused]
+    ! long_name: partial derivative of net downward longwave heat flux with ice skin temperature
+    ! units: W/(m^2*K)
+"ice_model", "dSH_dT"  [Unused]
+    ! long_name: partial derivative of sensible heat flux with ice skin temperature
+    ! units: W/(m^2*K)
+"ice_model", "TS_CAT"  [Unused]
+    ! long_name: surface temperature by category
+    ! units: C
+"ice_model", "EVAP_CAT"  [Unused]
+    ! long_name: evaporation by category
+    ! units: kg/(m^2*s)
+"ice_model", "LW_CAT"  [Unused]
+    ! long_name: longwave heat flux by category
+    ! units: W/m^2
+"ice_model", "SH_CAT"  [Unused]
+    ! long_name: sensible heat flux by category
+    ! units: W/m^2
+"ice_model", "TS"  [Unused]
+    ! long_name: surface temperature
+    ! units: C
+"ice_model", "sitemptop"  [Used]
+    ! long_name: surface temperature
+    ! units: C
+"ice_model", "sitemptop_CMOR"  [Unused]
+    ! long_name: Surface Temperature of Sea ice
+    ! units: Kelvin
+    ! standard_name: SeaIceSurfaceTemperature
+"ice_model", "SLP"  [Unused]
+    ! long_name: sea level pressure
+    ! units: Pa
+"ice_model", "SST"  [Unused]
+    ! long_name: sea surface temperature
+    ! units: deg-C
+"ice_model", "SSS"  [Unused]
+    ! long_name: sea surface salinity
+    ! units: psu
+"ice_model", "SSH"  [Unused]
+    ! long_name: sea surface height
+    ! units: m
+"ice_model", "UO"  [Unused]
+    ! long_name: surface current - x component
+    ! units: m/s
+"ice_model", "VO"  [Unused]
+    ! long_name: surface current - y component
+    ! units: m/s
+"ice_model", "FRAZIL"  [Used]
+    ! long_name: energy flux of frazil formation
+    ! units: W/m^2
+"ice_model", "LSRC"  [Used]
+    ! long_name: frozen water local source
+    ! units: kg/(m^2*yr)
+"ice_model", "LSNK"  [Used]
+    ! long_name: frozen water local sink
+    ! units: kg/(m^2*yr)
+"ice_model", "BSNK"  [Used]
+    ! long_name: frozen water local bottom sink
+    ! units: kg/(m^2*yr)
+"ice_model", "SN2IC"  [Used]
+    ! long_name: rate of snow to ice conversion
+    ! units: kg/(m^2*s)
+"ice_model", "net_melt"  [Unused]
+    ! long_name: net mass flux from ice & snow to ocean due to melting & freezing
+    ! units: kg m-2 s-1
+"ice_model", "fsitherm"  [Unused]
+    ! long_name: water_flux_into_sea_water_due_to_sea_ice_thermodynamics
+    ! units: kg m-2 s-1
+"ice_model", "SIGI"  [Unused]
+    ! long_name: first stress invariant
+    ! units: none
+"ice_model", "SIGII"  [Unused]
+    ! long_name: second stress invariant
+    ! units: none
+"ice_model", "STRENGTH"  [Unused]
+    ! long_name: ice strength
+    ! units: Pa*m
+"ice_model", "STREN_0"  [Unused]
+    ! long_name: ice strength at start of rheology
+    ! units: Pa*m
+"ice_model", "FI_X"  [Used]
+    ! long_name: ice internal stress - x component
+    ! units: Pa
+"ice_model", "FI_Y"  [Used]
+    ! long_name: ice internal stress - y component
+    ! units: Pa
+"ice_model", "FC_X"  [Unused]
+    ! long_name: Coriolis force - x component
+    ! units: Pa
+"ice_model", "FC_Y"  [Unused]
+    ! long_name: Coriolis force - y component
+    ! units: Pa
+"ice_model", "Cor_ui"  [Unused]
+    ! long_name: Coriolis ice acceleration - x component
+    ! units: m s-2
+"ice_model", "Cor_vi"  [Unused]
+    ! long_name: Coriolis ice acceleration - y component
+    ! units: m s-2
+"ice_model", "FP_X"  [Unused]
+    ! long_name: Pressure force - x component
+    ! units: Pa
+"ice_model", "FP_Y"  [Unused]
+    ! long_name: Pressure force - y component
+    ! units: Pa
+"ice_model", "Pfa_ui"  [Unused]
+    ! long_name: Pressure-force ice acceleration - x component
+    ! units: m s-2
+"ice_model", "Pfa_vi"  [Unused]
+    ! long_name: Pressure-force ice acceleration - y component
+    ! units: m s-2
+"ice_model", "FW_X"  [Unused]
+    ! long_name: water stress on ice - x component
+    ! units: Pa
+"ice_model", "FW_Y"  [Unused]
+    ! long_name: water stress on ice - y component
+    ! units: Pa
+"ice_model", "FLF_X"  [Unused]
+    ! long_name: land-fast bottom stress on ice - x component
+    ! units: Pa
+"ice_model", "FLF_Y"  [Unused]
+    ! long_name: land-fast bottom stress on ice - y component
+    ! units: Pa
+"ice_model", "UI"  [Unused]
+    ! long_name: ice velocity - x component
+    ! units: m/s
+"ice_model", "VI"  [Unused]
+    ! long_name: ice velocity - y component
+    ! units: m/s
+"ice_model", "MIS_tot"  [Unused]
+    ! long_name: Mass of ice and snow at t-points
+    ! units: kg m-2
+"ice_model", "CI_tot"  [Unused]
+    ! long_name: Initial summed concentration of ice at t-points
+    ! units: nondim
+"ice_model", "CI_proj"  [Unused]
+    ! long_name: Projected summed concentration of ice at t-points
+    ! units: nondim
+"ice_model", "MI_U"  [Unused]
+    ! long_name: Mass of ice and snow at u-points
+    ! units: kg m-2
+"ice_model", "MI_V"  [Unused]
+    ! long_name: Mass of ice and snow at v-points
+    ! units: kg m-2
+"ice_model", "FI_d_X"  [Unused]
+    ! long_name: ice divergence internal stress - x component
+    ! units: Pa
+"ice_model", "FI_d_Y"  [Unused]
+    ! long_name: ice divergence internal stress - y component
+    ! units: Pa
+"ice_model", "FI_t_X"  [Unused]
+    ! long_name: ice tension internal stress - x component
+    ! units: Pa
+"ice_model", "FI_t_Y"  [Unused]
+    ! long_name: ice tension internal stress - y component
+    ! units: Pa
+"ice_model", "FI_s_X"  [Unused]
+    ! long_name: ice shearing internal stress - x component
+    ! units: Pa
+"ice_model", "FI_s_Y"  [Unused]
+    ! long_name: ice shearing internal stress - y component
+    ! units: Pa
+"ice_model", "str_d"  [Unused]
+    ! long_name: ice divergence internal stress
+    ! units: Pa m
+"ice_model", "str_t"  [Unused]
+    ! long_name: ice tension internal stress
+    ! units: Pa m
+"ice_model", "str_s"  [Unused]
+    ! long_name: ice shearing internal stress
+    ! units: Pa m
+"ice_model", "sh_d"  [Unused]
+    ! long_name: ice divergence strain rate
+    ! units: s-1
+"ice_model", "sh_t"  [Unused]
+    ! long_name: ice tension strain rate
+    ! units: s-1
+"ice_model", "sh_s"  [Unused]
+    ! long_name: ice shearing strain rate
+    ! units: s-1
+"ice_model", "del_sh"  [Unused]
+    ! long_name: ice strain rate magnitude
+    ! units: s-1
+"ice_model", "del_sh_min"  [Unused]
+    ! long_name: minimum ice strain rate magnitude
+    ! units: s-1
+"ice_model", "ui_hf"  [Unused]
+    ! long_name: ice velocity - x component
+    ! units: m/s
+"ice_model", "vi_hf"  [Unused]
+    ! long_name: ice velocity - y component
+    ! units: m/s
+"ice_model", "str_d_hf"  [Unused]
+    ! long_name: ice divergence internal stress
+    ! units: Pa m
+"ice_model", "str_t_hf"  [Unused]
+    ! long_name: ice tension internal stress
+    ! units: Pa m
+"ice_model", "str_s_hf"  [Unused]
+    ! long_name: ice shearing internal stress
+    ! units: Pa m
+"ice_model", "sh_d_hf"  [Unused]
+    ! long_name: ice divergence rate
+    ! units: s-1
+"ice_model", "sh_t_hf"  [Unused]
+    ! long_name: ice tension rate
+    ! units: s-1
+"ice_model", "sh_s_hf"  [Unused]
+    ! long_name: ice shearing rate
+    ! units: s-1
+"ice_model", "sigI_hf"  [Unused]
+    ! long_name: first stress invariant
+    ! units: none
+"ice_model", "sigII_hf"  [Unused]
+    ! long_name: second stress invariant
+    ! units: none
+"ice_model", "CI_hf"  [Unused]
+    ! long_name: Summed concentration of ice at t-points
+    ! units: nondim
+"ice_model", "STRENGTH_hf"  [Used]
+    ! long_name: ice strength
+    ! units: Pa*m
+"ice_model", "siu"  [Used]
+    ! long_name: ice velocity - x component
+    ! units: m/s
+"ice_model", "siv"  [Used]
+    ! long_name: ice velocity - y component
+    ! units: m/s
+"ice_model", "sispeed"  [Used]
+    ! long_name: ice speed
+    ! units: m/s
+"ice_model", "IX_TRANS"  [Used]
+    ! long_name: x-direction ice transport
+    ! units: kg/s
+"ice_model", "IY_TRANS"  [Used]
+    ! long_name: y-direction ice transport
+    ! units: kg/s
+"ice_model", "XPRT"  [Used]
+    ! long_name: frozen water transport convergence
+    ! units: kg/(m^2*yr)
+"ice_model", "RDG_RATE"  [Unused]
+    ! long_name: ice ridging rate
+    ! units: 1/sec
+"ice_model", "FA_X"  [Used]
+    ! long_name: Air stress on ice on C-grid - x component
+    ! units: Pa
+"ice_model", "FA_Y"  [Used]
+    ! long_name: Air stress on ice on C-grid - y component
+    ! units: Pa
+"ice_model", "EXT"  [Used]
+    ! long_name: ice modeled
+    ! units: 0 or 1
+"ice_model", "CN"  [Used]
+    ! long_name: ice concentration
+    ! units: 0-1
+"ice_model", "HP"  [Unused]
+    ! long_name: pond thickness
+    ! units: m-pond
+"ice_model", "HS"  [Unused]
+    ! long_name: snow thickness
+    ! units: m-snow
+"ice_model", "TSN"  [Used]
+    ! long_name: snow layer temperature
+    ! units: C
+"ice_model", "HI"  [Unused]
+    ! long_name: ice thickness
+    ! units: m-ice
+"ice_model", "sitimefrac"  [Used]
+    ! long_name: time fraction of ice cover
+    ! units: 0-1
+"ice_model", "siconc"  [Used]
+    ! long_name: ice concentration
+    ! units: 0-1
+"ice_model", "siconc_CMOR"  [Unused]
+    ! long_name: Sea-Ice Area Percentage
+    ! units: %
+    ! standard_name: SeaIceAreaFraction
+"ice_model", "sithick"  [Used]
+    ! long_name: ice thickness
+    ! units: m-ice
+"ice_model", "sivol"  [Used]
+    ! long_name: ice volume
+    ! units: m-ice
+"ice_model", "sivol_CMOR"  [Unused]
+    ! long_name: Sea-ice Volume per Area
+    ! units: m-ice
+"ice_model", "sisnconc"  [Used]
+    ! long_name: snow concentration
+    ! units: 0-1
+"ice_model", "sisnconc_CMOR"  [Unused]
+    ! long_name: Snow Area Percentage
+    ! units: %
+    ! standard_name: SurfaceSnowAreaFraction
+"ice_model", "sisnthick"  [Used]
+    ! long_name: snow thickness
+    ! units: m-snow
+"ice_model", "T_bulkice"  [Unused]
+    ! long_name: Volume-averaged ice temperature
+    ! units: C
+"ice_model", "S_bulkice"  [Unused]
+    ! long_name: Volume-averaged ice salinity
+    ! units: g/kg
+"ice_model", "T1"  [Used]
+    ! long_name: ice layer 1 temperature
+    ! units: C
+"ice_model", "Sal1"  [Unused]
+    ! long_name: ice layer 1 salinity
+    ! units: g/kg
+"ice_model", "T2"  [Used]
+    ! long_name: ice layer 2 temperature
+    ! units: C
+"ice_model", "Sal2"  [Unused]
+    ! long_name: ice layer 2 salinity
+    ! units: g/kg
+"ice_model", "T3"  [Used]
+    ! long_name: ice layer 3 temperature
+    ! units: C
+"ice_model", "Sal3"  [Unused]
+    ! long_name: ice layer 3 salinity
+    ! units: g/kg
+"ice_model", "T4"  [Used]
+    ! long_name: ice layer 4 temperature
+    ! units: C
+"ice_model", "Sal4"  [Unused]
+    ! long_name: ice layer 4 salinity
+    ! units: g/kg
+"ice_model", "MI"  [Unused]
+    ! long_name: ice + snow mass
+    ! units: kg/m^2
+"ice_model", "simass"  [Used]
+    ! long_name: ice mass
+    ! units: kg/m^2
+"ice_model", "simass_n"  [Unused]
+    ! long_name: ice mass
+    ! units: kg/m^2
+"ice_model", "sisnmass"  [Used]
+    ! long_name: snow mass
+    ! units: kg/m^2
+"ice_model", "MIB"  [Used]
+    ! long_name: ice + snow + bergs mass
+    ! units: kg/m^2
+"ice_model", "E2MELT"  [Used]
+    ! long_name: heat needed to melt ice
+    ! units: J/m^2

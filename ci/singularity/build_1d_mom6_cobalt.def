@@ -1,0 +1,37 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%environment
+    export DEBIAN_FRONTEND=noninteractive
+    export PATH=/opt/bin:$PATH
+
+%post
+    apt update && \
+    apt install -y \
+        make \
+        vim \
+        curl \
+        wget \
+        imagemagick \
+        gfortran \
+        git \
+        tcsh \
+        netcdf-bin \
+        libnetcdf-dev \
+        libnetcdff-dev \
+        openmpi-bin \
+        libopenmpi-dev \
+        && apt clean -y \
+        && rm -rf /var/lib/apt/lists/*
+
+    mkdir -p /opt
+
+    cd /opt && git clone https://github.com/NOAA-GFDL/FRE-NCtools.git
+    cd /opt/FRE-NCtools && autoreconf -i && mkdir build && cd build \
+    && ../configure --prefix=/opt \
+    && make && make install
+    
+    rm -rf /opt/FRE-NCtools
+
+%labels
+    Author "Yi-cheng Teng"

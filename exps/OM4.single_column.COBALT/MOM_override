@@ -1,0 +1,72 @@
+! Blank file in which we can put "overrides" for parameters
+REENTRANT_Y = True
+REENTRANT_X = True
+!Overrides to shortwave to make model work
+#override VAR_PEN_SW = False
+#override PEN_SW_FRAC = 1.0
+#override EXP_OPACITY_SCHEME = "DOUBLE_EXP"
+#override PEN_SW_NBANDS = 2
+#override PEN_SW_SCALE = 0.35
+#override PEN_SW_SCALE_2ND = 23.0
+#override SW_1ST_EXP_RATIO = 0.58
+! Use KPP
+!#override ENERGETICS_SFC_PBL = False
+!#override USE_JACKSON_PARAM = False
+#override ALE_COORDINATE_CONFIG = "FNC1:2,6500,6,.01"
+#override INTERPOLATION_SCHEME = "PPM_H4"
+#override REGRIDDING_COORDINATE_MODE = "Z*"
+! Newest ePBL
+!#override EPBL_IS_ADDITIVE = False
+!#override TKE_DECAY = 0.001
+!#override EPBL_MSTAR_SCHEME = "REICHL_H18"
+!#override MSTAR = 0.0
+!#override RH18_MSTAR_CN3 = -6.0
+!#override NSTAR = 0.06
+!#override MSTAR_CONV_ADJ = 0.66
+!#override USE_MLD_ITERATION = True
+!#override EPBL_VEL_SCALE_SCHEME = "REICHL_H18"
+!#override WSTAR_USTAR_COEF = 15.
+!#override EPBL_VEL_SCALE_FACTOR = 0.5477
+!#override VSTAR_SURF_FAC = 1.8258
+!#override EPBL_TRANSITION_SCALE = 0.01
+!#override EPBL_LT = True
+!#override EPBL_LANGMUIR_SCHEME = "ADDITIVE"
+!#override LT_MOD_LAC1 = 0.0
+!#override LT_MOD_LAC2 = 0.0
+!#override LT_MOD_LAC3 = 0.0
+!#override LT_MOD_LAC4 = 0.8
+!#override LT_MOD_LAC5 = 0.8
+!#override LT_ENHANCE_COEF = 0.1056
+!#override LT_ENHANCE_EXP = -1.
+!#override LA_DEPTH_RATIO = 0.2
+!!More ePBL Changes
+!MIX_LEN_EXPONENT = 2.0
+!!!!!!!!
+#override KD = 5.e-4
+#override RESOLN_SCALED_KH = False
+#override RESOLN_SCALED_KHTH = False
+#override HENYEY_IGW_BACKGROUND = False
+#override KAPPA_BUOY_SCALE_COEF = 100.0
+#override THICKNESSDIFFUSE = False
+#override LAPLACIAN = False
+#override SMAGORINSKY_AH = False
+!Extra flags needed
+Z_INIT_HOMOGENIZE = True
+ROTATION = "betaplane"
+F_0 = 0
+HOMOGENIZE_IOB_FORCINGS = True
+!!OBGC tracers
+#override USE_OCMIP2_CFC = False
+#override USE_IDEAL_AGE_TRACER = False
+#override USE_generic_tracer = True
+GENERIC_TRACER_IC_FILE = "MOM_GENERICS.res.nc"
+!#override VAR_PEN_SW = True
+!#override PEN_SW_NBANDS = 3               ! default = 1
+!#override CHL_FROM_FILE = False
+#override Z_INIT_REMAP_OLD_ALG = True
+#override TRACERS_MAY_REINIT = True
+#override DO_GEOTHERMAL = True 
+#override GEOTHERMAL_SCALE = 0.0 
+! GEOTHERMAL_FILE = "geothermal_davies2013_v1.nc"
+! GEOTHERMAL_VARNAME = "geothermal_hf" ! default = "geo_heat"
+

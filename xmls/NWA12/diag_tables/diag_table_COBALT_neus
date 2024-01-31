@@ -1,0 +1,65 @@
+"ocean_cobalt_neus", 1, "days",  1, "days", "time"
+
+# 2D
+"generic_cobalt", "pp",             "pp",                   "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "o2os",           "o2os",                 "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "o2satos",        "o2satos",              "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "no3os",          "no3os",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "nh4os",          "nh4os",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "po4os",          "po4os",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "dfeos",          "dfeos",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sios",           "sios",                 "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "chlos",          "chlos",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "chldiatos",      "chldiatos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "chldiazos",      "chldiazos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "chlpicoos",      "chlpicoos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "chlmiscos",      "chlmiscos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "ponos",          "ponos",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "popos",          "popos",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "bfeos",          "bfeos",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "bsios",          "bsios",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phynos",         "phynos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phypos",         "phypos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phyfeos",        "phyfeos",              "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "physios",        "physios",              "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "co3os",          "co3os",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phos",           "phos",                 "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "dissocos",       "dissocos",             "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phycos",         "phycos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "zoocos",         "zoocos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "baccos",         "baccos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "detocos",        "detocos",              "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "calcos",         "calcos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "aragos",         "aragos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phydiatos",      "phydiatos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phydiazos",      "phydiazos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phypicoos",      "phypicoos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "phymiscos",      "phymiscos",            "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "zmicroos",       "zmicroos",             "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "zmesoos",        "zmesoos",              "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "talkos",         "talkos",               "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sfc_no3lim_lgp", "sfc_no3lim_lgp",       "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sfc_no3lim_mdp", "sfc_no3lim_mdp",       "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sfc_no3lim_smp", "sfc_no3lim_smp",       "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sfc_irrlim_di",  "sfc_irrlim_di",        "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sfc_irrlim_lgp", "sfc_irrlim_lgp",       "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sfc_irrlim_mdp", "sfc_irrlim_mdp",       "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "sfc_irrlim_smp", "sfc_irrlim_smp",       "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "zsatarag",       "zsatarag",             "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+
+
+# 2D integrated
+"generic_cobalt", "nsmp_100",       "nsmp_100",             "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "nmdp_100",       "nmdp_100",             "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "nlgp_100",       "nlgp_100",             "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "ndi_100",        "ndi_100",              "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+
+# 3D
+"ocean_model",    "volcello",       "volcello",             "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "no3",            "no3",                  "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "po4",            "po4",                  "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "chl",            "chl",                  "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "o2",             "o2",                   "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "omega_arag",     "omega_arag",           "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+"generic_cobalt", "expkT",          "expkT",                "ocean_cobalt_neus", "all", "mean", "-76.47 -64.48 34.89 45.78 0 400",2
+

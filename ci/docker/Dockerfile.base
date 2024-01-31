@@ -1,0 +1,22 @@
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && \
+    apt install -y \
+    make \
+    gfortran \
+    git \
+    vim \
+    wget \
+    tcsh \
+    netcdf-bin \
+    libnetcdf-dev \
+    libnetcdff-dev \
+    openmpi-bin \
+    libopenmpi-dev \
+    && apt clean -y \
+    && rm -rf /var/lib/apt/lists/*
+RUN useradd -u 1001 builder
+RUN mkdir -p /opt
+WORKDIR /opt
+RUN chown -R builder:builder /opt
+USER builder

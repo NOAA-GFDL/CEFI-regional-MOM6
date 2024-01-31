@@ -1,0 +1,7 @@
+#override USE_generic_tracer = True
+#override MAX_FIELDS=500
+#override OBC_TIDE_NODAL_REF_DATE = 1993,7,2
+DT_OBC_SEG_UPDATE_OBGC = 3600
+#override CHL_FROM_FILE = False
+#override DO_GEOTHERMAL = True
+#override GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc"
