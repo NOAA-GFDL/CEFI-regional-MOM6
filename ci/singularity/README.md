@@ -13,7 +13,7 @@ singularity shell --fakeroot -B /home/$USER/work:/work -e 1d_mom6_cobalt.sif
 # Build MOM6-SIS2-cobalt and run 1D case within singularity container
 ```console
 Singularity> cd /work/CEFI-regional-MOM6/builds
-Singularity> linux-build.bash -m docker -p linux-gnu -t prod -f mom6sis2
+Singularity> ./linux-build.bash -m docker -p linux-gnu -t prod -f mom6sis2
 Singularity> ../exps
 Singularity> https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tat.gz
 Singularity> OM4.single_column.COBALT
