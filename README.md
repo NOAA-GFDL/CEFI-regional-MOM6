@@ -1,5 +1,7 @@
 # CEFI-regional-MOM6
 This repository contains pre/post-processing tools and CEFI regional-MOM6 configurations for running regional-MOM6 OBGC simulations.
+The development branch of the CEFI-regional-MOM6 is continually evolving as the system undergoes open development. The main branch represents a snapshot of this continuously evolving system.
+Users are welcome to use the [discussions board](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/discussions) to ask questions related to the model or the tools.
 
 ## What files are what
 
