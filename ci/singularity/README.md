@@ -1,6 +1,6 @@
 # build singularity image
 ```console
-singularity build 1d_mom6_cobalt.sif ./build_1d_mom6_cobalt.def
+singularity build --fakeroot 1d_mom6_cobalt.sif ./build_1d_mom6_cobalt.def
 ```
 
 # Run the singularity container image in interactive mode
