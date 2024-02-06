@@ -37,7 +37,7 @@ if [ -z "$username" ] || [ -z "$password" ]; then
 fi
 
 # Log in to copernicus Marine
-command_string="copernicus-marine login --username $username --password $password"
+command_string="copernicusmarine login --username $username --password $password"
 eval "$command_string"
 
 # Product and dataset IDs
@@ -57,7 +57,7 @@ while [[ "$startDate" != "$endDate" ]]; do
 
     echo "=============== Date: $startDate ===================="
 
-    command="copernicus-marine subset -i $productId \
+    command="copernicusmarine subset -i $productId \
     -v ${variable[0]} -v ${variable[1]} -v ${variable[2]} -v ${variable[3]} -v ${variable[4]} \
     -x ${lon[0]} -X ${lon[1]} -y ${lat[0]} -Y ${lat[1]} \
     -t \"$startDate\" -T \"$startDate\" \

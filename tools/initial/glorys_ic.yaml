@@ -2,7 +2,7 @@
 glorys_file: ../../datasets/glorys/daily/GLORYS_REANALYSIS_1993-01-01.nc
 vgrid_file: ../../datasets/grid/vgrid_75_2m.nc
 grid_file: ../../datasets/grid/ocean_hgrid.nc
-output_file: ../../glorys_ic_1993-01-01.nc.yaml  
+output_file: ../../glorys_ic_1993-01-01.nc 
 reuse_weights: False
 
 variable_names:
