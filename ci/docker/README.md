@@ -1,7 +1,7 @@
 # Build base image
 ```console
 mkdir work && cd work
-git clone -b main git@github.com:NOAA-GFDL/CEFI-regional-MOM6.git --recurtive
+git clone -b main git@github.com:NOAA-GFDL/CEFI-regional-MOM6.git --recursive
 cd CEFI-regional-MOM6/ci/docker
 docker build -t 1d_mom6_cobalt:base .
 ```
