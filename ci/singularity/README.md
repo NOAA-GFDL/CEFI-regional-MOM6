@@ -1,7 +1,7 @@
 # build singularity image
 ```console
 mkdir work && cd work
-git clone -b main git@github.com:NOAA-GFDL/CEFI-regional-MOM6.git --recurtive
+git clone -b main git@github.com:NOAA-GFDL/CEFI-regional-MOM6.git --recursive
 cd CEFI-regional-MOM6/ci/singularity
 singularity build --fakeroot 1d_mom6_cobalt.sif ./build_1d_mom6_cobalt.def
 ```
