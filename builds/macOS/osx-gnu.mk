@@ -101,7 +101,7 @@ FFLAGS := -fcray-pointer -fdefault-double-8 -fdefault-real-8 -Waliasing -ffree-l
 
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
 FFLAGS_OPT = -O3
-FFLAGS_REPRO = -O2 -fbounds-check
+FFLAGS_REPRO = -O1 -fbounds-check
 FFLAGS_DEBUG = -O0 -g -W -fbounds-check -fbacktrace -ffpe-trap=invalid,zero,overflow
 
 # Flags to add additional build options
@@ -119,7 +119,7 @@ CFLAGS := -D__IFC
 
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
 CFLAGS_OPT = -O2
-CFLAGS_REPRO = -O2
+CFLAGS_REPRO = -O1
 CFLAGS_DEBUG = -O0 -g
 
 # Flags to add additional build options

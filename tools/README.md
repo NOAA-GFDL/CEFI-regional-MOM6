@@ -161,5 +161,5 @@ mamba create -n setup python=3.10
 mamba activate setup
 mamba install -c conda-forge xarray dask netCDF4 h5py bottleneck matplotlib scipy pandas PyYAML cartopy xskillscore utide gsw colorcet cmcrameri xesmf
 pip3 install git+https://github.com/raphaeldussin/HCtFlood.git
-pip3 install copernicus-marine-client
+pip3 install copernicusmarine
 ```
