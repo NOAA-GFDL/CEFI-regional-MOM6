@@ -1,4 +1,4 @@
-This tool can be use to build the executable for the model. If you have Gaea C5 access, try the following command directly. Otherwise please check [here](# Quick Start Guide:) for detailed instructions.
+This tool can be use to build the executable for the model. If you have Gaea C5 access, try the following command directly. Otherwise please check [Quick Start Guide](quick-start-guide) for detailed instructions.
 
 On machine gaea for platform c5 with intel23 compiler:
 ```console
@@ -9,7 +9,7 @@ This assumes that the files build/gaea/ncrc5.intel23.env and build/gaea/ncrc5.in
 that must be loaded before a build / run on that machine
 -  build/gaea/ncrc5.intel23.mk  contains the compile instructions for the particular compiler and machine
 
-# Quick Start Guide:
+# Quick Start Guide
 
 **Conda warning**: before you install anything or try to build the model, make sure to deactivate your `conda` environment because it could interfere with brew and the model build process.
 conda deactivate.
