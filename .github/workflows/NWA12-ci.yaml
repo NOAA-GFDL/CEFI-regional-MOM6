@@ -16,7 +16,7 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 600
     strategy:
-      max-parallel: 2    
+      max-parallel: 1    
 
     steps:
     - name: Checkout CEFI-regional-MOM6
