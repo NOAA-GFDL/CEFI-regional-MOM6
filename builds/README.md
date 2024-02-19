@@ -1,4 +1,4 @@
-This tool can be use to build the executable for the model. If you have Gaea C5 access, try the following command directly. Otherwise please check [Quick Start Guide](quick-start-guide) for detailed instructions.
+This tool can be use to build the executable for the model. If you have Gaea C5 access, try the following command directly. Otherwise please check [Build CEFI-regional-MOM6](#build-cefi-regional-mom6) for detailed instructions.
 
 On machine gaea for platform c5 with intel23 compiler:
 ```console
