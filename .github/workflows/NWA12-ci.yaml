@@ -27,11 +27,11 @@ jobs:
         path: ${{ github.run_id }}/NWA12_CHECK
         submodules: recursive
 
-    - uses: jitterbit/get-changed-files@v1
-      id: abc
-      with:
-        format: space-delimited
-        token: ${{ secrets.GITHUB_TOKEN }}     
+#    - uses: jitterbit/get-changed-files@v1
+#      id: abc
+#      with:
+#        format: space-delimited
+#        token: ${{ secrets.GITHUB_TOKEN }}     
 
     - name: Build MOM6SIS2
       run: |
