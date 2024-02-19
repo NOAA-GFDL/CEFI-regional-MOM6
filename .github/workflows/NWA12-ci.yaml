@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Checkout CEFI-regional-MOM6
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: ${{ github.run_id }}/NWA12_CHECK
         submodules: recursive
