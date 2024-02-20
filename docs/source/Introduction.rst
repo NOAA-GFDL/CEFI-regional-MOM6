@@ -6,6 +6,10 @@ Introduction
 
 This User's Guide provides guidance for setting and running the regional MOM6-COBALT System.
 
+.. note::
+
+   This User's Guide is still a WIP and is subject to change at any time.
+
 The detailed description of the model system can be found in :cite:t:`RossEtAl2023` (2023)
 
 Disclaimer 
