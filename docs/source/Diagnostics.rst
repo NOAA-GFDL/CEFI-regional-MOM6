@@ -73,3 +73,27 @@ Diagnostics for Biogeochemical Components
 ==========================================
 
 All the diagnostics scripts related to the biogeochemical components are located within ``CEFI-regional-MOM6/diagnostics/biogeochemistry``. Users can check the header of each file to learn how to use these scripts. Make sure you create ``figures`` folder before running the scripts.
+
+The :numref:`Table %s <Diagsbiogeotable>` below provides short descriptions for scripts related to biogeochemical components
+
+.. _Diagsbiogeotable:
+
+.. list-table:: Descriptions of diagnostics scripts for *biogeochemical Components*
+   :widths: 20 50
+   :header-rows: 1
+
+   * - File Name
+     - Description
+   * - chl_eval.py
+     - Compare model surface chla with data from occci-v6.0
+   * - enso_chl.py
+     - Compare Winter and spring surface chlorophyll a anomalies during El Niño years
+   * - nutrients.py
+     - Comparison of model seasonal mean surface phosphate and nitrate with the World Ocean Atlas data
+   * - oa_metrics.py
+     - Compare Mean surface alkalinity, dissolved inorganic carbon, and aragonite saturation statee between the model and the
+       observation-derived climatology   
+   * - zooplankton.py
+     - Compare the 0-200 m average mesozooplankton biomass climatology between model and Observations from the COPEPOD dataset
+   * - NWA12/hypoxic_area.py
+     - Compare monthly climatologies of hypoxic area over the LA-TX Shelf between the model and geostatistical estimates from Matli et al. (2020) 
