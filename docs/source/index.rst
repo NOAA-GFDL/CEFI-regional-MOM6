@@ -20,4 +20,5 @@ Code managers
    :caption: Contents:
 
    Introduction
+   BuildMOM6
    ContainerQuickstart

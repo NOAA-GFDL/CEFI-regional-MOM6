@@ -39,10 +39,10 @@ User can follow the following steps to build and run MOM6-SIS2-COBALT 1-D case w
    cd USER_HOME_PATH
    docker run --rm -v /USER_HOME_PATH:/work -it clouden90/1d_mom6_cobalt:v0.1 bash --login # run docker container interactively
    cd /work/CEFI-regional-MOM6/builds
-   ./linux-build.bash -m docker -p linux-gnu -t prod -f mom6sis2 #build MOM6-SIS2-COBALT
+   ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2 #build MOM6-SIS2-COBALT
    cd /work/CEFI-regional-MOM6/exps
-   cd OM4.single_column.COBALT.p4
-   mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
+   cd OM4.single_column.COBALT
+   mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
 
 
 Build and run 1-D example using Singularity/Apptainer container
@@ -68,7 +68,7 @@ Then User can follow the following steps to build and run MOM6-SIS2-COBALT 1-D c
    cd USER_HOME_PATH
    singularity shell -B /USER_HOME_PATH:/work -e /USER_HOME_PATH/1d_mom6_cobalt.sif # start singularity/apptainer container interactively
    cd /work/CEFI-regional-MOM6/builds
-   ./linux-build.bash -m docker -p linux-gnu -t prod -f mom6sis2 #build MOM6-SIS2-COBALT
+   ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2 #build MOM6-SIS2-COBALT
    cd /work/CEFI-regional-MOM6/exps
-   cd OM4.single_column.COBALT.p4
-   mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
+   cd OM4.single_column.COBALT
+   mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
