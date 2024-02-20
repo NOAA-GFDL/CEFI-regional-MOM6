@@ -20,7 +20,7 @@ Users are welcome to use the [discussions board](https://github.com/NOAA-GFDL/CE
 | ```xmls/```       | Contains FRE xml files designed for running the CEFI-regional-MOM6 workflow on NOAA Gaea C5. See [xmls/README.md](xmls/README.md) |
 
 ## Quick Start Guide
-To learn how to compile/build MOM6-SIS2-cobalt and run an example regional test case, refer to [builds/README](builds/README) and [exps/README.md](exps/README.md).
+To learn how to compile/build MOM6-SIS2-cobalt and run an example regional test case, refer to [builds/README](builds/README.md) and [exps/README.md](exps/README.md).
 Users who are interested in model inputs generation can check [tools/README.md](tools/README.md). 
 
 ## Disclaimer
