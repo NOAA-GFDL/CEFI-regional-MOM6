@@ -1,6 +1,6 @@
 #!/bin/bash -x                                     
 machine_name="gaea" 
-platform="intel18"
+platform="ncrc5.intel23"
 #machine_name="tiger" 
 #platform="intel18"
 #machine_name="googcp" 
@@ -17,8 +17,8 @@ platform="intel18"
 #platform     = "intel16"
 #machine_name="lscsky50"
 #platform="intel19up2_avx1" #"intel18_avx1" # "intel18up2_avx1" 
-target="prod" #"debug-openmp"       
-flavor="mom6solo" #"mom6solo
+target="repro" #"debug-openmp"       
+flavor="mom6sis2" #"mom6solo
 
 usage()
 {

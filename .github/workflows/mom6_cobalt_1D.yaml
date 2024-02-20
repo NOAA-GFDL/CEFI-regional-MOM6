@@ -15,15 +15,15 @@ jobs:
 
     steps:        
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
         
-    - uses: jitterbit/get-changed-files@v1
-      id: abc
-      with:
-        format: space-delimited
-        token: ${{ secrets.GITHUB_TOKEN }}        
+#    - uses: jitterbit/get-changed-files@v1
+#      id: abc
+#      with:
+#        format: space-delimited
+#        token: ${{ secrets.GITHUB_TOKEN }}        
           
 #    - name: Login to DockerHub Registry
 #      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin

@@ -161,5 +161,16 @@ mamba create -n setup python=3.10
 mamba activate setup
 mamba install -c conda-forge xarray dask netCDF4 h5py bottleneck matplotlib scipy pandas PyYAML cartopy xskillscore utide gsw colorcet cmcrameri xesmf
 pip3 install git+https://github.com/raphaeldussin/HCtFlood.git
-pip3 install copernicusmarine
 ```
+## Install Copernicus Marine Service toolbox CLI
+If users experience issues with Copernicus Marine Service toolbox CLI (`copernicusmarine`), We recommend installing the Copernicus Marine package in a new, isolated Conda/Mamba environment. Users can use the `CEFI-regional-MOM6/tools/initial/copernicusmarine-env.yml` to install `copernicusmarine` in a new conda environment using the following command:
+```
+conda deactivate
+cd tools
+conda env create --file initial/copernicusmarine-env.yml
+conda activate cmc
+copernicusmarine login
+username : YOUR Copernicus USERNAME
+password : YOUR Copernicus PASSWORD
+```
+Then you can use the example script `CEFI-regional-MOM6/tools/initial/get_glorys_data.sh` to donwload the Glorys data for your desired local domain and time period. Always answer `Y` when asked for confirmation to overwrite credentials.

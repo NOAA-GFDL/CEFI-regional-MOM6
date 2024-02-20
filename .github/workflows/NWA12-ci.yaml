@@ -1,0 +1,119 @@
+name: NWA12-ci
+
+on:
+  # Triggers this workflow on pull request event with "NWA12_RT_gaea_c5" label
+  pull_request:
+    branches: [ "main" ]
+    types: [ labeled ]
+
+#
+env:
+  TEST_DIR: ${{ github.workspace }}/${{ github.run_id }}
+  PR_NUMBER: ${{ github.event.number }}
+
+#
+jobs:
+  checkout-build:
+    if: ${{ github.event.label.name == 'NWA12_RT_gaea_c5' }}
+    runs-on: self-hosted
+    timeout-minutes: 600
+    strategy:
+      max-parallel: 1    
+
+    steps:
+    - name: Checkout CEFI-regional-MOM6
+      uses: actions/checkout@v4
+      with:
+        path: ${{ github.run_id }}/NWA12_CHECK
+        submodules: recursive
+
+#    - uses: jitterbit/get-changed-files@v1
+#      id: abc
+#      with:
+#        format: space-delimited
+#        token: ${{ secrets.GITHUB_TOKEN }}     
+
+    - name: Build MOM6SIS2
+      run: |
+        cd ${{ env.TEST_DIR }}/NWA12_CHECK/builds
+        ./linux-build.bash -m gaea -p ncrc5.intel23 -t repro -f mom6sis2
+        #
+        check_file="${{ env.TEST_DIR }}/NWA12_CHECK/builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2"
+        if [ -f "$check_file" ]; then
+            echo "PASSED: $check_file"
+        else
+            echo "FAILED: $check_file"
+            exit 1
+        fi 
+
+  run-NWA12-ci:
+    needs: checkout-build
+    runs-on: self-hosted
+    strategy:
+      max-parallel: 2
+      matrix:
+        case: ["NWA12.COBALT"]
+    steps:
+      - name: Run Experiment ${{ matrix.case }}
+        run: |
+          cd ${{ env.TEST_DIR }}/NWA12_CHECK/exps/${{ matrix.case }}
+          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
+          #
+          sleep 1
+          while :; do
+              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+              if [ -z "$job_status" ]; then
+                 echo "Job with ID $jobid is not found or completed."
+                 break
+              else
+                 echo "Job with ID $jobid is still running."
+                 echo "Job Status: $job_status"
+              fi
+              sleep 30  # Adjust the sleep duration as needed
+          done
+          # 
+          expected_string="All restart files are identical, PASS"
+          check_file="${{ env.TEST_DIR }}/NWA12_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
+          if [ -f "$check_file" ]; then
+             if grep -qF "$expected_string" $check_file; then
+                 echo "PASSED: ${{ matrix.case }}"
+             else
+                 echo "FAILED: ${{ matrix.case }}"
+                 exit 1
+             fi
+          else
+             echo "Can not find $check_file. STOP"
+             exit 10
+          fi
+
+      - name: Add "pass_NWA12_RT" label on success
+        if: success() && contains(github.event.label.name, 'NWA12_RT_gaea_c5')
+        run: |
+          TOKEN=${{ secrets.GITHUB_TOKEN }}
+          RT_TEST_LABEL="NWA12_RT_gaea_c5"
+          PASS_LABEL="pass_NWA12_RT"
+
+          # Remove the "NWA12_RT_gaea_c5" label
+          curl -X DELETE \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
+    
+
+          # Add the "pass_NWA12_RT" label
+          curl -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
+            -d "{\"labels\":[\"$PASS_LABEL\"]}"
+
+  clean-up:
+    needs: run-NWA12-ci
+    runs-on: self-hosted
+    strategy:
+      max-parallel: 1
+    steps:
+      - name: Clean-up
+        run: |
+          cd ${{ github.workspace }}
+          rm -rf ${{ github.run_id }}        
