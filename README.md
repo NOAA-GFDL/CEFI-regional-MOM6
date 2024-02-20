@@ -1,5 +1,5 @@
-![doc](https://readthedocs.org/projects/cefi-regional-mom6/badge/?version=latest)](https://cefi-regional-mom6.readthedocs.io/en/latest/?badge=latest)
-
+[![doc](https://readthedocs.org/projects/cefi-regional-mom6/badge/?version=latest)](https://cefi-regional-mom6.readthedocs.io/en/latest/?badge=latest)
+      
 # CEFI-regional-MOM6
 NOAA is embarking on an ambitious effort, the Climate, Ecosystems and Fisheries Initiative ([CEFI](https://www.fisheries.noaa.gov/topic/climate-change/climate,-ecosystems,-and-fisheries)), to develop and deploy a nation-wide ocean modeling, prediction, and decision support system to meet the challenge of coastal ecosystem management in a changing climate. 
 
