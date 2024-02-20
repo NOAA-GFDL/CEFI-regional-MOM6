@@ -22,4 +22,5 @@ Code managers
    Introduction
    BuildMOM6
    ContainerQuickstart
+   RunNWA12
    Diagnostics

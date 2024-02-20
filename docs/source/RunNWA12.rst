@@ -1,0 +1,52 @@
+.. _RunNWA12:
+
+====================================
+Run the MOM6-COBALT-NWA12 example
+====================================
+
+This chapter guides users without Gaea access on how to run the MOM6-COBALT-NWA12 example. It assumes that users have already :ref:`built the MOM6-SIS2-COBALT <BuildMOM6>` successfully. If users have access to Gaea, we recommend using the FRE workflow (XML file and instructions can be found `here <https://github.com/NOAA-GFDL/CEFI-regional-MOM6/tree/feature/doc/xmls>`__).
+
+
+.. _NWA12COBALT:
+
+MOM6-COBALT-NWA12 v1.0 example
+==========================================
+
+This example provides users with an opportunity to become familiar with the model configurations. This example closely follows the recent publication by :cite:t:`RossEtAl2023` (2023). Users interested in detailed physical and biogeochemical model configurations should refer to this publication.
+
+.. _DownloadData:
+
+Download the model input dataset
+======================================
+
+The dataset for the MOM6-COBALT-NWA12 (retrospective run from year 1993) is publicly available. Follow the steps below to download the dataset:
+
+.. code-block:: console
+
+   cd CEFI-regional-MOM6/exps
+   wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/nwa12_datasets.tar.gz
+   tar -zxvf nwa12_datasets.tar.gz
+
+This dataset contains all the necessary model input files (e.g. grid files, ICs, BCs, atmospheric forcings, river dischages, BGC fluxes from atmosphere). Most of these input files can be generated using the tools under ``CEFI-regional/MOM6/tools``. Please be aware that this dataset is quite large (51 GB), so please be patient while downloading it.
+
+After downloading the dataset, continue to the :ref:`next section <RunNWA12EXP>` to run the NWA12 example. 
+
+.. _RunNWA12EXP:
+
+Run NWA12 Experiment
+=====================
+
+To run the NWA12 example, first navigate to the ``exps/NWA12.COBALT`` folder: 
+
+.. code-block:: console
+
+   cd ../exps/NWA12.COBALT
+   cp ./../builds/build/YOUR_MACHINE_DIRECTORY-NAME_OF_YOUR_mk_FILE/ocean_ice/repro/MOM6SIS2 .
+
+Use the following command to run the NWA-12 example on Gaea using SLURM:   
+
+.. code-block:: console
+
+   sbatch run.sub
+
+Users may need to modify the run script according to their HPC machine configurations.   
