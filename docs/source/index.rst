@@ -22,3 +22,4 @@ Code managers
    Introduction
    BuildMOM6
    ContainerQuickstart
+   Diagnostics
