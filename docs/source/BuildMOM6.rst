@@ -38,7 +38,7 @@ Users on any sufficiently up-to-date machine with a UNIX-based operating system 
    brew install git
    brew install git-lfs
 
-For **Windows users**, we recommend installing `WSL <https://learn.microsoft.com/en-us/windows/wsl/install>`__ (Windows Subsystem for Ubuntu and Linux), and following the above steps to install the prerequisite software. Alternatively users can opt for the Docker container approach. See :ref:`Container-Based Quick Start Guide <_QuickstartC>` for more details.
+For **Windows users**, we recommend installing `WSL <https://learn.microsoft.com/en-us/windows/wsl/install>`__ (Windows Subsystem for Ubuntu and Linux), and following the above steps to install the prerequisite software. Alternatively users can opt for the Docker container approach. See :ref:`Container-Based Quick Start Guide <QuickstartC>` for more details.
 
 After completing installation, continue to the :ref:`next section <DownloadMOM6>` to download the CEFI-regional-MOM6. 
 
