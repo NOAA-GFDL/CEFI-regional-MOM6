@@ -29,7 +29,7 @@ The dataset for the MOM6-COBALT-NWA12 (retrospective run from year 1993) is publ
 
 This dataset contains all the necessary model input files (e.g. grid files, ICs, BCs, atmospheric forcings, river dischages, BGC fluxes from atmosphere). Most of these input files can be generated using the tools under ``CEFI-regional/MOM6/tools``. Please be aware that this dataset is quite large (51 GB), so please be patient while downloading it.
 
-Users interested in the model inputs, outputs, and configurations should refer to :ref:`Data: Input, Model Configuration, and Output Files <_InputsOutputs>`.
+Users interested in the model inputs, outputs, and configurations should refer to :ref:`Data: Input, Model Configuration, and Output Files <InputsOutputs>`.
 
 After downloading the dataset, continue to the :ref:`next section <RunNWA12EXP>` to run the NWA12 example. 
 
