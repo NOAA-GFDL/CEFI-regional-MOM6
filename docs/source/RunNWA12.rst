@@ -49,4 +49,11 @@ Use the following command to run the NWA-12 example on Gaea using SLURM:
 
    sbatch run.sub
 
-Users may need to modify the run script according to their HPC machine configurations.   
+Users may need to modify the run script according to their HPC machine configurations. The default configuration uses 1646 CPU cores to run the NWA12 example. If users want to change it to their desired number of CPU cores (e.g., 20x20 = 400 cores), they can modify both ``MOM_layout`` and ``SIS_layout`` by removing the mask_table and editing the LAYOUT:   
+
+.. code-block:: console
+
+   #override IO_LAYOUT = 1,1
+   #override LAYOUT    = 20,20
+
+Also, please ensure to modify your run script according to the changes in the model layout.
