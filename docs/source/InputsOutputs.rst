@@ -120,7 +120,7 @@ The script used to generate this file is shown in parentheses.
 .. _model_configureFile:
 
 ---------------------------
-``model_configure`` files
+Model_configure files
 ---------------------------
 
 The model configurstion files for regional MOM6-SIS2-COBALT configurations are listed and described in :numref:`Table %s <ModelConfig>`.
@@ -153,6 +153,22 @@ The model configurstion files for regional MOM6-SIS2-COBALT configurations are l
      - An ASCII table that is used to control model outputs
    * - data_table
      - An ASCII file that is used to control external data forcing fields, such as surface forcings or river runoff
+
+The data_table is commonly formatted by specifying each of the fields in the order listed below, with a new line for each entry.
+
+| ``gridname``: The component of the model this data applies to. eg. `atm` `ocn` `lnd` `ice`.
+| ``fieldname_code``: The field name according to the model component. eg. `salt`
+| ``fieldname_file``: The name of the field within the source file.
+| ``file_name``: Path to the source file.
+| ``interpol_method``: Interpolation method eg. `bilinear`
+| ``factor``: A scalar by which to multiply the field ahead of passing it onto the model. This is a quick way to do unit conversions for example.
+
+Example Format:
+
+.. code-block:: console
+
+   "ATM", "t_bot",  "t2m", "./INPUT/2t_ERA5.nc", "bilinear", 1.0
+
 
 =============
 Outputs
