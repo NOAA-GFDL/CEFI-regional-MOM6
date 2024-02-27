@@ -79,7 +79,7 @@ Users are referred to this `link <https://github.com/jsimkins2/nwa25/blob/main/m
      - specify target depth for diag outputs
    * - grid_spec.nc
      - Contains information on the mosaic grid
-   * - ****_mosaic_tile1X****_mosaic_tile1.nc
+   * - \*\*\*\*\_mosaic\_tile1X\*\*\*\*\_mosaic\_tile1.nc 
      - grid files for the FMS coupler 
 
 .. _td-files:  
@@ -123,7 +123,7 @@ The script used to generate this file is shown in parentheses.
 Model_configure files
 ---------------------------
 
-The model configurstion files for regional MOM6-SIS2-COBALT configurations are listed and described in :numref:`Table %s <ModelConfig>`.
+The model configuration files for regional MOM6-SIS2-COBALT configurations are listed and described in :numref:`Table %s <ModelConfig>`.
 
 .. _ModelConfig:
 
@@ -169,6 +169,12 @@ Example Format:
 
    "ATM", "t_bot",  "t2m", "./INPUT/2t_ERA5.nc", "bilinear", 1.0
 
+
+Users can also set a constant value by entering empty quotes for ``fieldname_file`` and ``file_name`` and setting ``interpol_method`` to ``none``. Below is an example of setting a constant atmospheric oxygen value:
+
+.. code-block:: console
+
+   "ATM", "o2_flux_pcair_atm",  "",       "",                           "none",      0.214
 
 =============
 Outputs

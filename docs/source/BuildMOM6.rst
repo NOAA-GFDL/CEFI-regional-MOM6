@@ -90,7 +90,7 @@ After download the source code, users can navigate to the ``builds`` directory a
 
 .. code-block:: console
 
-   cd CEFI-regional-MOM6\builds
+   cd CEFI-regional-MOM6/builds
    mkdir YOUR_MACHINE_DIRECTORY
    cd YOUR_MACHINE_DIRECTORY
 
@@ -116,7 +116,7 @@ Once the two files are created, use the following command to build the model (Ma
 
 .. code-block:: console
 
-   cd CEFI-regional-MOM6\builds
+   cd CEFI-regional-MOM6/builds
    ./linux-build.bash -m YOUR_MACHINE_DIRECTORY -p NAME_OF_YOUR_mk_FILE -t repro -f mom6sis2
 
 If the build completes successfully, you should be able to find the executable here: ``builds/build/YOUR_MACHINE_DIRECTORY-NAME_OF_YOUR_mk_FILE/ocean_ice/repro/MOM6SIS2``  

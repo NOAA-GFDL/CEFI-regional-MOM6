@@ -29,15 +29,16 @@ To build and run the MOM6-COBALT using a Singularity/Apptainer container, first 
 Build and run 1-D example using Docker 
 -----------------------------------------
 User can follow the following steps to build and run MOM6-SIS2-COBALT 1-D case within a Docker container.
+
 .. code-block::
 
-   #Assume user is under /USER_HOME_PATH
+   #Assume user is under $HOME 
    docker pull clouden90/1d_mom6_cobalt:base #This will pull docker image to your local machine
    git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive #git clone CEFI-regional-MOM6 repo
-   cd USER_HOME_PATH/CEFI-regional-MOM6/exps
+   cd $HOME/CEFI-regional-MOM6/exps
    wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
-   cd USER_HOME_PATH
-   docker run --rm -v /USER_HOME_PATH:/work -it clouden90/1d_mom6_cobalt:v0.1 bash --login # run docker container interactively
+   cd $HOME
+   docker run --rm -v $HOME:/work -it clouden90/1d_mom6_cobalt:v0.1 bash --login # run docker container interactively
    cd /work/CEFI-regional-MOM6/builds
    ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2 #build MOM6-SIS2-COBALT
    cd /work/CEFI-regional-MOM6/exps
@@ -59,14 +60,14 @@ where ``/absolute/path/to/writable/directory/`` refers to a writable directory (
 Then User can follow the following steps to build and run MOM6-SIS2-COBALT 1-D case within a Singularity/Apptainer container.
 .. code-block::
 
-   #Assume user is under /USER_HOME_PATH
-   cd /USER_HOME_PATH
+   #Assume user is under $HOME 
+   cd $HOME 
    singularity pull 1d_mom6_cobalt.sif docker://clouden90/1d_mom6_cobalt:base #pull docker image and convert to sif
    git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive #git clone CEFI-regional-MOM6 repo 
-   cd USER_HOME_PATH/CEFI-regional-MOM6/exps
+   cd $HOME/CEFI-regional-MOM6/exps
    wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
-   cd USER_HOME_PATH
-   singularity shell -B /USER_HOME_PATH:/work -e /USER_HOME_PATH/1d_mom6_cobalt.sif # start singularity/apptainer container interactively
+   cd $HOME 
+   singularity shell -B $HOME:/work -e $HOME/1d_mom6_cobalt.sif # start singularity/apptainer container interactively
    cd /work/CEFI-regional-MOM6/builds
    ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2 #build MOM6-SIS2-COBALT
    cd /work/CEFI-regional-MOM6/exps
