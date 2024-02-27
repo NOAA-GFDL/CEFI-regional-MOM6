@@ -60,8 +60,6 @@ Users may need to modify the run script according to their HPC machine configura
 
 Also, please ensure to modify your run script according to the changes in the model layout.
 
-here <https://github.com/NOAA-GFDL/CEFI-regional-MOM6/tree/feature/doc/xmls>`__
-
 Users can also use the `FRE-NCtools <https://github.com/NOAA-GFDL/FRE-NCtools>`__ to create their own mask_table to avoid wasting a lot of computational resources. The command for a 20x20 mask would be like the following:
 
 .. code-block:: console
