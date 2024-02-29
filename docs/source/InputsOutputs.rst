@@ -154,6 +154,8 @@ The model configuration files for regional MOM6-SIS2-COBALT configurations are l
    * - data_table
      - An ASCII file that is used to control external data forcing fields, such as surface forcings or river runoff
 
+The best practice when configuring a new simulation or tuning parameters is to make all changes in the MOM_override or SIS_override files. Not all parameters need to be specified within MOM_input, if no value is given the default will be used. See the MOM_parameter_doc file described in the next section to find the default value of the parameter. When using the MOM_override file to set a parameter which is not defined in the MOM_input file, it can be set as ``PARAMETER = Value`` within the MOM_override file. To override a parameter that is specified within the MOM_input file, the prefix ``#override`` must be included, so an overridden value would be specified as ``#override PARAMETER = Value``. Only one parameter per line should be specified within the override file. MOM and SIS input and override files follow the same formatting guidelines. 
+
 The data_table is commonly formatted by specifying each of the fields in the order listed below, with a new line for each entry.
 
 | ``gridname``: The component of the model this data applies to. eg. `atm` `ocn` `lnd` `ice`.
@@ -307,3 +309,38 @@ A brief example of the diag_table is shown below.
    "ocean_model",   "zos",          "zos",              "ocean_month",         "all", "mean", "none",2
    "ocean_model",   "ssh",          "ssh",              "ocean_month",         "all", "mean", "none",2
    "ocean_model",   "ssh",          "ssh",              "ocean_daily",         "all", "mean", "none",2
+
+.. _ParameterFiles:
+
+---------------------------
+Parameter Files
+---------------------------
+
+In additon to model output, MOM6 also records runtime parameters used during the model intialization. Each parameter_doc file includes different information. 
+
+.. list-table:: *Parameter Doc Files*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * - MOM_parameter_doc.all
+     - The values of all run-time parameters for MOM6 and their defaults
+   * - MOM_parameter_doc.short
+     - The values of only run-time parameters for MOM6 that differ from their defaults
+   * - MOM_parameter_doc.debugging
+     - The values of only run-time parameters used for debugging MOM6 
+   * - MOM_parameter_doc.layout
+     - The values of only run-time parameters that control MOM6 model's layout
+   * - SIS_parameter_doc.all
+     - The values of all run-time parameters for SIS2 and their defaults
+   * - SIS_parameter_doc.short
+     - The values of only run-time parameters for SIS2 that differ from their defaults
+   * - SIS_parameter_doc.debugging
+     - The values of only run-time parameters used for debugging SIS2 
+   * - SIS_parameter_doc.layout
+     - The values of only run-time parameters that control SIS2 model's layout
+
+To easily see how experiments differ, the MOM_parameter_doc files can be compared. These files include short descriptions of what parameters control, their default, and different options. 
+
+
