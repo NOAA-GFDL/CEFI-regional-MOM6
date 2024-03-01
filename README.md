@@ -1,3 +1,5 @@
+[![doc](https://readthedocs.org/projects/cefi-regional-mom6/badge/?version=latest)](https://cefi-regional-mom6.readthedocs.io/en/latest/?badge=latest)
+      
 # CEFI-regional-MOM6
 NOAA is embarking on an ambitious effort, the Climate, Ecosystems and Fisheries Initiative ([CEFI](https://www.fisheries.noaa.gov/topic/climate-change/climate,-ecosystems,-and-fisheries)), to develop and deploy a nation-wide ocean modeling, prediction, and decision support system to meet the challenge of coastal ecosystem management in a changing climate. 
 
@@ -5,6 +7,8 @@ As described in the link above, CEFI will integrate expertise and capabilities a
 
 This repository contains pre/post-processing tools and CEFI regional-MOM6 configurations for running regional-MOM6 OBGC simulations.
 Users are welcome to use the [discussions board](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/discussions) to ask questions related to the model or the tools.
+
+Documentation (in progress) is available [here](https://cefi-regional-mom6.readthedocs.io/en/latest/index.html)
 
 ## What files are what
 
@@ -18,6 +22,7 @@ Users are welcome to use the [discussions board](https://github.com/NOAA-GFDL/CE
 | ```exps/```       | Contains 1D mom6-cobalt exmaple and NWA12 configurtions. See [exps/README.md](exps/README.md) |
 | ```tools/```      | Contains tools that can be used to generate initial conditions (ICs), boundary conditions (BCs), and other required inputs for MOM6-SIS2-cobalt model runs.  See [tools/README.md](tools/README.md) |
 | ```xmls/```       | Contains FRE xml files designed for running the CEFI-regional-MOM6 workflow on NOAA Gaea C5. See [xmls/README.md](xmls/README.md) |
+| ```docs/```       | Contains release notes, documentation, and [User’s Guide](https://cefi-regional-mom6.readthedocs.io/en/latest/index.html) |
 
 ## Quick Start Guide
 To learn how to compile/build MOM6-SIS2-cobalt and run an example regional test case, refer to [builds/README](builds/README.md) and [exps/README.md](exps/README.md).
