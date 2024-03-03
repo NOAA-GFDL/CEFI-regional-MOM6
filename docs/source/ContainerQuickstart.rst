@@ -36,7 +36,7 @@ User can follow the following steps to build and run MOM6-SIS2-COBALT 1-D case w
    docker pull clouden90/1d_mom6_cobalt:base #This will pull docker image to your local machine
    git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive #git clone CEFI-regional-MOM6 repo
    cd $HOME/CEFI-regional-MOM6/exps
-   wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
+   wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
    cd $HOME
    docker run --rm -v $HOME:/work -it clouden90/1d_mom6_cobalt:v0.1 bash --login # run docker container interactively
    cd /work/CEFI-regional-MOM6/builds
@@ -65,7 +65,7 @@ Then User can follow the following steps to build and run MOM6-SIS2-COBALT 1-D c
    singularity pull 1d_mom6_cobalt.sif docker://clouden90/1d_mom6_cobalt:base #pull docker image and convert to sif
    git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive #git clone CEFI-regional-MOM6 repo 
    cd $HOME/CEFI-regional-MOM6/exps
-   wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
+   wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
    cd $HOME 
    singularity shell -B $HOME:/work -e $HOME/1d_mom6_cobalt.sif # start singularity/apptainer container interactively
    cd /work/CEFI-regional-MOM6/builds

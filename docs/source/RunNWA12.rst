@@ -24,7 +24,7 @@ The dataset for the MOM6-COBALT-NWA12 (retrospective run from year 1993) is publ
 .. code-block:: console
 
    cd CEFI-regional-MOM6/exps
-   wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/nwa12_datasets.tar.gz
+   wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_datasets.tar.gz
    tar -zxvf nwa12_datasets.tar.gz
 
 This dataset contains all the necessary model input files (e.g. grid files, ICs, BCs, atmospheric forcings, river dischages, BGC fluxes from atmosphere). Most of these input files can be generated using the tools under ``CEFI-regional/MOM6/tools``. Please be aware that this dataset is quite large (51 GB), so please be patient while downloading it.

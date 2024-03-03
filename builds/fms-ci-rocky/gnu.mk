@@ -1,13 +1,13 @@
-# Template for the PGI Compilers on a Cray System
+# Template for the GNU Compiler Collection on Linux systems
 #
 # Typical use with mkmf
-# mkmf -t ncrc-cray.mk -c"-Duse_libMPI -Duse_netCDF" path_names /usr/local/include
+# mkmf -t linux-gnu.mk -c"-Duse_libMPI -Duse_netCDF" path_names /usr/local/include
 
 ############
-# Commands Macros
-############
+# Commands Macors
 FC = mpif90
 CC = mpicc
+CXX = mpicxx
 LD = mpif90 $(MAIN_PROGRAM)
 
 #######################
@@ -37,10 +37,6 @@ VERBOSE =            # If non-blank, add additional verbosity compiler
                      # options
 
 OPENMP =             # If non-blank, compile with openmp enabled
-
-OPENMPGPU =          # If non-blank, compile with openmp gpu offload enabled
-
-OPENACC =            # If non-blank, compile with openacc enabled
 
 NO_OVERRIDE_LIMITS = # If non-blank, do not use the -qoverride-limits
                      # compiler option.  Default behavior is to compile
@@ -80,74 +76,70 @@ $(error Options DEBUG and TEST cannot be used together)
 endif
 endif
 
-# Check version of PGI for use of -nofma option
-has_nofma := $(shell $(FC) -dryrun -nofma foo.f90 > /dev/null 2>&1; echo $$?)
-ifneq ($(has_nofma),0)
-NOFMA :=
-else
-NOFMA := -nofma
-endif
+# Required Preprocessor Macros:
+CPPDEFS += -Duse_netCDF
 
-MAKEFLAGS += --jobs=$(shell grep '^processor' /proc/cpuinfo | wc -l)
+# Additional Preprocessor Macros needed due to  Autotools and CMake
+CPPDEFS += -DHAVE_SCHED_GETAFFINITY
 
 # Macro for Fortran preprocessor
-FPPFLAGS = $(INCLUDES)
+FPPFLAGS := $(INCLUDES)
 # Fortran Compiler flags for the NetCDF library
-#FPPFLAGS += -I/opt/openmpi/4.1.4/NVHPC/22.5/include
-FPPFLAGS += -I/opt/netcdf/4.9.2/NVHPC/23.7/include
+FPPFLAGS += $(shell nf-config --fflags)
+# Fortran Compiler flags for the MPICH MPI library
+FPPFLAGS += $(shell pkg-config --cflags-only-I mpich)
 
 # Base set of Fortran compiler flags
-FFLAGS = -i4 -r8 -byteswapio -Mcray=pointer -Mcray=pointer -Mflushz -Mdaz -D_F2000 -DNO_QUAD_PRECISION
+FFLAGS := -fcray-pointer -fdefault-double-8 -fdefault-real-8 -Waliasing -ffree-line-length-none -fno-range-check
 
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
-FFLAGS_OPT = -O3 -Mvect=nosse -Mnoscalarsse -Mallocatable=95
-FFLAGS_REPRO = -O2 -Mvect=nosse -Mnoscalarsse $(NOFMA)
-FFLAGS_DEBUG = -O0 -g -traceback -Ktrap=fp
+FFLAGS_OPT = -O3
+FFLAGS_REPRO = -O2 -fbounds-check
+FFLAGS_DEBUG = -O0 -g -W -fbounds-check -fbacktrace -ffpe-trap=invalid,zero,overflow
 
 # Flags to add additional build options
-FFLAGS_OPENMP = -mp
-FFLAGS_OPENMPGPU = -mp=gpu -Minfo=accel -gpu=managed
-FFLAGS_VERBOSE = -v -Minform=inform
+FFLAGS_OPENMP = -fopenmp
+FFLAGS_VERBOSE =
 FFLAGS_COVERAGE =
-FFLAGS_OPENACC = -acc -ta=nvidia:managed -Minfo=accel
 
 # Macro for C preprocessor
-CPPFLAGS = $(INCLUDES)
-#CPPFLAGS += -I/opt/openmpi/4.1.4/NVHPC/22.5/include
+CPPFLAGS := $(INCLUDES)
 # C Compiler flags for the NetCDF library
-CPPFLAGS += -I/opt/netcdf/4.9.2/NVHPC/23.7/include
+CPPFLAGS += $(shell nc-config --cflags)
+# C Compiler flags for the MPICH MPI library
+CPPFLAGS += $(shell pkg-config --cflags-only-I mpich)
+
 # Base set of C compiler flags
-CFLAGS = -DHAVE_GETTID
+CFLAGS := -D__IFC
 
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
 CFLAGS_OPT = -O2
 CFLAGS_REPRO = -O2
-CFLAGS_DEBUG = -O0 -g -traceback -Ktrap=fp
+CFLAGS_DEBUG = -O0 -g
 
 # Flags to add additional build options
-CFLAGS_OPENMP = -mp
-CFLAGS_VERBOSE = -v -Minform=inform
+CFLAGS_OPENMP = -fopenmp
+CFLAGS_VERBOSE =
 CFLAGS_COVERAGE =
 
 # Optional Testing compile flags.  Mutually exclusive from DEBUG, REPRO, and OPT
 # *_TEST will match the production if no new option(s) is(are) to be tested.
-FFLAGS_TEST = $(FFLAGS_OPT)
-CFLAGS_TEST = $(CFLAGS_OPT)
+FFLAGS_TEST := $(FFLAGS_OPT)
+CFLAGS_TEST := $(CFLAGS_OPT)
 
 # Linking flags
-LDFLAGS := -byteswapio
-LDFLAGS_OPENMP := -mp
-LDFLAGS_OPENMPGPU := -mp=gpu
-LDFLAGS_OPENACC := -acc
-LDFLAGS_VERBOSE := -v
+LDFLAGS :=
+LDFLAGS_OPENMP := -fopenmp
+LDFLAGS_VERBOSE :=
 LDFLAGS_COVERAGE :=
 
 # Start with a blank LIBS
-LIBS := -L/opt/mpich/4.1.2/NVHPC/23.7/lib/ 
-LIBS += -L/opt/netcdf/4.9.2/NVHPC/23.7/lib64/ 
-#LIBS += -L/usr/lib/x86_64-linux-gnu/hdf5/serial
-#LIBS += -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz -lmpi -lmpi_mpifh
-LIBS += -lnetcdff -lnetcdf -lz -lmpi #-lmpi_mpifh -lopen-pal -lopen-rte
+LIBS =
+# NetCDF library flags
+LIBS += $(shell nc-config --libs)
+LIBS += $(shell nf-config --flibs)
+# MPICH MPI library flags
+#LIBS += $(shell pkg-config --libs mpich)
 
 # Get compile flags based on target macros.
 ifdef REPRO
@@ -168,18 +160,6 @@ ifdef OPENMP
 CFLAGS += $(CFLAGS_OPENMP)
 FFLAGS += $(FFLAGS_OPENMP)
 LDFLAGS += $(LDFLAGS_OPENMP)
-endif
-
-ifdef OPENMPGPU
-CFLAGS += $(CFLAGS_OPENMP)
-FFLAGS += $(FFLAGS_OPENMPGPU)
-LDFLAGS += $(LDFLAGS_OPENMPGPU)
-endif
-
-ifdef OPENACC
-#CFLAGS += $(CFLAGS_OPENMP)
-FFLAGS += $(FFLAGS_OPENACC)
-LDFLAGS += $(LDFLAGS_OPENACC)
 endif
 
 ifdef SSE
@@ -235,72 +215,71 @@ LDFLAGS += $(LIBS)
 # The macro TMPFILES is provided to slate files like the above for removal.
 
 RM = rm -f
-SHELL = /bin/csh -f
 TMPFILES = .*.m *.B *.L *.i *.i90 *.l *.s *.mod *.opt
 
 .SUFFIXES: .F .F90 .H .L .T .f .f90 .h .i .i90 .l .o .s .opt .x
 
 .f.L:
-	$(FC) $(FFLAGS) -c -listing $*.f
+        $(FC) $(FFLAGS) -c -listing $*.f
 .f.opt:
-	$(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f
+        $(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f
 .f.l:
-	$(FC) $(FFLAGS) -c $(LIST) $*.f
+        $(FC) $(FFLAGS) -c $(LIST) $*.f
 .f.T:
-	$(FC) $(FFLAGS) -c -cif $*.f
+        $(FC) $(FFLAGS) -c -cif $*.f
 .f.o:
-	$(FC) $(FFLAGS) -c $*.f
+        $(FC) $(FFLAGS) -c $*.f
 .f.s:
-	$(FC) $(FFLAGS) -S $*.f
+        $(FC) $(FFLAGS) -S $*.f
 .f.x:
-	$(FC) $(FFLAGS) -o $*.x $*.f *.o $(LDFLAGS)
+        $(FC) $(FFLAGS) -o $*.x $*.f *.o $(LDFLAGS)
 .f90.L:
-	$(FC) $(FFLAGS) -c -listing $*.f90
+        $(FC) $(FFLAGS) -c -listing $*.f90
 .f90.opt:
-	$(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f90
+        $(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f90
 .f90.l:
-	$(FC) $(FFLAGS) -c $(LIST) $*.f90
+        $(FC) $(FFLAGS) -c $(LIST) $*.f90
 .f90.T:
-	$(FC) $(FFLAGS) -c -cif $*.f90
+        $(FC) $(FFLAGS) -c -cif $*.f90
 .f90.o:
-	$(FC) $(FFLAGS) -c $*.f90
+        $(FC) $(FFLAGS) -c $*.f90
 .f90.s:
-	$(FC) $(FFLAGS) -c -S $*.f90
+        $(FC) $(FFLAGS) -c -S $*.f90
 .f90.x:
-	$(FC) $(FFLAGS) -o $*.x $*.f90 *.o $(LDFLAGS)
+        $(FC) $(FFLAGS) -o $*.x $*.f90 *.o $(LDFLAGS)
 .F.L:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F
 .F.opt:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F
 .F.l:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F
 .F.T:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F
 .F.f:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F > $*.f
+        $(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F > $*.f
 .F.i:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F
+        $(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F
 .F.o:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F
 .F.s:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F
 .F.x:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F *.o $(LDFLAGS)
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F *.o $(LDFLAGS)
 .F90.L:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F90
 .F90.opt:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F90
 .F90.l:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F90
 .F90.T:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F90
 .F90.f90:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F90 > $*.f90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F90 > $*.f90
 .F90.i90:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F90
 .F90.o:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F90
 .F90.s:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F90
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F90
 .F90.x:
-	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F90 *.o $(LDFLAGS)
+        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F90 *.o $(LDFLAGS)
