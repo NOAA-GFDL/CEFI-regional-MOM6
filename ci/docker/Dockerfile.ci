@@ -12,7 +12,7 @@ COPY --chown=builder:builder . /opt/MOM6_OBGC_examples
 
 WORKDIR /opt
 
-RUN wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz 
+RUN wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
 
 WORKDIR /opt/MOM6_OBGC_examples/builds
 

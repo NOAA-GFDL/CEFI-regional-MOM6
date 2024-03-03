@@ -57,6 +57,6 @@ brew install wget
 
 ## Test run: 1-D MOM6-COBALT
 - To test your `MOM6SIS2`, first navigate to the `exps` folder: `cd ../exps`
-- Download the model input files: `wget https://gfdl-med.s3.amazonaws.com/OceanBGC_dataset/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz`
+- Download the model input files: `wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz`
 - navigate to the 1-D example: `cd OM4.single_column.COBALT`
 - USe the following command to run the 1-D example: `mpirun -np 1 ../../builds/build/YOUR_MACHINE_DIRECTORY-NAME_OF_YOUR_mk_FILE/ocean_ice/repro/MOM6SIS2`
