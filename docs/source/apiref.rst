@@ -3,8 +3,7 @@
 API Reference
 =============
 
-This API reference is a partial image of the complete API documentation.
-The pages you find here are linkable - the url for the page is static.
+This API reference is a partial image of the complete API documentation. We list here the modules related to generic tracers.
 
 .. toctree::
   :maxdepth: 1
