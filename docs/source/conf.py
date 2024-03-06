@@ -143,20 +143,10 @@ numfig = True
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx_rtd_theme',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon',
-    'sphinxcontrib.bibtex',
-    'sphinxcontrib.autodoc_doxygen',
-    'sphinxfortran.fortran_domain',
+        'sphinxcontrib.bibtex',
+        'sphinx.ext.ifconfig',
+        'sphinxcontrib.autodoc_doxygen',
+        'sphinxfortran.fortran_domain',
 ]
 
 bibtex_bibfiles = ['references.bib']
@@ -189,7 +179,7 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'default'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -211,12 +201,12 @@ html_theme_options = {"body_max_width": "none"}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 #html_static_path = []
-html_static_path = ['_static']
-html_context = {}
+#html_static_path = ['_static']
+#html_context = {}
 
-def setup(app):
-    app.add_css_file('custom.css')  # may also be an URL
-    app.add_css_file('theme_overrides.css')  # may also be a URL
+#def setup(app):
+#    app.add_css_file('custom.css')  # may also be an URL
+#    app.add_css_file('theme_overrides.css')  # may also be a URL
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
