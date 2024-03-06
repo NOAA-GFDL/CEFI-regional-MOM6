@@ -53,10 +53,14 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinxcontrib.bibtex',
+    'sphinxcontrib.autodoc_doxygen',
+    'sphinxfortran.fortran_domain',
 ]
 
 bibtex_bibfiles = ['references.bib']
-#bibtex_bibfiles = ['refs.bib']
+
+autosummary_generate = ['api/modules.rst', 'api/pages.rst']
+doxygen_xml = 'xml'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

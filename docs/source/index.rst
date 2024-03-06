@@ -25,3 +25,4 @@ Code managers
    InputsOutputs
    RunNWA12
    Diagnostics
+   apiref
