@@ -30,11 +30,11 @@
 	path = src/SIS2
 	url = https://github.com/NOAA-GFDL/SIS2.git
 	branch = dev/gfdl
-[submodule "src/MOM6"]
-	path = src/MOM6
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
-	branch = dev/cefi
 [submodule "src/ocean_BGC"]
 	path = src/ocean_BGC
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC
 	branch = dev/cefi
+[submodule "src/MOM6"]
+	path = src/MOM6
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
+	branch = stable/cefi
