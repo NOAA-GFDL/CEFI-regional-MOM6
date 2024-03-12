@@ -12,11 +12,113 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
-sys.path.insert(0, os.path.abspath('.'))
+import os, sys
+import shutil
+import subprocess
+from subprocess import check_output
 
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+#sys.path.insert(0, os.path.abspath('.'))
 
+# -- Custom configuration values and roles -----------------------------------
+from docutils import nodes
+
+def setup(app):
+    app.add_config_value('sphinx_build_mode', '', 'env')
+    app.add_role('latex', latexPassthru)
+
+def latexPassthru(name, rawtext, text, lineno, inliner, options={}, content=[]):
+    node = nodes.raw('',rawtext[8:-1],format='latex')
+    return [node],[]
+
+# -- Auto detect runs on readthedocs.org -------------------------------------
+running_on_rtd = False
+
+# Get current doxygen version
+# (there may not be one in the system $PATH)
+try:
+    out = check_output(["doxygen","-v"])
+    doxygen_version = out.strip().decode('utf-8')
+    print("Doxygen version found in $PATH: %s" % (doxygen_version))
+except:
+    print("No doxygen found in system $PATH")
+    pass
+
+# Detect if we are running on readthedocs.org
+out = check_output(["pwd"])
+out = out.strip().decode('utf-8')
+# On RTD you would see something like:
+# /home/docs/checkouts/readthedocs.org/user_builds/mom6devesmgnew/checkouts/latest/docsNew
+if out.find('readthedocs.org') >= 0:
+    running_on_rtd = True
+
+# -- Clean out generated content ---------------------------------------------
+
+# Running build-sphinx for html and latexpdf requires a rebuild of auto
+# generated content.  Intermediate rendering for html and pdf are very
+# different.  For each pass through build-sphinx, we remove intermediate
+# content.
+
+if os.path.isdir("api/generated"):
+    shutil.rmtree("api/generated/")
+
+if os.path.isdir("xml"):
+    shutil.rmtree("xml")
+
+# Make sure there is a _build directory (this might be different
+# so we can do better than blindly check here) TODO
+if not(os.path.isdir("_build/html")):
+    os.makedirs("_build/html")
+
+# -- Determine how sphinx-build was called -----------------------------------
+
+# Determine how sphinx-build called.  This is helps create proper content
+# for html vs latex/pdf
+sphinx_build_mode = "undefined"
+
+# hunt for -M (or -b) and then we want the argument after it
+#import pdb; pdb.set_trace()
+if '-M' in sys.argv:
+    idx = sys.argv.index('-M')
+    sphinx_build_mode = sys.argv[idx+1]
+elif '-b' in sys.argv:
+    idx = sys.argv.index('-b')
+    sphinx_build_mode = sys.argv[idx+1]
+
+# RTD has a special mode: readthedocs => html
+if sphinx_build_mode == 'readthedocs':
+    sphinx_build_mode = 'html'
+
+print("Sphinx-build mode: %s" % (sphinx_build_mode))
+
+# -- Configure binary and doxygen configuration files ------------------------
+
+# Default binary and configuration file
+doxygen_bin = 'doxygen'
+doxygen_conf = 'Doxyfile_rtd'
+
+if os.path.exists('./doxygen/bin/doxygen'):
+    doxygen_bin = './doxygen/bin/doxygen'
+
+# User specified binary and configuration file
+if os.environ.get('DOXYGEN_BIN'):
+    if os.path.exists(os.environ.get('DOXYGEN_BIN')):
+        doxygen_bin = os.environ.get('DOXYGEN_BIN')
+if os.environ.get('DOXYGEN_CONF'):
+    if os.path.exists(os.environ.get('DOXYGEN_CONF')):
+        doxygen_conf = os.environ.get('DOXYGEN_CONF')
+
+# -- Run the normal doxygen for the RTD sphinx run ------------------------
+
+out = check_output([doxygen_bin,"-v"])
+doxygen_version = out.strip().decode('utf-8')
+print("Running Doxygen %s" % (doxygen_version))
+doxygenize = "%s %s" % (doxygen_bin, doxygen_conf)
+print("Running: %s" % (doxygenize))
+return_code = subprocess.call(doxygenize, shell=True)
+if return_code != 0: sys.exit(return_code)
 
 # -- Project information -----------------------------------------------------
 
@@ -41,22 +143,16 @@ numfig = True
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx_rtd_theme',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon',
-    'sphinxcontrib.bibtex',
+        'sphinxcontrib.bibtex',
+        'sphinx.ext.ifconfig',
+        'sphinxcontrib.autodoc_doxygen',
+        'sphinxfortran.fortran_domain',
 ]
 
 bibtex_bibfiles = ['references.bib']
-#bibtex_bibfiles = ['refs.bib']
+
+autosummary_generate = ['api/modules.rst', 'api/pages.rst']
+doxygen_xml = 'xml'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -83,7 +179,7 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'default'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -105,12 +201,12 @@ html_theme_options = {"body_max_width": "none"}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 #html_static_path = []
-html_static_path = ['_static']
-html_context = {}
+#html_static_path = ['_static']
+#html_context = {}
 
-def setup(app):
-    app.add_css_file('custom.css')  # may also be an URL
-    app.add_css_file('theme_overrides.css')  # may also be a URL
+#def setup(app):
+#    app.add_css_file('custom.css')  # may also be an URL
+#    app.add_css_file('theme_overrides.css')  # may also be a URL
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
