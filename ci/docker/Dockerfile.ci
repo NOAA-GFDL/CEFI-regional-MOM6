@@ -31,6 +31,7 @@ RUN mkdir ref
 RUN cp /opt/MOM6_OBGC_examples/src/ocean_BGC/.github/ref/OM4.single_column.COBALT.p4/docker-linux-gnu/* ./ref/
 
 # check
+RUN cat ./ocean.stats
 RUN diff -q ref/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
 
 #
