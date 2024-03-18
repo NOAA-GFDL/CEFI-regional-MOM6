@@ -16,9 +16,9 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
-  commands:
-    # try get branch name
-    - cd src/ocean_BGC && git checkout feature/clean_code && echo "Current branch is: $(git branch --show-current)"
+  jobs:
+    post_checkout:
+      - git fetch --unshallow || true
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
