@@ -18,7 +18,7 @@ build:
     python: "3.11"
   jobs:
     post_checkout:
-      - cd src/ocean_BGC && git checkout feature/clean_code && git pull
+      - cd src/ocean_BGC && git checkout feature/inline_documentation && git pull
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
