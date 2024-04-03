@@ -100,7 +100,7 @@ if __name__ == '__main__':
 
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description='Generate obc from Glorys')
-    parser.add_argument('--config', type=str, default=glorys_obc.yaml,
+    parser.add_argument('--config', type=str, default='glorys_obc.yaml',
                         help='Specify the YAML configuration file name')
     args = parser.parse_args()
 

@@ -298,11 +298,17 @@ class Segment():
         ny (int): Number of data points in the y direction.
     """
 
-    def __init__(self, num, border, hgrid, in_degrees=True, output_dir='.', regrid_dir=None):
+    def __init__(self, num, border, hgrid, in_degrees=False, output_dir='.', regrid_dir=None):
         self.num = num
         self.border = border
-        self.hgrid = hgrid
-        if in_degrees:
+        # Need to make a copy of hgrid so that the original is not modified multiple times 
+        # when creating multiple segments
+        self.hgrid = hgrid.copy(deep=True)
+        # Check if the angle_dx variable in ocean_hgrid has a 'units' attribute
+        angle_units = hgrid['angle_dx'].attrs.get('units', None)
+        # If the units attribute is degrees, or degrees were manually specified, convert to radians
+        if angle_units == 'degrees' or in_degrees:
+            print('Converting grid angle from degrees to radians')
             self.hgrid['angle_dx'] = np.radians(self.hgrid['angle_dx'])
         check_angle_range(self.hgrid['angle_dx'])
         self.segstr = f'segment_{self.num:03d}'
