@@ -26,4 +26,9 @@ jobs:
        bash get_glorys_data.sh -u ${{secrets.CMCID}} -p ${{secrets.CMCPASSWD}} -o "./" -x -100 -X -35 -y 0 -Y 60 -s "1993-01-01" -e "1993-01-01"
        pwd
        ls
-       [ ! -f "./GLORYS_REANALYSIS_1993-01-01.nc" ] && echo "FATAL: GLORYS_REANALYSIS_1993-01-01.nc does not exist. Exiting." && exit 1
+       if [[ -f "/home/runner/work/CEFI-regional-MOM6/CEFI-regional-MOM6/tools/initial/GLORYS_REANALYSIS_1993-01-01.nc" ]]; then
+          echo "File exists. Success..."
+       else
+         echo "FATAL: GLORYS_REANALYSIS_1993-01-01.nc does not exist. Exiting."
+         exit 1
+       fi
