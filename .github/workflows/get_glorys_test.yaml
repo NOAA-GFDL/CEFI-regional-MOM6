@@ -9,6 +9,9 @@ on:
 jobs:
   get-glorys-data-ci:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
 
     steps:        
     - uses: actions/checkout@v4        
@@ -16,13 +19,14 @@ jobs:
       with:
         miniconda-version: "latest"
         activate-environment: cmc
-        environment-file: tools/initial/copernicusmarine-env.yml       
+        environment-file: tools/initial/copernicusmarine-env.yml
+        auto-activate-base: false
     - run: |
        conda info --envs
-       conda activate cmc
-       conda info --envs
-       cd tools/initial
-       copernicusmarine --help
+       #conda activate cmc
+       #conda info --envs
+       #cd tools/initial
+       #copernicusmarine --help
         
 #    - name: Test get_glorts_data.sh
 #      run: |     
