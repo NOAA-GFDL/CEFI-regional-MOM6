@@ -23,14 +23,7 @@ jobs:
         auto-activate-base: false
     - run: |
        conda info --envs
-       #conda activate cmc
-       #conda info --envs
-       #cd tools/initial
-       #copernicusmarine --help
-        
-#    - name: Test get_glorts_data.sh
-#      run: |     
-#        cd tools/initial
-#        copernicusmarine --help
-#        #./get_glorys_data.sh -u ${{secrets.CMCID}} -p ${{secrets.CMCPASSWD}} -o "./" -x -100 -X -35 -y 0 -Y 60 -s "1993-01-01" -e "1993-01-01"
-#        #[ ! -f "GLORYS_REANALYSIS_1993-01-01.nc" ] && echo "FATAL: GLORYS_REANALYSIS_1993-01-01.nc does not exist. Exiting." && exit 1
+       cd tools/initial
+       copernicusmarine --version
+       bash get_glorys_data.sh -u ${{secrets.CMCID}} -p ${{secrets.CMCPASSWD}} -o "./" -x -100 -X -35 -y 0 -Y 60 -s "1993-01-01" -e "1993-01-01"
+       [ ! -f "GLORYS_REANALYSIS_1993-01-01.nc" ] && echo "FATAL: GLORYS_REANALYSIS_1993-01-01.nc does not exist. Exiting." && exit 1
