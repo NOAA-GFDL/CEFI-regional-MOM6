@@ -19,6 +19,8 @@ jobs:
         environment-file: tools/initial/copernicusmarine-env.yml       
     - run: |
        conda info --envs
+       conda activate cmc
+       conda info --envs
        cd tools/initial
        copernicusmarine --help
         
