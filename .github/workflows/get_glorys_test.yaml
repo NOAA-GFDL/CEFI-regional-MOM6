@@ -3,6 +3,8 @@ name: get_glorys_data_ci
 on:
   pull_request:
     branches: [ "main" ]
+  schedule:
+    - cron: '0 12 * * *'    
 
 jobs:
   get-glorys-data-ci:
