@@ -37,7 +37,7 @@ if [ -z "$username" ] || [ -z "$password" ]; then
 fi
 
 # Log in to copernicus Marine
-command_string="copernicusmarine login --username $username --password $password"
+command_string="copernicusmarine login --username $username --password $password --skip-if-user-logged-in"
 eval "$command_string"
 
 # Product and dataset IDs
