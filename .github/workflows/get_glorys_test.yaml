@@ -1,0 +1,28 @@
+name: get_glorys_data-ci
+
+on:
+  push:
+    branches: [ "fix/copernicusmarine" ]
+  pull_request:
+    branches: [ "fix/copernicusmarine" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:        
+    - name: Checkout
+      uses: actions/checkout@v4
+        
+    - uses: conda-incubator/setup-miniconda@v3
+      with:
+        miniconda-version: "latest"
+
+    - name: Install copernicusmarine
+      run: |     
+        pwd
+        cat tools/initial/copernicusmarine-env.yml
+        conda info
+        conda list
+        conda env create --file tools/initial/copernicusmarine-env.yml
+      
