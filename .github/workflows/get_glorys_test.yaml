@@ -1,4 +1,4 @@
-name: get_glorys_data-ci
+name: get_glorys_data_ci
 
 on:
   push:
@@ -7,22 +7,24 @@ on:
     branches: [ "fix/copernicusmarine" ]
 
 jobs:
-  build:
+  get-glorys-data-ci:
     runs-on: ubuntu-latest
 
     steps:        
-    - name: Checkout
-      uses: actions/checkout@v4
-        
+    - uses: actions/checkout@v4        
     - uses: conda-incubator/setup-miniconda@v3
       with:
         miniconda-version: "latest"
         activate-environment: cmc
         environment-file: tools/initial/copernicusmarine-env.yml       
-
-    - name: Test get_glorts_data.sh
-      run: |     
-        cd tools/initial
-        copernicusmarine --help
-        #./get_glorys_data.sh -u ${{secrets.CMCID}} -p ${{secrets.CMCPASSWD}} -o "./" -x -100 -X -35 -y 0 -Y 60 -s "1993-01-01" -e "1993-01-01"
-        #[ ! -f "GLORYS_REANALYSIS_1993-01-01.nc" ] && echo "FATAL: GLORYS_REANALYSIS_1993-01-01.nc does not exist. Exiting." && exit 1
+    - run: |
+       conda info --envs
+       cd tools/initial
+       copernicusmarine --help
+        
+#    - name: Test get_glorts_data.sh
+#      run: |     
+#        cd tools/initial
+#        copernicusmarine --help
+#        #./get_glorys_data.sh -u ${{secrets.CMCID}} -p ${{secrets.CMCPASSWD}} -o "./" -x -100 -X -35 -y 0 -Y 60 -s "1993-01-01" -e "1993-01-01"
+#        #[ ! -f "GLORYS_REANALYSIS_1993-01-01.nc" ] && echo "FATAL: GLORYS_REANALYSIS_1993-01-01.nc does not exist. Exiting." && exit 1
