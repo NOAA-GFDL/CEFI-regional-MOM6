@@ -42,7 +42,7 @@ eval "$command_string"
 
 # Product and dataset IDs
 serviceId="GLOBAL_MULTIYEAR_PHY_001_030-TDS"
-productId="cmems_mod_glo_phy_my_0.083_P1D-m"
+productId="cmems_mod_glo_phy_my_0.083deg_P1D-m"
 
 # Variables
 variable=("so" "thetao" "uo" "vo" "zos")
