@@ -5,4 +5,4 @@ dependencies:
   - python>=3.9,<3.12
   - pip
   - pip:
-    - copernicusmarine
+    - copernicusmarine==1.1.0
