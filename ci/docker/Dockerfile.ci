@@ -24,6 +24,10 @@ RUN ln -fs /opt/datasets ./
 
 WORKDIR /opt/MOM6_OBGC_examples/exps/OM4.single_column.COBALT
 
+# Run the sed command to add ml_aclm_efold = 4.6 after enforce_src_info = t
+# in field_table to maintain the baseline answers
+RUN sed -i '/enforce_src_info = t/a\ml_aclm_efold = 4.6' field_table
+
 RUN mpirun -np 1 /opt/MOM6_OBGC_examples/builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
 
 # create ref folder
