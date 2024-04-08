@@ -19,6 +19,7 @@
 ###.................................................
 "namelists","ocean_mod","generic_COBALT"
 enforce_src_info = f
+ml_aclm_efold = 4.6
 alk_obc_src_file_name = bgc_esper_1993_2022.nc
 alk_obc_lfac_in = 0.03
 alk_obc_lfac_out = 1.0

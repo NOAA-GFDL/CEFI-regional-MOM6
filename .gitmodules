@@ -37,4 +37,4 @@
 [submodule "src/ocean_BGC"]
 	path = src/ocean_BGC
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
-	branch = dev/cefi
+	branch = lightandgrowth_cleanup/clean_code
