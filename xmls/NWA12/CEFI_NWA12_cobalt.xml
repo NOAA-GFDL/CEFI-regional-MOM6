@@ -49,7 +49,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="NULL_TAG" value="2023.04"/>
 
   <!-- git tag for CEFI-regional-MOM6 source code --> 
-  <property name="MOM6_GIT_FIX" value="stable/cefi"/> <!-- Trying new branch with bug fix for bgc obc index -->
+  <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
   <property name="FRE_STEM" value="fre/cefi/NWA"/>
@@ -823,7 +823,7 @@ endif
         <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+	<dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
       </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
