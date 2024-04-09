@@ -60,7 +60,7 @@
             do_area_weighted_flux = .FALSE.
 /
 
- &fms_io_nml
+ &fms2_io_nml
             fms_netcdf_restart=.true.
             threading_read='multi'
             max_files_r = 800
