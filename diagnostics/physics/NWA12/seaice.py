@@ -3,7 +3,7 @@
 2. Time series of the extent of sea ice within the Gulf of St Lawrence during January, February, and March from the
 model and the satellite observation dataset
 How to use:
-python seaice.py /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod/ 
+python seaice.py /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod/
 """
 from calendar import month_name
 import cartopy.crs as ccrs
@@ -19,13 +19,14 @@ from shapely.geometry import Polygon, MultiPoint
 from shapely.prepared import prep
 from string import ascii_lowercase
 import xarray
+import xesmf
 import os
 import sys
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(script_dir, '../'))
-from plot_common import open_var, get_map_norm, save_figure
+from plot_common import annotate_skill, autoextend_colorbar, add_ticks, open_var, get_map_norm, save_figure 
 
 PC = ccrs.PlateCarree()
 
@@ -70,44 +71,82 @@ def plot_seaice(pp_root, label):
     # Observed climatology
     obs_conc = obs_ice.sel(time=slice('1993', '2019')).groupby('time.month').mean('time')
 
+    obs_to_mod = xesmf.Regridder(
+        {'lon': obs_mat['x'], 'lat': obs_mat['y']}, 
+        {'lon': model_grid.geolon, 'lat': model_grid.geolat}, 
+        method='bilinear'
+    )
+    obs_interp = obs_to_mod(obs_conc)
+    delta = model_conc.rename({'yT': 'yh', 'xT': 'xh'})*100 - obs_interp
+
     axes_class = (GeoAxes, dict(projection=ccrs.PlateCarree(central_longitude=-75)))
     cmap, norm = get_map_norm('cet_CET_CBL3', np.arange(0, 101, 10), no_offset=True)
+    diff_ticks = np.arange(-45, 50, 10)
+    diff_cmap, diff_norm = get_map_norm('PuOr', diff_ticks, no_offset=True)
 
     fig = plt.figure(figsize=(10, 10))
+    nrows, ncols = 5, 3
     grid = AxesGrid(fig, 111,
         axes_class=axes_class,
-        nrows_ncols=(5, 2),
-        axes_pad=0.3,
+        nrows_ncols=(nrows, ncols),
+        axes_pad=0.33,
         cbar_location='bottom',
         cbar_mode='edge',
-        cbar_pad=0.2,
-        cbar_size='15%',
+        cbar_pad=0.3,
+        cbar_size='10%',
         label_mode=''
     )
     for i, m in enumerate([12, 1, 2, 3, 4]):
         month = month_name[m]
-        ax = grid[i*2]
+        ax = grid[i*ncols]
         p = ax.pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_conc.sel(month=m)*100, transform=PC, cmap=cmap, norm=norm)
-        ax.set_title(f'({ascii_lowercase[i*2]}) Model {month}')
-        
-        ax = grid[i*2 +1]
+        ax.set_title(f'({ascii_lowercase[i*ncols]}) Model {month}')
+
+        ax = grid[i*ncols +1]
         p = ax.pcolormesh(obs_mat['x'], obs_mat['y'], obs_conc.sel(month=m), transform=PC, cmap=cmap, norm=norm)
-        ax.set_title(f'({ascii_lowercase[i*2+1]}) Observed {month}')
+        ax.set_title(f'({ascii_lowercase[i*ncols+1]}) Observed {month}')
         
+        ax = grid[i*ncols + 2]
+        p2 = ax.pcolormesh(model_grid.geolon_c, model_grid.geolat_c, delta.sel(month=m), transform=PC, cmap=diff_cmap, norm=diff_norm)
+        ax.set_title(f'({ascii_lowercase[i*ncols+2]}) Difference {month}')
+        
+        sub = (model_grid.geolon >= -74) & (model_grid.geolon <= -46) & (model_grid.geolat >= 43) & (model_grid.geolat <= 56)
+        annotate_skill(
+            model_conc.rename({'yT': 'yh', 'xT': 'xh'}).sel(month=m).where(sub)*100, 
+            obs_interp.sel(month=m).where(sub), 
+            ax, 
+            dim=['yh', 'xh'], 
+            weights=model_grid.areacello.where(sub).fillna(0), 
+            fontsize=8,
+            x0=1.5,
+            y0=55,
+            yint=1.5
+        )
+
         if i <= 1:
             cbar= grid.cbar_axes[i].colorbar(p)
             cbar.ax.set_xlabel('Mean sea ice concentration (%)')
+            
+        if i == 2:
+            cbar = autoextend_colorbar(grid.cbar_axes[i], p2)
+            cbar.ax.set_xlabel('Model - observed (%)')
+            cbar.set_ticks(diff_ticks)
+            cbar.set_ticklabels([str(t) if t in [-45, -25, -5, 5, 25, 45] else '' for t in diff_ticks])
 
-    for ax in grid:
+    for i, ax in enumerate(grid):
+        xl = yl = 0
+        if i >= nrows * ncols - ncols:
+            xl = 1
+        if (i + 1) % ncols == 0:
+            yl = 1
+        add_ticks(ax, xticks=np.arange(-100, -31, 5), yticks=np.arange(0, 61, 5), xlabelinterval=xl, ylabelinterval=yl, fontsize=9)
+
         ax.set_extent([-74, -46, 43, 56])
-        ax.set_facecolor('#cccccc')
+        ax.set_facecolor('#bbbbbb')
         for s in ax.spines.values():
             s.set_visible(False)
 
-    if label == '':
-        plt.savefig('../figures/sea_ice_concentration.png', dpi=200, bbox_inches='tight')
-    else:
-        plt.savefig(f'../figures/sea_ice_concentration_{label}.png', dpi=200, bbox_inches='tight')
+    save_figure('sea_ice_concentration', label=label, output_dir='../figures')
 
     # ---
     # Time series of extent within Gulf of St Lawrence
