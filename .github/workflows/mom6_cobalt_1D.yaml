@@ -11,10 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/noaa-gfdl/fms/fms-ci-rocky-gnu:13.2.0
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.github_token }}
+      image: clouden90/1d_mom6_cobalt:base
         
     env:
       PR_NUMBER: ${{ github.event.number }}
@@ -33,7 +30,7 @@ jobs:
         cd ./builds
         pwd
         ls -l -h 
-        ./linux-build.bash -m fms-ci-rocky -p gnu -t repro -f mom6sis2
+        ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2
 
 #    - name: Download 1d model dataset
 #      run: | 
@@ -43,7 +40,7 @@ jobs:
 #    - name: Run 1D toy case
 #      run: | 
 #       cd exps/OM4.single_column.COBALT
-#       mpirun -np 1 ../../builds/build/fms-ci-rocky-gnu/ocean_ice/repro/MOM6SIS2
+#       mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
 
 #    - name: Check ref
 #      run: | 
