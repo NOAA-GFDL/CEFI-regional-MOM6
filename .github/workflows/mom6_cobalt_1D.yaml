@@ -24,6 +24,7 @@ jobs:
         
     - name: Build mom6-sis2-cobalt
       run: |
+        apt update; apt install -y wget
         echo "build mom6-sis2-cobalt ..."
         cd ./builds
         ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2
