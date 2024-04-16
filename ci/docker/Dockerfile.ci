@@ -27,7 +27,7 @@ WORKDIR /opt/MOM6_OBGC_examples/exps/OM4.single_column.COBALT
 RUN mpirun -np 1 /opt/MOM6_OBGC_examples/builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
 
 # create ref folder
-RUN mkdir ref
+RUN [ ! -d "ref" ] && mkdir -p "ref"
 RUN cp /opt/MOM6_OBGC_examples/src/ocean_BGC/.github/ref/OM4.single_column.COBALT.p4/docker-linux-gnu/* ./ref/
 
 # check

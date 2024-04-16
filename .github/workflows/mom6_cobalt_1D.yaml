@@ -25,24 +25,21 @@ jobs:
     - name: Build mom6-sis2-cobalt
       run: |
         echo "build mom6-sis2-cobalt ..."
-        pwd
-        ls -l -h
         cd ./builds
-        pwd
-        ls -l -h 
         ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2
 
-#    - name: Download 1d model dataset
-#      run: | 
-#       cd exps
-#       wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
+    - name: Download 1d model dataset
+      run: | 
+       cd ./exps
+       wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
 
-#    - name: Run 1D toy case
-#      run: | 
-#       cd exps/OM4.single_column.COBALT
-#       mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
+    - name: Run 1D toy case
+      run: | 
+       cd exps/OM4.single_column.COBALT
+       mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
 
-#    - name: Check ref
-#      run: | 
-#       cd exps/OM4.single_column.COBALT
-#       cat ./ocean.stats
+    - name: Check ref
+      run: | 
+       cd exps/OM4.single_column.COBALT
+       cat ./ocean.stats
+       RUN diff -q ref/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
