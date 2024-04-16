@@ -27,13 +27,6 @@ jobs:
         
     - name: Build mom6-sis2-cobalt
       run: |
-        echo "maximize disk space on git-runner ..."
-        df -h 
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /opt/ghc
-        sudo rm -rf "/usr/local/share/boost"
-        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-        df -h
         echo "build mom6-sis2-cobalt ..."
         cd builds && linux-build.bash -m fms-ci-rocky -p gnu -t repro -f mom6sis2
 
