@@ -28,7 +28,7 @@ jobs:
         apt update; apt install -y wget
         echo "build mom6-sis2-cobalt ..."
         cd ./builds
-        ./linux-build.bash -m docker -p linux-gnu -t repro -f mom6sis2
+        ./linux-build.bash -m docker -p linux-gnu -t prod -f mom6sis2
 
     - name: Download 1d model dataset
       run: | 
@@ -38,7 +38,7 @@ jobs:
     - name: Run 1D toy case
       run: | 
        cd exps/OM4.single_column.COBALT
-       mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
+       mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
 
     - name: Check ref
       run: | 
