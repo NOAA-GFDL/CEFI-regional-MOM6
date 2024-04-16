@@ -12,6 +12,7 @@ jobs:
 
     container:
       image: clouden90/1d_mom6_cobalt:base
+      options: --user=root
         
     env:
       PR_NUMBER: ${{ github.event.number }}
@@ -37,7 +38,7 @@ jobs:
     - name: Run 1D toy case
       run: | 
        cd exps/OM4.single_column.COBALT
-       mpirun -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
+       mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/repro/MOM6SIS2
 
     - name: Check ref
       run: | 
