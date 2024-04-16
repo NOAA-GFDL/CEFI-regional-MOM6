@@ -27,12 +27,6 @@ jobs:
         path: ${{ github.run_id }}/NWA12_CHECK
         submodules: recursive
 
-#    - uses: jitterbit/get-changed-files@v1
-#      id: abc
-#      with:
-#        format: space-delimited
-#        token: ${{ secrets.GITHUB_TOKEN }}     
-
     - name: Build MOM6SIS2
       run: |
         cd ${{ env.TEST_DIR }}/NWA12_CHECK/builds
@@ -52,7 +46,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        case: ["NWA12.COBALT"]
+        case: ["NWA12.CFC", "NWA12.COBALT"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |

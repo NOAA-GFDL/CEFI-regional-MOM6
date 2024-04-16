@@ -3,7 +3,7 @@
          input_filename = 'n'
          restart_input_dir = 'INPUT/'
          restart_output_dir = 'RESTART/'
-         parameter_filename = 'INPUT/MOM_input','INPUT/MOM_layout','INPUT/MOM_override'
+         parameter_filename = 'MOM_input','MOM_layout','MOM_override'
 /
 
  &SIS_input_nml
@@ -11,7 +11,7 @@
         input_filename = 'n'
         restart_input_dir = 'INPUT/'
         restart_output_dir = 'RESTART/'
-        parameter_filename = 'INPUT/SIS_input','INPUT/SIS_layout','INPUT/SIS_override'
+        parameter_filename = 'SIS_input','SIS_layout','SIS_override'
 /
 
  &atmos_model_nml
@@ -21,8 +21,8 @@
  &coupler_nml
         months = 0
         days   = 0
-        current_date = 1993,1,1,0,0,0
-        hours = 48
+        current_date = 1995,1,1,0,0,0
+        hours = 1 
         minutes = 0
         seconds = 0
         calendar = 'gregorian'
@@ -52,7 +52,7 @@
         mix_snapshot_average_fields=.false.
 /
 
- &fms2_io_nml
+ &fms_io_nml
         fms_netcdf_restart=.true. 
         threading_read='multi'
         max_files_r = 800
@@ -69,6 +69,7 @@
 
  &generic_COBALT_nml
         co2_calc = 'mocsy'
+	debug = .false.
         imbalance_tolerance=1.0e-9
 /
 
@@ -79,13 +80,12 @@
  &generic_tracer_nml
         do_generic_tracer=.true. 
         do_generic_abiotic=.false. 
-        do_generic_CFC=.false. 
-        do_generic_COBALT=.true. 
+        do_generic_CFC=.true. 
+        do_generic_COBALT=.false. 
         do_generic_age=.false.
         do_generic_SF6=.false. 
         force_update_fluxes=.true.
-        as_param='W92'
-        do_vertfill_post=.true.
+        as_param='gfdl_cmip6'
 /
 
  &ice_albedo_nml
@@ -137,7 +137,7 @@
 /
 
  &xgrid_nml
-        make_exchange_reproduce = .false.
+        make_exchange_reproduce = .true.
         interp_method = 'second_order'
 /
 

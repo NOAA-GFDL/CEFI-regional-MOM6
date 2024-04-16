@@ -1,0 +1,3 @@
+#override ICE_STATS_INTERVAL = 10.
+#override DO_ICEBERGS = False
+#override ICE_OCEAN_STRESS_STAGGER = "C"
