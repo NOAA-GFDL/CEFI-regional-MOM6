@@ -44,4 +44,4 @@ jobs:
       run: | 
        cd exps/OM4.single_column.COBALT
        cat ./ocean.stats
-       RUN diff -q ref/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
+       diff -q ref/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
