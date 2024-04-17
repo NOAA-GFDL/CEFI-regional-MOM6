@@ -84,7 +84,7 @@
         do_generic_age=.false.
         do_generic_SF6=.false. 
         force_update_fluxes=.true.
-        as_param='W92'
+        as_param='W14'
         do_vertfill_post=.true.
 /
 

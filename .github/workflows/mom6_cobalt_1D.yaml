@@ -35,13 +35,14 @@ jobs:
        cd ./exps
        wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
 
-    - name: Run 1D toy case
+    - name: Run 1D toy case and check repro across restarts
       run: | 
        cd exps/OM4.single_column.COBALT
-       mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
+       bash driver.sh
+       #mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
 
     - name: Check ref
       run: | 
        cd exps/OM4.single_column.COBALT
-       cat ./ocean.stats
-       diff -q ref/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
+       cat ./RESTART_48hrs/ocean.stats
+       diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
