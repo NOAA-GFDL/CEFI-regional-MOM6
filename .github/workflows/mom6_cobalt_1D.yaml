@@ -28,7 +28,7 @@ jobs:
         apt update; apt install -y wget
         echo "build mom6-sis2-cobalt ..."
         cd ./builds
-        ./linux-build.bash -m docker -p linux-gnu -t prod -f mom6sis2
+        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
 
     - name: Download 1d model dataset
       run: | 
