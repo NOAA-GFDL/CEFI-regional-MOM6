@@ -33,7 +33,7 @@ jobs:
     - name: Download 1d model dataset
       run: | 
        cd ./exps
-       wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
+       wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
 
     - name: Run 1D toy case and check repro across restarts
       run: | 
@@ -45,6 +45,6 @@ jobs:
       run: | 
        cd exps/OM4.single_column.COBALT
        cat ./RESTART_48hrs/ocean.stats
-       cat ./RESTART_24hrs/ocean.stats
+       cat ./RESTART_24hrs_rst/ocean.stats
        cat ./ref/ocean.stats
-       #diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
+       diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
