@@ -59,7 +59,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        case: ["NWA12.CFC", "NWA12.COBALT"]
+        case: ["NWA12.CFC"] #, "NWA12.COBALT"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |
