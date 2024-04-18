@@ -3,9 +3,16 @@
 #override REENTRANT_X = True
 #override ALE_COORDINATE_CONFIG = "FNC1:2,6500,6,.01"
 #override REGRIDDING_COORDINATE_MODE = "Z*"
+#override REGRIDDING_COORDINATE_MODE = "Z*"
 #override Z_INIT_REMAPPING_SCHEME = "PPM_IH4" 
 #override Z_INIT_REMAP_OLD_ALG = True
-!#override TRACERS_MAY_REINIT = True
+#override TRACERS_MAY_REINIT = True
+#override INIT_LAYERS_FROM_Z_FILE = False
+#override TS_CONFIG = file
+#override TS_FILE = "MOM_IC.nc"
+#override SALT_FILE= "MOM_IC.nc"
+#override TEMP_IC_VAR = "Temp"
+#override SALT_IC_VAR = "Salt" 
 !
 #override KD = 5.e-4
 #override RESOLN_SCALED_KH = False
@@ -28,4 +35,5 @@
 #override PEN_SW_NBANDS = 3 
 #override CHL_FROM_FILE = False
 #override DO_GEOTHERMAL = True 
-#override GEOTHERMAL_SCALE = 0.0 
+#override GEOTHERMAL_SCALE = 0.0
+#override GENERIC_TRACER_IC_FILE = "MOM_IC.nc"

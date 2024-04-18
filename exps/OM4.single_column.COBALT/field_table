@@ -24,7 +24,7 @@
 #           "units",        "kg/kg" /      
 ###.................................................
 "namelists","ocean_mod","generic_COBALT"
-enforce_src_info = t 
+enforce_src_info = f 
 #
 no3_src_file = INPUT/bgc_woa_esper_ics_1993_2023-04_BATS.nc
 no3_src_var_name = no3

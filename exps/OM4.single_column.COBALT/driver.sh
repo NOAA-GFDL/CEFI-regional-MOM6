@@ -43,19 +43,19 @@ if [ ! -d "$DIR1" ] || [ ! -d "$DIR2" ]; then
 fi
 
 # Define the files to compare
-#FILES=("MOM.res.nc" "ice_cobalt.res.nc"  "ice_model.res.nc"  "ocean_cobalt_airsea_flux.res.nc")
+FILES=("MOM.res.nc" "ice_cobalt.res.nc"  "ice_model.res.nc"  "ocean_cobalt_airsea_flux.res.nc")
 
 # Iterate over the files
-#for FILE in "${FILES[@]}"; do
-#    # Compare the files using nccmp
-#    echo "Compare ${FILE}"
-#    rm -rf org.txt
-#    rm -rf ref.txt
-#    ncdump ${DIR1}/${FILE} > org.txt
-#    ncdump ${DIR2}/${FILE} > ref.txt
-#    diff -q ./org.txt ./ref.txt > /dev/null || { echo "Error: ${FILE} is not identical, please check! Exiting now..."; exit 1; }
-#done
+for FILE in "${FILES[@]}"; do
+    # Compare the files using nccmp
+    echo "Compare ${FILE}"
+    rm -rf org.txt
+    rm -rf ref.txt
+    ncdump ${DIR1}/${FILE} > org.txt
+    ncdump ${DIR2}/${FILE} > ref.txt
+    diff -q ./org.txt ./ref.txt > /dev/null || { echo "Error: ${FILE} is not identical, please check! Exiting now..."; exit 1; }
+done
 
 #
-#echo "All restart files are identical, PASS"
+echo "All restart files are identical, PASS"
 echo "Test ended:  " `date`
