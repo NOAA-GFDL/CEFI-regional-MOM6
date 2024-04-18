@@ -44,7 +44,8 @@ jobs:
     - name: Check ref
       run: | 
        cd exps/OM4.single_column.COBALT
+       echo "new 48hrs ocean.stats: "
        cat ./RESTART_48hrs/ocean.stats
-       cat ./RESTART_24hrs_rst/ocean.stats
+       echo "baseline 48 hrs ocean.stats: "
        cat ./ref/ocean.stats
-       diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref! Exiting now..."; exit 1; }
+       diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref under exps/OM4.single_column.COBALT/ref! Exiting now..."; exit 1; }
