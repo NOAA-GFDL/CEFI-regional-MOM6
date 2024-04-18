@@ -1,0 +1,7 @@
+#override USE_generic_tracer = True
+#override MAX_FIELDS=500
+#override OBC_TIDE_NODAL_REF_DATE = 1995,7,2
+#override DT_OBC_SEG_UPDATE_OBGC = 1800
+#override CHL_FROM_FILE = True
+#override DO_GEOTHERMAL = True
+#override GENERIC_TRACER_IC_FILE = "cfc_ic_1995-01-01.nc"

@@ -5,7 +5,7 @@
 #override REGRIDDING_COORDINATE_MODE = "Z*"
 #override Z_INIT_REMAPPING_SCHEME = "PPM_IH4" 
 #override Z_INIT_REMAP_OLD_ALG = True
-#override TRACERS_MAY_REINIT = True
+!#override TRACERS_MAY_REINIT = True
 !
 #override KD = 5.e-4
 #override RESOLN_SCALED_KH = False

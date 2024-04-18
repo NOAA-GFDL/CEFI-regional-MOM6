@@ -4,7 +4,6 @@
          restart_input_dir = 'INPUT',
          restart_output_dir = 'RESTART',
          parameter_filename = 'MOM_input',
-                              'MOM_saltrestore',
                               'MOM_layout', 
                               'MOM_override'
 /
@@ -135,16 +134,12 @@
        do_generic_COBALT=.true.
        do_generic_SF6=.false.
        force_update_fluxes=.true.
-       as_param='unused' 
+       as_param='W92' 
        do_vertfill_post=.true.
 /
  &generic_COBALT_nml
        co2_calc = 'mocsy'
-       debug = .false.
        imbalance_tolerance=1.0e-9
-!       do_nh3_atm_ocean_exchange = .true.  !turn on exchange of NH3
-!       scheme_no3_nh4_lim        = 2       !update nh4/no3 uptake scheme
-!       scheme_nitrif             = 3       !new nitrification scheme
 /
 
 

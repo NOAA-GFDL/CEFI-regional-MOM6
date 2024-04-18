@@ -1,0 +1,45 @@
+"ATM", "p_surf",             "msl",    "INPUT/ERA5_msl_1995_padded.nc",           "bilinear",  1.0
+"ATM", "p_bot",              "msl",    "INPUT/ERA5_msl_1995_padded.nc",           "bilinear",  1.0
+"ATM", "t_bot",              "t2m",    "INPUT/ERA5_t2m_1995_padded.nc",           "bilinear",  1.0
+"ATM", "sphum_bot",          "sphum",  "INPUT/ERA5_sphum_1995_padded.nc",          "bilinear",  1.0
+"ATM", "u_bot",              "u10",    "INPUT/ERA5_u10_1995_padded.nc",          "bicubic",   1.0
+"ATM", "v_bot",              "v10",    "INPUT/ERA5_v10_1995_padded.nc",          "bicubic",   1.0
+"ATM", "z_bot",              "",       "",                           "bilinear", 10.0
+"ATM", "gust",               "",       "",                           "bilinear", 1.0e-4
+"ATM", "cfc11_flux_pcair_atm", "CFC11", "INPUT/cfc.bc.nc",           "bilinear", 1.0e-12
+"ATM", "cfc12_flux_pcair_atm", "CFC12", "INPUT/cfc.bc.nc",           "bilinear", 1.0e-12
+#
+"ICE", "lw_flux_dn"        , "strd",   "INPUT/ERA5_strd_1995_padded.nc",          "bilinear", 2.77778e-4
+"ICE", "sw_flux_vis_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  7.9167e-5
+"ICE", "sw_flux_vis_dif_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  7.9167e-5
+"ICE", "sw_flux_nir_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  5.9722e-5
+"ICE", "sw_flux_nir_dif_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  5.9722e-5
+"ICE", "lprec",              "lp",     "INPUT/ERA5_lp_1995_padded.nc",            "bilinear", 0.277777778
+"ICE", "fprec",              "sf",     "INPUT/ERA5_sf_1995_padded.nc",            "bilinear", 0.277777778
+"ICE", "runoff",             "runoff", "INPUT/glofas_runoff_1995.nc",     "none",      1.0
+"ICE", "calving",            "",       "",                           "none",      0.0
+"ICE", "dhdt",               "",       "",                           "none",     80.0
+"ICE", "dedt",               "",       "",                           "none",      2.0e-6
+"ICE", "drdt",               "",       "",                           "none",     10.0
+#
+"LND", "t_surf",             "",       "",                           "none",    273.0
+"LND", "t_ca",               "",       "",                           "none",    273.0
+"LND", "q_ca",               "",       "",                           "none",     0.0
+"LND", "rough_mom",          "",       "",                           "none",     0.01
+"LND", "rough_heat",         "",       "",                           "none",     0.1
+"LND", "albedo",             "",       "",                           "none",     0.1
+"LND", "sphum_surf",         "",       "",                           "none",     0.0
+"LND", "sphum_ca",           "",       "",                           "none",     0.0
+"LND", "t_flux",             "",       "",                           "none",     0.0
+"LND", "sphum_flux",         "",       "",                           "none",     0.0
+"LND", "lw_flux",            "",       "",                           "none",     0.0
+"LND", "sw_flux",            "",       "",                           "none",     0.0
+"LND", "lprec",              "",       "",                           "none",     0.0
+"LND", "fprec",              "",       "",                           "none",     0.0
+"LND", "dhdt",               "",       "",                           "none",     5.0
+"LND", "dedt",               "",       "",                           "none",     2.0e-6
+"LND", "dedq",               "",       "",                           "none",     0.0
+"LND", "drdt",               "",       "",                           "none",     5.0
+"LND", "drag_q",             "",       "",                           "none",     0.0
+"LND", "p_surf",             "",       "",                           "none",     1.0e5
+#

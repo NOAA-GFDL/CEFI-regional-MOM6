@@ -1,0 +1,28 @@
+# specific humidity for moist runs
+"TRACER", "atmos_mod", "sphum"
+          "longname",     "specific humidity"
+          "units",        "kg/kg" /
+# prognostic cloud scheme tracers
+"TRACER", "atmos_mod", "liq_wat"
+          "longname",     "cloud liquid specific humidity"
+          "units",        "kg/kg" /
+"TRACER", "atmos_mod", "ice_wat"
+          "longname",     "cloud ice water specific humidity"
+          "units",        "kg/kg" /
+"TRACER", "atmos_mod", "cld_amt"
+          "longname",     "cloud fraction"
+          "units",        "none" /
+# sphum must be present on land as well
+"TRACER", "land_mod",     "sphum"
+          "longname",     "specific humidity"
+          "units",        "kg/kg" /
+###.................................................
+"namelists","ocean_mod","generic_CFC"
+enforce_src_info = f
+cfc11_obc_src_file_name = cfc11_obc_1995.nc
+cfc11_obc_lfac_in = 0.03
+cfc11_obc_lfac_out = 1.0
+cfc12_obc_src_file_name = cfc12_obc_1995.nc
+cfc12_obc_lfac_in = 0.03
+cfc12_obc_lfac_out = 1.0
+/

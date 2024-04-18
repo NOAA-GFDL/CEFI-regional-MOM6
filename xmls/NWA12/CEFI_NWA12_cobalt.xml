@@ -6,26 +6,26 @@ Quick start guide
 Load module:
 
 On GFDL Analysis:
-module load fre/bronx-21
+module load fre/bronx-22
 
 On Gaea:
 module use -a /ncrc/home2/fms/local/modulefiles
-module load fre/bronx-21
+module load fre/bronx-22
 
 Compile and build mom6-sis2-cobalt:
 fremake -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -t prod MOM6_SIS2_GENERIC_4P_compile_symm
 
 Run experiment
-frerun -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -t prod CEFI_NWA12_COBALT_V1 
+frerun -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -t prod CEFI_NWA12_COBALT_V1
 
 Run postprocessing later on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc5-intel22 -T prod CEFI_NWA12_COBALT_V1 
+frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc5-intel22 -T prod CEFI_NWA12_COBALT_V1
 
-Run analysis after the postprocessing on GFDL Analysis:             
+Run analysis after the postprocessing on GFDL Analysis:
 frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc5-intel22 -T prod CEFI_NWA12_COBALT_V1
 
 Regression test for layout:
-frerun  -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -q debug -r layout CEFI_NWA12_COBALT_V1 
+frerun  -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -q debug -r layout CEFI_NWA12_COBALT_V1
 
 Regression test for restart:
 frerun  -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -q debug -r restart CEFI_NWA12_COBALT_V1
@@ -48,29 +48,29 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <!-- git tag for shared source code -->
   <property name="NULL_TAG" value="2023.04"/>
 
-  <!-- git tag for CEFI-regional-MOM6 source code --> 
+  <!-- git tag for CEFI-regional-MOM6 source code -->
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
   <property name="FRE_STEM" value="fre/cefi/NWA"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
-  <property name="NCRC_GROUP" value="cefi"/> 
+  <property name="NCRC_GROUP" value="cefi"/>
   <property name="GFDL_GROUP" value="cefi"/>
 
   <!--Production run properties. Users can modify these according to their need and/or performance analysis-->
   <property name="PROD_SIMTIME" value="27"/>
-  
+
   <!--Post-processing  chunk lengths -->
   <property name="CHUNK_LENGTH_A" value="5yr"/>
-  <property name="CHUNK_LENGTH_B" value="27yr"/> 
-  <property name="CHUNK_LENGTH_SHORT" value="1yr"/> 
-  
+  <property name="CHUNK_LENGTH_B" value="27yr"/>
+  <property name="CHUNK_LENGTH_SHORT" value="1yr"/>
+
   <!--Start year of PP -->
   <property name="PP_START_YEAR" value="1993"/>
-  
+
   <!-- fre version to be used -->
-  <property name="FRE_VERSION" value="bronx-21"/>
+  <property name="FRE_VERSION" value="bronx-22"/>
 
   <!-- on/off switch for MDBI database -->
   <property name="MDBIswitch" value="off"/>
@@ -80,7 +80,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
 
   <!-- on/off switch for bgc analysis -->
   <property name="BGC_ANALYSIS_SWITCH" value="on"/>
-	
+
   <!--Users need not change the following properties -->
   <!-- Reference release tag for existing files in the archives for answer comparison. Used in "REFERENCE" property. -->
   <property name="reference_tag" value="none"/>
@@ -106,7 +106,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
 
   <setup>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc5.intel22'])"/>
-    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc5-intel22'])"/> 
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc5-intel22'])"/>
   </setup>
 
   <!--= COMPILE =-->
@@ -138,7 +138,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         <csh><![CDATA[
           mv CEFI-regional-MOM6 mom6
         ]]></csh>
-      </source>	    
+      </source>
       <compile>
         <cppDefs><![CDATA[ $(F2003_FLAGS) -DMAX_FIELDS_=100 -DNOT_SET_AFFINITY -D_USE_MOM6_DIAG -D_USE_GENERIC_TRACER  -DUSE_PRECISION=2 -D_FILE_VERSION="'"`git-version-string $<`"'" ]]></cppDefs>
         <!--makeOverrides>OPENMP=""</makeOverrides>  openmp switch for MOM6 may cause crash -->
@@ -201,62 +201,62 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         do_ocean = .true.
         atmos_npes = 0,
         ocean_npes = 0,
-        concurrent = .false. 
+        concurrent = .false.
         use_lag_fluxes=.false.
         atmos_nthreads = $atm_threads
         ocean_nthreads = $ocn_threads
         do_chksum = .false.
         do_endpoint_chksum = .false.
       </namelist>
-      <namelist name="generic_tracer_nml"> 
-        do_generic_tracer=.true. 
-        do_generic_abiotic=.false. 
-        do_generic_CFC=.false. 
-        do_generic_COBALT=.true. 
+      <namelist name="generic_tracer_nml">
+        do_generic_tracer=.true.
+        do_generic_abiotic=.false.
+        do_generic_CFC=.false.
+        do_generic_COBALT=.true.
         do_generic_age=.false.
-        do_generic_SF6=.false. 
+        do_generic_SF6=.false.
         force_update_fluxes=.true.
-        as_param='unused'
+        as_param='W14'
         do_vertfill_post=.true.
       </namelist>
       <namelist name="time_interp_external_nml">
         max_fields = 400
       </namelist>
-      <namelist name="generic_abiotic_nml"> 
+      <namelist name="generic_abiotic_nml">
         co2_calc='mocsy'
       </namelist>
       <namelist name="generic_COBALT_nml">
         co2_calc = 'mocsy'
-	debug = .false.
+        debug = .false.
         imbalance_tolerance=1.0e-9
       </namelist>
       <namelist name="diag_manager_nml">
-        max_files = 600 
+        max_files = 600
         flush_nc_files=.false.
         max_axes = 600
         max_num_axis_sets = 600
-        max_input_fields = 2000 
-        max_output_fields = 5000 
+        max_input_fields = 2000
+        max_output_fields = 5000
         mix_snapshot_average_fields=.false.
       </namelist>
       <namelist name="xgrid_nml">
         make_exchange_reproduce = .false.
         interp_method = 'second_order'
       </namelist>
-      <namelist name="fms_nml"> 
-        clock_grain='ROUTINE' 
+      <namelist name="fms_nml">
+        clock_grain='ROUTINE'
         clock_flags='NONE'
         domains_stack_size = 8000000
         stack_size =0
       </namelist>
-      <namelist name="fms_io_nml"> 
-        fms_netcdf_restart=.true. 
+      <namelist name="fms_io_nml">
+        fms_netcdf_restart=.true.
         threading_read='multi'
         max_files_r = 800
         max_files_w = 800
         checksum_required=.false.
       </namelist>
-      <namelist name="atmos_model_nml"> 
+      <namelist name="atmos_model_nml">
         layout= 1,1
       </namelist>
       <!--verona-->
@@ -267,7 +267,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
       <namelist name="ice_albedo_nml">
         t_range = 10.
       </namelist>
-      <namelist name="icebergs_nml"> 
+      <namelist name="icebergs_nml">
         verbose=.false.
         verbose_hrs=24
         traj_sample_hrs=24
@@ -555,23 +555,23 @@ $baseDate
       <dataFile label="diagTable" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">./diag_tables/diag_table_COBALT_2023-04</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_MOM6_2023-03</dataSource>
-	<dataSource site="ncrc">./diag_tables/diag_table.SIS</dataSource>
-	<dataSource site="ncrc">./diag_tables/diag_table_COBALT_neus</dataSource>
-	<dataSource site="ncrc">./diag_tables/diag_table_MOM6_neus</dataSource>
+        <dataSource site="ncrc">./diag_tables/diag_table.SIS</dataSource>
+        <dataSource site="ncrc">./diag_tables/diag_table_COBALT_neus</dataSource>
+        <dataSource site="ncrc">./diag_tables/diag_table_MOM6_neus</dataSource>
         <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_COBALT_2023-04</dataSource>
         <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_MOM6_2023-03</dataSource>
-	<dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table.SIS</dataSource>
-	<dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_COBALT_neus</dataSource>
-	<dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_MOM6_neus</dataSource>
+        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table.SIS</dataSource>
+        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_COBALT_neus</dataSource>
+        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_MOM6_neus</dataSource>
       </dataFile>
       <dataFile label="initCond" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2023_10_spinup/NWA12_COBALT_2023_10_spinup_2003.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/glorys/glorys_ic_1993-01-01.nc</dataSource>
       </dataFile>
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-	      <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2023_10_spinup/NWA12_COBALT_2023_10_spinup_2003.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2023_10_spinup/NWA12_COBALT_2023_10_spinup_2003.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/glorys/glorys_ic_1993-01-01.nc</dataSource>
-      </dataFile>  
+      </dataFile>
       <csh type='always'>
         <![CDATA[
 truncate -s 0 $work/INPUT/MOM_override
@@ -579,10 +579,11 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override USE_generic_tracer = True
 #override MAX_FIELDS=500
 #override OBC_TIDE_NODAL_REF_DATE = ${fyear},7,2
-DT_OBC_SEG_UPDATE_OBGC = 3600
+!#override DT_OBC_SEG_UPDATE_OBGC = 3600
 #override CHL_FROM_FILE = False
 #override DO_GEOTHERMAL = True
 #override GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc"
+#override EPBL_ANSWER_DATE = 20231231		      
 MOM_OVERRIDE_EOF
 if ( $currentSeg == 1 ) then
     echo "#override DT_THERM = 1200.0" >> $work/INPUT/MOM_override
@@ -636,7 +637,7 @@ endif
             <ocn ranks="900" threads="1" layout = "30,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
           </resources>
         </run>
-      </regression>	    
+      </regression>
       <regression name="restart">
         <run days="1 1">
           <resources jobWallclock="01:00:00">
@@ -649,7 +650,7 @@ endif
             <ice                         layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
             <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           </resources>
-        </run>	      
+        </run>
       </regression>
     </runtime>
 
@@ -675,7 +676,7 @@ endif
   <freInclude name="choose_restart">
     <input>
       <csh type="always">
-        <![CDATA[ 
+        <![CDATA[
 #------------------------------------------
 ## Find out whether to restart.
 
@@ -687,13 +688,13 @@ if ( $currentSeg == 1 ) then
         rm -rf $work/INPUT/ice_model.res.nc
         rm -rf $work/INPUT/MOM.res*.nc
         rm -rf $work/INPUT/ocean_cobalt_airsea_flux.res.nc
-    endif 
+    endif
 else
     set restart_flag = 'r'
     #Because of a technical issue FRE does not delete old uncombined restarts before copying the new ones for the next segment
     #The INPUT/ ends up with inconsistent restart files which at best cause the model to crash right away.
     if(-e $work/INPUT/MOM.res.nc.0000 ) \rm -rf $work/INPUT/MOM.res*.nc
-endif        
+endif
         ]]>
       </csh>
     </input>
@@ -703,7 +704,7 @@ endif
   <freInclude name="always_restart">
     <input>
       <csh type="always">
-        <![CDATA[ 
+        <![CDATA[
 set restart_flag = 'r'
 #Because of a technical issue FRE does not delete old uncombined restarts before copying the new ones for the next segment
 #The INPUT/ ends up with inconsistent restart files which at best cause the model to crash right away.
@@ -757,7 +758,7 @@ echo "Model year = $fyear"
 # add empty MOM_mask_table
 if ( ! -e $work/INPUT/MOM_mask_table ) then
     echo "0" > $work/INPUT/MOM_mask_table
-endif	      
+endif
       ]]>
       </csh>
     </input>
@@ -784,7 +785,7 @@ endif
     <input>
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <!-- Main settings -->
-	<dataSource site="ncrc">$(NWA12_WORLD)/MOM_inputs/2024_03/MOM_input</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/MOM_inputs/2024_03/MOM_input</dataSource>
         <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/NWA12/MOM_inputs/2023_10/MOM_input</dataSource>
         <!-- Boundary conditions for BGC -->
         <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/bgc_woa.nc</dataSource>
@@ -804,14 +805,14 @@ endif
         <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/uv_002.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/uv_003.nc</dataSource>
         <!--River nutrients and DIC and alkalinity -->
-        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource> 
+        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource>
         <!-- Files for tidal boundary conditions -->
-	<dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_001.nc</dataSource>
-	<dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_002.nc</dataSource>
-	<dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_003.nc</dataSource>
-	<dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_001.nc</dataSource>
-	<dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_002.nc</dataSource>
-	<dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_003.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_001.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_002.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_003.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_001.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_002.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_003.nc</dataSource>
       </dataFile>
       <!--Other files for BGC fluxes from atmosphere -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
@@ -823,7 +824,7 @@ endif
         <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
-	<dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
       </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
@@ -857,7 +858,7 @@ endif
   <freInclude name="SIS2_data">
     <input>
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-	<dataSource site="ncrc">$(NWA12_WORLD)/MOM_inputs/2023_04/SIS_input</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/MOM_inputs/2023_04/SIS_input</dataSource>
         <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/NWA12/MOM_inputs/2023_04/SIS_input</dataSource>
       </dataFile>
       <namelist name="SIS_input_nml">
@@ -982,7 +983,7 @@ endif
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
-      <!-- don't process this; it is 14 day averages 
+      <!-- don't process this; it is 14 day averages
       <component type="ocean_cobalt_budget" start="$(PP_START_YEAR)" source="ocean_cobalt_budget">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_SHORT)" />
       </component>
@@ -990,7 +991,7 @@ endif
     </postProcess>
   </freInclude>
   <freInclude name="MOM6_postprocess">
-    <postProcess> 
+    <postProcess>
       <!--PostProcessing component models-->
       <component type="ocean_daily"   start="$(PP_START_YEAR)" source="ocean_daily">
         <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" source="ocean_daily"/>
@@ -1007,7 +1008,7 @@ endif
       <component type="ocean_monthly" start="$(PP_START_YEAR)"  source="ocean_month">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" source="ocean_month">
            <analysis switch="$(PHY_ANALYSIS_SWITCH)" cumulative="no" script="./analysis/cefi_physics_monthly.csh"/>
-        </timeSeries>	      
+        </timeSeries>
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" source="ocean_month"/>
         <timeAverage source="monthly" interval="$(CHUNK_LENGTH_B)"/>
       </component>
@@ -1024,9 +1025,9 @@ endif
       <component type="ocean_annual_z" start="$(PP_START_YEAR)" source="ocean_annual_z" >
         <timeSeries freq="annual"  chunkLength="$(CHUNK_LENGTH_A)" source="ocean_annual_z"/>
         <timeAverage source="annual" interval="$(CHUNK_LENGTH_B)"/>
-        <timeSeries freq="annual"  chunkLength="$(CHUNK_LENGTH_B)" source="ocean_annual_z"/>	
+        <timeSeries freq="annual"  chunkLength="$(CHUNK_LENGTH_B)" source="ocean_annual_z"/>
       </component>
-      <!--ICE-->    
+      <!--ICE-->
       <component type="ice_daily"   start="$(PP_START_YEAR)" source="ice_daily">
         <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" source="ice_daily"/>
       </component>

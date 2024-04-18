@@ -27,16 +27,23 @@ jobs:
         path: ${{ github.run_id }}/NWA12_CHECK
         submodules: recursive
 
-#    - uses: jitterbit/get-changed-files@v1
-#      id: abc
-#      with:
-#        format: space-delimited
-#        token: ${{ secrets.GITHUB_TOKEN }}     
-
     - name: Build MOM6SIS2
       run: |
         cd ${{ env.TEST_DIR }}/NWA12_CHECK/builds
-        ./linux-build.bash -m gaea -p ncrc5.intel23 -t repro -f mom6sis2
+        jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
+        #
+        sleep 1
+        while :; do
+            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+            if [ -z "$job_status" ]; then
+               echo "Job with ID $jobid is not found or completed."
+               break
+            else
+               echo "Job with ID $jobid is still running."
+               echo "Job Status: $job_status"
+            fi
+            sleep 60  # Adjust the sleep duration as needed
+        done
         #
         check_file="${{ env.TEST_DIR }}/NWA12_CHECK/builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2"
         if [ -f "$check_file" ]; then
@@ -52,7 +59,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        case: ["NWA12.COBALT"]
+        case: ["NWA12.CFC"] #, "NWA12.COBALT"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |
@@ -69,7 +76,7 @@ jobs:
                  echo "Job with ID $jobid is still running."
                  echo "Job Status: $job_status"
               fi
-              sleep 30  # Adjust the sleep duration as needed
+              sleep 60  # Adjust the sleep duration as needed
           done
           # 
           expected_string="All restart files are identical, PASS"
