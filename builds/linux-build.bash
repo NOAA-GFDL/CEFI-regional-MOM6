@@ -68,13 +68,15 @@ srcdir=$abs_rootdir/../src
 
 sed -i 's/static pid_t gettid(void)/pid_t gettid(void)/g' $srcdir/FMS/affinity/affinity.c
 
-mkdir -p build/$machine_name-$platform/shared/$target
-pushd build/$machine_name-$platform/shared/$target   
-rm -f path_names                       
-$srcdir/mkmf/bin/list_paths $srcdir/FMS/{affinity,amip_interp,column_diagnostics,diag_integral,drifters,horiz_interp,memutils,sat_vapor_pres,topography,astronomy,constants,diag_manager,field_manager,include,monin_obukhov,platform,tracer_manager,axis_utils,coupler,fms,fms2_io,interpolator,mosaic,mosaic2,random_numbers,time_interp,tridiagonal,block_control,data_override,exchange,mpp,time_manager,string_utils,parser}/ $srcdir/FMS/libFMS.F90
-$srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -p libfms.a -c "-Duse_deprecated_io -Duse_libMPI -Duse_netCDF -DMAXFIELDMETHODS_=800" path_names
+if [[ $flavor == "mom6sis2" ]] ; then
 
-make $makeflags libfms.a         
+mkdir -p build/$machine_name-$platform/shared/$target
+pushd build/$machine_name-$platform/shared/$target
+rm -f path_names
+$srcdir/mkmf/bin/list_paths $srcdir/FMS/{affinity,amip_interp,column_diagnostics,diag_integral,drifters,horiz_interp,memutils,sat_vapor_pres,topography,astronomy,constants,diag_manager,field_manager,include,monin_obukhov,platform,tracer_manager,axis_utils,coupler,fms,fms2_io,interpolator,mosaic,mosaic2,random_numbers,time_interp,tridiagonal,block_control,data_override,exchange,mpp,time_manager,string_utils,parser}/ $srcdir/FMS/libFMS.F90
+$srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -p libfms.a -c "-Duse_libMPI -Duse_netCDF -DMAXFIELDMETHODS_=800" path_names
+
+make $makeflags libfms.a
 
 if [ $? -ne 0 ]; then
    echo "Could not build the FMS library!"
@@ -82,8 +84,7 @@ if [ $? -ne 0 ]; then
 fi
 
 popd
-
-if [[ $flavor == "mom6sis2" ]] ; then
+    
     mkdir -p build/$machine_name-$platform/ocean_ice/$target
     pushd build/$machine_name-$platform/ocean_ice/$target
     rm -f path_names
@@ -104,6 +105,21 @@ fi
 elif [[ $flavor == "fms1_mom6sis2" ]]; then
 
     echo "build mom6sis2 with FMS1 cap" 
+
+mkdir -p build/$machine_name-$platform/shared/$target
+pushd build/$machine_name-$platform/shared/$target
+rm -f path_names
+$srcdir/mkmf/bin/list_paths $srcdir/FMS/{affinity,amip_interp,column_diagnostics,diag_integral,drifters,horiz_interp,memutils,sat_vapor_pres,topography,astronomy,constants,diag_manager,field_manager,include,monin_obukhov,platform,tracer_manager,axis_utils,coupler,fms,fms2_io,interpolator,mosaic,mosaic2,random_numbers,time_interp,tridiagonal,block_control,data_override,exchange,mpp,time_manager,string_utils,parser}/ $srcdir/FMS/libFMS.F90
+$srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -p libfms.a -c "-Duse_deprecated_io -Duse_libMPI -Duse_netCDF -DMAXFIELDMETHODS_=800" path_names
+
+make $makeflags libfms.a
+
+if [ $? -ne 0 ]; then
+   echo "Could not build the FMS library!"
+   exit 1
+fi
+
+popd
 
     mkdir -p build/$machine_name-$platform/ocean_ice/$target
     pushd build/$machine_name-$platform/ocean_ice/$target
