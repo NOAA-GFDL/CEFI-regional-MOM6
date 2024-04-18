@@ -2,7 +2,7 @@ name: mom6_obgc_1d
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "1d_restart" ]
   pull_request:
     branches: [ "main" ]
 
