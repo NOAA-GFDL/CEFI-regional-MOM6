@@ -48,4 +48,4 @@ jobs:
        cat ./RESTART_48hrs/ocean.stats
        echo "baseline 48 hrs ocean.stats: "
        cat ./ref/ocean.stats
-       diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different, check and update ref under exps/OM4.single_column.COBALT/ref! Exiting now..."; exit 1; }
+       diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || || { echo "Error: ocean.stats are different."; echo "Plz update exps/OM4.single_column.COBALT/ref/ocean.stats with the following: "; cat ./RESTART_48hrs/ocean.stats; exit 1; }
