@@ -2,7 +2,7 @@ name: mom6_obgc_1d
 
 on:
   push:
-    branches: [ "1d_restart" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -24,26 +24,25 @@ jobs:
         submodules: recursive
         
     - name: Build mom6-sis2-cobalt
+      working-directory: ./builds
       run: |
         apt update; apt install -y wget
         echo "build mom6-sis2-cobalt ..."
-        cd ./builds
         ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
 
     - name: Download 1d model dataset
+      working-directory: ./exps
       run: | 
-       cd ./exps
        wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
 
     - name: Run 1D toy case and check repro across restarts
+      working-directory: ./exps/OM4.single_column.COBALT
       run: | 
-       cd exps/OM4.single_column.COBALT
-       #mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
        ./driver.sh 
 
     - name: Check ref
+      working-directory: ./exps/OM4.single_column.COBALT
       run: | 
-       cd exps/OM4.single_column.COBALT
        echo "new 48hrs ocean.stats: "
        cat ./RESTART_48hrs/ocean.stats
        echo "baseline 48 hrs ocean.stats: "
