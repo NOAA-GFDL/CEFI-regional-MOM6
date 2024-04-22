@@ -1,7 +1,7 @@
-name: NWA12-ci
+name: CEFI-MOM6-ci
 
 on:
-  # Triggers this workflow on pull request event with "NWA12_RT_gaea_c5" label
+  # Triggers this workflow on pull request event with "CEFI_MOM6_RT_gaea_c5" label
   pull_request:
     branches: [ "main" ]
     types: [ labeled ]
@@ -14,7 +14,7 @@ env:
 #
 jobs:
   checkout-build:
-    if: ${{ github.event.label.name == 'NWA12_RT_gaea_c5' }}
+    if: ${{ github.event.label.name == 'CEFI_MOM6_RT_gaea_c5' }}
     runs-on: self-hosted
     timeout-minutes: 600
     strategy:
@@ -24,12 +24,12 @@ jobs:
     - name: Checkout CEFI-regional-MOM6
       uses: actions/checkout@v4
       with:
-        path: ${{ github.run_id }}/NWA12_CHECK
+        path: ${{ github.run_id }}/CEFI_MOM6_CHECK
         submodules: recursive
 
     - name: Build MOM6SIS2
       run: |
-        cd ${{ env.TEST_DIR }}/NWA12_CHECK/builds
+        cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds
         jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
         #
         sleep 1
@@ -45,7 +45,7 @@ jobs:
             sleep 60  # Adjust the sleep duration as needed
         done
         #
-        check_file="${{ env.TEST_DIR }}/NWA12_CHECK/builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2"
+        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2"
         if [ -f "$check_file" ]; then
             echo "PASSED: $check_file"
         else
@@ -53,17 +53,17 @@ jobs:
             exit 1
         fi 
 
-  run-NWA12-ci:
+  run-CEFI_MOM6-ci:
     needs: checkout-build
     runs-on: self-hosted
     strategy:
       max-parallel: 2
       matrix:
-        case: ["NWA12.CFC"] #, "NWA12.COBALT"]
+        case: ["NWA12.COBALT"] #, "NWA12.CFC"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |
-          cd ${{ env.TEST_DIR }}/NWA12_CHECK/exps/${{ matrix.case }}
+          cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
           jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
           #
           sleep 1
@@ -80,7 +80,7 @@ jobs:
           done
           # 
           expected_string="All restart files are identical, PASS"
-          check_file="${{ env.TEST_DIR }}/NWA12_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
+          check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
           if [ -f "$check_file" ]; then
              if grep -qF "$expected_string" $check_file; then
                  echo "PASSED: ${{ matrix.case }}"
@@ -93,21 +93,21 @@ jobs:
              exit 10
           fi
 
-      - name: Add "pass_NWA12_RT" label on success
-        if: success() && contains(github.event.label.name, 'NWA12_RT_gaea_c5')
+      - name: Add "pass_CEFI_MOM6_RT" label on success
+        if: success() && contains(github.event.label.name, 'CEFI_MOM6_RT_gaea_c5')
         run: |
           TOKEN=${{ secrets.GITHUB_TOKEN }}
-          RT_TEST_LABEL="NWA12_RT_gaea_c5"
-          PASS_LABEL="pass_NWA12_RT"
+          RT_TEST_LABEL="CEFI_MOM6_RT_gaea_c5"
+          PASS_LABEL="pass_CEFI_MOM6_RT"
 
-          # Remove the "NWA12_RT_gaea_c5" label
+          # Remove the "CEFI_MOM6_RT_gaea_c5" label
           curl -X DELETE \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
     
 
-          # Add the "pass_NWA12_RT" label
+          # Add the "pass_CEFI_MOM6_RT" label
           curl -X POST \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
@@ -115,7 +115,7 @@ jobs:
             -d "{\"labels\":[\"$PASS_LABEL\"]}"
 
   clean-up:
-    needs: run-NWA12-ci
+    needs: run-CEFI_MOM6-ci
     runs-on: self-hosted
     strategy:
       max-parallel: 1

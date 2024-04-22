@@ -583,7 +583,10 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override CHL_FROM_FILE = False
 #override DO_GEOTHERMAL = True
 #override GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc"
-#override EPBL_ANSWER_DATE = 20231231		      
+#override EPBL_ANSWER_DATE = 20231231		     
+#override MLD_ITERATION_GUESS = False
+#override REMAP_AUXILIARY_VARS = False
+#override EQN_OF_STATE = "WRIGHT_FULL"
 MOM_OVERRIDE_EOF
 if ( $currentSeg == 1 ) then
     echo "#override DT_THERM = 1200.0" >> $work/INPUT/MOM_override
