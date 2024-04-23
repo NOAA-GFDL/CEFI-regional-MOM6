@@ -20,4 +20,4 @@ ln -fs /gpfs/f5/cefi/world-shared/datasets ./
 cd NWA12.COBALT
 sbatch run.sub 
 ```
-If users do not have access to Gaea C5, the datasets for the `NWA12` case can be downloaded from [here](ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_datasets.tar.gz).
+If users do not have access to Gaea C5, the datasets for the `NWA12` case be downloaded from `ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_datasets.tar.gz`.
