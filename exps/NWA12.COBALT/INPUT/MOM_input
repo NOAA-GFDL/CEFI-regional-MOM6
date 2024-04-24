@@ -412,7 +412,7 @@ TIDE_MF = True                  !   [Boolean] default = False
 TIDE_MM = True                  !   [Boolean] default = False
                                 ! If true, apply tidal momentum forcing at the MM frequency. This is only used
                                 ! if TIDES is true.
-TIDE_SAL_SCALAR_VALUE = 0.010   !   [m m-1]
+TIDE_SAL_SCALAR_VALUE = 0.01    !   [m m-1]
                                 ! The constant of proportionality between sea surface height (really it should
                                 ! be bottom pressure) anomalies and bottom geopotential anomalies. This is only
                                 ! used if TIDES and TIDE_USE_SAL_SCALAR are true.
@@ -430,12 +430,17 @@ MASS_WEIGHT_IN_PRESSURE_GRADIENT = True !   [Boolean] default = False
                                 ! bathymetry in FV pressure gradient calculations.
 
 ! === module MOM_hor_visc ===
-LAPLACIAN = False
+LAPLACIAN = True
+KH = 0
+SMAGORINSKY_KH = True
+SMAG_LAP_CONST = 0.05
+KH_VEL_SCALE = 0.0
+RESOLN_SCALED_KH = False
+
 BIHARMONIC = True
 AH = 0.0
 AH_VEL_SCALE = 0.010             !   [m s-1] default = 0.0
-SMAGORINSKY_AH = True
-SMAG_BI_CONST = 0.015
+SMAGORINSKY_AH = False
 
 
 ! === module MOM_vert_friction ===
@@ -675,5 +680,6 @@ SEA_ICE_RIGID_MASS = 100.0      !   [kg m-2] default = 1000.0
 ! Misc
 DO_GEOTHERMAL = False
 EPBL_MLD_BISECTION = True
+EPBL_MLD_MAX_ITS = 40
 BBL_USE_EOS = True
 AGGREGATE_FW_FORCING = True

@@ -15,7 +15,7 @@ ENABLE_THERMODYNAMICS = True    !   [Boolean] default = True
 USE_EOS = True                  !   [Boolean] default = True
                                 ! If true,  density is calculated from temperature and salinity with an equation
                                 ! of state.  If USE_EOS is true, ENABLE_THERMODYNAMICS must be true as well.
-DIABATIC_FIRST = True           !   [Boolean] default = False
+DIABATIC_FIRST = False          !   [Boolean] default = False
                                 ! If true, apply diabatic and thermodynamic processes, including buoyancy
                                 ! forcing and mass gain or loss, before stepping the dynamics forward.
 USE_CONTEMP_ABSSAL = False      !   [Boolean] default = False
@@ -43,7 +43,7 @@ REMAP_UV_USING_OLD_ALG = False  !   [Boolean] default = False
                                 ! If true, uses the old remapping-via-a-delta-z method for remapping u and v. If
                                 ! false, uses the new method that remaps between grids described by an old and
                                 ! new thickness.
-REMAP_AUXILIARY_VARS = False    !   [Boolean] default = False
+REMAP_AUXILIARY_VARS = True     !   [Boolean] default = False
                                 ! If true, apply ALE remapping to all of the auxiliary 3-dimensional variables
                                 ! that are needed to reproduce across restarts, similarly to what is already
                                 ! being done with the primary state variables.  The default should be changed to
@@ -65,11 +65,11 @@ BATHYMETRY_AT_VEL = False       !   [Boolean] default = False
                                 ! If true, there are separate values for the basin depths at velocity points.
                                 ! Otherwise the effects of topography are entirely determined from thickness
                                 ! points.
-DT = 600.0                      !   [s]
+DT = 400.0                      !   [s]
                                 ! The (baroclinic) dynamics time step.  The time-step that is actually used will
                                 ! be an integer fraction of the forcing time-step (DT_FORCING in ocean-only mode
                                 ! or the coupling timestep in coupled mode.)
-DT_THERM = 1800.0               !   [s] default = 600.0
+DT_THERM = 1200.0               !   [s] default = 400.0
                                 ! The thermodynamic and tracer advection time step. Ideally DT_THERM should be
                                 ! an integer multiple of DT and less than the forcing or coupling time-step,
                                 ! unless THERMO_SPANS_COUPLING is true, in which case DT_THERM can be an integer
@@ -95,7 +95,7 @@ HFREEZE = -1.0                  !   [m] default = -1.0
 INTERPOLATE_P_SURF = False      !   [Boolean] default = False
                                 ! If true, linearly interpolate the surface pressure over the coupling time
                                 ! step, using the specified value at the end of the step.
-DTBT_RESET_PERIOD = 1800.0      !   [s] default = 1800.0
+DTBT_RESET_PERIOD = 1200.0      !   [s] default = 1200.0
                                 ! The period between recalculations of DTBT (if DTBT <= 0). If DTBT_RESET_PERIOD
                                 ! is negative, DTBT is set based only on information available at
                                 ! initialization.  If 0, DTBT will be set every dynamics time step. The default
@@ -448,15 +448,11 @@ NK = 75                         !   [nondim]
 ! === module MOM_tracer_registry ===
 
 ! === module MOM_EOS ===
-EQN_OF_STATE = "WRIGHT"         ! default = "WRIGHT"
+EQN_OF_STATE = "WRIGHT_FULL"    ! default = "WRIGHT"
                                 ! EQN_OF_STATE determines which ocean equation of state should be used.
                                 ! Currently, the valid choices are "LINEAR", "UNESCO", "JACKETT_MCD", "WRIGHT",
                                 ! "WRIGHT_REDUCED", "WRIGHT_FULL", "NEMO", "ROQUET_RHO", "ROQUET_SPV" and
                                 ! "TEOS10".  This is only used if USE_EOS is true.
-USE_WRIGHT_2ND_DERIV_BUG = False !   [Boolean] default = False
-                                ! If true, use a bug in the calculation of the second derivatives of density
-                                ! with temperature and with temperature and pressure that causes some terms to
-                                ! be only 2/3 of what they should be.
 EOS_QUADRATURE = False          !   [Boolean] default = False
                                 ! If true, always use the generic (quadrature) code code for the integrals of
                                 ! density.
@@ -524,7 +520,7 @@ USE_NW2_TRACERS = False         !   [Boolean] default = False
 
 ! === module register_MOM_generic_tracer ===
 GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc" ! default = ""
-                                ! The file in which the generic trcer initial values can be found, or an empty
+                                ! The file in which the generic tracer initial values can be found, or an empty
                                 ! string for internal initialization.
 GENERIC_TRACER_IC_FILE_IS_Z = False !   [Boolean] default = False
                                 ! If true, GENERIC_TRACER_IC_FILE is in depth space, not layer space.
@@ -671,97 +667,6 @@ FATAL_INCONSISTENT_RESTART_TIME = False !   [Boolean] default = False
                                 ! If true and a time_in value is provided to MOM_initialize_state, verify that
                                 ! the time read from a restart file is the same as time_in, and issue a fatal
                                 ! error if it is not.  Otherwise, simply set the time to time_in if present.
-INIT_LAYERS_FROM_Z_FILE = False !   [Boolean] default = False
-                                ! If true, initialize the layer thicknesses, temperatures, and salinities from a
-                                ! Z-space file on a latitude-longitude grid.
-THICKNESS_CONFIG = "coord"      ! default = "uniform"
-                                ! A string that determines how the initial layer thicknesses are specified for a
-                                ! new run:
-                                !     file - read interface heights from the file specified
-                                !       by (THICKNESS_FILE).
-                                !     thickness_file - read thicknesses from the file specified
-                                !       by (THICKNESS_FILE).
-                                !     mass_file - read thicknesses in units of mass per unit area from the file
-                                !       specified by (THICKNESS_FILE).
-                                !     coord - determined by ALE coordinate.
-                                !     uniform - uniform thickness layers evenly distributed
-                                !       between the surface and MAXIMUM_DEPTH.
-                                !     list - read a list of positive interface depths.
-                                !     DOME - use a slope and channel configuration for the
-                                !       DOME sill-overflow test case.
-                                !     ISOMIP - use a configuration for the
-                                !       ISOMIP test case.
-                                !     benchmark - use the benchmark test case thicknesses.
-                                !     Neverworld - use the Neverworld test case thicknesses.
-                                !     search - search a density profile for the interface
-                                !       densities. This is not yet implemented.
-                                !     circle_obcs - the circle_obcs test case is used.
-                                !     DOME2D - 2D version of DOME initialization.
-                                !     adjustment2d - 2D lock exchange thickness ICs.
-                                !     sloshing - sloshing gravity thickness ICs.
-                                !     seamount - no motion test with seamount ICs.
-                                !     dumbbell - sloshing channel ICs.
-                                !     soliton - Equatorial Rossby soliton.
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     USER - call a user modified routine.
-TS_CONFIG = "file"              !
-                                ! A string that determines how the initial temperatures and salinities are
-                                ! specified for a new run:
-                                !     file - read velocities from the file specified
-                                !       by (TS_FILE).
-                                !     fit - find the temperatures that are consistent with
-                                !       the layer densities and salinity S_REF.
-                                !     TS_profile - use temperature and salinity profiles
-                                !       (read from TS_FILE) to set layer densities.
-                                !     benchmark - use the benchmark test case T & S.
-                                !     linear - linear in logical layer space.
-                                !     DOME2D - 2D DOME initialization.
-                                !     ISOMIP - ISOMIP initialization.
-                                !     adjustment2d - 2d lock exchange T/S ICs.
-                                !     sloshing - sloshing mode T/S ICs.
-                                !     seamount - no motion test with seamount ICs.
-                                !     dumbbell - sloshing channel ICs.
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     SCM_CVMix_tests - used in the SCM CVMix tests.
-                                !     USER - call a user modified routine.
-TS_FILE = "glorys_ic_1993-01-01.nc" !
-                                ! The initial condition file for temperature.
-TEMP_IC_VAR = "temp"            ! default = "PTEMP"
-                                ! The initial condition variable for potential temperature.
-SALT_IC_VAR = "salt"            ! default = "SALT"
-                                ! The initial condition variable for salinity.
-SALT_FILE = "glorys_ic_1993-01-01.nc" ! default = "glorys_ic_1993-01-01.nc"
-                                ! The initial condition file for salinity.
-DEPRESS_INITIAL_SURFACE = True  !   [Boolean] default = False
-                                ! If true,  depress the initial surface to avoid huge tsunamis when a large
-                                ! surface pressure is applied.
-TRIM_IC_FOR_P_SURF = False      !   [Boolean] default = False
-                                ! If true, cuts way the top of the column for initial conditions at the depth
-                                ! where the hydrostatic pressure matches the imposed surface pressure which is
-                                ! read from file.
-SURFACE_HEIGHT_IC_FILE = "glorys_ic_1993-01-01.nc" !
-                                ! The initial condition file for the surface height.
-SURFACE_HEIGHT_IC_VAR = "ssh"   ! default = "SSH"
-                                ! The initial condition variable for the surface height.
-SURFACE_HEIGHT_IC_SCALE = 1.0   !   [variable] default = 1.0
-                                ! A scaling factor to convert SURFACE_HEIGHT_IC_VAR into units of m
-REGRID_ACCELERATE_INIT = False  !   [Boolean] default = False
-                                ! If true, runs REGRID_ACCELERATE_ITERATIONS iterations of the regridding
-                                ! algorithm to push the initial grid to be consistent with the initial
-                                ! condition. Useful only for state-based and iterative coordinates.
-VELOCITY_CONFIG = "file"        ! default = "zero"
-                                ! A string that determines how the initial velocities are specified for a new
-                                ! run:
-                                !     file - read velocities from the file specified
-                                !       by (VELOCITY_FILE).
-                                !     zero - the fluid is initially at rest.
-                                !     uniform - the flow is uniform (determined by
-                                !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     soliton - Equatorial Rossby soliton.
-                                !     USER - call a user modified routine.
-VELOCITY_FILE = "glorys_ic_1993-01-01.nc" !
-                                ! The name of the velocity initial condition file.
 U_IC_VAR = "u"                  ! default = "u"
                                 ! The initial condition variable for zonal velocity in VELOCITY_FILE.
 V_IC_VAR = "v"                  ! default = "v"
@@ -954,11 +859,14 @@ KV_TBL_MIN = 1.0E-06            !   [m2 s-1] default = 1.0E-06
 CORRECT_BBL_BOUNDS = False      !   [Boolean] default = False
                                 ! If true, uses the correct bounds on the BBL thickness and viscosity so that
                                 ! the bottom layer feels the intended drag.
-SMAG_CONST_CHANNEL = 0.15       !   [nondim] default = 0.15
+SMAG_CONST_CHANNEL = 0.05       !   [nondim] default = 0.05
                                 ! The nondimensional Laplacian Smagorinsky constant used in calculating the
                                 ! channel drag if it is enabled.  The default is to use the same value as
                                 ! SMAG_LAP_CONST if it is defined, or 0.15 if it is not. The value used is also
                                 ! 0.15 if the specified value is negative.
+TRIG_CHANNEL_DRAG_WIDTHS = True !   [Boolean] default = True
+                                ! If true, use trigonometric expressions to determine the fractional open
+                                ! interface lengths for concave topography.
 CHANNEL_DRAG_MAX_BBL_THICK = 5.0 !   [m] default = 5.0
                                 ! The maximum bottom boundary layer thickness over which the channel drag is
                                 ! exerted, or a negative value for no fixed limit, instead basing the BBL
@@ -1304,8 +1212,38 @@ HOR_VISC_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! viscosity calculations.  Values below 20190101 recover the answers from the
                                 ! end of 2018, while higher values use updated and more robust forms of the same
                                 ! expressions.
-LAPLACIAN = False               !   [Boolean] default = False
+USE_CONT_THICKNESS = False      !   [Boolean] default = False
+                                ! If true, use thickness at velocity points from continuity solver. This
+                                ! optioncurrently only works with split mode.
+LAPLACIAN = True                !   [Boolean] default = False
                                 ! If true, use a Laplacian horizontal viscosity.
+KH = 0.0                        !   [m2 s-1] default = 0.0
+                                ! The background Laplacian horizontal viscosity.
+KH_BG_MIN = 0.0                 !   [m2 s-1] default = 0.0
+                                ! The minimum value allowed for Laplacian horizontal viscosity, KH.
+KH_VEL_SCALE = 0.0              !   [m s-1] default = 0.0
+                                ! The velocity scale which is multiplied by the grid spacing to calculate the
+                                ! Laplacian viscosity. The final viscosity is the largest of this scaled
+                                ! viscosity, the Smagorinsky and Leith viscosities, and KH.
+KH_SIN_LAT = 0.0                !   [m2 s-1] default = 0.0
+                                ! The amplitude of a latitudinally-dependent background viscosity of the form
+                                ! KH_SIN_LAT*(SIN(LAT)**KH_PWR_OF_SINE).
+SMAGORINSKY_KH = True           !   [Boolean] default = False
+                                ! If true, use a Smagorinsky nonlinear eddy viscosity.
+SMAG_LAP_CONST = 0.05           !   [nondim] default = 0.0
+                                ! The nondimensional Laplacian Smagorinsky constant, often 0.15.
+LEITH_KH = False                !   [Boolean] default = False
+                                ! If true, use a Leith nonlinear eddy viscosity.
+BOUND_KH = True                 !   [Boolean] default = True
+                                ! If true, the Laplacian coefficient is locally limited to be stable.
+BETTER_BOUND_KH = True          !   [Boolean] default = True
+                                ! If true, the Laplacian coefficient is locally limited to be stable with a
+                                ! better bounding than just BOUND_KH.
+ANISOTROPIC_VISCOSITY = False   !   [Boolean] default = False
+                                ! If true, allow anistropic viscosity in the Laplacian horizontal viscosity.
+ADD_LES_VISCOSITY = False       !   [Boolean] default = False
+                                ! If true, adds the viscosity from Smagorinsky and Leith to the background
+                                ! viscosity instead of taking the maximum.
 BIHARMONIC = True               !   [Boolean] default = True
                                 ! If true, use a biharmonic horizontal viscosity. BIHARMONIC may be used with
                                 ! LAPLACIAN.
@@ -1319,7 +1257,7 @@ AH_TIME_SCALE = 0.0             !   [s] default = 0.0
                                 ! A time scale whose inverse is multiplied by the fourth power of the grid
                                 ! spacing to calculate biharmonic viscosity. The final viscosity is the largest
                                 ! of all viscosity formulations in use. 0.0 means that it's not used.
-SMAGORINSKY_AH = True           !   [Boolean] default = False
+SMAGORINSKY_AH = False          !   [Boolean] default = False
                                 ! If true, use a biharmonic Smagorinsky nonlinear eddy viscosity.
 LEITH_AH = False                !   [Boolean] default = False
                                 ! If true, use a biharmonic Leith nonlinear eddy viscosity.
@@ -1334,14 +1272,6 @@ BETTER_BOUND_AH = True          !   [Boolean] default = True
 RE_AH = 0.0                     !   [nondim] default = 0.0
                                 ! If nonzero, the biharmonic coefficient is scaled so that the biharmonic
                                 ! Reynolds number is equal to this.
-SMAG_BI_CONST = 0.015           !   [nondim] default = 0.0
-                                ! The nondimensional biharmonic Smagorinsky constant, typically 0.015 - 0.06.
-BOUND_CORIOLIS_BIHARM = False   !   [Boolean] default = False
-                                ! If true use a viscosity that increases with the square of the velocity shears,
-                                ! so that the resulting viscous drag is of comparable magnitude to the Coriolis
-                                ! terms when the velocity differences between adjacent grid points is
-                                ! 0.5*BOUND_CORIOLIS_VEL.  The default is the value of BOUND_CORIOLIS (or
-                                ! false).
 USE_LAND_MASK_FOR_HVISC = True  !   [Boolean] default = True
                                 ! If true, use the land mask for the computation of thicknesses at velocity
                                 ! locations. This eliminates the dependence on arbitrary values over land or
@@ -1349,6 +1279,9 @@ USE_LAND_MASK_FOR_HVISC = True  !   [Boolean] default = True
 HORVISC_BOUND_COEF = 0.8        !   [nondim] default = 0.8
                                 ! The nondimensional coefficient of the ratio of the viscosity bounds to the
                                 ! theoretical maximum for stability without considering other terms.
+USE_KH_BG_2D = False            !   [Boolean] default = False
+                                ! If true, read a file containing 2-d background harmonic viscosities. The final
+                                ! viscosity is the maximum of the other terms and this background value.
 
 ! === module MOM_vert_friction ===
 VERT_FRICTION_ANSWER_DATE = 99991231 ! default = 99991231
@@ -1926,10 +1859,13 @@ ML_OMEGA_FRAC = 0.001           !   [nondim] default = 0.0
 EKMAN_SCALE_COEF = 1.0          !   [nondim] default = 1.0
                                 ! A nondimensional scaling factor controlling the inhibition of the diffusive
                                 ! length scale by rotation. Making this larger decreases the PBL diffusivity.
-EPBL_ANSWER_DATE = 99991231     ! default = 99991231
+EPBL_ANSWER_DATE = 20231231     ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the energetic PBL
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
+                                ! Values below 20240101 use A**(1./3.) to estimate the cube root of A in several
+                                ! expressions, while higher values use the integer root function cuberoot(A) and
+                                ! therefore can work with scaled variables.
 EPBL_ORIGINAL_PE_CALC = True    !   [Boolean] default = True
                                 ! If true, the ePBL code uses the original form of the potential energy change
                                 ! code.  Otherwise, the newer version that can work with successive increments
@@ -1994,7 +1930,7 @@ EPBL_MLD_BISECTION = True       !   [Boolean] default = False
                                 ! mixed layer depth.  Otherwise use the false position after a maximum and
                                 ! minimum bound have been evaluated and the returned value or bisection before
                                 ! this.
-EPBL_MLD_MAX_ITS = 20           ! default = 20
+EPBL_MLD_MAX_ITS = 40           ! default = 20
                                 ! The maximum number of iterations that can be used to find a self-consistent
                                 ! mixed layer depth.  If EPBL_MLD_BISECTION is true, the maximum number
                                 ! iteractions needed is set by Depth/2^MAX_ITS < EPBL_MLD_TOLERANCE.
