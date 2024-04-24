@@ -9,5 +9,6 @@
 #override DT_THERM = 1200.0
 #override DT = 400.0
 #override MLD_ITERATION_GUESS = False
-#override REMAP_AUXILIARY_VARS = False
+#override REMAP_AUXILIARY_VARS = True
+#override DIABATIC_FIRST = False
 #override EQN_OF_STATE = "WRIGHT_FULL"
