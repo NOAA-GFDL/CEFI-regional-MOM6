@@ -21,6 +21,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
+        fetch-depth: 1
         submodules: recursive
         
     - name: Build mom6-sis2-cobalt
@@ -33,7 +34,7 @@ jobs:
     - name: Download 1d model dataset
       working-directory: ./exps
       run: | 
-       wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_datasets.tar.gz && tar -zxvf 1d_datasets.tar.gz && rm -rf 1d_datasets.tar.gz
+       wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
 
     - name: Run 1D toy case and check repro across restarts
       working-directory: ./exps/OM4.single_column.COBALT
