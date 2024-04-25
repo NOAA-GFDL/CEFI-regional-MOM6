@@ -6,6 +6,7 @@
  "ATM", "v_bot",              "vas",      "./INPUT/JRA_vas.nc",      "bicubic",    1.0
  "ATM", "z_bot",              "",         "",                        "bilinear",  10.0
  "ATM", "gust",               "",         "",                        "bilinear",   1.0e-4
+ "OCN", "jfe_fert",           "jfe_fert", "./INPUT/fe_fert.nc",      "none",       1.0
  "ICE", "lw_flux_dn",         "rlds",     "./INPUT/JRA_rlds.nc",     "bilinear",   1.0
  "ICE", "sw_flux_vis_dir_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.285
  "ICE", "sw_flux_vis_dif_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.285
