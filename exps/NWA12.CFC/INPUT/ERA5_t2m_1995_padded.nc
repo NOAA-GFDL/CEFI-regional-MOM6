@@ -1,1 +1,0 @@
-../../datasets/nwa12_cfc_input/ERA5_t2m_1995_padded.nc

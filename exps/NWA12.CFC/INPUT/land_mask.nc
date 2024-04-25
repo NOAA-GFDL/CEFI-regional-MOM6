@@ -1,1 +1,0 @@
-../../datasets/nwa12_cfc_input/land_mask.nc
