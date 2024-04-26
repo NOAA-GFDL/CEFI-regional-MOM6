@@ -40,5 +40,5 @@
 	branch = dev/gfdl
 [submodule "src/ocean_BGC"]
 	path = src/ocean_BGC
-	url = https://github.com/liuxiao37k/ocean_BGC.git
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
 	branch = esm4.1_dFe_fert
