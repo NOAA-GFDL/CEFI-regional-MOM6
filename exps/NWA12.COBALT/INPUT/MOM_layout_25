@@ -1,3 +1,0 @@
-#override IO_LAYOUT = 1,1
-#override LAYOUT    = 25,25
-#override MASKTABLE = MOM_mask_table

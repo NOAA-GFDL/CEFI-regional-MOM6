@@ -1,1 +1,0 @@
-../../datasets/nwa12_input/glofas_runoff_1993.nc

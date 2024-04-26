@@ -1,1 +1,0 @@
-../../datasets/nwa12_input/ERA5_ssrd_1993_padded.nc

@@ -162,7 +162,7 @@ def write_bgc(woa_file, esper_file, cobalt_file, time0, interpolator, output_fil
         'plg_btf', # x
         'pmd_btf', # x
         'psm_btf', # x
-        'irr_mem_dp',
+        'irr_mem',
         'irr_aclm_sfc',
         'irr_aclm_z',
         'mu_mem_nmd'

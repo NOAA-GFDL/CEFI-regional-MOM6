@@ -1,1 +1,0 @@
-../../datasets/nwa12_input/thetao_001.nc

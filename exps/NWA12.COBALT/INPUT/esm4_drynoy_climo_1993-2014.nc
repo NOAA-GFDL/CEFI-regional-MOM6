@@ -1,1 +1,0 @@
-../../datasets/nwa12_input/esm4_drynoy_climo_1993-2014.nc

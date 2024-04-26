@@ -1,1 +1,0 @@
-../../datasets/nwa12_input/land_mosaic_tile1Xocean_mosaic_tile1.nc
