@@ -3,7 +3,7 @@ name: CEFI-MOM6-ci
 on:
   # Triggers this workflow on pull request event with "CEFI_MOM6_RT_gaea_c5" label
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop" ]
     types: [ labeled ]
 
 #
@@ -60,7 +60,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        case: ["NWA12.COBALT"] #, "NWA12.CFC"]
+        case: ["NWA12.COBALT", "NEP10.COBALT"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |

@@ -1,0 +1,15 @@
+#override USE_generic_tracer = True
+#override MAX_FIELDS=500
+#override CHL_FROM_FILE = True
+#override DO_GEOTHERMAL = True
+#override DT = 400
+#override DIABATIC_FIRST = False
+#override REMAP_AUXILIARY_VARS = True
+# Update the nodal modulation of the tide every year
+#override OBC_TIDE_NODAL_REF_DATE = 1993,7,2
+#override MLE%USE_BODNER23 = True
+#override MLE%CR = 0.03
+#override MLE%BLD_DECAYING_TFILTER = 8.64E+04
+#override MLE%MLD_DECAYING_TFILTER = 2.592E+06
+#override MLE%MIN_WSTAR2 = 1.0E-09
+#override MLE_USE_PBL_MLD = True
