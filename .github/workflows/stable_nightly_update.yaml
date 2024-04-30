@@ -1,8 +1,8 @@
 on:
   schedule:
     - cron: '0 0 * * *' # Run daily at midnight
-    - cron: '25 14 * * *' # Run at 10:25am EDT (14:25 UTC)
-
+  push:
+    branches: [ "feature/update-ci" ]    
 
 jobs:
   stable_nightly_update:
@@ -11,12 +11,14 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Merge develop into main
         if: github.ref == 'refs/heads/feature/update-ci'
         run: |
           echo ${{ github.ref }}
-          git checkout main
-          git pull origin main
+          git checkout main_test
+          git pull origin main_test
           git merge origin/feature/update-ci --no-edit
           #git push origin main_test
