@@ -1,0 +1,39 @@
+name: Update and Push MOM6 and Ocean BGC Submodule
+
+on:
+#  schedule:
+#    - cron: '0 * * * *'  # Run every hour
+  push:
+    branches: [ "feature/update-ci" ]
+
+jobs:
+  nightly_update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
+          submodules: 'recursive'
+
+      - name: Update Ocean BGC Submodule
+        run: |
+          git submodule update --remote --merge src/ocean_BGC
+          git add src/ocean_BGC
+          git commit -m "Update ocean_BGC submodule nightly"
+
+      - name: Trigger CI tests for Ocean BGC Submodule
+        run: |
+          curl \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/mom6_cobalt_1D.yaml/dispatches \
+            -d '{"ref":"main"}'
+
+      - name: Wait for CI tests to complete
+        run: |
+          # Use the GitHub API to check the status of the workflow runs
+          # Wait until all jobs in the workflow run are completed
+          # Check if all jobs are successful
