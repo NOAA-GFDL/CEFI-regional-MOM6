@@ -14,6 +14,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Show diff between main_test and feature/update-ci
+        if: github.ref == 'refs/heads/feature/update-ci'
+        run: |
+          echo "Showing diff between main_test and feature/update-ci"
+          git fetch origin main_test
+          git diff main_test..origin/feature/update-ci
+
       - name: Merge develop into main
         if: github.ref == 'refs/heads/feature/update-ci'
         run: |
