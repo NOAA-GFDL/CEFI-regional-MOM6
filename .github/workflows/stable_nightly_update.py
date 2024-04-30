@@ -1,9 +1,8 @@
 on:
 #  schedule:
 #    - cron: '0 0 * * *' # Run daily at midnight
-  push:
-    branches:
-      - feature/update-ci
+  pull_request:
+    branches: [ "feature/update-ci" ]      
 
 jobs:
   stable_nightly_update:
@@ -11,7 +10,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Merge develop into main
         if: github.ref == 'refs/heads/feature/update-ci'
