@@ -14,18 +14,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Show diff between main_test and feature/update-ci
+      - name: Show diff between stable/nightly_release and feature/update-ci
         if: github.ref == 'refs/heads/feature/update-ci'
         run: |
-          echo "Showing diff between main_test and feature/update-ci"
-          git fetch origin main_test:main_test
-          git diff main_test..origin/feature/update-ci
+          echo "Showing diff between stable/nightly_release and feature/update-ci"
+          git fetch origin stable/nightly_release:stable/nightly_release
+          git diff stable/nightly_release..origin/feature/update-ci
 
       - name: Merge develop into main
         if: github.ref == 'refs/heads/feature/update-ci'
         run: |
           echo ${{ github.ref }}
-          git checkout main_test
-          git pull origin main_test
+          git checkout stable/nightly_release
+          git pull origin stable/nightly_release
           git merge origin/feature/update-ci --no-edit
-          git push --force origin main_test
+          git push --force origin stable/nightly_release
