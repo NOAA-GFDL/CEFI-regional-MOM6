@@ -1,8 +1,8 @@
 on:
-#  schedule:
-#    - cron: '0 0 * * *' # Run daily at midnight
-  pull_request:
-    branches: [ "main" ] 
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight
+    - cron: '25 14 * * *' # Run at 10:25am EDT (14:25 UTC)
+
 
 jobs:
   stable_nightly_update:
@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Merge develop into main
-        #if: github.ref == 'refs/heads/feature/update-ci'
+        if: github.ref == 'refs/heads/feature/update-ci'
         run: |
           echo ${{ github.ref }}
           git checkout main
