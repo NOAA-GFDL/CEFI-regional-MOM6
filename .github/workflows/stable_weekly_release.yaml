@@ -1,0 +1,30 @@
+on:
+  schedule:
+    - cron: '0 0 * * 3'  # Run at midnight (00:00) every Wednesday
+
+jobs:
+  stable_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+
+      - name: Show diff between stable/weekly_release and main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Showing diff between stable/weekly_release and main"
+          git fetch origin stable/weekly_release:stable/weekly_release
+          git diff stable/weekly_release..origin/main
+
+      - name: Merge develop into main
+        if: github.ref == 'refs/heads/feature/main'
+        run: |
+          echo ${{ github.ref }}
+          git checkout stable/weekly_release
+          git pull origin stable/weekly_release
+          git merge origin/main --no-edit
+          git push --force origin stable/weekly_release
