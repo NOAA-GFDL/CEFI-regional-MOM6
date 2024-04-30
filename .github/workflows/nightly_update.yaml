@@ -13,7 +13,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }} 
           fetch-depth: 0
           submodules: 'recursive'
 
@@ -27,7 +27,7 @@ jobs:
         run: |
           curl \
             -X POST \
-            -H "Authorization: Bearer ${{ secrets.PAT }}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/mom6_cobalt_1D.yaml/dispatches \
             -d '{"ref":"main"}'
