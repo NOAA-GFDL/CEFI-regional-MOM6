@@ -588,11 +588,9 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override REMAP_AUXILIARY_VARS = True
 #override DIABATIC_FIRST = False
 #override EQN_OF_STATE = "WRIGHT_FULL"
+#override DT_THERM = 1200.0
+#override DT = 400        
 MOM_OVERRIDE_EOF
-if ( $currentSeg == 1 ) then
-    echo "#override DT_THERM = 1200.0" >> $work/INPUT/MOM_override
-    echo "#override DT = 400" >> $work/INPUT/MOM_override
-endif
         ]]>
       </csh>
     </input>
@@ -645,14 +643,14 @@ endif
       <regression name="restart">
         <run days="1 1">
           <resources jobWallclock="01:00:00">
-            <ice                         layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-            <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+            <ice                          layout = "30,30" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+            <ocn ranks="900" threads="1" layout = "30,30" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           </resources>
         </run>
         <run days="2">
           <resources jobWallclock="01:00:00">
-            <ice                         layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-            <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+            <ice                         layout = "30,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
+            <ocn ranks="900" threads="1" layout = "30,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
           </resources>
         </run>
       </regression>
