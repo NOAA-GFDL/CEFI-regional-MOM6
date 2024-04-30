@@ -1,8 +1,10 @@
 on:
 #  schedule:
 #    - cron: '0 0 * * *' # Run daily at midnight
+  push:
+    branches: [ "feature/update-ci" ]
   pull_request:
-    branches: [ "feature/update-ci" ]      
+    branches: [ "main" ] 
 
 jobs:
   stable_nightly_update:
