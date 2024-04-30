@@ -1,10 +1,8 @@
 name: Update and Push Ocean BGC Submodule
 
 on:
-#  schedule:
-#    - cron: '0 4 * * 2'  # Run at 12:00 am EDT every Tuesday
-  push:
-    branches: [ "feature/update-ci" ]
+  schedule:
+    - cron: '0 4 * * 2'  # Run at 12:00 am EDT every Tuesday
 
 jobs:
   nightly_update:
@@ -27,6 +25,3 @@ jobs:
           git submodule update --remote --merge src/ocean_BGC
           git add src/ocean_BGC
           git commit -m "Update ocean_BGC submodule nightly"
-
-      - name: Run CI
-        uses: ./.github/workflows/mom6_cobalt_1D.yaml
