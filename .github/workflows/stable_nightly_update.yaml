@@ -28,4 +28,4 @@ jobs:
           git checkout main_test
           git pull origin main_test
           git merge origin/feature/update-ci --no-edit
-          #git push origin main_test
+          git push origin main_test
