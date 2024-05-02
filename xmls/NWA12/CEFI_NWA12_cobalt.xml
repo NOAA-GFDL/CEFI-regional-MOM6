@@ -176,7 +176,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         <codeBase version="$(CPL_GIT_TAG)"> coupler.git </codeBase>
       </source>
       <compile>
-        <cppDefs><![CDATA[$(F2003_FLAGS) -D_USE_LEGACY_LAND_ -Duse_AM3_physics -D_FILE_VERSION="'"`git-version-string $<`"'"]]></cppDefs>
+        <cppDefs><![CDATA[$(F2003_FLAGS) -Duse_deprecated_io -D_USE_LEGACY_LAND_ -Duse_AM3_physics -D_FILE_VERSION="'"`git-version-string $<`"'"]]></cppDefs>
       </compile>
     </component>
   </experiment>
