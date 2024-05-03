@@ -10,10 +10,6 @@
 	path = src/SIS2
 	url = https://github.com/NOAA-GFDL/SIS2.git
 	branch = dev/gfdl
-[submodule "src/MOM6"]
-	path = src/MOM6
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
-	branch = dev/cefi
 [submodule "src/FMS"]
 	path = src/FMS
 	url = https://github.com/NOAA-GFDL/FMS.git
@@ -38,6 +34,10 @@
 	path = src/Icepack
 	url = https://github.com/CICE-Consortium/Icepack.git
 	branch = Icepack1.3.3
+[submodule "src/MOM6"]
+	path = src/MOM6
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
+	branch = dev/cefi
 [submodule "src/ocean_BGC"]
 	path = src/ocean_BGC
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
