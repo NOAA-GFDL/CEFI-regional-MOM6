@@ -1,4 +1,4 @@
-name: cobalt CI
+name: dumbbell CI
 
 # Controls when the workflow will run
 on:
@@ -26,6 +26,13 @@ jobs:
         run: |
           echo "image build ..."
           singularity build 1d_mom6_cobalt_python.sif ./build_1d_mom6_cobalt_python.def
+
+      - name: Build mom6sis2-cobalt
+        working-directory: ./builds
+        run: |
+          echo "build mom6sis2..."
+          singularity exec --bind /__w:/__w ../ci/singularity/1d_mom6_cobalt_python.sif bash linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
+          ls -l -h build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
 
       - name: Run dumbbell driver
         working-directory: ./exps/dumbbell/z_sub
