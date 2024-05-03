@@ -4,8 +4,10 @@ This folder contains example configurations to run MOM6-SIS2-cobalt
 | directory    | Purpose |
 | --------------    | ------- |
 | ```OM4.single_column.COBALT/```     | 1D MOM6-cobalt exmaple |
+| ```dumbbell/```                     | dumbbell exmaple |
 | ```NWA12.COBALT/```                 | NWA12 MOM6-SIS2-cobalt example |
 | ```NEP10.COBALT/```                 | NEP10 MOM6-SIS2-cobalt example |
+
 
 # OM4.single_column.COBALT
 Users are advised to refer to the Dockerfile located at [ci/docker/Dockerfile.ci](../ci/docker/Dockerfile.ci). This Dockerfile includes the necessary steps to compile the code, download required input files, and execute the example 1D test case.

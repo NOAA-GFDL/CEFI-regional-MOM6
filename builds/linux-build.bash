@@ -142,7 +142,7 @@ else
     mkdir -p build/$machine_name-$platform/ocean_only/$target
     pushd build/$machine_name-$platform/ocean_only/$target
     rm -f path_names
-    $srcdir/mkmf/bin/list_paths $srcdir/MOM6/{config_src/infra/FMS2,config_src/memory/dynamic_symmetric,config_src/drivers/solo_driver,config_src/external/GFDL_ocean_BGC,config_src/external/ODA_hooks,pkg/GSW-Fortran/{modules,toolbox}/,src/{*,*/*}}/
+    $srcdir/mkmf/bin/list_paths $srcdir/MOM6/{config_src/infra/FMS2,config_src/memory/dynamic_symmetric,config_src/drivers/solo_driver,config_src/external/GFDL_ocean_BGC,config_src/external/ODA_hooks,config_src/external/database_comms,config_src/external/drifters,config_src/external/stochastic_physics,pkg/GSW-Fortran/{modules,toolbox}/,src/{*,*/*}}/
     $srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -o "-I../../shared/$target" -p MOM6 -l "-L../../shared/$target -lfms" -c '-Duse_netCDF -DSPMD' path_names
 
     make $makeflags MOM6
