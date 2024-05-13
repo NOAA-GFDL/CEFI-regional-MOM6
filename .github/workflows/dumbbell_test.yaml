@@ -1,0 +1,42 @@
+name: dumbbell CI
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  run-dumbbell-ci:
+    runs-on: ubuntu-latest
+    container:
+        image: quay.io/singularity/singularity:v4.1.0
+        options: --privileged    
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          
+      - name: Build singularity Image
+        working-directory: ./ci/singularity
+        run: |
+          echo "image build ..."
+          singularity build 1d_mom6_cobalt_python.sif ./build_1d_mom6_cobalt_python.def
+
+      - name: Build mom6sis2-cobalt
+        working-directory: ./builds
+        run: |
+          echo "build mom6sis2..."
+          singularity exec --bind /__w:/__w ../ci/singularity/1d_mom6_cobalt_python.sif bash linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
+          ls -l -h build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
+
+      - name: Run dumbbell driver
+        working-directory: ./exps/dumbbell/z_sub
+        run: |
+          echo "Start dumbbell test ..."
+          pwd
+          singularity exec --bind /__w:/__w ../../../ci/singularity/1d_mom6_cobalt_python.sif ./driver.sh
