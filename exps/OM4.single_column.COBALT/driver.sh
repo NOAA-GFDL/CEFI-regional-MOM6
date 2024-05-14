@@ -28,10 +28,12 @@ popd
 
 #
 echo "run 24hrs rst test ..."
+export LD_LIBRARY_PATH=../../builds/build/docker-linux-gnu/libyaml/debug/lib:$LD_LIBRARY_PATH
 ln -fs input.nml_24hr_rst input.nml
 mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2 > out3 2>err3
 mv RESTART RESTART_24hrs_rst
 mv ocean.stats* RESTART_24hrs_rst
+[[ ! -f 20040102.ocean_daily_subset.nc.0000 ]] && echo "Can not find sub-region diag output! Exit!" && exit 1
 
 # Define the directories containing the files
 DIR1="RESTART_24hrs_rst/"

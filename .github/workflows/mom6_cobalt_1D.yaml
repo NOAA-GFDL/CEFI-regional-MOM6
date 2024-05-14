@@ -30,7 +30,7 @@ jobs:
       run: |
         apt update; apt install -y wget
         echo "build mom6-sis2-cobalt ..."
-        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
+        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2_yaml
 
     - name: Download 1d model dataset
       working-directory: ./exps

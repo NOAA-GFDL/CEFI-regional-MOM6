@@ -51,6 +51,7 @@
             max_input_fields = 2000
             max_output_fields = 5000
             mix_snapshot_average_fields=.false.
+            use_modern_diag=.true.
 /
 
  &flux_exchange_nml
