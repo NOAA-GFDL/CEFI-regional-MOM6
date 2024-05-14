@@ -148,7 +148,7 @@ if [[ "$target" =~ "stdpar" ]] ; then
     linker_options="$linker_options -stdpar "
 fi
 
-    $srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -o "-I../../shared/$target -I../../libyaml/$target/include" -p MOM6SIS2 -l "-L../../libyaml/$target/lib -lyaml -L../../shared/$target -lfms $linker_options" -c "$compiler_options" path_names
+    $srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -o "-I../../shared/$target -I../../libyaml/$target/include" -p MOM6SIS2 -l "-L../../shared/$target -lfms -L../../libyaml/$target/lib -lyaml $linker_options" -c "$compiler_options" path_names
 
     make $makeflags MOM6SIS2
 
