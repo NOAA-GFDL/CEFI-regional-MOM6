@@ -186,6 +186,8 @@ Model output is controlled via the FMS diag_manager using the ``diag_table``.
 
 The diag_table file has three kinds of section: Title, File and Field. The title section is mandatory and always the first. There can be multiple file and field sections typically either in pairs or grouped in to all files and all fields, but always with the file section preceding the corresponding field section.
 
+The new FMS2 comes with a new rewritten diag manager. The old diag_manager code has been kept intact and will be used by default. The rewritten diag manager can be enabled via ``use_modern_diag = .true.`` to your ``diag_manager_nml``. Keep in mind that the rewritten diag manager only supports the YAML format of diag_Table (this requires the additional third-party libyaml when building FMS2). Users can refer to `this page <https://github.com/NOAA-GFDL/FMS/blob/main/diag_manager/diag_yaml_format.md>`__ for more details of the diag_table yaml format. An example diag_table.yaml can be found in our 1D case: ``exps/OM4.single_column.COBALT/diag_table.yaml``.
+
 .. _TitleSec:
 
 ---------------------------
