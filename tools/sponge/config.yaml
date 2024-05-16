@@ -1,0 +1,11 @@
+forecasts:
+  first_year: 1993
+  last_year: 1993 
+
+filesystem:
+  # Path to ocean_static file without mask table:
+  ocean_static: /home/Andrew.C.Ross/git/nwa12/data/geography/ocean_static.nc
+  # Path to monthly averaged temperature and salinity data, will be used for nudging:
+  monthly_data_nudging: /work/acr/glorys/monthly_filled/glorys_monthly_ts_fine_{year}.nc
+  # Where to put data that will be used to force the model:
+  model_input_data: ./ 
