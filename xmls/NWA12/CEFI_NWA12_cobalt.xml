@@ -643,8 +643,8 @@ MOM_OVERRIDE_EOF
       <regression name="restart">
         <run days="1 1">
           <resources jobWallclock="01:00:00">
-            <ice                          layout = "30,30" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-            <ocn ranks="900" threads="1" layout = "30,30" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+            <ice                          layout = "30,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
+            <ocn ranks="900" threads="1" layout = "30,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
           </resources>
         </run>
         <run days="2">
