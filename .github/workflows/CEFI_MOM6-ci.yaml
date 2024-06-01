@@ -94,8 +94,12 @@ jobs:
              exit 10
           fi
 
+  add-pass-label:
+    needs: run-CEFI_MOM6-ci
+    runs-on: self-hosted
+    if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
+    steps:
       - name: Add "pass_CEFI_MOM6_RT" label on success
-        if: success() && contains(github.event.label.name, 'CEFI_MOM6_RT_gaea_c5')
         run: |
           TOKEN=${{ secrets.GITHUB_TOKEN }}
           RT_TEST_LABEL="CEFI_MOM6_RT_gaea_c5"
@@ -106,7 +110,6 @@ jobs:
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
-    
 
           # Add the "pass_CEFI_MOM6_RT" label
           curl -X POST \
@@ -116,7 +119,7 @@ jobs:
             -d "{\"labels\":[\"$PASS_LABEL\"]}"
 
   clean-up:
-    needs: run-CEFI_MOM6-ci
+    needs: add-pass-label
     runs-on: self-hosted
     strategy:
       max-parallel: 1
