@@ -6,6 +6,8 @@ RUN apt update && \
     gfortran \
     git \
     vim \
+    imagemagick \
+    curl \
     wget \
     tcsh \
     netcdf-bin \
@@ -13,10 +15,27 @@ RUN apt update && \
     libnetcdff-dev \
     openmpi-bin \
     libopenmpi-dev \
-    && apt clean -y \
+    nco \
+    ncview
+
+RUN apt install -y \
+    python3 \
+    python3-pip \
+    && pip3 install numpy netCDF4 matplotlib   
+
+RUN apt clean -y \
     && rm -rf /var/lib/apt/lists/*
+
+
 RUN useradd -u 1001 builder
 RUN mkdir -p /opt
 WORKDIR /opt
 RUN chown -R builder:builder /opt
 USER builder
+
+RUN cd /opt && git clone https://github.com/NOAA-GFDL/FRE-NCtools.git
+RUN cd /opt/FRE-NCtools && autoreconf -i && mkdir build && cd build \
+    && ../configure --prefix=/opt \
+    && make && make install
+
+RUN rm -rf /opt/FRE-NCtools    
