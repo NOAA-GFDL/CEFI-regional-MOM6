@@ -208,6 +208,9 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         do_chksum = .false.
         do_endpoint_chksum = .false.
       </namelist>
+      <namelist name ="cobalt_input_nml">
+        parameter_filename = 'INPUT/COBALT_input','INPUT/COBALT_override'
+      </namelist>
       <namelist name="generic_tracer_nml">
         do_generic_tracer=.true.
         do_generic_abiotic=.false.
@@ -591,6 +594,21 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override DT_THERM = 1200.0
 #override DT = 400        
 MOM_OVERRIDE_EOF
+
+truncate -s 0 $work/INPUT/COBALT_override
+cat > $work/INPUT/COBALT_override << COBALT_OVERRIDE_EOF
+! Put the contents of your COBALT_override file here.
+! For parameters which are not specified in the COBALT_input file, just set the new value, ex:
+! do_case2_mod = True
+! For parameters which are specified in the COBALT_input file, specify an override, ex:
+!#override do_case2_mod = True
+COBALT_OVERRIDE_EOF
+
+truncate -s 0 $work/INPUT/COBALT_input
+cat > $work/INPUT/COBALT_input << COBALT_INPUT_EOF
+! Put the contents of your COBALT_input file here
+do_case2_mod = True		      
+COBALT_INPUT_EOF
         ]]>
       </csh>
     </input>
@@ -661,7 +679,7 @@ MOM_OVERRIDE_EOF
          cd $work
          #Make a directory to trick FRE to pick up and archive in ascii
          mkdir extra.results
-         mv MOM_parameter_doc* SIS_parameter_doc* seaice.stats* ocean.stats* extra.results/
+         mv MOM_parameter_doc* SIS_parameter_doc* COBALT_parameter_doc* seaice.stats* ocean.stats* extra.results/
          cp diag_table extra.results/.
          #When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
          #This causes problems for ferret and python tools for analysis.

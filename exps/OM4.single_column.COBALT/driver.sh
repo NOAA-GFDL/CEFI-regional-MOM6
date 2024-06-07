@@ -10,6 +10,7 @@ echo "Test started:  " `date`
 echo "run 48hrs test ..."
 ln -fs input.nml_48hr input.nml
 mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2 > out1 2>err1
+tail out1
 mv RESTART RESTART_48hrs
 mv ocean.stats* RESTART_48hrs
 
@@ -17,6 +18,7 @@ mv ocean.stats* RESTART_48hrs
 echo "run 24hrs test ..."
 ln -fs input.nml_24hr input.nml
 mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2 > out2 2>err2
+tail out2
 mv RESTART RESTART_24hrs
 mv ocean.stats* RESTART_24hrs
 
@@ -30,6 +32,7 @@ popd
 echo "run 24hrs rst test ..."
 ln -fs input.nml_24hr_rst input.nml
 mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2 > out3 2>err3
+tail out3
 mv RESTART RESTART_24hrs_rst
 mv ocean.stats* RESTART_24hrs_rst
 
