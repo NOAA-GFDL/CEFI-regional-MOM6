@@ -22,23 +22,27 @@
 	path = src/Icepack
 	url = https://github.com/CICE-Consortium/Icepack.git
 	branch = Icepack1.3.3
-[submodule "src/MOM6"]
-	path = src/MOM6
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
-	branch = dev/cefi
-[submodule "src/ocean_BGC"]
-	path = src/ocean_BGC
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
-	branch = dev/cefi
-[submodule "src/FMS"]
-	path = src/FMS
-	url = https://github.com/NOAA-GFDL/FMS.git
-	branch = 2024.01
-[submodule "src/coupler"]
-	path = src/coupler
-	url = https://github.com/NOAA-GFDL/FMScoupler.git
-	branch = 2024.01
 [submodule "src/ice_param"]
 	path = src/ice_param
 	url = https://github.com/NOAA-GFDL/ice_param.git
 	branch = 2024.01
+[submodule "src/libyaml"]
+	path = src/libyaml
+	url = https://github.com/yaml/libyaml.git
+	branch = master
+[submodule "src/MOM6"]
+	path = src/MOM6
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
+	branch = dev/cefi
+[submodule "src/FMS"]
+	path = src/FMS
+	url = https://github.com/NOAA-GFDL/FMS.git
+	branch = 2024.01.01
+[submodule "src/coupler"]
+	path = src/coupler
+	url = https://github.com/NOAA-GFDL/FMScoupler.git
+	branch = 2024.01.01
+[submodule "src/ocean_BGC"]
+	path = src/ocean_BGC
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
+	branch = dev/cefi
