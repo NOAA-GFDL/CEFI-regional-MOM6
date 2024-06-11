@@ -24,7 +24,7 @@ This documentation provides an overview of how we use ESMG gridtools and COSIMA-
 ```bash 
 git clone https://github.com/ESMG/gridtools.git 
 ``` 
-  - **Create a conda environment**: When creating the conda environemnt, issues might arise from incopatibility between environemnts. [This tutorial](https://github.com/ESMG/gridtools/blob/de0a18c1ce0807748aa70023300dfc415277bd4c/docs/conda/README.md?plain=1#L70) was very helpful providing alternative istallation methods. Here I use alternative installation method (2):  
+  - **Create a conda environment**: When creating the conda environemnt, issues might arise from incompatibility between environemnts. [This tutorial](https://github.com/ESMG/gridtools/blob/de0a18c1ce0807748aa70023300dfc415277bd4c/docs/conda/README.md?plain=1#L70) was very helpful providing alternative installation methods. Here I use alternative installation method (2):  
 
 ```bash 
 conda create -n gridTools python==3.7.10 
@@ -43,7 +43,7 @@ python -m ipykernel install --user --name gridTools --display-name "Grid Tools E
 
 ## [COSIMA-regional-mom6 Gridtools](https://github.com/COSIMA/regional-mom6)  
 
-**COSIMA (Consortium for Ocean-Sea Ice Modelling in Australia) regional-mom6 gridtools** are specifically tailored for handling regional configurations of the MOM6 ocean model. It is a great method to learn about grid generation, and use the package to generate your own grid, however, it is best for generating regional horizontal grids with uniform spacing in longitude and latitude, and only supports boundary segments that are parallel to either lines of constant longitude and latitude.  
+**COSIMA (Consortium for Ocean-Sea Ice Modelling in Australia) regional-mom6 gridtools** are specifically tailored for handling regional configurations of the MOM6 ocean model. It is a great method to learn about grid generation, and use the package to generate your own grid,n however, it is best for generating regional horizontal grids with uniform spacing in longitude and latitude, and only supports boundary segments that are parallel to either lines of constant longitude and latitude.  
 
 For a full description and tutorial of these tools go to the following links:  
 
