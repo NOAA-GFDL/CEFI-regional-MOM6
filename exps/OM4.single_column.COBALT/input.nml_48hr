@@ -17,6 +17,11 @@
                              'SIS_layout',
                              'SIS_override' /
 
+ &cobalt_input_nml
+        parameter_filename = 'COBALT_input',
+                             'COBALT_override'
+/
+
  &atmos_model_nml
            layout = 1, 1
 /
