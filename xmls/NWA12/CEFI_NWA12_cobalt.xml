@@ -597,7 +597,7 @@ MOM_OVERRIDE_EOF
     <runtime>
       <production simTime="$(PROD_SIMTIME)" units="years">
         <segment simTime="12" units="months"/>
-        <resources jobWallclock="08:00:00" segRuntime="08:00:00">
+        <resources jobWallclock="13:00:00" segRuntime="13:00:00">
           <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
         </resources>
