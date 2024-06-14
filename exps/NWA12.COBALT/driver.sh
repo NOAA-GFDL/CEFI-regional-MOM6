@@ -59,7 +59,7 @@ mv ocean.stats RESTART_24hrs_rst
 
 # Define the directories containing the files
 DIR1="./RESTART_24hrs_rst"
-DIR2="/gpfs/f5/cefi/proj-shared/github/ci_data/reference/main/NWA12.COBALT/20240606"
+DIR2="/gpfs/f5/cefi/proj-shared/github/ci_data/reference/main/NWA12.COBALT/20240610"
 
 # Define the files to compare
 FILES=("$DIR2"/*.nc)
