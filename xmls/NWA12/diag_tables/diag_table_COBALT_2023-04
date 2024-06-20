@@ -289,7 +289,7 @@
  "generic_cobalt ","wc_vert_int_jprod_n2amx", "wc_vert_int_jprod_n2amx", "ocean_cobalt_fluxes_int","all","mean","none",2
  "generic_cobalt ","wc_vert_int_net_phyto_resp", "wc_vert_int_net_phyto_resp", "ocean_cobalt_fluxes_int","all","mean","none",2
  "generic_cobalt ","wc_vert_int_npp",         "wc_vert_int_npp",         "ocean_cobalt_fluxes_int","all","mean","none",2
- "generic_cobalt ","wc_vert_int_chemoautopp", "wc_vert_int_chemoautopp", "ocean_cobalt_fluxes_int","all","mean","none",2
+#"generic_cobalt ","wc_vert_int_chemoautopp", "wc_vert_int_chemoautopp", "ocean_cobalt_fluxes_int","all","mean","none",2
 #=======================================
 # ocean_cobalt_tracers_month_z
 #=======================================
