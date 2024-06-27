@@ -1,0 +1,21 @@
+title: test_diag_manager
+base_date: 1993 1 1 0 0 0
+diag_files:
+- file_name: ocean_daily_subset
+  time_units: days
+  unlimdim: time
+  is_ocean: true
+  freq: 1 days
+  varlist:
+  - module: ocean_model
+    var_name: thetao
+    reduction: average
+    kind: r4
+  sub_region:
+  - grid_type: index
+    tile: 1
+    corner1: 2,2 
+    corner2: 3,2
+    corner3: 2,3 
+    corner4: 3,3
+
