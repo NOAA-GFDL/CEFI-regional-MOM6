@@ -1,11 +1,11 @@
-experiment: "MOM6_SIS2_GENERIC_4P_compile_symm"
+experiment: "MOM6_SIS2_GENERIC_4P_compile_symm_yaml"
 container_addlibs:
 baremetal_linkerflags:
 src:
      - component: "FMS"
        repo: "https://github.com/NOAA-GFDL/FMS.git"
        branch: "$(FMS_GIT_TAG)"
-       cppdefs: "-DINTERNAL_FILE_NML -Duse_libMPI -Duse_netCDF -Duse_deprecated_io  -DMAXFIELDMETHODS_=600" #this uses deprecated IO
+       cppdefs: "-Duse_libMPI -Duse_netCDF -Duse_yaml  -DMAXFIELDMETHODS_=600" #this uses deprecated IO
        otherFlags: "$(FMSincludes)"
      - component: mom6_symmetric
        requires: [FMS]
@@ -23,13 +23,13 @@ src:
                mom6_symmetric/src/ocean_BGC/mocsy/src,
                mom6_symmetric/src/MOM6/pkg/GSW-Fortran/modules,
                mom6_symmetric/src/MOM6/pkg/GSW-Fortran/toolbox,
-               mom6_symmetric/src/MOM6/config_src/infra/FMS1,
+               mom6_symmetric/src/MOM6/config_src/infra/FMS2,
                mom6_symmetric/src/atmos_null, #atmosphere
                mom6_symmetric/src/land_null] #land
        makeOverrides: 'OPENMP=""'
        otherFlags: "$(FMSincludes) $(momIncludes)"
        cppdefs: |
-          -DMAX_FIELDS_=100 -DNOT_SET_AFFINITY -D_USE_MOM6_DIAG -D_USE_GENERIC_TRACER  -DUSE_PRECISION=2 -D_FILE_VERSION="'"`/ncrc/home2/fms/local/opt/fre-commands/bronx-21/bin/git-version-string $<`"'"
+          -DINTERNAL_FILE_NML -DMAX_FIELDS_=100 -DUSE_FMS2_IO -DNOT_SET_AFFINITY -D_USE_MOM6_DIAG -D_USE_GENERIC_TRACER  -DUSE_PRECISION=2 -D_FILE_VERSION="'"`/ncrc/home2/fms/local/opt/fre-commands/bronx-21/bin/git-version-string $<`"'"
      - component: sis2
        requires: [FMS, mom6_symmetric]
        repo: https://github.com/NOAA-GFDL/ice_param.git
@@ -37,7 +37,7 @@ src:
        otherFlags: "$(FMSincludes) $(momIncludes) $(sisincludes)"
        makeOverrides: 'OPENMP=""'
        cppdefs: |
-          -D_FILE_VERSION="'"`/ncrc/home2/fms/local/opt/fre-commands/bronx-21/bin/git-version-string $<`"'"
+          -DUSE_FMS2_IO -D_FILE_VERSION="'"`/ncrc/home2/fms/local/opt/fre-commands/bronx-21/bin/git-version-string $<`"'"
      - component: coupler
        repo: https://github.com/NOAA-GFDL/FMScoupler.git
        requires: [FMS, mom6_symmetric, sis2]
@@ -45,6 +45,4 @@ src:
                mom6_symmetric/src/coupler/full ]
        otherFlags: "$(FMSincludes) $(momIncludes)"
        cppdefs: |
-          -Duse_deprecated_io -D_USE_LEGACY_LAND_ -Duse_AM3_physics -D_FILE_VERSION="'"`/ncrc/home2/fms/local/opt/fre-commands/bronx-21/bin/git-version-string $<`"'"
-
-
+          -DUSE_FMS2_IO -D_USE_LEGACY_LAND_ -Duse_AM3_physics -D_FILE_VERSION="'"`/ncrc/home2/fms/local/opt/fre-commands/bronx-21/bin/git-version-string $<`"'"
