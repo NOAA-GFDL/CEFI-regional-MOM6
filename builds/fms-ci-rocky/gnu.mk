@@ -85,9 +85,9 @@ CPPDEFS += -DHAVE_SCHED_GETAFFINITY
 # Macro for Fortran preprocessor
 FPPFLAGS := $(INCLUDES)
 # Fortran Compiler flags for the NetCDF library
-FPPFLAGS += $(shell nf-config --fflags)
+FPPFLAGS += -L/opt/software/linux-rocky9-skylake/gcc-11.3.1/netcdf-fortran-4.6.1-tnugoljrvfadp3sluq4r2r7l4z4i5rz5/lib -lnetcdff #$(shell nf-config --fflags)
 # Fortran Compiler flags for the MPICH MPI library
-FPPFLAGS += $(shell pkg-config --cflags-only-I mpich)
+FPPFLAGS += $(shell pkg-config --cflags-only-I mpich2)
 
 # Base set of Fortran compiler flags
 FFLAGS := -fcray-pointer -fdefault-double-8 -fdefault-real-8 -Waliasing -ffree-line-length-none -fno-range-check
@@ -107,7 +107,7 @@ CPPFLAGS := $(INCLUDES)
 # C Compiler flags for the NetCDF library
 CPPFLAGS += $(shell nc-config --cflags)
 # C Compiler flags for the MPICH MPI library
-CPPFLAGS += $(shell pkg-config --cflags-only-I mpich)
+CPPFLAGS += $(shell pkg-config --cflags-only-I mpich2)
 
 # Base set of C compiler flags
 CFLAGS := -D__IFC
@@ -136,10 +136,9 @@ LDFLAGS_COVERAGE :=
 # Start with a blank LIBS
 LIBS =
 # NetCDF library flags
-LIBS += $(shell nc-config --libs)
-LIBS += $(shell nf-config --flibs)
+LIBS += -L/opt/software/linux-rocky9-skylake/gcc-11.3.1/netcdf-c-4.9.2-4d7kz3o55pfvxtvp7f6z4pwvx62b5vpk/lib -lnetcdf -L/opt/software/linux-rocky9-skylake/gcc-11.3.1/netcdf-fortran-4.6.1-tnugoljrvfadp3sluq4r2r7l4z4i5rz5/lib -lnetcdff #$(shell nf-config --flibs)
 # MPICH MPI library flags
-#LIBS += $(shell pkg-config --libs mpich)
+LIBS += $(shell pkg-config --libs mpich2-f90)
 
 # Get compile flags based on target macros.
 ifdef REPRO
@@ -204,13 +203,13 @@ LDFLAGS += $(LIBS)
 # .f, .f90, .F, .F90. Given a sourcefile <file>.<ext>, where <ext> is one of
 # the above, this provides a number of default actions:
 
-# make <file>.opt       create an optimization report
-# make <file>.o         create an object file
-# make <file>.s         create an assembly listing
-# make <file>.x         create an executable file, assuming standalone
-#                       source
-# make <file>.i         create a preprocessed file (for .F)
-# make <file>.i90       create a preprocessed file (for .F90)
+# make <file>.opt	create an optimization report
+# make <file>.o		create an object file
+# make <file>.s		create an assembly listing
+# make <file>.x		create an executable file, assuming standalone
+#			source
+# make <file>.i		create a preprocessed file (for .F)
+# make <file>.i90	create a preprocessed file (for .F90)
 
 # The macro TMPFILES is provided to slate files like the above for removal.
 
@@ -220,66 +219,66 @@ TMPFILES = .*.m *.B *.L *.i *.i90 *.l *.s *.mod *.opt
 .SUFFIXES: .F .F90 .H .L .T .f .f90 .h .i .i90 .l .o .s .opt .x
 
 .f.L:
-        $(FC) $(FFLAGS) -c -listing $*.f
+	$(FC) $(FFLAGS) -c -listing $*.f
 .f.opt:
-        $(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f
+	$(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f
 .f.l:
-        $(FC) $(FFLAGS) -c $(LIST) $*.f
+	$(FC) $(FFLAGS) -c $(LIST) $*.f
 .f.T:
-        $(FC) $(FFLAGS) -c -cif $*.f
+	$(FC) $(FFLAGS) -c -cif $*.f
 .f.o:
-        $(FC) $(FFLAGS) -c $*.f
+	$(FC) $(FFLAGS) -c $*.f
 .f.s:
-        $(FC) $(FFLAGS) -S $*.f
+	$(FC) $(FFLAGS) -S $*.f
 .f.x:
-        $(FC) $(FFLAGS) -o $*.x $*.f *.o $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $*.x $*.f *.o $(LDFLAGS)
 .f90.L:
-        $(FC) $(FFLAGS) -c -listing $*.f90
+	$(FC) $(FFLAGS) -c -listing $*.f90
 .f90.opt:
-        $(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f90
+	$(FC) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.f90
 .f90.l:
-        $(FC) $(FFLAGS) -c $(LIST) $*.f90
+	$(FC) $(FFLAGS) -c $(LIST) $*.f90
 .f90.T:
-        $(FC) $(FFLAGS) -c -cif $*.f90
+	$(FC) $(FFLAGS) -c -cif $*.f90
 .f90.o:
-        $(FC) $(FFLAGS) -c $*.f90
+	$(FC) $(FFLAGS) -c $*.f90
 .f90.s:
-        $(FC) $(FFLAGS) -c -S $*.f90
+	$(FC) $(FFLAGS) -c -S $*.f90
 .f90.x:
-        $(FC) $(FFLAGS) -o $*.x $*.f90 *.o $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $*.x $*.f90 *.o $(LDFLAGS)
 .F.L:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F
 .F.opt:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F
 .F.l:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F
 .F.T:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F
 .F.f:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F > $*.f
+	$(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F > $*.f
 .F.i:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F
+	$(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F
 .F.o:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F
 .F.s:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F
 .F.x:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F *.o $(LDFLAGS)
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F *.o $(LDFLAGS)
 .F90.L:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -listing $*.F90
 .F90.opt:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -opt_report_level max -opt_report_phase all -opt_report_file $*.opt $*.F90
 .F90.l:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $(LIST) $*.F90
 .F90.T:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -cif $*.F90
 .F90.f90:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F90 > $*.f90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) -EP $*.F90 > $*.f90
 .F90.i90:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) -P $*.F90
 .F90.o:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c $*.F90
 .F90.s:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F90
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -c -S $*.F90
 .F90.x:
-        $(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F90 *.o $(LDFLAGS)
+	$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) -o $*.x $*.F90 *.o $(LDFLAGS)
