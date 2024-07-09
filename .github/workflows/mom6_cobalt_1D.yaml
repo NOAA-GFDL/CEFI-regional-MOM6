@@ -28,9 +28,8 @@ jobs:
     - name: Build mom6-sis2-cobalt
       working-directory: ./builds
       run: |
-        apt update; apt install -y wget
         echo "build mom6-sis2-cobalt ..."
-        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
+        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2_yaml
 
     - name: Download 1d model dataset
       working-directory: ./exps
@@ -41,6 +40,11 @@ jobs:
       working-directory: ./exps/OM4.single_column.COBALT
       run: | 
        ./driver.sh 
+
+    - name: Run mppnccombine to combine sub-region diag outputs 
+      working-directory: ./exps/OM4.single_column.COBALT
+      run: |
+       /opt/bin/mppnccombine -64 -h 16384 -m -k 100 20040102.ocean_daily_subset.nc 20040102.ocean_daily_subset.nc.00*
 
     - name: Check ref
       working-directory: ./exps/OM4.single_column.COBALT
