@@ -21,7 +21,7 @@ platform="ncrc5.intel23"
 target="repro"
 flavor="fms1_mom6sis2"
 
-FMSlib_PATH="/gpfs/f5/cefi/scratch/Yi-cheng.Teng/github/FMS/2023.04_FMS1"
+FMSlib_PATH="/gpfs/f5/cefi/scratch/Yi-cheng.Teng/github/FMS/2024.02_FMS1"
 rootdir=$(pwd)
 abs_rootdir=$rootdir
 
