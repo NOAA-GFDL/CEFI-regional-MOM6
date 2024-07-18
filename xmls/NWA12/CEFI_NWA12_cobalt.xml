@@ -582,7 +582,7 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override USE_generic_tracer = True
 #override MAX_FIELDS=500
 #override OBC_TIDE_NODAL_REF_DATE = ${fyear},7,2
-!#override DT_OBC_SEG_UPDATE_OBGC = 3600
+DT_OBC_SEG_UPDATE_OBGC = 1800
 #override CHL_FROM_FILE = False
 #override DO_GEOTHERMAL = True
 #override GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc"
@@ -591,8 +591,6 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override REMAP_AUXILIARY_VARS = True
 #override DIABATIC_FIRST = False
 #override EQN_OF_STATE = "WRIGHT_FULL"
-#override DT_THERM = 1200.0
-#override DT = 400        
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override
@@ -623,6 +621,14 @@ COBALT_INPUT_EOF
       <regression name="test">
         <run days="2">
           <resources jobWallclock="00:40:00">
+            <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+            <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+          </resources>
+        </run>
+      </regression>
+      <regression name="year">
+        <run months="12">
+          <resources jobWallclock="08:00:00">
             <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
             <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           </resources>
