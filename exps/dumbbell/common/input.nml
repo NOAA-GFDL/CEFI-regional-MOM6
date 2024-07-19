@@ -19,11 +19,18 @@
 
 
  &fms_nml
-         domains_stack_size = 710000,
-         stack_size = 0 /
+        clock_grain='ROUTINE' 
+        clock_flags='NONE'
+        domains_stack_size = 8000000
+        stack_size =0
+/
 
  &ocean_domains_nml
  /
+
+ &atmos_model_nml
+        layout= 1,1
+/
 
  &coupler_nml
         months = 0
@@ -47,4 +54,18 @@
         ocean_nthreads = 1
         do_chksum = .false.
         do_endpoint_chksum = .false.
+/
+
+ &generic_tracer_nml
+       do_generic_tracer=.true.
+       do_generic_age=.true.
+/
+
+ &time_interp_external_nml
+        max_fields = 400
+/
+
+ &xgrid_nml
+        make_exchange_reproduce = .true.
+        interp_method = 'second_order'
 /
