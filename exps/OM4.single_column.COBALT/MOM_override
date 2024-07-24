@@ -1,6 +1,7 @@
 ! Blank file in which we can put "overrides" for parameters
 #override REENTRANT_Y = True
 #override REENTRANT_X = True
+#override THICKNESS_CONFIG = "coord"
 #override ALE_COORDINATE_CONFIG = "FNC1:2,6500,6,.01"
 #override REGRIDDING_COORDINATE_MODE = "Z*"
 #override REGRIDDING_COORDINATE_MODE = "Z*"
