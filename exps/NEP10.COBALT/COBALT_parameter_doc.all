@@ -1,0 +1,637 @@
+! This file was written by the model and records all non-layout or debugging parameters used at run-time.
+
+! === module COBALT ===
+init = False                    !   [Boolean] default = False
+                                ! init
+htotal_scale_lo = 0.01          ! default = 0.01
+                                ! scaling factor for initializing carbon chemistry solver
+htotal_scale_hi = 100.0         ! default = 100.0
+                                ! scaling factor for initializing carbon chemistry solver
+RHO_0 = 1035.0                  !   [kg m-3] default = 1035.0
+                                ! reference density
+a_0 = 2.00907                   !   [ml L-1] default = 2.00907
+                                ! O2 sat. regression coefficient
+a_1 = 3.22014                   !   [ml L-1] default = 3.22014
+                                ! O2 sat. regression coefficient
+a_2 = 4.0501                    !   [ml L-1] default = 4.0501
+                                ! O2 sat. regression coefficient
+a_3 = 4.94457                   !   [ml L-1] default = 4.94457
+                                ! O2 sat. regression coefficient
+a_4 = -0.256847                 !   [ml L-1] default = -0.256847
+                                ! O2 sat. regression coefficient
+a_5 = 3.88767                   !   [ml L-1] default = 3.88767
+                                ! O2 sat. regression coefficient
+b_0 = -0.00624523               !   [ml L-1 (ppt salt)-1)] default = -0.00624523
+                                ! O2 sat. regression coefficient
+b_1 = -0.00737614               !   [ml L-1 (ppt salt)-1] default = -0.00737614
+                                ! O2 sat. regression coefficient
+b_2 = -0.010341                 !   [ml L-1 (ppt salt)-1] default = -0.010341
+                                ! O2 sat. regression coefficient
+b_3 = -0.00817083               !   [ml L-1 (ppt salt)-1] default = -0.00817083
+                                ! O2 sat. regression coefficient
+c_0 = -4.88682E-07              !   [ml L-1 (ppt salt)-2] default = -4.88682E-07
+                                ! O2 sat. regression coefficient
+a1_co2 = 2116.8                 !   [dimensionless] default = 2116.8
+                                ! CO2 Schmidt # regression coefficient
+a2_co2 = -136.25                !   [deg. C-1] default = -136.25
+                                ! CO2 Schmidt # regression coefficient
+a3_co2 = 4.7353                 !   [deg. C-2] default = 4.7353
+                                ! CO2 Schmidt # regression coefficient
+a4_co2 = -0.092307              !   [deg. C-3] default = -0.092307
+                                ! CO2 Schmidt # regression coefficient
+a5_co2 = 7.555E-04              !   [deg. C-4] default = 7.555E-04
+                                ! CO2 Schmidt # regression coefficient
+a1_o2 = 1920.4                  !   [dimensionless] default = 1920.4
+                                ! O2 Schmidt # regression coefficient
+a2_o2 = -135.6                  !   [deg. C-1] default = -135.6
+                                ! O2 Schmidt # regression coefficient
+a3_o2 = 5.2122                  !   [deg. C-2] default = 5.2122
+                                ! O2 Schmidt # regression coefficient
+a4_o2 = -0.10939                !   [deg. C-3] default = -0.10939
+                                ! O2 Schmidt # regression coefficient
+a5_o2 = 9.3777E-04              !   [deg. C-4] default = 9.3777E-04
+                                ! O2 Schmidt # regression coefficient
+n_2_n_denit = 5.9               !   [mol N mol N-1] default = 5.9
+                                ! moles NO3 used per mole org. N remineralized via denitrification
+no3_2_nh4_amx = 0.6             !   [mol N mol N-1] default = 0.6
+                                ! moles NO3 used per mole NH4+ oxidized to N2 via anammox
+o2_2_nfix = 8.125               !   [mol O2 mol N-1] default = 8.125
+                                ! moles O2 created per mole of N fixed
+o2_2_nh4 = 7.375                !   [mol O2 mol N-1] default = 7.375
+                                ! moles O2 created (consumed) per mole NH4-based prim. prod. (aerobic
+                                ! remineralization to NH4+)
+o2_2_nitrif = 2.0               !   [mol O2 mol N-1] default = 2.0
+                                ! moles O2 consumed per mole of NH4+ nitrified to NO3-
+o2_2_no3 = 9.375                !   [mol O2 mol N-1] default = 9.375
+                                ! moles O2 created per mole of NO3-based prim. prod.
+alk_2_n_denit = 1.1694915254237288 !   [mol alk mol N-1] default = 1.1694915254237288
+                                ! moles alkalinity created per mole NO3- consumed during denitrification
+alk_2_nh4_amx = 0.4             !   [mol alk mol N-1] default = 0.4
+                                ! moles alkalinity removed per mole NH4+ consumed via anammox
+k_fed_Di = 4.0E-09              !   [mol Fed kg-1] default = 4.0E-09
+                                ! k_fed_Di
+k_fed_Lg = 2.0E-09              !   [mol Fed kg-1] default = 2.0E-09
+                                ! k_fed_Lg
+k_fed_Md = 8.0E-10              !   [mol Fed kg-1] default = 8.0E-10
+                                ! k_fed_Md
+k_fed_Sm = 4.0E-10              !   [mol Fed kg-1] default = 4.0E-10
+                                ! k_fed_Sm
+k_nh4_Lg = 5.0E-08              !   [mol NH4 kg-1] default = 5.0E-08
+                                ! k_nh4_Lg
+k_nh4_Md = 2.0E-08              !   [mol NH4 kg-1] default = 2.0E-08
+                                ! k_nh4_Md
+k_nh4_Sm = 1.0E-08              !   [mol NH4 kg-1] default = 1.0E-08
+                                ! k_nh4_Sm
+k_nh4_Di = 1.0E-07              !   [mol NH4 kg-1] default = 1.0E-07
+                                ! k_nh4_Di
+k_no3_Lg = 2.5E-06              !   [mol NO3 kg-1] default = 2.5E-06
+                                ! k_no3_Lg
+k_no3_Md = 1.0E-06              !   [mol NO3 kg-1] default = 1.0E-06
+                                ! k_no3_Md
+k_no3_Sm = 5.0E-07              !   [mol NO3 kg-1] default = 5.0E-07
+                                ! k_no3_Sm
+k_no3_Di = 5.0E-06              !   [mol NO3 kg-1] default = 5.0E-06
+                                ! k_no3_Di
+k_po4_Di = 1.0E-07              !   [mol PO4 kg-1] default = 1.0E-07
+                                ! k_po4_Di
+k_po4_Lg = 5.0E-08              !   [mol PO4 kg-1] default = 5.0E-08
+                                ! k_po4_Lg
+k_po4_Md = 2.0E-08              !   [mol PO4 kg-1] default = 2.0E-08
+                                ! k_po4_Md
+k_po4_Sm = 1.0E-08              !   [mol PO4 kg-1] default = 1.0E-08
+                                ! k_po4_Sm
+k_sio4_Lg = 2.0E-06             !   [mol SiO4 kg-1] default = 2.0E-06
+                                ! k_sio4_Lg
+k_sio4_Md = 1.0E-06             !   [mol SiO4 kg-1] default = 1.0E-06
+                                ! k_sio4_Md
+k_fe_2_n_Di = 1.2E-05           !   [mol Fe kg-1] default = 1.2E-05
+                                ! k_fe_2_n_Di
+k_fe_2_n_Lg = 1.0E-05           !   [mol Fe kg-1] default = 1.0E-05
+                                ! k_fe_2_n_Lg
+k_fe_2_n_Md = 4.0E-06           !   [mol Fe kg-1] default = 4.0E-06
+                                ! k_fe_2_n_Md
+k_fe_2_n_Sm = 2.0E-06           !   [mol Fe kg-1] default = 2.0E-06
+                                ! k_fe_2_n_Sm
+fe_2_n_max_Sm = 5.0E-05         !   [mol Fe kg-1] default = 5.0E-05
+                                ! fe_2_n_max_Sm
+fe_2_n_max_Md = 2.5E-04         !   [mol Fe kg-1] default = 2.5E-04
+                                ! fe_2_n_max_Md
+fe_2_n_max_Lg = 5.0E-04         !   [mol Fe kg-1] default = 5.0E-04
+                                ! fe_2_n_max_Lg
+fe_2_n_max_Di = 5.0E-04         !   [mol Fe kg-1] default = 5.0E-04
+                                ! fe_2_n_max_Di
+fe_2_n_upt_fac = 6.0E-05        !   [mol Fe kg-1] default = 6.0E-05
+                                ! fe_2_n_upt_fac
+alpha_Di_hl = 4.0E-06           !   [g C g chl-1 s-1] default = 4.0E-06
+                                ! alpha_Di_hl
+alpha_Lg_hl = 4.0E-06           !   [g C g chl-1 s-1] default = 4.0E-06
+                                ! alpha_Lg_hl
+alpha_Md_hl = 8.0E-06           !   [g C g chl-1 s-1] default = 8.0E-06
+                                ! alpha_Md_hl
+alpha_Sm_hl = 1.6E-05           !   [g C g chl-1 s-1] default = 1.6E-05
+                                ! alpha_Sm_hl
+alpha_Di_ll = 8.0E-06           !   [g C g chl-1 s-1] default = 8.0E-06
+                                ! alpha_Di_ll
+alpha_Lg_ll = 8.0E-06           !   [g C g chl-1 s-1] default = 8.0E-06
+                                ! alpha_Lg_ll
+alpha_Md_ll = 1.6E-05           !   [g C g chl-1 s-1] default = 1.6E-05
+                                ! alpha_Md_ll
+alpha_Sm_ll = 3.2E-05           !   [g C g chl-1 s-1] default = 3.2E-05
+                                ! alpha_Sm_ll
+kappa_eppley = 0.063            !   [deg C-1] default = 0.063
+                                ! kappa_eppley
+P_C_max_Di_hl = 0.6             !   [day-1] default = 0.6
+                                ! P_C_max_Di_hl
+P_C_max_Lg_hl = 1.0             !   [day-1] default = 1.0
+                                ! P_C_max_Lg_hl
+P_C_max_Md_hl = 1.1             !   [day-1] default = 1.1
+                                ! P_C_max_Md_hl
+P_C_max_Sm_hl = 1.0             !   [day-1] default = 1.0
+                                ! P_C_max_Sm_hl
+P_C_max_Di_ll = 0.3             !   [day-1] default = 0.3
+                                ! P_C_max_Di_ll
+P_C_max_Lg_ll = 0.5             !   [day-1] default = 0.5
+                                ! P_C_max_Lg_ll
+P_C_max_Md_ll = 0.55            !   [day-1] default = 0.55
+                                ! P_C_max_Md_ll
+P_C_max_Sm_ll = 0.5             !   [day-1] default = 0.5
+                                ! P_C_max_Sm_ll
+numlightadapt = 10              ! default = 10
+                                ! numlightadapt
+thetamax_Di = 0.035             !   [g chl g C-1] default = 0.035
+                                ! thetamax_Di
+thetamax_Lg = 0.07              !   [g chl g C-1] default = 0.07
+                                ! thetamax_Lg
+thetamax_Md = 0.045             !   [g chl g C-1] default = 0.045
+                                ! thetamax_Md
+thetamax_Sm = 0.035             !   [g chl g C-1] default = 0.035
+                                ! thetamax_Sm
+bresp_frac_mixed_Di = 0.02      ! default = 0.02
+                                ! bresp_frac_mixed_Di
+bresp_frac_mixed_Lg = 0.02      ! default = 0.02
+                                ! bresp_frac_mixed_Lg
+bresp_frac_mixed_Md = 0.02      ! default = 0.02
+                                ! bresp_frac_mixed_Md
+bresp_frac_mixed_Sm = 0.02      ! default = 0.02
+                                ! bresp_frac_mixed_Sm
+bresp_frac_strat_Di = 0.01      ! default = 0.01
+                                ! bresp_frac_strat_Di
+bresp_frac_strat_Lg = 0.01      ! default = 0.01
+                                ! bresp_frac_strat_Lg
+bresp_frac_strat_Md = 0.01      ! default = 0.01
+                                ! bresp_frac_strat_Md
+bresp_frac_strat_Sm = 0.01      ! default = 0.01
+                                ! bresp_frac_strat_Sm
+sink_max_Di = 1.0               !   [m day-1] default = 1.0
+                                ! sink_max_Di
+sink_max_Lg = 5.0               !   [m day-1] default = 5.0
+                                ! sink_max_Lg
+sink_max_Md = 1.0               !   [m day-1] default = 1.0
+                                ! sink_max_Md
+sink_max_Sm = 0.0               !   [m day-1] default = 0.0
+                                ! sink_max_Sm
+thetamin = 0.002                !   [g chl g C-1] default = 0.002
+                                ! thetamin
+zeta = 0.05                     ! default = 0.05
+                                ! zeta
+par_adj = 0.83                  ! default = 0.83
+                                ! par_adj
+gamma_irr_aclm = 1.0            !   [day-1] default = 1.0
+                                ! gamma_irr_aclm
+gamma_mu_mem = 1.0              !   [day-1] default = 1.0
+                                ! gamma_mu_mem
+ml_aclm_efold = 2.5             ! default = 2.5
+                                ! ml_aclm_efold
+zmld_ref = 10.0                 !   [m] default = 10.0
+                                ! zmld_ref
+densdiff_mld = 0.03             !   [kg m-3] default = 0.03
+                                ! densdiff_mld
+irrad_day_thresh = 1.0          !   [watts m-2] default = 1.0
+                                ! irrad_day_thresh
+do_case2_mod = True             !   [Boolean] default = False
+                                ! When ture, modify the opacity of case 2 (coastal) waterswhich are identified
+                                ! based on a temperature and depth threshold
+case2_depth = 30.0              !   [m] default = 30.0
+                                ! Depth threshold to identify Case 2 water when using a modified opacity.
+case2_salt = 30.0               !   [PSU] default = 30.0
+                                ! Salinity threshold to identify Case 2 water when using a modified opacity.
+case2_opac_add = 0.05           !   [m-1] default = 0.05
+                                ! Additional opactity added in Case 2 waters when using a modified opacity.
+min_daylength = 6.0             !   [hours] default = 6.0
+                                ! min_daylength
+refuge_conc = 1.0E-10           !   [mol kg-1] default = 1.0E-10
+                                ! refuge_conc
+o2_inhib_Di_pow = 4.0           !   [mol O2-1 m3] default = 4.0
+                                ! o2_inhib_Di_pow
+o2_inhib_Di_sat = 3.0E-04       !   [mol kg-1] default = 3.0E-04
+                                ! o2_inhib_Di_sat
+p_2_n_static = False            !   [Boolean] default = False
+                                ! p_2_n_static
+c_2_n = 6.625                   ! default = 6.625
+                                ! c_2_n
+p_2_n_static_Di = 0.025         !   [mol P mol N-1] default = 0.025
+                                ! p_2_n_static_Di
+p_2_n_static_Lg = 0.0714285714285714 !   [mol P mol N-1] default = 0.0714285714285714
+                                ! p_2_n_static_Lg
+p_2_n_static_Md = 0.05          !   [mol P mol N-1] default = 0.05
+                                ! p_2_n_static_Md
+p_2_n_static_Sm = 0.0416666666666667 !   [mol P mol N-1] default = 0.0416666666666667
+                                ! p_2_n_static_Sm
+p_2_n_min_Di = 0.025            !   [mol P mol N-1] default = 0.025
+                                ! p_2_n_min_Di
+p_2_n_slope_Di = 0.0            !   [mol P mol N-1 mol P-1 kg] default = 0.0
+                                ! p_2_n_slope_Di
+p_2_n_max_Di = 0.025            !   [mol P mol N-1] default = 0.025
+                                ! p_2_n_max_Di
+p_2_n_min_Sm = 0.032258064516129 !   [mol P mol N-1] default = 0.032258064516129
+                                ! p_2_n_min_Sm
+p_2_n_slope_Sm = 4.8E+04        !   [mol P mol N-1 mol P-1 kg] default = 4.8E+04
+                                ! p_2_n_slope_Sm
+p_2_n_max_Sm = 0.05             !   [mol P mol N-1] default = 0.05
+                                ! p_2_n_max_Sm
+p_2_n_min_Md = 0.032258064516129 !   [mol P mol N-1] default = 0.032258064516129
+                                ! p_2_n_min_Md
+p_2_n_slope_Md = 4.8E+04        !   [mol P mol N-1 mol P-1 kg] default = 4.8E+04
+                                ! p_2_n_slope_Md
+p_2_n_max_Md = 0.0625           !   [mol P mol N-1] default = 0.0625
+                                ! p_2_n_max_Md
+p_2_n_min_Lg = 0.032258064516129 !   [mol P mol N-1] default = 0.032258064516129
+                                ! p_2_n_min_Lg
+p_2_n_slope_Lg = 4.8E+04        !   [mol P mol N-1 mol P-1 kg] default = 4.8E+04
+                                ! p_2_n_slope_Lg
+p_2_n_max_Lg = 0.0714285714285714 !   [mol P mol N-1] default = 0.0714285714285714
+                                ! p_2_n_max_Lg
+si_2_n_static_Lg = 2.0          !   [mol Si mol N-1] default = 2.0
+                                ! si_2_n_static_Lg
+si_2_n_static_Md = 2.0          !   [mol Si mol N-1] default = 2.0
+                                ! si_2_n_static_Md
+si_2_n_max_Lg = 3.0             !   [mol Si mol N-1] default = 3.0
+                                ! si_2_n_max_Lg
+q_p_2_n_smz = 0.05              !   [mol P mol N-1] default = 0.05
+                                ! q_p_2_n_smz
+q_p_2_n_mdz = 0.0555555555555556 !   [mol P mol N-1] default = 0.0555555555555556
+                                ! q_p_2_n_mdz
+q_p_2_n_lgz = 0.0625            !   [mol P mol N-1] default = 0.0625
+                                ! q_p_2_n_lgz
+q_p_2_n_bact = 0.0625           !   [mol P mol N-1] default = 0.0625
+                                ! q_p_2_n_bact
+agg_Sm = 0.05                   !   [day-1(mol N kg)-1] default = 0.05
+                                ! agg_Sm
+agg_Di = 0.0                    !   [day-1(mol N kg)-1] default = 0.0
+                                ! agg_Di
+agg_Lg = 0.25                   !   [day-1(mol N kg)-1] default = 0.25
+                                ! agg_Lg
+agg_Md = 0.1                    !   [day-1(mol N kg)-1] default = 0.1
+                                ! agg_Md
+frac_mu_stress_Sm = 0.25        ! default = 0.25
+                                ! frac_mu_stress_Sm
+frac_mu_stress_Di = 0.25        ! default = 0.25
+                                ! frac_mu_stress_Di
+frac_mu_stress_Lg = 0.25        ! default = 0.25
+                                ! frac_mu_stress_Lg
+frac_mu_stress_Md = 0.25        ! default = 0.25
+                                ! frac_mu_stress_Md
+vir_Sm = 0.25                   !   [day-1 (mole N kg)-1] default = 0.25
+                                ! vir_Sm
+vir_Di = 0.05                   !   [day-1 (mole N kg)-1] default = 0.05
+                                ! vir_Di
+vir_Lg = 0.05                   !   [day-1 (mole N kg)-1] default = 0.05
+                                ! vir_Lg
+vir_Md = 0.125                  !   [day-1 (mole N kg)-1] default = 0.125
+                                ! vir_Md
+vir_Bact = 0.25                 !   [day-1 (mole N kg)-1] default = 0.25
+                                ! vir_Bact
+ktemp_vir = 0.063               !   [C-1] default = 0.063
+                                ! ktemp_vir
+mort_Sm = 0.0                   !   [day-1] default = 0.0
+                                ! mort_Sm
+mort_Di = 0.0                   !   [day-1] default = 0.0
+                                ! mort_Di
+mort_Lg = 0.0                   !   [day-1] default = 0.0
+                                ! mort_Lg
+mort_Md = 0.0                   !   [day-1] default = 0.0
+                                ! mort_Md
+exu_Sm = 0.13                   ! default = 0.13
+                                ! exu_Sm
+exu_Di = 0.13                   ! default = 0.13
+                                ! exu_Di
+exu_Lg = 0.13                   ! default = 0.13
+                                ! exu_Lg
+exu_Md = 0.13                   ! default = 0.13
+                                ! exu_Md
+imax_smz = 1.136                !   [day-1] default = 1.136
+                                ! imax_smz
+imax_mdz = 0.57                 !   [day-1] default = 0.57
+                                ! imax_mdz
+imax_lgz = 0.23                 !   [day-1] default = 0.23
+                                ! imax_lgz
+ki_smz = 1.25E-06               !   [mol N kg-1] default = 1.25E-06
+                                ! ki_smz
+ki_mdz = 1.25E-06               !   [mol N kg-1] default = 1.25E-06
+                                ! ki_mdz
+ki_lgz = 1.25E-06               !   [mol N kg-1] default = 1.25E-06
+                                ! ki_lgz
+ktemp_smz = 0.063               !   [C-1] default = 0.063
+                                ! ktemp_smz
+ktemp_mdz = 0.063               !   [C-1] default = 0.063
+                                ! ktemp_mdz
+ktemp_lgz = 0.063               !   [C-1] default = 0.063
+                                ! ktemp_lgz
+mu_max_bact = 1.0               !   [day-1] default = 1.0
+                                ! mu_max_bact
+k_ldon_bact = 5.0E-07           !   [mol ldon kg-1] default = 5.0E-07
+                                ! k_ldon_bact
+ktemp_bact = 0.063              !   [C-1] default = 0.063
+                                ! ktemp_bact
+gge_max_bact = 0.4              ! default = 0.4
+                                ! gge_max_bact
+bresp_bact = 0.0075             !   [day-1] default = 0.0075
+                                ! bresp_bact
+nswitch_smz = 2.0               !   [unitless] default = 2.0
+                                ! nswitch_smz
+nswitch_mdz = 2.0               !   [unitless] default = 2.0
+                                ! nswitch_mdz
+nswitch_lgz = 2.0               !   [unitless] default = 2.0
+                                ! nswitch_lgz
+mswitch_smz = 2.0               !   [unitless] default = 2.0
+                                ! mswitch_smz
+mswitch_mdz = 2.0               !   [unitless] default = 2.0
+                                ! mswitch_mdz
+mswitch_lgz = 2.0               !   [unitless] default = 2.0
+                                ! mswitch_lgz
+smz_ipa_smp = 1.0               !   [unitless] default = 1.0
+                                ! smz_ipa_smp
+smz_ipa_mdp = 0.4               !   [unitless] default = 0.4
+                                ! smz_ipa_mdp
+smz_ipa_lgp = 0.0               !   [unitless] default = 0.0
+                                ! smz_ipa_lgp
+smz_ipa_diaz = 0.0              !   [unitless] default = 0.0
+                                ! smz_ipa_diaz
+smz_ipa_smz = 0.0               !   [unitless] default = 0.0
+                                ! smz_ipa_smz
+smz_ipa_mdz = 0.0               !   [unitless] default = 0.0
+                                ! smz_ipa_mdz
+smz_ipa_lgz = 0.0               !   [unitless] default = 0.0
+                                ! smz_ipa_lgz
+smz_ipa_bact = 0.5              !   [unitless] default = 0.5
+                                ! smz_ipa_bact
+smz_ipa_det = 0.0               !   [unitless] default = 0.0
+                                ! smz_ipa_det
+mdz_ipa_smp = 0.4               !   [unitless] default = 0.4
+                                ! mdz_ipa_smp
+mdz_ipa_mdp = 1.0               !   [unitless] default = 1.0
+                                ! mdz_ipa_mdp
+mdz_ipa_lgp = 0.0               !   [unitless] default = 0.0
+                                ! mdz_ipa_lgp
+mdz_ipa_diaz = 0.75             !   [unitless] default = 0.75
+                                ! mdz_ipa_diaz
+mdz_ipa_smz = 1.0               !   [unitless] default = 1.0
+                                ! mdz_ipa_smz
+mdz_ipa_mdz = 0.0               !   [unitless] default = 0.0
+                                ! mdz_ipa_mdz
+mdz_ipa_lgz = 0.0               !   [unitless] default = 0.0
+                                ! mdz_ipa_lgz
+mdz_ipa_bact = 0.0              !   [unitless] default = 0.0
+                                ! mdz_ipa_bact
+mdz_ipa_det = 0.0               !   [unitless] default = 0.0
+                                ! mdz_ipa_det
+lgz_ipa_smp = 0.0               !   [unitless] default = 0.0
+                                ! lgz_ipa_smp
+lgz_ipa_mdp = 0.4               !   [unitless] default = 0.4
+                                ! lgz_ipa_mdp
+lgz_ipa_lgp = 1.0               !   [unitless] default = 1.0
+                                ! lgz_ipa_lgp
+lgz_ipa_diaz = 0.4              !   [unitless] default = 0.4
+                                ! lgz_ipa_diaz
+lgz_ipa_smz = 0.0               !   [unitless] default = 0.0
+                                ! lgz_ipa_smz
+lgz_ipa_mdz = 1.0               !   [unitless] default = 1.0
+                                ! lgz_ipa_mdz
+lgz_ipa_lgz = 0.0               !   [unitless] default = 0.0
+                                ! lgz_ipa_lgz
+lgz_ipa_bact = 0.0              !   [unitless] default = 0.0
+                                ! lgz_ipa_bact
+lgz_ipa_det = 0.0               !   [unitless] default = 0.0
+                                ! lgz_ipa_det
+gge_max_smz = 0.4               !   [unitless] default = 0.4
+                                ! gge_max_smz
+gge_max_mdz = 0.4               !   [unitless] default = 0.4
+                                ! gge_max_mdz
+gge_max_lgz = 0.4               !   [unitless] default = 0.4
+                                ! gge_max_lgz
+bresp_smz = 0.016               !   [day-1] default = 0.016
+                                ! bresp_smz
+bresp_mdz = 0.008               !   [day-1] default = 0.008
+                                ! bresp_mdz
+bresp_lgz = 0.0032              !   [day-1] default = 0.0032
+                                ! bresp_lgz
+phi_det_smz = 0.0               !   [unitless] default = 0.0
+                                ! phi_det_smz
+phi_det_mdz = 0.15              !   [unitless] default = 0.15
+                                ! phi_det_mdz
+phi_det_lgz = 0.3               !   [unitless] default = 0.3
+                                ! phi_det_lgz
+phi_ldon_smz = 0.1875           !   [unitless] default = 0.1875
+                                ! phi_ldon_smz
+phi_ldon_mdz = 0.09375          !   [unitless] default = 0.09375
+                                ! phi_ldon_mdz
+phi_ldon_lgz = 0.0              !   [unitless] default = 0.0
+                                ! phi_ldon_lgz
+phi_ldop_smz = 0.1725           !   [unitless] default = 0.1725
+                                ! phi_ldop_smz
+phi_ldop_mdz = 0.08625          !   [unitless] default = 0.08625
+                                ! phi_ldop_mdz
+phi_ldop_lgz = 0.0              !   [unitless] default = 0.0
+                                ! phi_ldop_lgz
+phi_srdon_smz = 0.0225          !   [unitless] default = 0.0225
+                                ! phi_srdon_smz
+phi_srdon_mdz = 0.01125         !   [unitless] default = 0.01125
+                                ! phi_srdon_mdz
+phi_srdon_lgz = 0.0             !   [unitless] default = 0.0
+                                ! phi_srdon_lgz
+phi_srdop_smz = 0.0375          !   [unitless] default = 0.0375
+                                ! phi_srdop_smz
+phi_srdop_mdz = 0.01875         !   [unitless] default = 0.01875
+                                ! phi_srdop_mdz
+phi_srdop_lgz = 0.0             !   [unitless] default = 0.0
+                                ! phi_srdop_lgz
+phi_sldon_smz = 0.09            !   [unitless] default = 0.09
+                                ! phi_sldon_smz
+phi_sldon_mdz = 0.045           !   [unitless] default = 0.045
+                                ! phi_sldon_mdz
+phi_sldon_lgz = 0.0             !   [unitless] default = 0.0
+                                ! phi_sldon_lgz
+phi_sldop_smz = 0.09            !   [unitless] default = 0.09
+                                ! phi_sldop_smz
+phi_sldop_mdz = 0.045           !   [unitless] default = 0.045
+                                ! phi_sldop_mdz
+phi_sldop_lgz = 0.0             !   [unitless] default = 0.0
+                                ! phi_sldop_lgz
+phi_ldon_vir = 0.625            !   [unitless] default = 0.625
+                                ! phi_ldon_vir
+phi_srdon_vir = 0.075           !   [unitless] default = 0.075
+                                ! phi_srdon_vir
+phi_sldon_vir = 0.3             !   [unitless] default = 0.3
+                                ! phi_sldon_vir
+phi_ldop_vir = 0.575            !   [unitless] default = 0.575
+                                ! phi_ldop_vir
+phi_srdop_vir = 0.125           !   [unitless] default = 0.125
+                                ! phi_srdop_vir
+phi_sldop_vir = 0.3             !   [unitless] default = 0.3
+                                ! phi_sldop_vir
+imax_hp = 0.09                  !   [day-1] default = 0.09
+                                ! imax_hp
+ki_hp = 1.25E-06                !   [mol N kg-1] default = 1.25E-06
+                                ! ki_hp
+coef_hp = 2.0                   !   [unitless] default = 2.0
+                                ! coef_hp
+ktemp_hp = 0.063                !   [C-1] default = 0.063
+                                ! ktemp_hp
+nswitch_hp = 2.0                !   [unitless] default = 2.0
+                                ! nswitch_hp
+mswitch_hp = 2.0                !   [unitless] default = 2.0
+                                ! mswitch_hp
+hp_ipa_smp = 0.0                !   [unitless] default = 0.0
+                                ! hp_ipa_smp
+hp_ipa_mdp = 0.0                !   [unitless] default = 0.0
+                                ! hp_ipa_mdp
+hp_ipa_lgp = 0.0                !   [unitless] default = 0.0
+                                ! hp_ipa_lgp
+hp_ipa_diaz = 0.0               !   [unitless] default = 0.0
+                                ! hp_ipa_diaz
+hp_ipa_smz = 0.0                !   [unitless] default = 0.0
+                                ! hp_ipa_smz
+hp_ipa_mdz = 1.0                !   [unitless] default = 1.0
+                                ! hp_ipa_mdz
+hp_ipa_lgz = 1.0                !   [unitless] default = 1.0
+                                ! hp_ipa_lgz
+hp_ipa_bact = 0.0               !   [unitless] default = 0.0
+                                ! hp_ipa_bact
+hp_ipa_det = 0.0                !   [unitless] default = 0.0
+                                ! hp_ipa_det
+hp_phi_det = 0.35               !   [unitless] default = 0.35
+                                ! hp_phi_det
+ffe_sed_max = 170.0             !   [micromoles Fe m-2 day-1] default = 170.0
+                                ! maximum iron release from the sediment
+ffe_geotherm_ratio = 2.0E-12    !   [mol Fe m-2 s-1 (W m-2)-1] default = 2.0E-12
+                                ! ffe_geotherm_ratio
+jfe_iceberg_ratio = 1.0E-07     !   [mol Fe kg-1 ice melt] default = 1.0E-07
+                                ! jfe_iceberg_ratio
+jno3_iceberg_ratio = 2.0E-06    !   [mol N kg-1 ice melt] default = 2.0E-06
+                                ! jno3_iceberg_ratio
+jpo4_iceberg_ratio = 1.1E-07    !   [mol P kg-1 ice melt] default = 1.1E-07
+                                ! jpo4_iceberg_ratio
+fe_coast = 0.0                  !   [mol Fe m kg-1 s-1] default = 0.0
+                                ! fe_coast
+half_life_14c = 5730.0          !   [s] default = 5730.0
+                                ! half_life_14c
+lambda_14c = 1.209680943385594E-04 !   [-s] default = 1.209680943385594E-04
+                                ! lambda_14c
+ca_2_n_arag = 0.055             !   [mol cadet_arag mol org. C-1] default = 0.055
+                                ! ratio of aragonite detritus prod. to org. C detritus prod. by aragonite shell
+                                ! formers
+ca_2_n_calc = 0.05              !   [mol cadet_calc mol org. C-1] default = 0.05
+                                ! ratio of calcite detritus prod. to org. C detritus prod. by calcite shell
+                                ! formers
+caco3_sat_max = 10.0            !   [none] default = 10.0
+                                ! cap for positive scaling of caco3 detritus prod with saturation state
+k_o2 = 8.0E-06                  !   [mol O2 kg-1] default = 8.0E-06
+                                ! O2 half-saturation for remineralization
+k_no3_denit = 1.0E-06           !   [mol NO3 kg-1] default = 1.0E-06
+                                ! nitrate half-saturation for denitrification
+o2_min = 8.0E-07                !   [mol O2 kg-1] default = 8.0E-07
+                                ! Minimum O2 for aerobic remineralization
+kappa_remin = 0.063             !   [deg C-1] default = 0.063
+                                ! Temperature dependence of remineralization
+remin_ramp_scale = 50.0         !   [m] default = 50.0
+                                ! depth scale from the surface over which remineralization ramps up
+gamma_ndet = 3.306878306878307E-06 !   [s-1] default = 3.306878306878307E-06
+                                ! Remineralization rate for unprotected organic matter
+rpcaco3 = 0.0880503144654088    !   [mol N mol Ca-1] default = 0.0880503144654088
+                                ! Organic matter protection from CaCO3
+rplith = 8.176100628930818E-04  !   [mol N g lith-1] default = 8.176100628930818E-04
+                                ! Organic matter protection from lithogenic minerals
+rpsio2 = 0.019622641509434      !   [mol N mol Si-1] default = 0.019622641509434
+                                ! Organic matter protection from silica
+gamma_cadet_arag = 1.522904483430799E-06 !   [s-1] default = 1.522904483430799E-06
+                                ! Dissolution rate for aragonite detritus at 0 saturation
+gamma_cadet_calc = 8.618074515319488E-07 !   [s-1] default = 8.618074515319488E-07
+                                ! Dissolution rate for calcite detritus at 0 saturation
+kappa_sidet = 0.063             !   [deg C -1] default = 0.063
+                                ! Temperature dependence of silica dissolution
+gamma_sidet = 1.157407407407407E-07 !   [s-1] default = 1.157407407407407E-07
+                                ! Dissolution rate of silica detritus at 0 deg. C
+phi_lith = 0.002                !   [dimensionless] default = 0.002
+                                ! scaling factor for creating lithogenic detritus via filter feeding
+k_lith = 0.5                    !   [year-1] default = 0.5
+                                ! background formation rate of lithogenic detritus
+felig_bkg = 5.0E-10             !   [mol Fe kg-1] default = 5.0E-10
+                                ! background organic ligand concentration
+felig_2_don = 5.0E-04           !   [mol lig (mol N)-1] default = 5.0E-04
+                                ! proportionality for enhancing ligands with non-refractory don
+alpha_fescav = 0.0              !   [year-1] default = 0.0
+                                ! linear iron scavenging rate constant
+beta_fescav = 2.5E+09           !   [year-1 (mol ndet kg-1)-1] default = 2.5E+09
+                                ! iron scavenging rate constant for free iron - detritus interaction
+remin_eff_fedet = 0.25          !   [unitless] default = 0.25
+                                ! iron remineralization efficiency relative to organic matter
+io_fescav = 10.0                !   [W m-2] default = 10.0
+                                ! scaling for weakened iron-ligand binding in high light
+fast_fescav_fac = 2.0           !   [none] default = 2.0
+                                ! multiplier for enhanced scavenging when free iron is above saturation
+kfe_eq_lig_ll = 1.0E+12         !   [(mol lig-1 kg)-1] default = 1.0E+12
+                                ! low light ligand binding strength
+kfe_eq_lig_hl = 1.0E+09         !   [(mol lig-1 kg)-1] default = 1.0E+09
+                                ! high light ligand binding strength
+bottom_thickness = 1.0          !   [m] default = 1.0
+                                ! effective bottom layer thickness for calculating rates of benthic processes
+z_sed = 0.1                     !   [m] default = 0.1
+                                ! effective sediment layer thickness
+z_burial = 10.0                 !   [m] default = 10.0
+                                ! depth scale for ramping up particulate organic burial
+z_denit = 10.0                  !   [m] default = 10.0
+                                ! depth scale for ramping up benthic denitrification
+scale_burial = 0.0              !   [none] default = 0.0
+                                ! scaling factor for particulate organic burial
+cased_steady = False            !   [Boolean] default = False
+                                ! cased_steady
+phi_surfresp_cased = 0.14307    !   [unitless] default = 0.14307
+                                ! phi_surfresp_cased
+phi_deepresp_cased = 4.1228     !   [unitless] default = 4.1228
+                                ! phi_deepresp_cased
+alpha_cased = 2.7488            !   [unitless] default = 2.7488
+                                ! alpha_cased
+beta_cased = -2.2185            !   [unitless] default = -2.2185
+                                ! beta_cased
+gamma_cased = 0.03607           !   [year-1] default = 0.03607
+                                ! gamma_cased
+Co_cased = 8100.0               !   [mol m-3] default = 8100.0
+                                ! Co_cased
+gamma_srdon = 10.0              !   [1/(default*spery)] default = 10.0
+                                ! gamma_srdon
+gamma_srdop = 4.0               !   [1/(default*spery)] default = 4.0
+                                ! gamma_srdop
+gamma_sldon = 90.0              !   [1/(default*sperd)] default = 90.0
+                                ! gamma_sldon
+gamma_sldop = 90.0              !   [1/(default*sperd)] default = 90.0
+                                ! gamma_sldop
+doc_background = 4.0E-05        !   [uM] default = 4.0E-05
+                                ! doc_background
+gamma_nitrif = 30.0             !   [gamma_nitrif /(default*sperd)] default = 30.0
+                                ! gamma_nitrif
+knh4_nitrif = 3.1E-09           !   [mol kg-1] default = 3.1E-09
+                                ! knh4_nitrif
+irr_inhibit = 10.0              !   [W m-2] default = 10.0
+                                ! irr_inhibit
+gamma_nh4amx = 0.0              !   [day-1] default = 0.0
+                                ! gamma_nh4amx
+o2_min_amx = 4.0E-06            !   [mol O2 kg-1] default = 4.0E-06
+                                ! o2_min_amx
+k_no3_amx = 1.0E-06             !   [mol NO3 kg-1] default = 1.0E-06
+                                ! nitrate half-saturation for anammox
+k_o2_nit = 3.9E-06              !   [mol O2 kg-1] default = 3.9E-06
+                                ! k_o2_nit
+o2_min_nit = 1.0E-08            !   [mol O2 kg-1] default = 1.0E-08
+                                ! o2_min_nit
+tracer_debug = False            !   [Boolean] default = False
+                                ! tracer_debug
