@@ -37,6 +37,7 @@ if new:
 v = prog.variables['v'][:]
 h = prog.variables['h'][:]
 salt = prog.variables['salt'][:]
+age = prog.variables['age'][:]
 SSH = prog.variables['SSH'][:]
 dx = grd.variables['dxBu'][:]
 
@@ -49,6 +50,7 @@ hqseg[:,:,0:3] = hseg[:,:,0:3]
 hqseg[:,:,18:] = hseg[:,:,17:]
 hqseg[:,:,3:18] = 0.5*(hseg[:,:,2:17] + hseg[:,:,3:18])
 saltseg = 0.5*(salt[:,:,:,40] + salt[:,:,:,39])
+ageseg = 0.5*(age[:,:,:,40] + age[:,:,:,39])
 sshseg = 0.5*(SSH[:,:,40] + SSH[:,:,39])
 
 west.variables['dvdx_segment_001'][:] = dvdx
@@ -57,6 +59,8 @@ west.variables['v_segment_001'][:] = vseg
 west.variables['dz_v_segment_001'][:] = hqseg
 west.variables['salt_segment_001'][:] = saltseg
 west.variables['dz_salt_segment_001'][:] = hseg
+west.variables['age_segment_001'][:] = ageseg
+west.variables['dz_age_segment_001'][:] = hseg
 west.variables['dz_u_segment_001'][:] = hseg
 west.variables['zeta_segment_001'][:] = sshseg
 west.close()
@@ -70,6 +74,7 @@ hqseg[:,:,0:3] = hseg[:,:,0:3]
 hqseg[:,:,18:] = hseg[:,:,17:]
 hqseg[:,:,3:18] = 0.5*(hseg[:,:,2:17] + hseg[:,:,3:18])
 saltseg = 0.5*(salt[:,:,:,80] + salt[:,:,:,79])
+ageseg = 0.5*(age[:,:,:,80] + age[:,:,:,79])
 sshseg = 0.5*(SSH[:,:,80] + SSH[:,:,79])
 
 east.variables['dvdx_segment_002'][:] = dvdx
@@ -78,6 +83,8 @@ east.variables['v_segment_002'][:] = vseg
 east.variables['dz_v_segment_002'][:] = hqseg
 east.variables['salt_segment_002'][:] = saltseg
 east.variables['dz_salt_segment_002'][:] = hseg
+east.variables['age_segment_002'][:] = ageseg
+east.variables['dz_age_segment_002'][:] = hseg
 east.variables['dz_u_segment_002'][:] = hseg
 east.variables['zeta_segment_002'][:] = sshseg
 east.close()
