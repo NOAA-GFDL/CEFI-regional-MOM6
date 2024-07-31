@@ -1,0 +1,15 @@
+## The location for yamls
+platformYaml: platforms.yaml
+compileYaml: compile.yaml
+## User defined properties for building
+release: "2024.01"
+FMS_GIT_TAG: "2024.01.02"
+CPL_GIT_TAG: "2024.01.02"
+NULL_TAG: "2023.04"
+MOM6_GIT_FIX: "main"
+## Compile specific variables
+INTEL: "intel-classic"
+## Include these includes (bronx used to do this for you)
+FMSincludes: "-IFMS/fms2_io/include -IFMS/include -IFMS/mpp/include"
+momIncludes: "-Imom6_symmetric/src/MOM6/pkg/CVMix-src/include"
+sisincludes: "-Imom6_symmetric/src/MOM6/src/framework"
