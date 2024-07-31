@@ -19,7 +19,7 @@
 "ocean_model","SSH","SSH","prog","all",.false.,"none",2
 "ocean_model","RV","RV","prog","all",.false.,"none",2
 "ocean_model","salt","salt","prog","all",.false.,"none",2
-
+"generic_age","age","age","prog","all",.false.,"none",2
 
 #=============================================================================================
 #
