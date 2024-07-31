@@ -1,0 +1,6 @@
+! This file was written by the model and records the non-default parameters used at run-time.
+
+! === module COBALT ===
+do_case2_mod = True             !   [Boolean] default = False
+                                ! When ture, modify the opacity of case 2 (coastal) waterswhich are identified
+                                ! based on a temperature and depth threshold
