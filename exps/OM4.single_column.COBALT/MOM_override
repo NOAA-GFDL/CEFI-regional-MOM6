@@ -4,7 +4,6 @@
 #override THICKNESS_CONFIG = "coord"
 #override ALE_COORDINATE_CONFIG = "FNC1:2,6500,6,.01"
 #override REGRIDDING_COORDINATE_MODE = "Z*"
-#override REGRIDDING_COORDINATE_MODE = "Z*"
 #override Z_INIT_REMAPPING_SCHEME = "PPM_IH4" 
 #override Z_INIT_REMAP_OLD_ALG = True
 #override TRACERS_MAY_REINIT = True
