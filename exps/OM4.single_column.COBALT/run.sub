@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --time=10
+#SBATCH --job-name="1D_cobalt"
+#SBATCH --output=1D_cobalt_o.%j
+#SBATCH --error=1D_cobalt_e.%j
+#SBATCH --qos=normal
+#SBATCH --partition=batch
+#SBATCH --clusters=c5
+#SBATCH --account=cefi
+
+echo "Model started:  " `date`
+
+#
+ln -fs input.nml_48hr input.nml
+
+srun --ntasks=1 --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc5.intel23/ocean_ice/debug/MOM6SIS2
+
+echo "Model ended:    " `date`
