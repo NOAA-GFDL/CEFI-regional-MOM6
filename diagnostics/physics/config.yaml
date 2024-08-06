@@ -2,14 +2,7 @@ figures_dir: 'figures/'
 glorys: '/work/acr/mom6/diagnostics/glorys/glorys_sfc.nc'
 model_grid: '../data/geography/ocean_static.nc'
 
-# List of variables to rename
-rename_vars:
-    - geolon
-    - geolat
-    - geolon_c
-    - geolat_c
-
-# Actually mappings for what each variable in above list should be renamed to
+# Variables to rename
 rename_map:
     geolon: lon
     geolat: lat
@@ -37,6 +30,18 @@ y:
     min: 4
     max: 59
 
+# Figure size
+fig_width: 11
+fig_height: 14
+
+# Location of skill score annotations in plot
+text_x: -98.5
+text_y: 54
+
+# Space between skill score text
+text_xint: 4 # This is unused if col=1, so it is only included for completeness
+text_yint: 4
+
 # SST_eval settings
 oisst: '/work/acr/oisstv2/' 
 
@@ -45,7 +50,7 @@ levels_min: 2
 levels_max: 31
 levels_step: 2
 
-# Colorbar difference plots
+# Colorbar for sst difference plots
 bias_min: -2
 bias_max: 2.1
 bias_step: 0.25

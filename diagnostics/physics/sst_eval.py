@@ -20,7 +20,7 @@ from plot_common import annotate_skill, autoextend_colorbar, corners, get_map_no
 def plot_sst_eval(pp_root, config):
     model = open_var(pp_root, config['domain'], 'tos')
     model_grid = xarray.open_dataset( config['model_grid'] )
-    target_grid = model_grid[config['rename_vars']].rename(config['rename_map'])
+    target_grid = model_grid[config['rename_map'].keys()].rename(config['rename_map'])
     model_ave = model.mean('time').load()
 
     glorys = xarray.open_dataset( config['glorys'] ).squeeze()['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
@@ -48,7 +48,7 @@ def plot_sst_eval(pp_root, config):
     oisst_ave = oisst.mean('time').load()
     mom_rg = mom_to_oisst(model_ave)
     delta_oisst = mom_rg - oisst_ave
-    fig = plt.figure(figsize=(11, 14))
+    fig = plt.figure(figsize=(config['fig_width'], config['fig_height']))
     grid = AxesGrid(fig, 111,
         axes_class=(GeoAxes, dict(projection=ccrs.PlateCarree())),
         nrows_ncols=(2, 3),
@@ -88,7 +88,7 @@ def plot_sst_eval(pp_root, config):
     # Model - OISST
     grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, **bias_common)
     grid[2].set_title('(c) Model - OISST')
-    annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'])
+    annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
 
     # GLORYS
     p1 = grid[4].pcolormesh(glorys_lonc, glorys_latc, glorys_ave, cmap=cmap, norm=norm)
@@ -102,7 +102,7 @@ def plot_sst_eval(pp_root, config):
     cbar2.ax.set_xlabel('SST difference (°C)')
     cbar2.ax.set_xticks([-2, -1, 0, 1, 2])
     grid[5].set_title('(e) Model - GLORYS12')
-    annotate_skill(model_ave, glorys_rg, grid[5], weights=model_grid.areacello)
+    annotate_skill(model_ave, glorys_rg, grid[5], weights=model_grid.areacello, x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
 
     for ax in grid:
         ax.set_xlim(config['x']['min'], config['x']['max'])
