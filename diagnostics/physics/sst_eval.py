@@ -49,8 +49,15 @@ def plot_sst_eval(pp_root, config):
     mom_rg = mom_to_oisst(model_ave)
     delta_oisst = mom_rg - oisst_ave
     fig = plt.figure(figsize=(config['fig_width'], config['fig_height']))
+
+    # For now, sst_eval.py will only support a projection for the arctic and a projection for all other domains
+    if config['projection'] == 'NorthPolarSterio':
+        p = ccrs.NorthPolarSterio( central_longitude = -20 )
+    else:
+        p = ccrs.PlateCarree()
+
     grid = AxesGrid(fig, 111,
-        axes_class=(GeoAxes, dict(projection=ccrs.PlateCarree())),
+        axes_class=(GeoAxes, dict( projection = p )),
         nrows_ncols=(2, 3),
         axes_pad=0.3,
         cbar_location='bottom',

@@ -30,6 +30,9 @@ y:
     min: 4
     max: 59
 
+# Projection ( current options are either NorthPolarSterio for the arctic, or PlateCarree for all other domains
+projection: 'NorthPolarSterio'
+
 # Figure size
 fig_width: 11
 fig_height: 14
