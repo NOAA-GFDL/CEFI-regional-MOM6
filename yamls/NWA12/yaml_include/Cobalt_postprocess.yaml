@@ -1,0 +1,60 @@
+directories:
+    <<: *shared_directories
+
+postprocess: 
+    settings:
+        <<: *shared_settings
+    switches: 
+        <<: *shared_switches
+
+    components:
+        - type: "ocean_cobalt_fdet_100"
+          sources: "ocean_cobalt_fdet_100"
+          do_timeavgs: True
+            
+        - type: "ocean_cobalt_btm"
+          sources: "ocean_cobalt_btm"
+          do_timeavgs: True
+        
+        - type: "ocean_cobalt_daily_2D"
+          sources: "ocean_cobalt_daily_2D"
+        
+        - type: "ocean_cobalt_daily_2d"
+          sources: "ocean_cobalt_daily_2d"
+        
+        - type: "ocean_cobalt_omip_daily"
+          sources: "ocean_cobalt_omip_daily"
+        
+        - type: "ocean_cobalt_omip_sfc"
+          sources: "ocean_cobalt_omip_sfc"
+          do_timeavgs: True
+        
+        - type: "ocean_cobalt_tracers_int"
+          sources: "ocean_cobalt_tracers_int"
+          do_timeavgs: True
+        
+        - type: "ocean_cobalt_sfc"
+          sources: "ocean_cobalt_sfc"
+          do_timeavgs: True
+        
+        - type: "ocean_cobalt_fluxes_int"
+          sources: "ocean_cobalt_fluxes_int"
+          do_timeavgs: True
+        
+        - type: "ocean_cobalt_daily"
+          sources: "ocean_cobalt_daily"
+        
+        - type: "ocean_cobalt_neus"
+          sources: "ocean_cobalt_neus"
+        
+        - type: "ocean_cobalt_tracers_month"
+          sources: "ocean_cobalt_tracers_month"
+          do_timeavgs: True
+        
+        - type: "ocean_cobalt_tracers_month_z"
+          sources: "ocean_cobalt_tracers_month_z"
+          do_timeavgs: True
+        
+        - type: "ocean_cobalt_omip_2d"
+          sources: "ocean_cobalt_omip_2d"
+          do_timeavgs: True
