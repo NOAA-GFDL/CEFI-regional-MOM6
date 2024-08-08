@@ -1,6 +1,5 @@
 directories:
     <<: *shared_directories
-    ptmp_dir: "/ptmp/$USER"
 
 postprocess: 
     settings:
@@ -8,27 +7,34 @@ postprocess:
     switches: 
         <<: *shared_switches
 
-components:
-    - type: "ocean_daily"
-        sources: "ocean_daily"
-        
-    - type: "ocean_neus"
-        sources: "ocean_neus"
+    components:
+        - type: "ocean_daily"
+          sources: "ocean_daily"
+          variables: "tos tob ssh sshmin sshmax"
+            
+        - type: "ocean_neus"
+          sources: "ocean_neus"
 
-    - type: "ocean_monthly"
-        sources: "ocean_monthly"
-    
-    - type: "ocean_monthly_z"
-        sources: "ocean_monthly_z"
-    
-    - type: "ocean_annual"
-        sources: "ocean_annual"
-    
-    - type: "ocean_annual_z"
-        sources: "ocean_annual_z"
-    
-    - type: "ice_daily"
-        sources: "ice_daily"
-    
-    - type: "ice_monthly"
-        sources: "ice_monthly"
+        - type: "ocean_month"
+          sources: "ocean_month"
+          do_timeavgs: True 
+          # do_analysis: True
+        
+        - type: "ocean_month_z"
+          sources: "ocean_month_z"
+          do_timeavgs: True
+        
+        - type: "ocean_annual"
+          sources: "ocean_annual"
+          do_timeavgs: True
+        
+        - type: "ocean_annual_z"
+          sources: "ocean_annual_z"
+          do_timeavgs: True
+        
+        - type: "ice_daily"
+          sources: "ice_daily"
+        
+        - type: "ice_month"
+          sources: "ice_month"
+          do_timeavgs: True

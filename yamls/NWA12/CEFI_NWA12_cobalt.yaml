@@ -1,36 +1,41 @@
 fre_properties: 
-    -&FRE_STEM       "fre/cefi/NWA"
+    - &FRE_STEM       "fre/cefi/NWA"
 
-    -&PP_START_YEAR  "1993"
-    -&PP_CHUNK_A     "5yr"
-    -&PP_CHUNK_B     "27yr"
-    -&PP_CHUNK_SHORT "1yr"
+    - &PP_START_YEAR  "1993"
+    - &PP_END_YEAR    "1994"
+    - &PP_CHUNK_A     "1yr"
+    - &PP_CHUNK_B     "27yr"
+    - &PP_CHUNK_SHORT "1yr"
+
+    - &GRID_SPEC      "/archive/acr/mom6_input/nwa12/nwa12_grid_75z.tar"
 
     
 shared: 
     directories: &shared_directories
-        history_dir:  !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, history]
-        pp_dir:       !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, pp]
-        analysis_dir: !join [/nbhome/$USER/, *FRE_STEM, /, *name]
-        ptmp_dir:     "/xtmp/$USER/ptmp"
-        fre_analysis_home: "/home/fms/local/opt/fre-analysis/test"
+        history_dir:  !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, 1x0m1d_900x1o, /, history]
+        pp_dir:       !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, 1x0m1d_900x1o, /, pp]
+        #analysis_dir: !join [/nbhome/$USER/, *FRE_STEM, /, *name]
+        ptmp_dir:     "/ptmp/$USER/"
+        #fre_analysis_home: "/home/fms/local/opt/fre-analysis/test"
     
     postProcess:
         settings: &shared_settings
-            history_segment:
+            history_segment: "P1Y"
             site: "ppan"
             pp_start: *PP_START_YEAR
-            #pp_stop: 
+            pp_stop: *PP_END_YEAR
             pp_chunk_a: *PP_CHUNK_A
-            pp_chunk_b: *PP_CHUNK_B
+            pp_components: "ocean_month"
+            #pp_chunk_b: *PP_CHUNK_B
         switches: &shared_switches
-            # do_timeavgs: True # Some components need timeavgs, others don't , how to account for this in exp yamls?
+            do_anlaysis: false
 
 experiments: 
-    - name: "MOM6_postprocess"
-        pp: 
-            - "yaml_include/MOM6_postprocess.yaml"
-    - name: "Cobalt_postprocess"
-        pp:
-            - "yaml_include/Cobalt_postprocess.yaml"
+    - name: "MOM6_SIS2_GENERIC_4P_compile_symm"
+      pp: 
+          - "yaml_include/MOM6_postprocess.yaml"
+    - name: "CEFI_NWA12_COBALT_V1"
+      pp:
+          - "yaml_include/MOM6_postprocess.yaml"
+          #- "yaml_include/Cobalt_postprocess.yaml"
 
