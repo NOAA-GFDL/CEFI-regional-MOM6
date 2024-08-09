@@ -23,7 +23,7 @@ def plot_sst_eval(pp_root, config):
     target_grid = model_grid[config['rename_map'].keys()].rename(config['rename_map'])
     model_ave = model.mean('time').load()
 
-    glorys = xarray.open_dataset( config['glorys'] ).squeeze()['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
+    glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True)['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
     try:
         glorys_lonc, glorys_latc = corners(glorys.lon, glorys.lat)
     except:
@@ -31,6 +31,11 @@ def plot_sst_eval(pp_root, config):
     glorys_ave = glorys.mean('time').load()
     glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
     glorys_rg = glorys_to_mom(glorys_ave)
+    
+    # Transform all longitudes to the interval [-180, 180] to prevent data from getting cutoff when calculating delta_glorys
+    glorys_rg.coords['xh'] = (glorys_rg.coords['xh'] + 180) % 360 - 180
+    # glorys_rg = glorys_rg.sortby(glorys_rg.xh)
+
     delta_glorys = model_ave - glorys_rg
     oisst = (
         xarray.open_mfdataset([config['oisst']+f'sst.month.mean.{y}.nc' for y in range(1993, 2020)])
@@ -52,7 +57,7 @@ def plot_sst_eval(pp_root, config):
 
     # For now, sst_eval.py will only support a projection for the arctic and a projection for all other domains
     if config['projection'] == 'NorthPolarSterio':
-        p = ccrs.NorthPolarSterio( central_longitude = -20 )
+        p = ccrs.NorthPolarStereo()
     else:
         p = ccrs.PlateCarree()
 
@@ -83,37 +88,38 @@ def plot_sst_eval(pp_root, config):
     bias_common = dict(cmap=bias_cmap, norm=bias_norm)
 
     # Model 
-    p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ave, cmap=cmap, norm=norm)
+    p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ave, cmap=cmap, norm=norm, transform=ccrs.PlateCarree())
     grid[0].set_title('(a) Model')
     cbar1 = grid.cbar_axes[0].colorbar(p0)
     cbar1.ax.set_xlabel('Mean SST (°C)')
 
     # OISST
-    grid[1].pcolormesh(oisst_lonc, oisst_latc, oisst_ave, cmap=cmap, norm=norm)
+    grid[1].pcolormesh(oisst_lonc, oisst_latc, oisst_ave, cmap=cmap, norm=norm, transform=ccrs.PlateCarree())
     grid[1].set_title('(b) OISST')
 
     # Model - OISST
-    grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, **bias_common)
+    grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, transform=ccrs.PlateCarree(),**bias_common)
     grid[2].set_title('(c) Model - OISST')
     annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
 
     # GLORYS
-    p1 = grid[4].pcolormesh(glorys_lonc, glorys_latc, glorys_ave, cmap=cmap, norm=norm)
+    p1 = grid[4].pcolormesh(glorys_lonc, glorys_latc, glorys_ave, cmap=cmap, norm=norm,transform=ccrs.PlateCarree())
     grid[4].set_title('(d) GLORYS12')
     cbar1 = autoextend_colorbar(grid.cbar_axes[1], p1)
     cbar1.ax.set_xlabel('Mean SST (°C)')
 
     # Model - GLORYS
-    p2 = grid[5].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, delta_glorys, **bias_common)
+    p2 = grid[5].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, delta_glorys, transform=ccrs.PlateCarree(),**bias_common)
     cbar2 = autoextend_colorbar(grid.cbar_axes[2], p2)
     cbar2.ax.set_xlabel('SST difference (°C)')
     cbar2.ax.set_xticks([-2, -1, 0, 1, 2])
     grid[5].set_title('(e) Model - GLORYS12')
     annotate_skill(model_ave, glorys_rg, grid[5], weights=model_grid.areacello, x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
 
+    proj = ccrs.PlateCarree()
+
     for ax in grid:
-        ax.set_xlim(config['x']['min'], config['x']['max'])
-        ax.set_ylim(config['y']['min'], config['y']['max'])
+        ax.set_extent([ config['x']['min'], config['x']['max'], config['y']['min'], config['y']['max'] ], crs=proj )
         ax.set_xticks([])
         ax.set_yticks([])
         ax.set_xticklabels([])
