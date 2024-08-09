@@ -18,6 +18,7 @@ from plot_common import annotate_skill, autoextend_colorbar, corners, get_map_no
 
 
 def plot_sst_eval(pp_root, config):
+    
     model = open_var(pp_root, config['domain'], 'tos')
     model_grid = xarray.open_dataset( config['model_grid'] )
     target_grid = model_grid[config['rename_map'].keys()].rename(config['rename_map'])
@@ -26,8 +27,11 @@ def plot_sst_eval(pp_root, config):
     glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True)['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
     try:
         glorys_lonc, glorys_latc = corners(glorys.lon, glorys.lat)
-    except:
+    except AttributeError:
         glorys_lonc, glorys_latc = corners(glorys.longitude, glorys.latitude)
+    else:
+        raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
+
     glorys_ave = glorys.mean('time').load()
     glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
     glorys_rg = glorys_to_mom(glorys_ave)
