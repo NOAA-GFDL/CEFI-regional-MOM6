@@ -7,6 +7,12 @@ import numpy as np
 import os
 import xarray
 import xskillscore
+import logging
+import yaml
+import xesmf
+
+# Configure logging for plot_common
+logger = logging.getLogger(__name__)
 
 def center_to_outer(center, left=None, right=None):
     """
@@ -141,3 +147,61 @@ def save_figure(fname, label='', pdf=False, output_dir='figures'):
         plt.savefig(os.path.join(output_dir, f'{fname}_{label}.png'), dpi=200, bbox_inches='tight')
         if pdf:
             plt.savefig(os.path.join(output_dir, f'{fname}_{label}.pdf'), bbox_inches='tight')
+
+def load_config(config_path: str):
+    """Load the configuration file."""
+    try:
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f)
+            logger.info(f"Loaded configuration from {config_path}")
+            return config
+    except Exception as e:
+        logger.error(f"Error loading configuration from {config_path}: {e}")
+        raise
+
+def process_oisst(config, target_grid, model_ave):
+    """Open and regrid OISST dataset, return relevant vars from dataset."""
+    try:
+        oisst = (
+            xarray.open_mfdataset([config['oisst'] + f'sst.month.mean.{y}.nc' for y in range(1993, 2020)])
+            .sst
+            .sel(lat=slice(config['lat']['south'], config['lat']['north']), lon=slice(config['lon']['west'], config['lon']['east']))
+        )
+    except Exception as e:
+        logger.error(f"Error processing OISST data: {e}")
+        raise e("Could not open OISST dataset")
+
+    oisst_lonc, oisst_latc = corners(oisst.lon, oisst.lat)
+    oisst_lonc -= 360
+    mom_to_oisst = xesmf.Regridder(
+        target_grid,
+        {'lat': oisst.lat, 'lon': oisst.lon, 'lat_b': oisst_latc, 'lon_b': oisst_lonc},
+        method='conservative_normed',
+        unmapped_to_nan=True
+    )
+
+    oisst_ave = oisst.mean('time').load()
+    mom_rg = mom_to_oisst(model_ave)
+    logger.info("OISST data processed successfully.")
+    return mom_rg, oisst_ave, oisst_lonc, oisst_latc
+
+def process_glorys(config, target_grid):
+    """ Open and regrid glorys data, return regridded glorys data """
+    glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True)['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
+
+    try:
+        glorys_lonc, glorys_latc = corners(glorys.lon, glorys.lat)
+        logger.info("Glorys data is using lon/lat")
+    except AttributeError:
+        glorys_lonc, glorys_latc = corners(glorys.longitude, glorys.latitude)
+        logger.info("Glorys data is using longitude/latitude")
+    else:
+        logger.error("Name of longitude and latitude variables is unknown")
+        raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
+
+    glorys_ave = glorys.mean('time').load()
+    glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
+    glorys_rg = glorys_to_mom(glorys_ave)
+
+    logger.info("Glorys data processed successfully.")
+    return glorys_rg, glorys_ave, glorys_lonc, glorys_latc

@@ -12,10 +12,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
 import xarray
-import xesmf
+import logging
 
-from plot_common import annotate_skill, autoextend_colorbar, corners, get_map_norm, open_var
+from plot_common import annotate_skill, autoextend_colorbar, corners, get_map_norm, open_var, load_config, process_oisst, process_glorys
 
+# Configure logging for sst_eval
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename="sst_eval.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.INFO)
 
 def plot_sst_eval(pp_root, config):
     
@@ -23,44 +26,28 @@ def plot_sst_eval(pp_root, config):
     model_grid = xarray.open_dataset( config['model_grid'] )
     target_grid = model_grid[config['rename_map'].keys()].rename(config['rename_map'])
     model_ave = model.mean('time').load()
+    logger.info("MODEL_GRID: %s",model_grid)
+    logger.info("MODEL_AVE: %s",model_ave)
+    logger.info("Successfully opened model grid and took mean over time")
 
-    glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True)['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
-    try:
-        glorys_lonc, glorys_latc = corners(glorys.lon, glorys.lat)
-    except AttributeError:
-        glorys_lonc, glorys_latc = corners(glorys.longitude, glorys.latitude)
-    else:
-        raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
-
-    glorys_ave = glorys.mean('time').load()
-    glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
-    glorys_rg = glorys_to_mom(glorys_ave)
-    
+    glorys_rg, glorys_ave, glorys_lonc, glorys_latc = process_glorys(config, target_grid)
     # Transform all longitudes to the interval [-180, 180] to prevent data from getting cutoff when calculating delta_glorys
     glorys_rg.coords['xh'] = (glorys_rg.coords['xh'] + 180) % 360 - 180
     # glorys_rg = glorys_rg.sortby(glorys_rg.xh)
-
     delta_glorys = model_ave - glorys_rg
-    oisst = (
-        xarray.open_mfdataset([config['oisst']+f'sst.month.mean.{y}.nc' for y in range(1993, 2020)])
-        .sst
-        .sel(lat=slice(config['lat']['south'], config['lat']['north']), lon=slice(config['lon']['west'] ,config['lon']['east']))
-    )
-    oisst_lonc, oisst_latc = corners(oisst.lon, oisst.lat)
-    oisst_lonc -= 360
-    mom_to_oisst = xesmf.Regridder(
-        target_grid, 
-        {'lat': oisst.lat, 'lon': oisst.lon, 'lat_b': oisst_latc, 'lon_b': oisst_lonc}, 
-        method='conservative_normed', 
-        unmapped_to_nan=True
-    )
-    oisst_ave = oisst.mean('time').load()
-    mom_rg = mom_to_oisst(model_ave)
+    logger.info("GLORYS_RG: %s",glorys_rg)
+    logger.info("DELTA_GLORYS: %s",delta_glorys)
+
+    mom_rg, oisst_ave, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model_ave)
     delta_oisst = mom_rg - oisst_ave
+    logger.info("OISST_AVE: %s",oisst_ave)
+    logger.info("DELTA_OISST: %s",delta_oisst)
+
     fig = plt.figure(figsize=(config['fig_width'], config['fig_height']))
 
+    # Set projection of each grid in the plot
     # For now, sst_eval.py will only support a projection for the arctic and a projection for all other domains
-    if config['projection'] == 'NorthPolarSterio':
+    if config['projection_grid'] == 'NorthPolarStereo':
         p = ccrs.NorthPolarStereo()
     else:
         p = ccrs.PlateCarree()
@@ -75,6 +62,7 @@ def plot_sst_eval(pp_root, config):
         cbar_size='15%',
         label_mode=''
     )
+    logger.info("Successfully created grid")
 
     # Discrete levels and colorbar for SST plots
     levels = np.arange(config['levels_min'], config['levels_max'], config['levels_step'])
@@ -91,36 +79,46 @@ def plot_sst_eval(pp_root, config):
     bias_cmap, bias_norm = get_map_norm('coolwarm', levels=bias_levels)
     bias_common = dict(cmap=bias_cmap, norm=bias_norm)
 
+    # Set projection of input data files so that data is correctly tranformed when plotting
+    # For now, sst_eval.py will only support a projection for the arctic and a projection for all other domains
+    if config['projection_data'] == 'NorthPolarStereo':
+        proj = ccrs.NorthPolarStereo()
+    else:
+        proj = ccrs.PlateCarree()
+
     # Model 
-    p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ave, cmap=cmap, norm=norm, transform=ccrs.PlateCarree())
+    p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ave, cmap=cmap, norm=norm, transform=proj)
     grid[0].set_title('(a) Model')
     cbar1 = grid.cbar_axes[0].colorbar(p0)
     cbar1.ax.set_xlabel('Mean SST (°C)')
+    logger.info("Successfully plotted model data")
 
     # OISST
-    grid[1].pcolormesh(oisst_lonc, oisst_latc, oisst_ave, cmap=cmap, norm=norm, transform=ccrs.PlateCarree())
+    grid[1].pcolormesh(oisst_lonc, oisst_latc, oisst_ave, cmap=cmap, norm=norm, transform=proj)
     grid[1].set_title('(b) OISST')
+    logger.info("Successfully plotted oisst")
 
     # Model - OISST
-    grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, transform=ccrs.PlateCarree(),**bias_common)
+    grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, transform=proj,**bias_common)
     grid[2].set_title('(c) Model - OISST')
     annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
+    logger.info("Successfully plotted difference between model and oisst")
 
     # GLORYS
-    p1 = grid[4].pcolormesh(glorys_lonc, glorys_latc, glorys_ave, cmap=cmap, norm=norm,transform=ccrs.PlateCarree())
+    p1 = grid[4].pcolormesh(glorys_lonc, glorys_latc, glorys_ave, cmap=cmap, norm=norm, transform=proj)
     grid[4].set_title('(d) GLORYS12')
     cbar1 = autoextend_colorbar(grid.cbar_axes[1], p1)
     cbar1.ax.set_xlabel('Mean SST (°C)')
+    logger.info("Successfully plotted glorys")
 
     # Model - GLORYS
-    p2 = grid[5].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, delta_glorys, transform=ccrs.PlateCarree(),**bias_common)
+    p2 = grid[5].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, delta_glorys, transform=proj, **bias_common)
     cbar2 = autoextend_colorbar(grid.cbar_axes[2], p2)
     cbar2.ax.set_xlabel('SST difference (°C)')
     cbar2.ax.set_xticks([-2, -1, 0, 1, 2])
     grid[5].set_title('(e) Model - GLORYS12')
     annotate_skill(model_ave, glorys_rg, grid[5], weights=model_grid.areacello, x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
-
-    proj = ccrs.PlateCarree()
+    logger.info("Successfully plotted difference between glorys and model")
 
     for ax in grid:
         ax.set_extent([ config['x']['min'], config['x']['max'], config['y']['min'], config['y']['max'] ], crs=proj )
@@ -130,17 +128,17 @@ def plot_sst_eval(pp_root, config):
         ax.set_yticklabels([])
         for s in ax.spines.values():
             s.set_visible(False)
-        
+    logger.info("Successfully set extent of each axis")
+
     plt.savefig(config['figures_dir']+'sst_eval.png', dpi=300, bbox_inches='tight')
+    logger.info("Successfully saved figure")
 
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
-    import yaml
     parser = ArgumentParser()
     parser.add_argument('-p','--pp_root', type=str, help='Path to postprocessed data (up to but not including /pp/)')
     parser.add_argument('-c','--config', type=str, help='Path to config.yaml file containing relevant paths for diagnostic scripts')
     args = parser.parse_args()
-    with open(args.config, 'r') as f:
-        config = yaml.safe_load(f)
+    config = load_config(args.config)
     plot_sst_eval(args.pp_root, config)
