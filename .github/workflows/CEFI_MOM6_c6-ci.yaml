@@ -6,20 +6,19 @@ on:
     branches: [ "main" ]
     types: [ labeled ]
 
-#
 env:
   TEST_DIR: ${{ github.workspace }}/${{ github.run_id }}
   PR_NUMBER: ${{ github.event.number }}
 
-#
 jobs:
   checkout-build:
     if: ${{ github.event.label.name == 'CEFI_MOM6_RT_gaea_c6' }}
-    runs-on: ncrc6
+    runs-on: self-hosted
     timeout-minutes: 600
     strategy:
       max-parallel: 1    
-
+    if: runner.name == 'ncrc6'
+    
     steps:
     - name: Checkout CEFI-regional-MOM6
       uses: actions/checkout@v4
@@ -56,11 +55,13 @@ jobs:
 
   run-CEFI_MOM6-ci:
     needs: checkout-build
-    runs-on: ncrc6
+    runs-on: self-hosted
     strategy:
       max-parallel: 2
       matrix:
         case: ["NWA12.COBALT"] #["NWA12.COBALT", "NEP10.COBALT"]
+    if: runner.name == 'ncrc6'
+    
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |
@@ -96,8 +97,8 @@ jobs:
 
   add-pass-label:
     needs: run-CEFI_MOM6-ci
-    runs-on: ncrc6 
-    if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
+    runs-on: self-hosted 
+    if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' && runner.name == 'ncrc6' }}
     steps:
       - name: Add "pass_CEFI_MOM6_RT" label on success
         run: |
@@ -120,11 +121,13 @@ jobs:
 
   clean-up:
     needs: add-pass-label
-    runs-on: ncrc6 
+    runs-on: self-hosted 
     strategy:
       max-parallel: 1
+    if: runner.name == 'ncrc6'
+    
     steps:
       - name: Clean-up
         run: |
           cd ${{ github.workspace }}
-          rm -rf ${{ github.run_id }}        
+          rm -rf ${{ github.run_id }}
