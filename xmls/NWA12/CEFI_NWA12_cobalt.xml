@@ -6,32 +6,32 @@ Quick start guide
 Load module:
 
 On GFDL Analysis:
-module load fre/bronx-22
+module load fre/test
 
 On Gaea:
 module use -a /ncrc/home2/fms/local/modulefiles
-module load fre/bronx-22
+module load fre/test
 
 Compile and build mom6-sis2-cobalt:
-fremake -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -t prod MOM6_SIS2_GENERIC_4P_compile_symm
+fremake -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -t prod MOM6_SIS2_GENERIC_4P_compile_symm
 
 Run experiment
-frerun -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -t prod CEFI_NWA12_COBALT_V1
+frerun -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -t prod CEFI_NWA12_COBALT_V1
 
 Run postprocessing later on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc5-intel22 -T prod CEFI_NWA12_COBALT_V1
+frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc6-intel23-prod/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc6-intel23 -T prod CEFI_NWA12_COBALT_V1
 
 Run analysis after the postprocessing on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc5-intel22 -T prod CEFI_NWA12_COBALT_V1
+frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc6-intel23-prod/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc6-intel23 -T prod CEFI_NWA12_COBALT_V1
 
 Regression test for layout:
-frerun  -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -q debug -r layout CEFI_NWA12_COBALT_V1
+frerun  -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_COBALT_V1
 
 Regression test for restart:
-frerun  -x CEFI_NWA12_cobalt.xml -p ncrc5.intel22 -q debug -r restart CEFI_NWA12_COBALT_V1
+frerun  -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_COBALT_V1
 
 To check if the restart files are identical from regression test:
-frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V1
+frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V1
 
 -->
 
@@ -52,10 +52,10 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NWA/2024_07"/>
+  <property name="FRE_STEM" value="fre/cefi/NWA/2024_08"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
-  <property name="NCRC_GROUP" value="cefi"/>
+  <property name="NCRC_GROUP" value="ira-cefi"/>
   <property name="GFDL_GROUP" value="cefi"/>
 
   <!--Production run properties. Users can modify these according to their need and/or performance analysis-->
@@ -70,7 +70,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="PP_START_YEAR" value="1993"/>
 
   <!-- fre version to be used -->
-  <property name="FRE_VERSION" value="bronx-22"/>
+  <property name="FRE_VERSION" value="test"/>
 
   <!-- on/off switch for MDBI database -->
   <property name="MDBIswitch" value="off"/>
@@ -94,7 +94,7 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="STATIC" value=""/>
 
   <!-- Path to world-shared location with common NWA12 input files -->
-  <property name="NWA12_WORLD" value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/nwa12_input"/>
+  <property name="NWA12_WORLD" value="/gpfs/f6/ira-cefi/wdorld-shared/northwest_atlantic/nwa12_input"/>
 
   <!--This is necessary only if you want to run exact same experiment on multiple platforms-->
   <property name="PLATINFO" value=""/>
@@ -107,6 +107,8 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <setup>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc5.intel22'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc5-intel22'])"/>
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc6.intel23'])"/>
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>
   </setup>
 
   <!--= COMPILE =-->
