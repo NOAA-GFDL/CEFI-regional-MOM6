@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH --nodes=5
+#SBATCH --nodes=4
 #SBATCH --time=60
 #SBATCH --job-name="NWA12.COBALT"
 #SBATCH --output=NWA12.COBALT_o.%j
 #SBATCH --error=NWA12.COBALT_e.%j
 #SBATCH --qos=debug
 #SBATCH --partition=batch
-#SBATCH --clusters=c5
-#SBATCH --account=cefi
+#SBATCH --clusters=c6
+#SBATCH --account=ira-cefi
 
 #
 ntasks1=625
@@ -19,7 +19,7 @@ echo "Test started:  " `date`
 #
 echo "link datasets ..."
 pushd ../
-ln -fs /gpfs/f5/cefi/world-shared/datasets ./
+ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
 popd
 
 echo "run 25x25 48hrs test ..."
@@ -28,14 +28,14 @@ pushd INPUT/
 ln -fs MOM_layout_25 MOM_layout
 ln -fs MOM_layout_25 SIS_layout
 popd
-srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2 > out1 2>err1
+srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out1 2>err1
 mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
 
 #
 echo "run 25x25 24hrs test ..."
 ln -fs input.nml_24hr input.nml
-srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2 > out2 2>err2
+srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out2 2>err2
 mv RESTART RESTART_24hrs
 mv ocean.stats RESTART_24hrs
 
@@ -52,14 +52,15 @@ pushd INPUT/
 ln -fs MOM_layout_20 MOM_layout
 ln -fs MOM_layout_20 SIS_layout
 popd
-srun --ntasks ${ntasks2} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2 > out3 2>err3
+srun --ntasks ${ntasks2} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out3 2>err3
 mv RESTART RESTART_24hrs_rst
 mv ocean.stats RESTART_24hrs_rst
 
 
 # Define the directories containing the files
+module load nccmp
 DIR1="./RESTART_24hrs_rst"
-DIR2="/gpfs/f5/cefi/proj-shared/github/ci_data/reference/main/NWA12.COBALT/20240708"
+DIR2="/gpfs/f6/ira-cefi/proj-shared/github/ci_data/reference/main/NWA12.COBALT/20240813"
 
 # Define the files to compare
 FILES=("$DIR2"/*.nc)

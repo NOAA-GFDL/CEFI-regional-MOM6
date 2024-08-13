@@ -51,6 +51,7 @@ mv RESTART RESTART_24hrs_rst
 mv ocean.stats RESTART_24hrs_rst
 
 # Define the directories containing the files
+module load nccmp
 DIR1="./RESTART_24hrs_rst"
 DIR2="./RESTART_48hrs" 
 
