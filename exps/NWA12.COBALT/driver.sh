@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --nodes=4
+#SBATCH --nodes=5
 #SBATCH --time=60
 #SBATCH --job-name="NWA12.COBALT"
 #SBATCH --output=NWA12.COBALT_o.%j
@@ -10,8 +10,8 @@
 #SBATCH --account=ira-cefi
 
 #
-ntasks1=625
-ntasks2=400
+ntasks1=900
+ntasks2=625
 
 #
 echo "Test started:  " `date`
@@ -22,18 +22,18 @@ pushd ../
 ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
 popd
 
-echo "run 25x25 48hrs test ..."
+echo "run 30x30 48hrs test ..."
 ln -fs input.nml_48hr input.nml
 pushd INPUT/
-ln -fs MOM_layout_25 MOM_layout
-ln -fs MOM_layout_25 SIS_layout
+ln -fs MOM_layout_30 MOM_layout
+ln -fs MOM_layout_30 SIS_layout
 popd
 srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out1 2>err1
 mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
 
 #
-echo "run 25x25 24hrs test ..."
+echo "run 30x30 24hrs test ..."
 ln -fs input.nml_24hr input.nml
 srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out2 2>err2
 mv RESTART RESTART_24hrs
@@ -46,11 +46,11 @@ ln -fs ../RESTART_24hrs/* ./
 popd
 
 #
-echo "run 20x20 24hrs rst test ..."
+echo "run 25x25 24hrs rst test ..."
 ln -fs input.nml_24hr_rst input.nml
 pushd INPUT/
-ln -fs MOM_layout_20 MOM_layout
-ln -fs MOM_layout_20 SIS_layout
+ln -fs MOM_layout_25 MOM_layout
+ln -fs MOM_layout_25 SIS_layout
 popd
 srun --ntasks ${ntasks2} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out3 2>err3
 mv RESTART RESTART_24hrs_rst
