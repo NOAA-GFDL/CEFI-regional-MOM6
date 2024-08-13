@@ -31,7 +31,7 @@ jobs:
     - name: Build MOM6SIS2
       run: |
         cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds
-        jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
+        jobid=$(sbatch --parsable ci_build_driver_c6.sh | awk -F';' '{print $1}' | cut -f1)
         #
         sleep 1
         while :; do
