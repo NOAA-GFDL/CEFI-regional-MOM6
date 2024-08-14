@@ -9,7 +9,8 @@ On GFDL Analysis:
 module load fre/test
 
 On Gaea:
-module use -a /ncrc/home2/fms/local/modulefiles
+C6: module use -a /ncrc/home2/Yi-cheng.Teng/local/modulefiles
+C5: module use -a /ncrc/home2/fms/local/modulefiles
 module load fre/test
 
 Compile and build mom6-sis2-cobalt:
@@ -94,7 +95,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="STATIC" value=""/>
 
   <!-- Path to world-shared location with common NWA12 input files -->
-  <property name="NWA12_WORLD" value="/gpfs/f6/ira-cefi/wdorld-shared/northwest_atlantic/nwa12_input"/>
+  <property name="NWA12_WORLD" value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/nwa12_input"/>
 
   <!--This is necessary only if you want to run exact same experiment on multiple platforms-->
   <property name="PLATINFO" value=""/>
@@ -123,18 +124,19 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <experiment name="MOM6_SIS2_GENERIC_4P_compile_symm">
     <description>
       Make the executable for ocean-ice experiments.
-      Uses FMS1 (including -Duse_deprecated_io) because the nudging experiment is much slower with FMS2
+      Uses FMS1 (including -Duse_deprecated_io)
+      Uses FMS2 (for unknown reason FMS1 does not work with intel23 on C6)
     </description>
     <component name="fms" paths="FMS">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
         <codeBase version="$(FMS_GIT_TAG)"> FMS.git </codeBase>
       </source>
       <compile>
-        <cppDefs>-Duse_deprecated_io -Duse_libMPI -Duse_netCDF $(F2003_FLAGS) -DMAXFIELDMETHODS_=600</cppDefs>
+        <cppDefs>-Duse_libMPI -Duse_netCDF $(F2003_FLAGS) -DMAXFIELDMETHODS_=600</cppDefs>
       </compile>
     </component>
 
-    <component name="mom6_symmetric" requires="fms" paths="mom6/src/MOM6/config_src/memory/dynamic_symmetric mom6/src/MOM6/config_src/drivers/FMS_cap mom6/src/MOM6/src/*/ mom6/src/MOM6/src/*/*/ mom6/src/MOM6/config_src/external/ODA_hooks mom6/src/MOM6/config_src/external/stochastic_physics mom6/src/MOM6/config_src/external/drifters mom6/src/MOM6/config_src/external/database_comms mom6/src/ocean_BGC/generic_tracers mom6/src/ocean_BGC/mocsy/src mom6/src/MOM6/pkg/GSW-Fortran/modules mom6/src/MOM6/pkg/GSW-Fortran/toolbox mom6/src/MOM6/config_src/infra/FMS1">
+    <component name="mom6_symmetric" requires="fms" paths="mom6/src/MOM6/config_src/memory/dynamic_symmetric mom6/src/MOM6/config_src/drivers/FMS_cap mom6/src/MOM6/src/*/ mom6/src/MOM6/src/*/*/ mom6/src/MOM6/config_src/external/ODA_hooks mom6/src/MOM6/config_src/external/stochastic_physics mom6/src/MOM6/config_src/external/drifters mom6/src/MOM6/config_src/external/database_comms mom6/src/ocean_BGC/generic_tracers mom6/src/ocean_BGC/mocsy/src mom6/src/MOM6/pkg/GSW-Fortran/modules mom6/src/MOM6/pkg/GSW-Fortran/toolbox mom6/src/MOM6/config_src/infra/FMS2">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
               <codeBase version="$(MOM6_GIT_FIX)"> CEFI-regional-MOM6.git </codeBase>
         <csh><![CDATA[
@@ -142,7 +144,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         ]]></csh>
       </source>
       <compile>
-        <cppDefs><![CDATA[ $(F2003_FLAGS) -DMAX_FIELDS_=100 -DNOT_SET_AFFINITY -D_USE_MOM6_DIAG -D_USE_GENERIC_TRACER  -DUSE_PRECISION=2 -D_FILE_VERSION="'"`git-version-string $<`"'" ]]></cppDefs>
+        <cppDefs><![CDATA[ $(F2003_FLAGS) -DUSE_FMS2_IO -DMAX_FIELDS_=100 -DNOT_SET_AFFINITY -D_USE_MOM6_DIAG -D_USE_GENERIC_TRACER  -DUSE_PRECISION=2 -D_FILE_VERSION="'"`git-version-string $<`"'" ]]></cppDefs>
         <!--makeOverrides>OPENMP=""</makeOverrides>  openmp switch for MOM6 may cause crash -->
       </compile>
     </component>
@@ -152,7 +154,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         <codeBase version="$(RELEASE)"> ice_param.git </codeBase>
       </source>
       <compile>
-         <cppDefs><![CDATA[$(F2003_FLAGS) -D_FILE_VERSION="'"`git-version-string $<`"'"]]></cppDefs>
+         <cppDefs><![CDATA[$(F2003_FLAGS) -DUSE_FMS2_IO -D_FILE_VERSION="'"`git-version-string $<`"'"]]></cppDefs>
       </compile>
     </component>
 
@@ -178,7 +180,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         <codeBase version="$(CPL_GIT_TAG)"> coupler.git </codeBase>
       </source>
       <compile>
-        <cppDefs><![CDATA[$(F2003_FLAGS) -Duse_deprecated_io -D_USE_LEGACY_LAND_ -Duse_AM3_physics -D_FILE_VERSION="'"`git-version-string $<`"'"]]></cppDefs>
+        <cppDefs><![CDATA[$(F2003_FLAGS) -DUSE_FMS2_IO -D_USE_LEGACY_LAND_ -Duse_AM3_physics -D_FILE_VERSION="'"`git-version-string $<`"'"]]></cppDefs>
       </compile>
     </component>
   </experiment>
@@ -622,7 +624,7 @@ COBALT_INPUT_EOF
       </production>
       <regression name="test">
         <run days="2">
-          <resources jobWallclock="00:40:00">
+          <resources jobWallclock="01:00:00">
             <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
             <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           </resources>
@@ -844,29 +846,29 @@ endif
       </dataFile>
       <!--Other files for BGC fluxes from atmosphere -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_dryfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drynh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_dryfe_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetfe_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_drynh4_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
       </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
         but ${fyear} will be reliably filled in when the job is run -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_msl_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_t2m_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_sphum_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_strd_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_ssrd_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_lp_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_sf_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_u10_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_v10_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_msl_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_t2m_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_sphum_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_strd_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_ssrd_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_lp_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_sf_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_u10_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_v10_${fyear}_padded.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/glofas/2023_04_v2/glofas_runoff_${fyear}.nc</dataSource>
       </dataFile>
       <!-- Extra file for chlorophyll for estimating opacity: -->
