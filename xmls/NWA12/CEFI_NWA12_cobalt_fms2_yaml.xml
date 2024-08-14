@@ -613,7 +613,7 @@ do_case2_mod = True
 COBALT_INPUT_EOF
 
 #hack to test yaml diag_table, convert the diag_table to yaml format 
-diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
+diag-table-to-yaml --force-write $work/diag_table #-o $work/diag_table.yam
         ]]>
       </csh>
     </input>
