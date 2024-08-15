@@ -45,6 +45,7 @@ text_y: 54
 # Space between skill score text
 text_xint: 4 # This is unused if col=1, so it is only included for completeness
 text_yint: 4
+plot_lat: False
 
 # SST_eval settings
 oisst: '/work/acr/oisstv2/' 

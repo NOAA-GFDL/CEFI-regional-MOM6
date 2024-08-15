@@ -52,7 +52,7 @@ def get_map_norm(cmap, levels, no_offset=True):
     norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
     return cmap, norm
 
-def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), **kwargs):
+def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False,**kwargs):
     """
     Annotate an axis with model vs obs skill metrics
     """
@@ -60,17 +60,32 @@ def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xi
     rmse = xskillscore.rmse(model, obs, dim=dim, skipna=True, weights=weights)
     corr = xskillscore.pearson_r(model, obs, dim=dim, skipna=True, weights=weights)
     medae = xskillscore.median_absolute_error(model, obs, dim=dim, skipna=True)
-    ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
-    ax.text(x0, y0-yint, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
-    if cols == 1:
-        ax.text(x0, y0-yint*2, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-        ax.text(x0, y0-yint*3, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
-    elif cols == 2:
-        ax.text(x0+xint, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-        ax.text(x0+xint, y0-yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+
+    # Set plot_lat=True in order to plot skill along a line of latitude. Otherwise, plot along longitude
+    if plot_lat:
+        ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
+        ax.text(x0-xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
+        if cols == 1:
+            ax.text(x0-xint*2, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0-xint*3, y0, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        elif cols == 2:
+            ax.text(x0, y0+yint, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0-xint, y0+yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        else:
+            raise ValueError(f'Unsupported number of columns: {cols}')
+
     else:
-        raise ValueError(f'Unsupported number of columns: {cols}')
-    
+        ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
+        ax.text(x0, y0-yint, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
+        if cols == 1:
+            ax.text(x0, y0-yint*2, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0, y0-yint*3, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        elif cols == 2:
+            ax.text(x0+xint, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0+xint, y0-yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        else:
+            raise ValueError(f'Unsupported number of columns: {cols}')
+
 def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
     """
     Add a colorbar, setting the extend metric based on 

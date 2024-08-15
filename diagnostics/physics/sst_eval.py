@@ -14,7 +14,7 @@ import numpy as np
 import xarray
 import logging
 
-from plot_common import annotate_skill, autoextend_colorbar, corners, get_map_norm, open_var, load_config, process_oisst, process_glorys
+from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config, process_oisst, process_glorys
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
@@ -102,7 +102,7 @@ def plot_sst_eval(pp_root, config):
     # Model - OISST
     grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, transform=proj,**bias_common)
     grid[2].set_title('(c) Model - OISST')
-    annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
+    annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plotlat'])
     logger.info("Successfully plotted difference between model and oisst")
 
     # GLORYS
@@ -118,7 +118,7 @@ def plot_sst_eval(pp_root, config):
     cbar2.ax.set_xlabel('SST difference (°C)')
     cbar2.ax.set_xticks([-2, -1, 0, 1, 2])
     grid[5].set_title('(e) Model - GLORYS12')
-    annotate_skill(model_ave, glorys_rg, grid[5], weights=model_grid.areacello, x0=config['text_x'], y0=config['text_y'], yint=config['text_yint'])
+    annotate_skill(model_ave, glorys_rg, grid[5], weights=model_grid.areacello, x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
     logger.info("Successfully plotted difference between glorys and model")
 
     for ax in grid:
