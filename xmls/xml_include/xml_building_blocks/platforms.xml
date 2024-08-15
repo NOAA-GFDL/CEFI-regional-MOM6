@@ -83,9 +83,9 @@
       source $MODULESHOME/init/csh
       module use -a /home/fms/local/modulefiles
       module purge
-      module load fre/$(FRE_VERSION)
+      module load fre/bronx-22
       module load git
-      setenv FREVERSION fre/$(FRE_VERSION)           
+      setenv FREVERSION fre/bronx-22         
       setenv NBROOT $(NB_ROOT)
     ]]>
     </csh>
