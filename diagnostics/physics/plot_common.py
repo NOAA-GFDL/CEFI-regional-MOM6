@@ -195,7 +195,7 @@ def process_glorys(config, target_grid):
     except AttributeError:
         glorys_lonc, glorys_latc = corners(glorys.longitude, glorys.latitude)
         logger.info("Glorys data is using longitude/latitude")
-    else:
+    except:
         logger.error("Name of longitude and latitude variables is unknown")
         raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
 

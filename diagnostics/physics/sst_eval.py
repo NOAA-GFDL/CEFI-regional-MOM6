@@ -30,10 +30,11 @@ def plot_sst_eval(pp_root, config):
     logger.info("MODEL_AVE: %s",model_ave)
     logger.info("Successfully opened model grid and took mean over time")
 
+    # Verify that xh/yh are set as coordinates, then make sure model coordinates match grid data
+    model_grid = model_grid.assign_coords( {'xh':model_grid.xh, 'yh':model_grid.yh } )
+    model_ave = xarray.align(model_grid, model_ave,join='override')[1]
+
     glorys_rg, glorys_ave, glorys_lonc, glorys_latc = process_glorys(config, target_grid)
-    # Transform all longitudes to the interval [-180, 180] to prevent data from getting cutoff when calculating delta_glorys
-    glorys_rg.coords['xh'] = (glorys_rg.coords['xh'] + 180) % 360 - 180
-    # glorys_rg = glorys_rg.sortby(glorys_rg.xh)
     delta_glorys = model_ave - glorys_rg
     logger.info("GLORYS_RG: %s",glorys_rg)
     logger.info("DELTA_GLORYS: %s",delta_glorys)
