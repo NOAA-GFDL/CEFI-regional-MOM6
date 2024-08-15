@@ -77,10 +77,10 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="MDBIswitch" value="off"/>
 
   <!-- on/off switch for physics analysis -->
-  <property name="PHY_ANALYSIS_SWITCH" value="on"/>
+  <property name="PHY_ANALYSIS_SWITCH" value="off"/>
 
   <!-- on/off switch for bgc analysis -->
-  <property name="BGC_ANALYSIS_SWITCH" value="on"/>
+  <property name="BGC_ANALYSIS_SWITCH" value="off"/>
 
   <!--Users need not change the following properties -->
   <!-- Reference release tag for existing files in the archives for answer comparison. Used in "REFERENCE" property. -->
