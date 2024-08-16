@@ -52,12 +52,11 @@
     <property name="REFERENCE"         value=""/>
     <property name="FMS_ARCHIVE_ROOT"    value=""/>
     <property name="CMIP6_ARCHIVE_ROOT"  value=""/>
-    <property name="NCORE_PER_NODE"      value="128"/>
+    <property name="NCORE_PER_NODE"      value="192"/>
     <property name="NPES_IO_LAND"         value="18"/>
     <csh><![CDATA[
-      module load git
-      module unload darshan
       module unload cray-libsci
+      module load git
       $(append_to_setup_csh)
     ]]></csh>
   </platform>
