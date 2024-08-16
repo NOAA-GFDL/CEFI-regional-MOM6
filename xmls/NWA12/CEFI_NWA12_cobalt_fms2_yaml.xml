@@ -94,9 +94,6 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <!-- name for source/exec directory -->
   <property name="STATIC" value=""/>
 
-  <!-- Path to world-shared location with common NWA12 input files -->
-  <property name="NWA12_WORLD" value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/nwa12_input"/>
-
   <!--This is necessary only if you want to run exact same experiment on multiple platforms-->
   <property name="PLATINFO" value=""/>
   <property name="AWG_INPUT_HOME_GAEA" value="../xml_include"/>
@@ -849,29 +846,29 @@ endif
       </dataFile>
       <!--Other files for BGC fluxes from atmosphere -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_dryfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_drynh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/global/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_dryfe_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetfe_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynh4_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
       </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
         but ${fyear} will be reliably filled in when the job is run -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_msl_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_t2m_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_sphum_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_strd_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_ssrd_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_lp_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_sf_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_u10_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5/ERA5_v10_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_msl_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_t2m_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_sphum_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_strd_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_ssrd_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_lp_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_sf_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_u10_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_v10_${fyear}_padded.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/glofas/2023_04_v2/glofas_runoff_${fyear}.nc</dataSource>
       </dataFile>
       <!-- Extra file for chlorophyll for estimating opacity: -->

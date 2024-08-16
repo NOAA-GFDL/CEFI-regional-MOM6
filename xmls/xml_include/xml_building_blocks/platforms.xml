@@ -17,6 +17,9 @@
     <property name="F2003_FLAGS"       value=" -DINTERNAL_FILE_NML -g "/>
     <property name="AWG_INPUT_HOME"    value="$(AWG_INPUT_HOME_GAEA)"/>
     <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
+    <property name="NWA12_WORLD"       value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/nwa12_input"/>
+    <property name="NWA_ERA5"          value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5"/>
+    <property name="GLOBAL_WORLD"      value="/gpfs/f5/gfdl_med/world-shared/global"/>
     <property name="ARCHIVE_NNZ"        value=""/>
     <property name="REFERENCE"         value=""/>
     <property name="FMS_ARCHIVE_ROOT"    value=""/>
@@ -48,6 +51,9 @@
     <property name="F2003_FLAGS"       value=" -DINTERNAL_FILE_NML -g "/>
     <property name="AWG_INPUT_HOME"    value="$(AWG_INPUT_HOME_GAEA)"/>
     <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
+    <property name="NWA12_WORLD"       value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/nwa12_input"/>
+    <property name="NWA_ERA5"          value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5"/>
+    <property name="GLOBAL_WORLD"      value="/gpfs/f6/ira-cefi/world-shared/global"/>
     <property name="ARCHIVE_NNZ"        value=""/>
     <property name="REFERENCE"         value=""/>
     <property name="FMS_ARCHIVE_ROOT"    value=""/>
