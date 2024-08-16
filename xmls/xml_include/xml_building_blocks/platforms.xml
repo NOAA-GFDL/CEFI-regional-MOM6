@@ -25,7 +25,7 @@
     <property name="NPES_IO_LAND"         value="18"/>
     <csh><![CDATA[
       module load git
-      module unload darshan
+      module unload darshan-runtime
       module unload cray-libsci
       $(append_to_setup_csh)
     ]]></csh>
@@ -56,6 +56,7 @@
     <property name="NPES_IO_LAND"         value="18"/>
     <csh><![CDATA[
       module unload cray-libsci
+      module unload darshan-runtime
       module load git
       $(append_to_setup_csh)
     ]]></csh>
