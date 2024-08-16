@@ -6,7 +6,7 @@ Quick start guide
 Load module:
 
 On GFDL Analysis:
-module load fre/bronx-22
+module load fre/test
 
 On Gaea:
 C6: module use -a /ncrc/home2/Yi-cheng.Teng/local/modulefiles
