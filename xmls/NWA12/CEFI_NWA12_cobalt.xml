@@ -9,8 +9,7 @@ On GFDL Analysis:
 module load fre/bronx-22
 
 On Gaea:
-C6: module use -a /ncrc/home2/Yi-cheng.Teng/local/modulefiles
-C5: module use -a /ncrc/home2/fms/local/modulefiles
+module use -a /ncrc/home2/fms/local/modulefiles
 module load fre/test
 
 Compile and build mom6-sis2-cobalt:
