@@ -138,8 +138,8 @@ def plot_sst_eval(pp_root, config):
 if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
-    parser.add_argument('-p','--pp_root', type=str, help='Path to postprocessed data (up to but not including /pp/)')
-    parser.add_argument('-c','--config', type=str, help='Path to config.yaml file containing relevant paths for diagnostic scripts')
+    parser.add_argument('-p','--pp_root', type=str, help='Path to postprocessed data (up to but not including /pp/)', required=True)
+    parser.add_argument('-c','--config', type=str, help='Path to config.yaml file containing relevant paths for diagnostic scripts', required=True)
     args = parser.parse_args()
     config = load_config(args.config)
     plot_sst_eval(args.pp_root, config)
