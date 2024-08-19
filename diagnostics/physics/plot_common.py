@@ -61,9 +61,9 @@ def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xi
     corr = xskillscore.pearson_r(model, obs, dim=dim, skipna=True, weights=weights)
     medae = xskillscore.median_absolute_error(model, obs, dim=dim, skipna=True)
 
+    ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
     # Set plot_lat=True in order to plot skill along a line of latitude. Otherwise, plot along longitude
     if plot_lat:
-        ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
         ax.text(x0-xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
         if cols == 1:
             ax.text(x0-xint*2, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
@@ -75,7 +75,6 @@ def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xi
             raise ValueError(f'Unsupported number of columns: {cols}')
 
     else:
-        ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
         ax.text(x0, y0-yint, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
         if cols == 1:
             ax.text(x0, y0-yint*2, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
@@ -186,6 +185,9 @@ def process_oisst(config, target_grid, model_ave):
         logger.error(f"Error processing OISST data: {e}")
         raise e("Could not open OISST dataset")
 
+    # Drop any latitude points greater than or equal to 90 to prevent errors when regridding
+    oisst = oisst.where( oisst.lat < 90, drop = True)
+
     oisst_lonc, oisst_latc = corners(oisst.lon, oisst.lat)
     oisst_lonc -= 360
     mom_to_oisst = xesmf.Regridder(
@@ -204,10 +206,13 @@ def process_glorys(config, target_grid):
     """ Open and regrid glorys data, return regridded glorys data """
     glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True)['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
 
+    # Drop any latitude points greater than or equal to 90 to prevent errors when regridding, then get corner points
     try:
+        glorys = glorys.where( glorys.lat < 90, drop = True)
         glorys_lonc, glorys_latc = corners(glorys.lon, glorys.lat)
         logger.info("Glorys data is using lon/lat")
     except AttributeError:
+        glorys = glorys.where( glorys.latitude < 90, drop = True)
         glorys_lonc, glorys_latc = corners(glorys.longitude, glorys.latitude)
         logger.info("Glorys data is using longitude/latitude")
     except:

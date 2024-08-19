@@ -61,7 +61,7 @@ def plot_sst_eval(pp_root, config):
         cbar_mode='edge',
         cbar_pad=0.2,
         cbar_size='15%',
-        label_mode=''
+        label_mode='keep'
     )
     logger.info("Successfully created grid")
 
@@ -102,7 +102,7 @@ def plot_sst_eval(pp_root, config):
     # Model - OISST
     grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, transform=proj,**bias_common)
     grid[2].set_title('(c) Model - OISST')
-    annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plotlat'])
+    annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
     logger.info("Successfully plotted difference between model and oisst")
 
     # GLORYS
