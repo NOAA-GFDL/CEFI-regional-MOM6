@@ -591,6 +591,12 @@ DT_OBC_SEG_UPDATE_OBGC = 1800
 #override REMAP_AUXILIARY_VARS = True
 #override DIABATIC_FIRST = False
 #override EQN_OF_STATE = "WRIGHT_FULL"
+#override PHA_MLD_CALC = True
+#override PHA_MLD_USE_DELTA_RHO = True
+#override PHA_MLD_HREF = 10.0
+#override PHA_MLD_DRHO = 0.03
+#override HREF_FOR_MLD = 10.0 
+#override DIAG_MLD_DENSITY_DIFF = 0.03
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override
