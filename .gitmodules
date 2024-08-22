@@ -38,11 +38,11 @@
 	path = src/coupler
 	url = https://github.com/NOAA-GFDL/FMScoupler.git
 	branch = 2024.02
-[submodule "src/ocean_BGC"]
-	path = src/ocean_BGC
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
-	branch = dev/cefi
 [submodule "src/MOM6"]
 	path = src/MOM6
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
+	branch = dev/cefi
+[submodule "src/ocean_BGC"]
+	path = src/ocean_BGC
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
 	branch = dev/cefi
