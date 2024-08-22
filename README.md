@@ -1,5 +1,3 @@
-1st change Yi-Cheng
-
 [![mom6_obgc_1d](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/mom6_cobalt_1D.yaml/badge.svg)](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/mom6_cobalt_1D.yaml)
 [![doc](https://readthedocs.org/projects/cefi-regional-mom6/badge/?version=latest)](https://cefi-regional-mom6.readthedocs.io/en/latest/?badge=latest)
       
