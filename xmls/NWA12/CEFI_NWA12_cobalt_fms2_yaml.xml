@@ -6,32 +6,32 @@ Quick start guide
 Load module:
 
 On GFDL Analysis:
-module load fre/bronx-22
+module load fre/test
 
 On Gaea:
 module use -a /ncrc/home2/fms/local/modulefiles
-module load fre/bronx-22
+module load fre/test
 
 Compile and build mom6-sis2-cobalt:
-fremake -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc5.intel22 -t prod MOM6_SIS2_GENERIC_4P_compile_symm_yaml
+fremake -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod MOM6_SIS2_GENERIC_4P_compile_symm_yaml
 
 Run experiment
-frerun -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc5.intel22 -t prod CEFI_NWA12_COBALT_V1
+frerun -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod CEFI_NWA12_COBALT_V1
 
 Run postprocessing later on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc5-intel22 -T prod CEFI_NWA12_COBALT_V1
+frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc6-intel23-prod/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod CEFI_NWA12_COBALT_V1
 
 Run analysis after the postprocessing on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc5-intel22 -T prod CEFI_NWA12_COBALT_V1
+frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc6-intel23-prod/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod CEFI_NWA12_COBALT_V1
 
 Regression test for layout:
-frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc5.intel22 -q debug -r layout CEFI_NWA12_COBALT_V1
+frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_COBALT_V1
 
 Regression test for restart:
-frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc5.intel22 -q debug -r restart CEFI_NWA12_COBALT_V1
+frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_COBALT_V1
 
 To check if the restart files are identical from regression test:
-frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA12_COBALT_V1
+frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA12_COBALT_V1
 
 -->
 
@@ -52,10 +52,10 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NWA/2024_07_FMS2"/>
+  <property name="FRE_STEM" value="fre/cefi/NWA/2024_08_FMS2"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
-  <property name="NCRC_GROUP" value="cefi"/>
+  <property name="NCRC_GROUP" value="ira-cefi"/>
   <property name="GFDL_GROUP" value="cefi"/>
 
   <!--Production run properties. Users can modify these according to their need and/or performance analysis-->
@@ -70,16 +70,16 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="PP_START_YEAR" value="1993"/>
 
   <!-- fre version to be used -->
-  <property name="FRE_VERSION" value="bronx-22"/>
+  <property name="FRE_VERSION" value="test"/>
 
   <!-- on/off switch for MDBI database -->
   <property name="MDBIswitch" value="off"/>
 
   <!-- on/off switch for physics analysis -->
-  <property name="PHY_ANALYSIS_SWITCH" value="on"/>
+  <property name="PHY_ANALYSIS_SWITCH" value="off"/>
 
   <!-- on/off switch for bgc analysis -->
-  <property name="BGC_ANALYSIS_SWITCH" value="on"/>
+  <property name="BGC_ANALYSIS_SWITCH" value="off"/>
 
   <!--Users need not change the following properties -->
   <!-- Reference release tag for existing files in the archives for answer comparison. Used in "REFERENCE" property. -->
@@ -93,9 +93,6 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <!-- name for source/exec directory -->
   <property name="STATIC" value=""/>
 
-  <!-- Path to world-shared location with common NWA12 input files -->
-  <property name="NWA12_WORLD" value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/nwa12_input"/>
-
   <!--This is necessary only if you want to run exact same experiment on multiple platforms-->
   <property name="PLATINFO" value=""/>
   <property name="AWG_INPUT_HOME_GAEA" value="../xml_include"/>
@@ -107,6 +104,8 @@ frecheck -r layout -p ncrc5.intel22 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <setup>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc5.intel22'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc5-intel22'])"/>
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc6.intel23'])"/>
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>    
   </setup>
 
   <!--= COMPILE =-->
@@ -583,7 +582,7 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override USE_generic_tracer = True
 #override MAX_FIELDS=500
 #override OBC_TIDE_NODAL_REF_DATE = ${fyear},7,2
-DT_OBC_SEG_UPDATE_OBGC = 1800		      
+DT_OBC_SEG_UPDATE_OBGC = 1800
 #override CHL_FROM_FILE = False
 #override DO_GEOTHERMAL = True
 #override GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc"
@@ -610,7 +609,7 @@ do_case2_mod = True
 COBALT_INPUT_EOF
 
 #hack to test yaml diag_table, convert the diag_table to yaml format 
-diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
+diag-table-to-yaml --force-write $work/diag_table #-o $work/diag_table.yam
         ]]>
       </csh>
     </input>
@@ -846,29 +845,29 @@ endif
       </dataFile>
       <!--Other files for BGC fluxes from atmosphere -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_dryfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drynh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/global/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_dryfe_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetfe_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynh4_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
       </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
         but ${fyear} will be reliably filled in when the job is run -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_msl_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_t2m_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_sphum_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_strd_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_ssrd_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_lp_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_sf_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_u10_${fyear}_padded.nc</dataSource>
-        <dataSource site="ncrc">/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5/ERA5_v10_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_msl_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_t2m_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_sphum_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_strd_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_ssrd_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_lp_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_sf_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_u10_${fyear}_padded.nc</dataSource>
+        <dataSource site="ncrc">$(NWA_ERA5)/ERA5_v10_${fyear}_padded.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/glofas/2023_04_v2/glofas_runoff_${fyear}.nc</dataSource>
       </dataFile>
       <!-- Extra file for chlorophyll for estimating opacity: -->

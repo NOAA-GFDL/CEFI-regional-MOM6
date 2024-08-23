@@ -7,6 +7,12 @@ import numpy as np
 import os
 import xarray
 import xskillscore
+import logging
+import yaml
+import xesmf
+
+# Configure logging for plot_common
+logger = logging.getLogger(__name__)
 
 def center_to_outer(center, left=None, right=None):
     """
@@ -46,7 +52,7 @@ def get_map_norm(cmap, levels, no_offset=True):
     norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
     return cmap, norm
 
-def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, **kwargs):
+def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False,**kwargs):
     """
     Annotate an axis with model vs obs skill metrics
     """
@@ -54,17 +60,31 @@ def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xi
     rmse = xskillscore.rmse(model, obs, dim=dim, skipna=True, weights=weights)
     corr = xskillscore.pearson_r(model, obs, dim=dim, skipna=True, weights=weights)
     medae = xskillscore.median_absolute_error(model, obs, dim=dim, skipna=True)
-    ax.text(x0, y0, f'Bias: {float(bias):2.2f}', **kwargs)
-    ax.text(x0, y0-yint, f'RMSE: {float(rmse):2.2f}', **kwargs)
-    if cols == 1:
-        ax.text(x0, y0-yint*2, f'MedAE: {float(medae):2.2f}', **kwargs)
-        ax.text(x0, y0-yint*3, f'Corr: {float(corr):2.2f}', **kwargs)
-    elif cols == 2:
-        ax.text(x0+xint, y0, f'MedAE: {float(medae):2.2f}', **kwargs)
-        ax.text(x0+xint, y0-yint, f'Corr: {float(corr):2.2f}', **kwargs)
+
+    ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
+    # Set plot_lat=True in order to plot skill along a line of latitude. Otherwise, plot along longitude
+    if plot_lat:
+        ax.text(x0-xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
+        if cols == 1:
+            ax.text(x0-xint*2, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0-xint*3, y0, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        elif cols == 2:
+            ax.text(x0, y0+yint, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0-xint, y0+yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        else:
+            raise ValueError(f'Unsupported number of columns: {cols}')
+
     else:
-        raise ValueError(f'Unsupported number of columns: {cols}')
-    
+        ax.text(x0, y0-yint, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
+        if cols == 1:
+            ax.text(x0, y0-yint*2, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0, y0-yint*3, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        elif cols == 2:
+            ax.text(x0+xint, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
+            ax.text(x0+xint, y0-yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+        else:
+            raise ValueError(f'Unsupported number of columns: {cols}')
+
 def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
     """
     Add a colorbar, setting the extend metric based on 
@@ -141,3 +161,67 @@ def save_figure(fname, label='', pdf=False, output_dir='figures'):
         plt.savefig(os.path.join(output_dir, f'{fname}_{label}.png'), dpi=200, bbox_inches='tight')
         if pdf:
             plt.savefig(os.path.join(output_dir, f'{fname}_{label}.pdf'), bbox_inches='tight')
+
+def load_config(config_path: str):
+    """Load the configuration file."""
+    try:
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f)
+            logger.info(f"Loaded configuration from {config_path}")
+            return config
+    except Exception as e:
+        logger.error(f"Error loading configuration from {config_path}: {e}")
+        raise
+
+def process_oisst(config, target_grid, model_ave):
+    """Open and regrid OISST dataset, return relevant vars from dataset."""
+    try:
+        oisst = (
+            xarray.open_mfdataset([config['oisst'] + f'sst.month.mean.{y}.nc' for y in range(1993, 2020)])
+            .sst
+            .sel(lat=slice(config['lat']['south'], config['lat']['north']), lon=slice(config['lon']['west'], config['lon']['east']))
+        )
+    except Exception as e:
+        logger.error(f"Error processing OISST data: {e}")
+        raise e("Could not open OISST dataset")
+
+    # Drop any latitude points greater than or equal to 90 to prevent errors when regridding
+    oisst = oisst.where( oisst.lat < 90, drop = True)
+
+    oisst_lonc, oisst_latc = corners(oisst.lon, oisst.lat)
+    oisst_lonc -= 360
+    mom_to_oisst = xesmf.Regridder(
+        target_grid,
+        {'lat': oisst.lat, 'lon': oisst.lon, 'lat_b': oisst_latc, 'lon_b': oisst_lonc},
+        method='conservative_normed',
+        unmapped_to_nan=True
+    )
+
+    oisst_ave = oisst.mean('time').load()
+    mom_rg = mom_to_oisst(model_ave)
+    logger.info("OISST data processed successfully.")
+    return mom_rg, oisst_ave, oisst_lonc, oisst_latc
+
+def process_glorys(config, target_grid):
+    """ Open and regrid glorys data, return regridded glorys data """
+    glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True)['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
+
+    # Drop any latitude points greater than or equal to 90 to prevent errors when regridding, then get corner points
+    try:
+        glorys = glorys.where( glorys.lat < 90, drop = True)
+        glorys_lonc, glorys_latc = corners(glorys.lon, glorys.lat)
+        logger.info("Glorys data is using lon/lat")
+    except AttributeError:
+        glorys = glorys.where( glorys.latitude < 90, drop = True)
+        glorys_lonc, glorys_latc = corners(glorys.longitude, glorys.latitude)
+        logger.info("Glorys data is using longitude/latitude")
+    except:
+        logger.error("Name of longitude and latitude variables is unknown")
+        raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
+
+    glorys_ave = glorys.mean('time').load()
+    glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
+    glorys_rg = glorys_to_mom(glorys_ave)
+
+    logger.info("Glorys data processed successfully.")
+    return glorys_rg, glorys_ave, glorys_lonc, glorys_latc

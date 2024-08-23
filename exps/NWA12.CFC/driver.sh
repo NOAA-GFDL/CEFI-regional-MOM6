@@ -6,8 +6,8 @@
 #SBATCH --error=NWA12.CFC_e.%j
 #SBATCH --qos=debug
 #SBATCH --partition=batch
-#SBATCH --clusters=c5
-#SBATCH --account=cefi
+#SBATCH --clusters=c6
+#SBATCH --account=ira-cefi
 
 #
 ntasks1=128
@@ -16,7 +16,7 @@ ntasks2=64
 #
 echo "link datasets ..."
 pushd ../
-ln -fs /gpfs/f5/cefi/world-shared/datasets ./
+ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
 popd
 
 #
@@ -30,13 +30,13 @@ echo "run 16x8 2hrs test ..."
 ln -fs input.nml_2hr input.nml
 ln -fs MOM_layout_16x8 MOM_layout
 ln -fs MOM_layout_16x8 SIS_layout
-srun -n ${ntasks1} ../../builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2 > out 2>err 
+srun -n ${ntasks1} ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out 2>err 
 mv RESTART RESTART_2hrs
 
 #
 echo "run 16x8 1hrs test ..."
 ln -fs input.nml_1hr input.nml
-srun -n ${ntasks1} ../../builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2 > out2 2>err2
+srun -n ${ntasks1} ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out2 2>err2
 mv RESTART RESTART_1hrs
 
 #
@@ -50,10 +50,11 @@ echo "run 8x8 1hrs rst test ..."
 ln -fs input.nml_1hr_rst input.nml
 ln -fs MOM_layout_8x8 MOM_layout
 ln -fs MOM_layout_8x8 SIS_layout
-srun -n ${ntasks2} ../../builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2 > out3 2>err3
+srun -n ${ntasks2} ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out3 2>err3
 mv RESTART RESTART_1hrs_rst
 
 # Define the directories containing the files
+module load nccmp
 DIR1="RESTART_1hrs_rst/"
 DIR2="RESTART_2hrs/"
 

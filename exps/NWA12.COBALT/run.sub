@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#SBATCH --nodes=13
+#SBATCH --nodes=9
 #SBATCH --time=60
 #SBATCH --job-name="NWA12_cobalt"
 #SBATCH --output=NWA12_cobalt_o.%j
 #SBATCH --error=NWA12_cobalt_e.%j
 #SBATCH --qos=normal
 #SBATCH --partition=batch
-#SBATCH --clusters=c5
-#SBATCH --account=cefi
+#SBATCH --clusters=c6
+#SBATCH --account=ira-cefi
 
 echo "Model started:  " `date`
 

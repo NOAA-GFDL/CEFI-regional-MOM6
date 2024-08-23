@@ -17,6 +17,9 @@
     <property name="F2003_FLAGS"       value=" -DINTERNAL_FILE_NML -g "/>
     <property name="AWG_INPUT_HOME"    value="$(AWG_INPUT_HOME_GAEA)"/>
     <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
+    <property name="NWA12_WORLD"       value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/nwa12_input"/>
+    <property name="NWA_ERA5"          value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5"/>
+    <property name="GLOBAL_WORLD"      value="/gpfs/f5/gfdl_med/world-shared/global"/>
     <property name="ARCHIVE_NNZ"        value=""/>
     <property name="REFERENCE"         value=""/>
     <property name="FMS_ARCHIVE_ROOT"    value=""/>
@@ -25,8 +28,42 @@
     <property name="NPES_IO_LAND"         value="18"/>
     <csh><![CDATA[
       module load git
-      module unload darshan
+      module unload darshan-runtime
       module unload cray-libsci
+      $(append_to_setup_csh)
+    ]]></csh>
+  </platform>
+  <platform name="ncrc6.intel23">
+    <freVersion>$(FRE_VERSION)</freVersion>
+    <compiler type="intel-classic" version="2023.2.0"/>
+    <project>$(NCRC_GROUP)</project>
+    <directory stem="$(FRE_STEM)">
+      <root>/gpfs/f6/$(project)/scratch/$USER/$(stem)</root>
+      <scripts>$(rootDir)/$(name)/$(platform)-$(target)/scripts</scripts>
+      <state>$(rootDir)/$(name)/$(platform)-$(target)/state</state>
+      <src>$(rootDir)/$(name)/src</src>
+      <exec>$(rootDir)/$(name)/$(platform)-$(target)/exec</exec>
+      <archive>$(rootDir)/$(name)/$(platform)-$(target)/archive</archive>
+      <stdout>$(rootDir)/$(name)/$(platform)-$(target)/stdout</stdout>
+      <work>/gpfs/f6/$(project)/scratch/$USER/work/$FRE_JOBID</work>
+    </directory>
+    <property name="EXEC_ROOT"         value="/gpfs/f6/$(project)/scratch/$USER/$(stem)/$(BUILD_DATE)"/>
+    <property name="F2003_FLAGS"       value=" -DINTERNAL_FILE_NML -g "/>
+    <property name="AWG_INPUT_HOME"    value="$(AWG_INPUT_HOME_GAEA)"/>
+    <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
+    <property name="NWA12_WORLD"       value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/nwa12_input"/>
+    <property name="NWA_ERA5"          value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5"/>
+    <property name="GLOBAL_WORLD"      value="/gpfs/f6/ira-cefi/world-shared/global"/>
+    <property name="ARCHIVE_NNZ"        value=""/>
+    <property name="REFERENCE"         value=""/>
+    <property name="FMS_ARCHIVE_ROOT"    value=""/>
+    <property name="CMIP6_ARCHIVE_ROOT"  value=""/>
+    <property name="NCORE_PER_NODE"      value="192"/>
+    <property name="NPES_IO_LAND"         value="18"/>
+    <csh><![CDATA[
+      module unload cray-libsci
+      module unload darshan-runtime
+      module load git
       $(append_to_setup_csh)
     ]]></csh>
   </platform>
@@ -54,12 +91,15 @@
       module purge
       module load fre/$(FRE_VERSION)
       module load git
-      setenv FREVERSION fre/$(FRE_VERSION)           
+      setenv FREVERSION fre/$(FRE_VERSION)         
       setenv NBROOT $(NB_ROOT)
     ]]>
     </csh>
   </platform>
   <platform name="gfdl.ncrc5-intel22">
+    <xi:include xpointer="xpointer(//freInclude/platform[@name='gfdl.default']/node())" />
+  </platform>
+  <platform name="gfdl.ncrc6-intel23">
     <xi:include xpointer="xpointer(//freInclude/platform[@name='gfdl.default']/node())" />
   </platform>
 </freInclude>
