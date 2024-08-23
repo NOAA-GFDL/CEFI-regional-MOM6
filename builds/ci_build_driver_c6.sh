@@ -21,7 +21,7 @@ platform="ncrc6.intel23"
 target="repro"
 flavor="fms1_mom6sis2"
 
-FMSlib_PATH="/ncrc/home2/Yi-cheng.Teng/github/FMS/2024.03_FMS1"
+FMSlib_PATH="/ncrc/home2/Yi-cheng.Teng/github/FMS/2024.02_FMS1"
 rootdir=$(pwd)
 abs_rootdir=$rootdir
 
