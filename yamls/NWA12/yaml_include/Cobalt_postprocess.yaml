@@ -8,13 +8,38 @@ postprocess:
         <<: *shared_switches
 
     components:
+        #---- MOM6 COMPONENTS ----
+        - type: "ocean_daily"
+          sources: "ocean_daily"
+
+        - type: "ocean_neus"
+          sources: "ocean_neus"
+
+        - type: "ocean_monthly"
+          sources: "ocean_month"
+
+        - type: "ocean_monthly_z"
+          sources: "ocean_month_z"
+
+        - type: "ocean_annual"
+          sources: "ocean_annual"
+
+        - type: "ocean_annual_z"
+          sources: "ocean_annual_z"
+
+        - type: "ice_daily"
+          sources: "ice_daily"
+
+        - type: "ice_monthly"
+          sources: "ice_month"
+
+        #---- END MOM6 COMPONENTS ----
+
         - type: "ocean_cobalt_fdet_100"
           sources: "ocean_cobalt_fdet_100"
-          do_timeavgs: True
             
         - type: "ocean_cobalt_btm"
           sources: "ocean_cobalt_btm"
-          do_timeavgs: True
         
         - type: "ocean_cobalt_daily_2D"
           sources: "ocean_cobalt_daily_2D"
@@ -27,19 +52,15 @@ postprocess:
         
         - type: "ocean_cobalt_omip_sfc"
           sources: "ocean_cobalt_omip_sfc"
-          do_timeavgs: True
         
         - type: "ocean_cobalt_tracers_int"
           sources: "ocean_cobalt_tracers_int"
-          do_timeavgs: True
         
         - type: "ocean_cobalt_sfc"
           sources: "ocean_cobalt_sfc"
-          do_timeavgs: True
         
         - type: "ocean_cobalt_fluxes_int"
           sources: "ocean_cobalt_fluxes_int"
-          do_timeavgs: True
         
         - type: "ocean_cobalt_daily"
           sources: "ocean_cobalt_daily"
@@ -49,12 +70,9 @@ postprocess:
         
         - type: "ocean_cobalt_tracers_month"
           sources: "ocean_cobalt_tracers_month"
-          do_timeavgs: True
         
         - type: "ocean_cobalt_tracers_month_z"
           sources: "ocean_cobalt_tracers_month_z"
-          do_timeavgs: True
         
         - type: "ocean_cobalt_omip_2d"
           sources: "ocean_cobalt_omip_2d"
-          do_timeavgs: True

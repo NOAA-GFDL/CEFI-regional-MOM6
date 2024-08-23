@@ -10,31 +10,24 @@ postprocess:
     components:
         - type: "ocean_daily"
           sources: "ocean_daily"
-          variables: "tos tob ssh sshmin sshmax"
             
         - type: "ocean_neus"
           sources: "ocean_neus"
 
-        - type: "ocean_month"
-          sources: "ocean_month"
-          do_timeavgs: True 
-          # do_analysis: True
+        - type: "ocean_monthly"
+          sources: "ocean_monthly"
         
         - type: "ocean_month_z"
           sources: "ocean_month_z"
-          do_timeavgs: True
         
         - type: "ocean_annual"
           sources: "ocean_annual"
-          do_timeavgs: True
         
         - type: "ocean_annual_z"
           sources: "ocean_annual_z"
-          do_timeavgs: True
         
         - type: "ice_daily"
           sources: "ice_daily"
         
         - type: "ice_month"
           sources: "ice_month"
-          do_timeavgs: True
