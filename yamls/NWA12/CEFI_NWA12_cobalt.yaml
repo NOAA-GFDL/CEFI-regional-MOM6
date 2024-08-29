@@ -5,15 +5,16 @@
 #
 # Quick start instructions and source code can be found here: https://github.com/NOAA-GFDL/fre-cli/tree/main/fre/pp
 #
-# Load module on GFDL Analysis: module load fre/canopy
+# 0.) Load module on GFDL Analysis: module load fre/canopy
 #
 # For modularity and compatibility with with cylc workflow engine, fre/canopy splits up the post processcing process into several sub steps:
 #
 # 1.) Checkout the git repo containing postprocessing scripts and related files with the folowing command:
 # fre pp checkout -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
 #
-# 2.) Combine your main yaml and experiment yamls into a single yaml:
-# fre pp configure-yaml -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y CEFI_NWA12_cobalt.yaml
+# 2.) Combine your main yaml and experiment yamls into a single yaml, then set up the cylc-src dir with the configure-yaml command:
+# fre yamltools combine-yamls -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y CEFI_NWA12_cobalt.yaml
+# fre pp configure-yaml -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y combined-CEFI_NWA12_COBALT_V1.yaml
 #
 #     2a.) Fre/canopy does not automatically create the pp dir for you, so you will have to mkdir this first to pass the validator:
 #     mkdir /archive/$USER/fre/cefi/NWA/2024_06/gfldl.ncrc5-intel22-prod/pp
@@ -38,29 +39,29 @@
 fre_properties: 
     - &FRE_STEM       "fre/cefi/NWA/2024_06"
 
-    - &PP_START_YEAR  '"1993"'
-    - &PP_END_YEAR    '"2019"'
-    - &PP_CHUNK_A     '"P5Y"'
-    - &PP_CHUNK_B     '"P20Y"'
-    - &PP_CHUNK_SHORT '"P1Y"'
+    - &PP_START_YEAR  "1993"
+    - &PP_END_YEAR    "2019"
+    - &PP_CHUNK_A     "P5Y"
+    - &PP_CHUNK_B     "P20Y"
+    - &PP_CHUNK_SHORT "P1Y"
 
-    - &GRID_SPEC      '"/archive/acr/mom6_input/nwa12/nwa12_grid_75z.tar"'
+    - &GRID_SPEC      "/archive/acr/mom6_input/nwa12/nwa12_grid_75z.tar"
 
     
 shared: 
     directories: &shared_directories
-        history_dir:  !join [ "\"", /archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, history, "\"" ]
-        pp_dir:       !join [ "\"", /archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, pp_canopy, "\"" ]
-        ptmp_dir:     '"/ptmp/$USER/"'
+        history_dir:  !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, history]
+        pp_dir:       !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, pp]
+        ptmp_dir:     "/ptmp/$USER/"
 
     postProcess:
         settings: &shared_settings
-            history_segment: '"P1Y"'
-            site: '"ppan"'
+            history_segment: "P1Y"
+            site: "ppan"
             pp_start: *PP_START_YEAR
             pp_stop: *PP_END_YEAR
             pp_chunk_a: *PP_CHUNK_A
-            pp_components: '"ocean_monthly"'
+            pp_components: "ocean_monthly"
             pp_chunk_b: *PP_CHUNK_B
             pp_grid_spec: *GRID_SPEC
         switches: &shared_switches
@@ -72,11 +73,16 @@ shared:
             do_statics: False
             do_timeavgs: False
 
+    compile:
+        compileYaml: &compile_yaml
+        platformYaml:
+
 experiments: 
     - name: "MOM6_SIS2_GENERIC_4P_compile_symm"
       pp:
           - "yaml_include/MOM6_postprocess.yaml"
     - name: "CEFI_NWA12_COBALT_V1"
       pp:
+          - "yaml_include/MOM6_postprocess.yaml"
           - "yaml_include/Cobalt_postprocess.yaml"
 
