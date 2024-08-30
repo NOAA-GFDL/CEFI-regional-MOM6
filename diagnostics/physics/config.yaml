@@ -50,6 +50,13 @@ plot_lat: False
 # SST_eval settings
 oisst: '/work/acr/oisstv2/' 
 
+# SSS_eval settigns
+rcdir: '/net2/acr/regional_climatologies/'
+rc_vars:
+    - swa
+    - gom
+    - nwa
+
 # Colorbar for sst plots
 levels_min: 2
 levels_max: 31
