@@ -611,7 +611,10 @@ COBALT_OVERRIDE_EOF
 truncate -s 0 $work/INPUT/COBALT_input
 cat > $work/INPUT/COBALT_input << COBALT_INPUT_EOF
 ! Put the contents of your COBALT_input file here
-do_case2_mod = True		      
+do_case2_mod = True
+scale_burial = 1.0
+z_burial = 20.0
+z_denit = 20.0
 COBALT_INPUT_EOF
         ]]>
       </csh>
