@@ -52,7 +52,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NWA/2024_08_FMS2"/>
+  <property name="FRE_STEM" value="fre/cefi/NWA/2024_09_FMS2"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <property name="NCRC_GROUP" value="ira-cefi"/>
