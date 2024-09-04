@@ -356,10 +356,15 @@
 # "ocean_model",   "TKE_tidal",        "TKE_tidal",          "ocean_annual",   "all", "mean", "none",2
 # "ocean_model",   "TKE_itidal",       "TKE_itidal",         "ocean_annual",   "all", "mean", "none",2
 
- "ocean_model",   "MLD_003",          "MLD_003",            "ocean_annual",   "all", "mean", "none",2
- "ocean_model",   "MLD_003",          "MLD_003",            "ocean_month",    "all", "mean", "none",2
- "ocean_model",   "MLD_003",          "MLD_003_min",        "ocean_annual",   "all", "min",  "none",2
- "ocean_model",   "MLD_003",          "MLD_003_max",        "ocean_annual",   "all", "max",  "none",2
+ "ocean_model",   "MLD_003",          "MLD_DBM",            "ocean_annual",   "all", "mean", "none",2
+ "ocean_model",   "MLD_003",          "MLD_DBM",            "ocean_month",    "all", "mean", "none",2
+ "ocean_model",   "MLD_003",          "MLD_DBM_min",        "ocean_annual",   "all", "min",  "none",2
+ "ocean_model",   "MLD_003",          "MLD_DBM_max",        "ocean_annual",   "all", "max",  "none",2
+
+ "ocean_model",   "MLD_user",          "MLD_003",            "ocean_annual",   "all", "mean", "none",2
+ "ocean_model",   "MLD_user",          "MLD_003",            "ocean_month",    "all", "mean", "none",2
+ "ocean_model",   "MLD_user",          "MLD_003_min",        "ocean_annual",   "all", "min",  "none",2
+ "ocean_model",   "MLD_user",          "MLD_003_max",        "ocean_annual",   "all", "max",  "none",2
  "ocean_model",   "MLD_restrat",      "MLD_restrat",        "ocean_month",    "all", "mean", "none",2
  "ocean_model",   "udml_restrat",     "udml_restrat",       "ocean_month",    "all", "mean", "none",2
  "ocean_model",   "vdml_restrat",     "vdml_restrat",       "ocean_month",    "all", "mean", "none",2
