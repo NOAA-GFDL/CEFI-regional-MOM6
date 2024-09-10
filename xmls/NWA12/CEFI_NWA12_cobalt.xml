@@ -9,7 +9,7 @@ On GFDL Analysis:
 module load fre/test
 
 On Gaea:
-module use -a /ncrc/home2/fms/local/modulefiles
+module use -a /ncrc/home2/Yi-cheng.Teng/local/modulefiles
 module load fre/test
 
 Compile and build mom6-sis2-cobalt:
