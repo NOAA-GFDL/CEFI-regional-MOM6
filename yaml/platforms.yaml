@@ -1,0 +1,26 @@
+platforms:
+   - name: ncrc5.intel
+     compiler: intel
+     modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
+     modules: ["$(INTEL)/2022.2.1","fre/bronx-20",cray-hdf5/1.12.2.3, cray-netcdf/4.9.0.3]
+     fc: ftn
+     cc: cc
+     mkTemplate: "/ncrc/home2/fms/local/opt/fre-commands/bronx-20/site/ncrc5/$(INTEL).mk"
+     modelRoot: ${HOME}/fremake_canopy/test
+   - name: ncrc5.intel23
+     compiler: intel
+     modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
+     modules: ["$(INTEL)/2023.1.0","fre/bronx-20",cray-hdf5/1.12.2.3, cray-netcdf/4.9.0.3]
+     fc: ftn
+     cc: cc
+     mkTemplate: "/ncrc/home2/fms/local/opt/fre-commands/bronx-20/site/ncrc5/$(INTEL).mk"
+     modelRoot: ${HOME}/fremake_canopy/test
+   - name: hpcme.2023
+     compiler: intel
+     RUNenv: [". /spack/share/spack/setup-env.sh", "spack load libyaml", "spack load netcdf-fortran@4.5.4", "spack load hdf5@1.14.0"]
+     modelRoot: /apps
+     fc: mpiifort
+     cc: mpiicc
+     container: True
+     containerBuild: "podman"
+     containerRun: "apptainer" 
