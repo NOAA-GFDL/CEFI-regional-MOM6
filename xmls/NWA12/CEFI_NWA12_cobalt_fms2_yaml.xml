@@ -9,7 +9,7 @@ On GFDL Analysis:
 module load fre/test
 
 On Gaea:
-module use -a /ncrc/home2/fms/local/modulefiles
+module use -a /ncrc/home2/Yi-cheng.Teng/local/modulefiles
 module load fre/test
 
 Compile and build mom6-sis2-cobalt:
@@ -52,7 +52,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NWA/2024_08_FMS2"/>
+  <property name="FRE_STEM" value="fre/cefi/NWA/2024_09_FMS2"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <property name="NCRC_GROUP" value="ira-cefi"/>
@@ -557,7 +557,7 @@ $baseDate
       </diagTable>
       <dataFile label="diagTable" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">./diag_tables/diag_table_COBALT_2023-04</dataSource>
-        <dataSource site="ncrc">./diag_tables/diag_table_MOM6_2023-03</dataSource>
+        <dataSource site="ncrc">./diag_tables/diag_table_MOM6_2024-09</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table.SIS</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_COBALT_neus</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_MOM6_neus</dataSource>
@@ -591,6 +591,12 @@ DT_OBC_SEG_UPDATE_OBGC = 1800
 #override REMAP_AUXILIARY_VARS = True
 #override DIABATIC_FIRST = False
 #override EQN_OF_STATE = "WRIGHT_FULL"
+#override PHA_MLD_CALC = True
+#override PHA_MLD_USE_DELTA_RHO = True
+#override PHA_MLD_HREF = 10.0
+#override PHA_MLD_DRHO = 0.03
+#override HREF_FOR_MLD = 10.0 
+#override DIAG_MLD_DENSITY_DIFF = 0.03
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override
@@ -606,6 +612,9 @@ truncate -s 0 $work/INPUT/COBALT_input
 cat > $work/INPUT/COBALT_input << COBALT_INPUT_EOF
 ! Put the contents of your COBALT_input file here
 do_case2_mod = True
+scale_burial = 1.0
+z_burial = 20.0
+z_denit = 20.0
 COBALT_INPUT_EOF
 
 #hack to test yaml diag_table, convert the diag_table to yaml format 
