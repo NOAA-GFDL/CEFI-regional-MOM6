@@ -28,10 +28,11 @@ def plot_sss_eval(pp_root,config):
     target_grid = model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'})
     model_ave = model.mean('time').load()
 
-    # Open 3 different regional climatology datasets and merge together.
-    # These are decadal average files, except the most recent decade
-    # has been extended, so calculate a weighted average in time.
+    # Verify that xh/yh are set as coordinates, then make sure model coordinates match grid data
+    model_grid = model_grid.assign_coords( {'xh':model_grid.xh, 'yh':model_grid.yh } )
+    model_ave = xarray.align(model_grid, model_ave,join='override')[1]
 
+    # Open regional climatology datasets and merge together.
     # Convert to a common grid to merge the datasets together.
     # concat each dataset onto a new dimension,
     # then average over the dimension.
@@ -39,8 +40,7 @@ def plot_sss_eval(pp_root,config):
     # so mean ignores the nans from other regions and selects the available data.
     regional_grid = {'lat': np.arange( config['lat']['south'], config['lat']['north'], 0.1), 'lon': np.arange(config['lon']['west'], config['lon']['east'], 0.1)}
     # For plotting later
-    regional_gridc = {'lat': np.arange( config['lat']['south']-0.05, config['lat']['north']+0.05, 0.1), 'lon': np.arange(config['lon']['west']-0.05, config['lon']['east']+0.05, 0.1)}
-    #regional_gridc = {'lat': np.arange( config['lat']['south']-0.05, config['lat']['north']+0.05, 0.1), 'lon': np.arange(config['lon']['west']-0.05, config['lon']['east']-0.05, 0.1)}
+    regional_gridc = {'lat': np.arange( config['lat']['south']-0.05, config['lat']['north']+0.05, 0.1), 'lon': np.arange(config['lon']['west']-0.05, config['lon']['east']-0.05, 0.1)}
     combined = combine_regional_climatologies( config, regional_grid)
 
     # Now interpolate to the model grid to compare.

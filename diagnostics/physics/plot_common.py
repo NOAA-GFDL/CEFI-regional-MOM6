@@ -305,10 +305,15 @@ def combine_regional_climatologies(config, regional_grid):
             raise Exception("ERROR: found {num_files} for the post 2005 period, expected 1.")
 
         logger.info(f"Using the following post 2005 files: {file2005}")
-        rc = xarray.open_mfdataset([os.path.join(rcdir, region+'_95A4_s00_10.nc'), file2005], decode_times=False)
+
+        # NOTE that this is now using the nested method to to combine files. This is to prevent issues when combining files that have the same value for the time dimension
+        # It *should* reproduce the same results as the default combine_coords methods since that method typically combined along the time dimension( as all the other dimensions were the same
+        # for a given region and the combine_coords algorithm ignores dimensions that don't vary across the inputs), but this is still worth noting nonetheless.
+        rc = xarray.open_mfdataset([os.path.join(rcdir, region+'_95A4_s00_10.nc'), file2005], decode_times=False, combine='nested',concat_dim='time')
 
         last_year = get_end_of_climatology_period(file2005)
 
+        # TODO: Is it a problem if climatologies for the same domain cover different time periods? Example: NEP climatology is 2005-2012, while NNP is 2005-2014
         weights = xarray.DataArray([2004-1995+1, last_year-2005+1], dims=['time'], coords={'time': rc.time})
         rc = rc.weighted(weights).mean('time')
 
