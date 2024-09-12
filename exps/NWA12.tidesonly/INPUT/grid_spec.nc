@@ -1,0 +1,1 @@
+../../datasets/nwa12_input/grid_spec.nc
