@@ -31,25 +31,25 @@ b_3 = -0.00817083               !   [ml L-1 (ppt salt)-1] default = -0.00817083
                                 ! O2 sat. regression coefficient
 c_0 = -4.88682E-07              !   [ml L-1 (ppt salt)-2] default = -4.88682E-07
                                 ! O2 sat. regression coefficient
-a1_co2 = 2116.8                 !   [dimensionless] default = 2116.8
+a1_co2 = 2068.9                 !   [dimensionless] default = 2068.9
                                 ! CO2 Schmidt # regression coefficient
-a2_co2 = -136.25                !   [deg. C-1] default = -136.25
+a2_co2 = -118.63                !   [deg. C-1] default = -118.63
                                 ! CO2 Schmidt # regression coefficient
-a3_co2 = 4.7353                 !   [deg. C-2] default = 4.7353
+a3_co2 = 2.9311                 !   [deg. C-2] default = 2.9311
                                 ! CO2 Schmidt # regression coefficient
-a4_co2 = -0.092307              !   [deg. C-3] default = -0.092307
+a4_co2 = -0.027                 !   [deg. C-3] default = -0.027
                                 ! CO2 Schmidt # regression coefficient
-a5_co2 = 7.555E-04              !   [deg. C-4] default = 7.555E-04
+a5_co2 = 0.0                    !   [deg. C-4] default = 0.0
                                 ! CO2 Schmidt # regression coefficient
-a1_o2 = 1920.4                  !   [dimensionless] default = 1920.4
+a1_o2 = 1929.7                  !   [dimensionless] default = 1929.7
                                 ! O2 Schmidt # regression coefficient
-a2_o2 = -135.6                  !   [deg. C-1] default = -135.6
+a2_o2 = -117.46                 !   [deg. C=1] default = -117.46
                                 ! O2 Schmidt # regression coefficient
-a3_o2 = 5.2122                  !   [deg. C-2] default = 5.2122
+a3_o2 = 3.116                   !   [deg. C-2] default = 3.116
                                 ! O2 Schmidt # regression coefficient
-a4_o2 = -0.10939                !   [deg. C-3] default = -0.10939
+a4_o2 = -0.0306                 !   [deg. C-3] default = -0.0306
                                 ! O2 Schmidt # regression coefficient
-a5_o2 = 9.3777E-04              !   [deg. C-4] default = 9.3777E-04
+a5_o2 = 0.0                     !   [deg. C-4] default = 0.0
                                 ! O2 Schmidt # regression coefficient
 n_2_n_denit = 5.9               !   [mol N mol N-1] default = 5.9
                                 ! moles NO3 used per mole org. N remineralized via denitrification
@@ -227,15 +227,9 @@ zmld_ref = 10.0                 !   [m] default = 10.0
                                 ! reference depth for mixed layer calculation
 densdiff_mld = 0.03             !   [kg m-3] default = 0.03
                                 ! potential density difference for determining mixed layer depth
-do_case2_mod = True             !   [Boolean] default = False
+do_case2_mod = False            !   [Boolean] default = False
                                 ! When true, modify the opacity of case 2 (coastal) waterswhich are identified
                                 ! based on a salinity and depth threshold
-case2_depth = 30.0              !   [m] default = 30.0
-                                ! Depth threshold to identify Case 2 water when using a modified opacity.
-case2_salt = 30.0               !   [PSU] default = 30.0
-                                ! Salinity threshold to identify Case 2 water when using a modified opacity.
-case2_opac_add = 0.05           !   [m-1] default = 0.05
-                                ! Additional opactity added in Case 2 waters when using a modified opacity.
 min_daylength = 6.0             !   [hours] default = 6.0
                                 ! minimum daylength for calculating the daytime irradiance
 refuge_conc = 1.0E-10           !   [mol N kg-1] default = 1.0E-10
@@ -610,7 +604,7 @@ z_burial = 10.0                 !   [m] default = 10.0
                                 ! depth scale for ramping up particulate organic burial
 z_denit = 10.0                  !   [m] default = 10.0
                                 ! depth scale for ramping up benthic denitrification
-scale_burial = 1.0              !   [none] default = 0.0
+scale_burial = 0.0              !   [none] default = 0.0
                                 ! scaling factor for particulate organic burial
 cased_steady = False            !   [Boolean] default = False
                                 ! cased_steady
@@ -637,9 +631,7 @@ gamma_sldop = 90.0              !   [1/(default*sperd)] default = 90.0
 doc_background = 4.0E-05        !   [uM] default = 4.0E-05
                                 ! doc_background
 gamma_nitrif = 30.0             !   [gamma_nitrif /(default*sperd)] default = 30.0
-                                ! gamma_nitrif
-knh4_nitrif = 3.1E-09           !   [mol kg-1] default = 3.1E-09
-                                ! knh4_nitrif
+                                               ! knh4_nitrif
 irr_inhibit = 10.0              !   [W m-2] default = 10.0
                                 ! irr_inhibit
 gamma_nh4amx = 0.0              !   [day-1] default = 0.0
@@ -654,3 +646,13 @@ o2_min_nit = 1.0E-08            !   [mol O2 kg-1] default = 1.0E-08
                                 ! o2_min_nit
 tracer_debug = False            !   [Boolean] default = False
                                 ! tracer_debug
+htotal_in = 1.0E-08             ! default = 1.0E-08
+                                ! htotal_in
+wsink = 100.0                   !   [m day-1] default = 100.0
+                                ! wsink
+ice_restart_file = "ice_cobalt.res.nc" ! default = "ice_cobalt.res.nc"
+                                ! ice_restart_file
+ocean_restart_file = "ocean_cobalt.res.nc" ! default = "ocean_cobalt.res.nc"
+                                ! ocean_restart_file
+IC_file = ""                    ! default = ""
+                                ! IC_file

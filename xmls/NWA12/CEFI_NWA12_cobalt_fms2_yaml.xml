@@ -6,11 +6,11 @@ Quick start guide
 Load module:
 
 On GFDL Analysis:
-module load fre/test
+module load fre/bronx-22
 
 On Gaea:
-module use -a /ncrc/home2/Yi-cheng.Teng/local/modulefiles
-module load fre/test
+module use -a /ncrc/home2/fms/local/modulefiles
+module load fre/bronx-22
 
 Compile and build mom6-sis2-cobalt:
 fremake -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod MOM6_SIS2_GENERIC_4P_compile_symm_yaml
@@ -70,7 +70,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="PP_START_YEAR" value="1993"/>
 
   <!-- fre version to be used -->
-  <property name="FRE_VERSION" value="test"/>
+  <property name="FRE_VERSION" value="bronx-22"/>
 
   <!-- on/off switch for MDBI database -->
   <property name="MDBIswitch" value="off"/>
