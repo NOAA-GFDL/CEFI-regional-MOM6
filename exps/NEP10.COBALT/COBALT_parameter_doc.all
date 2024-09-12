@@ -68,149 +68,168 @@ alk_2_n_denit = 1.1694915254237288 !   [mol alk mol N-1] default = 1.16949152542
                                 ! moles alkalinity created per mole NO3- consumed during denitrification
 alk_2_nh4_amx = 0.4             !   [mol alk mol N-1] default = 0.4
                                 ! moles alkalinity removed per mole NH4+ consumed via anammox
-k_fed_Di = 4.0E-09              !   [mol Fed kg-1] default = 4.0E-09
-                                ! k_fed_Di
-k_fed_Lg = 2.0E-09              !   [mol Fed kg-1] default = 2.0E-09
-                                ! k_fed_Lg
-k_fed_Md = 8.0E-10              !   [mol Fed kg-1] default = 8.0E-10
-                                ! k_fed_Md
-k_fed_Sm = 4.0E-10              !   [mol Fed kg-1] default = 4.0E-10
-                                ! k_fed_Sm
-k_nh4_Lg = 5.0E-08              !   [mol NH4 kg-1] default = 5.0E-08
-                                ! k_nh4_Lg
-k_nh4_Md = 2.0E-08              !   [mol NH4 kg-1] default = 2.0E-08
-                                ! k_nh4_Md
-k_nh4_Sm = 1.0E-08              !   [mol NH4 kg-1] default = 1.0E-08
-                                ! k_nh4_Sm
 k_nh4_Di = 1.0E-07              !   [mol NH4 kg-1] default = 1.0E-07
-                                ! k_nh4_Di
-k_no3_Lg = 2.5E-06              !   [mol NO3 kg-1] default = 2.5E-06
-                                ! k_no3_Lg
-k_no3_Md = 1.0E-06              !   [mol NO3 kg-1] default = 1.0E-06
-                                ! k_no3_Md
-k_no3_Sm = 5.0E-07              !   [mol NO3 kg-1] default = 5.0E-07
-                                ! k_no3_Sm
+                                ! half-saturation for diazotroph ammonium uptake
+k_nh4_Lg = 5.0E-08              !   [mol NH4 kg-1] default = 5.0E-08
+                                ! half-saturation for large phytoplankton ammonium uptake and growth limitation
+k_nh4_Md = 2.0E-08              !   [mol NH4 kg-1] default = 2.0E-08
+                                ! half-saturation for medium phytoplankton ammonium uptake and growth limitation
+k_nh4_Sm = 1.0E-08              !   [mol NH4 kg-1] default = 1.0E-08
+                                ! half-saturation for small phytoplankton ammonium uptake and growth limitation
 k_no3_Di = 5.0E-06              !   [mol NO3 kg-1] default = 5.0E-06
-                                ! k_no3_Di
+                                ! half-saturation for diazotroph nitrate uptake
+k_no3_Lg = 2.5E-06              !   [mol NO3 kg-1] default = 2.5E-06
+                                ! half-saturation for large phytoplankton nitrate uptake and growth limitation
+k_no3_Md = 1.0E-06              !   [mol NO3 kg-1] default = 1.0E-06
+                                ! half-saturation for medium phytoplankton nitrate uptake and growth limitation
+k_no3_Sm = 5.0E-07              !   [mol NO3 kg-1] default = 5.0E-07
+                                ! half-saturation for small phytoplankton nitrate uptake and growth limitation
 k_po4_Di = 1.0E-07              !   [mol PO4 kg-1] default = 1.0E-07
-                                ! k_po4_Di
+                                ! half-saturation for diazotroph phosphate uptake and limitation
 k_po4_Lg = 5.0E-08              !   [mol PO4 kg-1] default = 5.0E-08
-                                ! k_po4_Lg
+                                ! half-saturation for large phytoplankton phosphate uptake and growth limitation
 k_po4_Md = 2.0E-08              !   [mol PO4 kg-1] default = 2.0E-08
-                                ! k_po4_Md
+                                ! half-saturation for medium phytoplankton phosphate uptake and growth
+                                ! limitation
 k_po4_Sm = 1.0E-08              !   [mol PO4 kg-1] default = 1.0E-08
-                                ! k_po4_Sm
+                                ! half-saturation for small phytoplankton phosphate uptake and growth limitation
 k_sio4_Lg = 2.0E-06             !   [mol SiO4 kg-1] default = 2.0E-06
-                                ! k_sio4_Lg
+                                ! half-saturation for large phytoplankton silicate uptake and Si:N ratio
 k_sio4_Md = 1.0E-06             !   [mol SiO4 kg-1] default = 1.0E-06
-                                ! k_sio4_Md
-k_fe_2_n_Di = 1.2E-05           !   [mol Fe kg-1] default = 1.2E-05
-                                ! k_fe_2_n_Di
-k_fe_2_n_Lg = 1.0E-05           !   [mol Fe kg-1] default = 1.0E-05
-                                ! k_fe_2_n_Lg
-k_fe_2_n_Md = 4.0E-06           !   [mol Fe kg-1] default = 4.0E-06
-                                ! k_fe_2_n_Md
-k_fe_2_n_Sm = 2.0E-06           !   [mol Fe kg-1] default = 2.0E-06
-                                ! k_fe_2_n_Sm
-fe_2_n_max_Sm = 5.0E-05         !   [mol Fe kg-1] default = 5.0E-05
-                                ! fe_2_n_max_Sm
-fe_2_n_max_Md = 2.5E-04         !   [mol Fe kg-1] default = 2.5E-04
-                                ! fe_2_n_max_Md
-fe_2_n_max_Lg = 5.0E-04         !   [mol Fe kg-1] default = 5.0E-04
-                                ! fe_2_n_max_Lg
-fe_2_n_max_Di = 5.0E-04         !   [mol Fe kg-1] default = 5.0E-04
-                                ! fe_2_n_max_Di
-fe_2_n_upt_fac = 6.0E-05        !   [mol Fe kg-1] default = 6.0E-05
-                                ! fe_2_n_upt_fac
-alpha_Di_hl = 4.0E-06           !   [g C g chl-1 s-1] default = 4.0E-06
-                                ! alpha_Di_hl
-alpha_Lg_hl = 4.0E-06           !   [g C g chl-1 s-1] default = 4.0E-06
-                                ! alpha_Lg_hl
-alpha_Md_hl = 8.0E-06           !   [g C g chl-1 s-1] default = 8.0E-06
-                                ! alpha_Md_hl
-alpha_Sm_hl = 1.6E-05           !   [g C g chl-1 s-1] default = 1.6E-05
-                                ! alpha_Sm_hl
-alpha_Di_ll = 8.0E-06           !   [g C g chl-1 s-1] default = 8.0E-06
-                                ! alpha_Di_ll
-alpha_Lg_ll = 8.0E-06           !   [g C g chl-1 s-1] default = 8.0E-06
-                                ! alpha_Lg_ll
-alpha_Md_ll = 1.6E-05           !   [g C g chl-1 s-1] default = 1.6E-05
-                                ! alpha_Md_ll
-alpha_Sm_ll = 3.2E-05           !   [g C g chl-1 s-1] default = 3.2E-05
-                                ! alpha_Sm_ll
+                                ! half-saturation for medium phytoplankton silicate uptake and Si:N ratio
+k_fed_Di = 4.0E-09              !   [mol Fed kg-1] default = 4.0E-09
+                                ! half-saturation constant for diazotroph iron uptake and growth limitation
+k_fed_Lg = 2.0E-09              !   [mol Fed kg-1] default = 2.0E-09
+                                ! half-saturation for large phytoplankton iron uptake and growth limitation
+k_fed_Md = 8.0E-10              !   [mol Fed kg-1] default = 8.0E-10
+                                ! half-saturation for medium phytoplankton iron uptake and growth limitation
+k_fed_Sm = 4.0E-10              !   [mol Fed kg-1] default = 4.0E-10
+                                ! half-saturation for small phytoplankton iron uptake and growth limitation
+k_fe_2_n_Di = 1.2E-05           !   [mol Fe (mol N)-1] default = 1.2E-05
+                                ! internal iron quota half-saturation for diazotroph growth
+k_fe_2_n_Lg = 1.0E-05           !   [mol Fe (mol N)-1] default = 1.0E-05
+                                ! internal iron quota half-saturation for large phytoplankton growth
+k_fe_2_n_Md = 4.0E-06           !   [mol Fe (mol N)-1] default = 4.0E-06
+                                ! internal iron quota half-saturation for medium phytoplankton growth
+k_fe_2_n_Sm = 2.0E-06           !   [mol Fe (mol N)-1] default = 2.0E-06
+                                ! internal iron quota half-saturation for small phytoplankton growth
+fe_2_n_max_Di = 5.0E-04         !   [mol Fe (mol N)-1] default = 5.0E-04
+                                ! maximum internal iron quota for diazotrophs
+fe_2_n_max_Lg = 5.0E-04         !   [mol Fe (mol N)-1] default = 5.0E-04
+                                ! maximum internal iron quota for large phytoplankton
+fe_2_n_max_Md = 2.5E-04         !   [mol Fe (mol N)-1] default = 2.5E-04
+                                ! maximum internal iron quota for medium phytoplankton
+fe_2_n_max_Sm = 5.0E-05         !   [mol Fe (mol N)-1] default = 5.0E-05
+                                ! maximum internal iron quota for small phytoplankton
+fe_2_n_upt_fac = 6.0E-05        !   [mol Fe (mol N)-1] default = 6.0E-05
+                                ! scaling factor for iron uptake relative to maximum photosynthesis
+alpha_Di_hl = 4.0E-06           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 4.0E-06
+                                ! Chl-a specific initial slope of photosynth-irrad curve, high-light adapted
+                                ! diazotrophs
+alpha_Lg_hl = 4.0E-06           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 4.0E-06
+                                ! Chl-a specific initial slope of photosynth-irrad curve, high-light adapted
+                                ! large phytoplankton
+alpha_Md_hl = 8.0E-06           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 8.0E-06
+                                ! Chl-a specific initial slope of photosynth-irrad curve, high-light adapted
+                                ! medium phytoplankton
+alpha_Sm_hl = 1.6E-05           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 1.6E-05
+                                ! Chl-a specific initial slope of photosynth-irrad curve, high-light adapted
+                                ! small phytoplankton
+alpha_Di_ll = 8.0E-06           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 8.0E-06
+                                ! Chl-a specific initial slope of photosynth-irrad curve, low-light adapted
+                                ! diazotrophs
+alpha_Lg_ll = 8.0E-06           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 8.0E-06
+                                ! Chl-a specific initial slope of photosynth-irrad curve, low-light adapted
+                                ! large phytoplankton
+alpha_Md_ll = 1.6E-05           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 1.6E-05
+                                ! Chl-a specific initial slope of photosynth-irrad curve, low-light adapted
+                                ! medium phytoplankton
+alpha_Sm_ll = 3.2E-05           !   [g C g Chl-1 (micromol quanta m-2)-1] default = 3.2E-05
+                                ! Chl-a specific initial slope of photosynth-irrad curve, low-light adapted
+                                ! small phytoplankton
 kappa_eppley = 0.063            !   [deg C-1] default = 0.063
-                                ! kappa_eppley
+                                ! exponential temperature dependence of phytoplankton rates
 P_C_max_Di_hl = 0.6             !   [day-1] default = 0.6
-                                ! P_C_max_Di_hl
+                                ! maximum photosynthesis rate at 0 deg. C, high-light adapted diazotrophs
 P_C_max_Lg_hl = 1.0             !   [day-1] default = 1.0
-                                ! P_C_max_Lg_hl
+                                ! maximum photosynthesis rate at 0 deg. C, high-light adapted large
+                                ! phytoplankton
 P_C_max_Md_hl = 1.1             !   [day-1] default = 1.1
-                                ! P_C_max_Md_hl
+                                ! maximum photosynthesis rate at 0 deg. C, high-light adapted medium
+                                ! phytoplankton
 P_C_max_Sm_hl = 1.0             !   [day-1] default = 1.0
-                                ! P_C_max_Sm_hl
+                                ! maximum photosynthesis rate at 0 deg. C, high-light adapted small
+                                ! phytoplankton
 P_C_max_Di_ll = 0.3             !   [day-1] default = 0.3
-                                ! P_C_max_Di_ll
+                                ! maximum photosynthesis rate at 0 deg. C, low-light adapted diazotrophs
 P_C_max_Lg_ll = 0.5             !   [day-1] default = 0.5
-                                ! P_C_max_Lg_ll
+                                ! maximum photosynthesis rate at 0 deg. C, low-light adapted large phytoplankton
 P_C_max_Md_ll = 0.55            !   [day-1] default = 0.55
-                                ! P_C_max_Md_ll
+                                ! maximum photosynthesis rate at 0 deg. C, low-light adapted medium
+                                ! phytoplankton
 P_C_max_Sm_ll = 0.5             !   [day-1] default = 0.5
-                                ! P_C_max_Sm_ll
-numlightadapt = 10              ! default = 10
-                                ! numlightadapt
+                                ! maximum photosynthesis rate at 0 deg. C, low-light adapted small phytoplankton
+numlightadapt = 10              !   [number of ecotypes] default = 10
+                                ! number of light adaptation ecotypes
 thetamax_Di = 0.035             !   [g chl g C-1] default = 0.035
-                                ! thetamax_Di
+                                ! maximum chlorophyll to carbon ratio for diazotrophs
 thetamax_Lg = 0.07              !   [g chl g C-1] default = 0.07
-                                ! thetamax_Lg
+                                ! maximum chlorophyll to carbon ratio for large phytoplankton
 thetamax_Md = 0.045             !   [g chl g C-1] default = 0.045
-                                ! thetamax_Md
+                                ! maximum chlorophyll to carbon ratio for medium phytoplankton
 thetamax_Sm = 0.035             !   [g chl g C-1] default = 0.035
-                                ! thetamax_Sm
-bresp_frac_mixed_Di = 0.02      ! default = 0.02
-                                ! bresp_frac_mixed_Di
-bresp_frac_mixed_Lg = 0.02      ! default = 0.02
-                                ! bresp_frac_mixed_Lg
-bresp_frac_mixed_Md = 0.02      ! default = 0.02
-                                ! bresp_frac_mixed_Md
-bresp_frac_mixed_Sm = 0.02      ! default = 0.02
-                                ! bresp_frac_mixed_Sm
-bresp_frac_strat_Di = 0.01      ! default = 0.01
-                                ! bresp_frac_strat_Di
-bresp_frac_strat_Lg = 0.01      ! default = 0.01
-                                ! bresp_frac_strat_Lg
-bresp_frac_strat_Md = 0.01      ! default = 0.01
-                                ! bresp_frac_strat_Md
-bresp_frac_strat_Sm = 0.01      ! default = 0.01
-                                ! bresp_frac_strat_Sm
+                                ! maximum chlorophyll to carbon ratio for small phytoplankton
+bresp_frac_mixed_Di = 0.02      !   [none] default = 0.02
+                                ! diazotroph basal respiration rate in mixed layer as fraction of max
+                                ! photosynthesis
+bresp_frac_mixed_Lg = 0.02      !   [none] default = 0.02
+                                ! large phytoplankton basal respiration rate in mixed layer as fraction of max
+                                ! photosynthesis
+bresp_frac_mixed_Md = 0.02      !   [none] default = 0.02
+                                ! medium phytoplankton basal respiration rate in mixed layer as fraction of max
+                                ! photosynthesis
+bresp_frac_mixed_Sm = 0.02      !   [none] default = 0.02
+                                ! small phytoplankton basal respiration rate in mixed layer as fraction of max
+                                ! photosynthesis
+bresp_frac_strat_Di = 0.01      !   [none] default = 0.01
+                                ! diazotroph basal respiration rate below mixed layer as fraction of max
+                                ! photosynthesis
+bresp_frac_strat_Lg = 0.01      !   [none] default = 0.01
+                                ! large phytoplankton basal respiration rate below mixed layer as fraction of
+                                ! max photosynthesis
+bresp_frac_strat_Md = 0.01      !   [none] default = 0.01
+                                ! medium phytoplankton basal respiration rate below mixed layer as fraction of
+                                ! max photosynthesis
+bresp_frac_strat_Sm = 0.01      !   [none] default = 0.01
+                                ! small phytoplankton basal respiration rate below mixed layer as fraction of
+                                ! max photosynthesis
 sink_max_Di = 1.0               !   [m day-1] default = 1.0
-                                ! sink_max_Di
+                                ! diazotroph max sink rate (non-aggregated)
 sink_max_Lg = 5.0               !   [m day-1] default = 5.0
-                                ! sink_max_Lg
+                                ! large phytoplankton max sink rate (non-aggregated)
 sink_max_Md = 1.0               !   [m day-1] default = 1.0
-                                ! sink_max_Md
+                                ! medium phytoplankton max sink rate (non-aggregated)
 sink_max_Sm = 0.0               !   [m day-1] default = 0.0
-                                ! sink_max_Sm
+                                ! small phytoplankton max sink rate (non-aggregated)
 thetamin = 0.002                !   [g chl g C-1] default = 0.002
-                                ! thetamin
-zeta = 0.05                     ! default = 0.05
-                                ! zeta
-par_adj = 0.83                  ! default = 0.83
-                                ! par_adj
+                                ! minimum chlorophyll to carbon ratio
+zeta = 0.05                     !   [none] default = 0.05
+                                ! cost of biosynthesis
+par_adj = 0.83                  !   [none] default = 0.83
+                                ! photosynthetically active fraction of shortwave radiation
 gamma_irr_aclm = 1.0            !   [day-1] default = 1.0
-                                ! gamma_irr_aclm
+                                ! time scale for determining the photoacclimation irradiance
 gamma_mu_mem = 1.0              !   [day-1] default = 1.0
-                                ! gamma_mu_mem
-ml_aclm_efold = 2.5             ! default = 2.5
-                                ! ml_aclm_efold
+                                ! time scale for determining growth rates for phytoplankton stress calculations
+ml_aclm_efold = 2.5             !   [none] default = 2.5
+                                ! number of e-folding depths for photoacclimation in deep mixed layers
 zmld_ref = 10.0                 !   [m] default = 10.0
-                                ! zmld_ref
+                                ! reference depth for mixed layer calculation
 densdiff_mld = 0.03             !   [kg m-3] default = 0.03
-                                ! densdiff_mld
-irrad_day_thresh = 1.0          !   [watts m-2] default = 1.0
-                                ! irrad_day_thresh
+                                ! potential density difference for determining mixed layer depth
 do_case2_mod = True             !   [Boolean] default = False
-                                ! When ture, modify the opacity of case 2 (coastal) waterswhich are identified
-                                ! based on a temperature and depth threshold
+                                ! When true, modify the opacity of case 2 (coastal) waterswhich are identified
+                                ! based on a salinity and depth threshold
 case2_depth = 30.0              !   [m] default = 30.0
                                 ! Depth threshold to identify Case 2 water when using a modified opacity.
 case2_salt = 30.0               !   [PSU] default = 30.0
@@ -218,9 +237,9 @@ case2_salt = 30.0               !   [PSU] default = 30.0
 case2_opac_add = 0.05           !   [m-1] default = 0.05
                                 ! Additional opactity added in Case 2 waters when using a modified opacity.
 min_daylength = 6.0             !   [hours] default = 6.0
-                                ! min_daylength
-refuge_conc = 1.0E-10           !   [mol kg-1] default = 1.0E-10
-                                ! refuge_conc
+                                ! minimum daylength for calculating the daytime irradiance
+refuge_conc = 1.0E-10           !   [mol N kg-1] default = 1.0E-10
+                                ! refuge concentration for grazing and loss terms
 o2_inhib_Di_pow = 4.0           !   [mol O2-1 m3] default = 4.0
                                 ! o2_inhib_Di_pow
 o2_inhib_Di_sat = 3.0E-04       !   [mol kg-1] default = 3.0E-04
@@ -514,15 +533,15 @@ hp_phi_det = 0.35               !   [unitless] default = 0.35
 ffe_sed_max = 170.0             !   [micromoles Fe m-2 day-1] default = 170.0
                                 ! maximum iron release from the sediment
 ffe_geotherm_ratio = 2.0E-12    !   [mol Fe m-2 s-1 (W m-2)-1] default = 2.0E-12
-                                ! ffe_geotherm_ratio
+                                ! iron release per unit of geothermal heat
 jfe_iceberg_ratio = 1.0E-07     !   [mol Fe kg-1 ice melt] default = 1.0E-07
-                                ! jfe_iceberg_ratio
+                                ! iron release per kg of ice melt
 jno3_iceberg_ratio = 2.0E-06    !   [mol N kg-1 ice melt] default = 2.0E-06
-                                ! jno3_iceberg_ratio
+                                ! nitrate release per kg of ice melt
 jpo4_iceberg_ratio = 1.1E-07    !   [mol P kg-1 ice melt] default = 1.1E-07
-                                ! jpo4_iceberg_ratio
-fe_coast = 0.0                  !   [mol Fe m kg-1 s-1] default = 0.0
-                                ! fe_coast
+                                ! phosphate release per kg of ice melt
+fe_coast = 0.0                  !   [m-1] default = 0.0
+                                ! coastal iron flux parameter
 half_life_14c = 5730.0          !   [s] default = 5730.0
                                 ! half_life_14c
 lambda_14c = 1.209680943385594E-04 !   [-s] default = 1.209680943385594E-04
@@ -591,7 +610,7 @@ z_burial = 10.0                 !   [m] default = 10.0
                                 ! depth scale for ramping up particulate organic burial
 z_denit = 10.0                  !   [m] default = 10.0
                                 ! depth scale for ramping up benthic denitrification
-scale_burial = 0.0              !   [none] default = 0.0
+scale_burial = 1.0              !   [none] default = 0.0
                                 ! scaling factor for particulate organic burial
 cased_steady = False            !   [Boolean] default = False
                                 ! cased_steady
