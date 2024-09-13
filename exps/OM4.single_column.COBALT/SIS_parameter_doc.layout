@@ -1,6 +1,4 @@
 ! This file was written by the model and records the layout parameters used at run-time.
-
-! === module MOM ===
 GLOBAL_INDEXING = False         !   [Boolean] default = False
                                 ! If true, use a global lateral indexing convention, so that corresponding
                                 ! points on different processors have the same index. This does not work with
@@ -38,32 +36,18 @@ MASKTABLE = "MOM_mask_table"    ! default = "MOM_mask_table"
                                 !  4,6
                                 !  1,2
                                 !  3,6
-NIPROC = 25                     !
+NIPROC = 1                      !
                                 ! The number of processors in the x-direction. With STATIC_MEMORY_ this is set
-                                ! in MOM_memory.h at compile time.
-NJPROC = 25                     !
+                                ! in SIS2_memory.h at compile time.
+NJPROC = 1                      !
                                 ! The number of processors in the y-direction. With STATIC_MEMORY_ this is set
-                                ! in MOM_memory.h at compile time.
-LAYOUT = 25, 25                 !
+                                ! in SIS2_memory.h at compile time.
+LAYOUT = 1, 1                   !
                                 ! The processor layout that was actually used.
-IO_LAYOUT = 1, 1                ! default = 1
+IO_LAYOUT = 0, 0                ! default = 1
                                 ! The processor layout to be used, or 0,0 to automatically set the io_layout to
                                 ! be the same as the layout.
-
-! === module MOM_grid ===
-! Parameters providing information about the lateral grid.
 NIBLOCK = 1                     ! default = 1
                                 ! The number of blocks in the x-direction on each processor (for openmp).
 NJBLOCK = 1                     ! default = 1
                                 ! The number of blocks in the y-direction on each processor (for openmp).
-
-! === module MOM_barotropic ===
-BT_USE_WIDE_HALOS = True        !   [Boolean] default = True
-                                ! If true, use wide halos and march in during the barotropic time stepping for
-                                ! efficiency.
-BTHALO = 0                      ! default = 0
-                                ! The minimum halo size for the barotropic solver.
-!BT x-halo = 4                  !
-                                ! The barotropic x-halo size that is actually used.
-!BT y-halo = 4                  !
-                                ! The barotropic y-halo size that is actually used.
