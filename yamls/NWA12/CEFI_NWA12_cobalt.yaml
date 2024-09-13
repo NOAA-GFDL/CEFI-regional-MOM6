@@ -17,7 +17,7 @@
 # fre pp configure-yaml -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y combined-CEFI_NWA12_COBALT_V1.yaml
 #
 #     2a.) Fre/canopy does not automatically create the pp dir for you, so you will have to mkdir this first to pass the validator:
-#     mkdir /archive/$USER/fre/cefi/NWA/2024_06/gfldl.ncrc5-intel22-prod/pp
+#     mkdir /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/pp
 #
 #     2b.) (OPTIONAL, BUT RECOMMENDED): Create a list of available tar files within your history tar archives to allow fre to catch a wider variety of errors
 #     tar -tf /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/19930101.nc.tar | grep -v tile[2-6] | sort > /home/$USER/cylc-src/CEFI_NWA12_COBALT_V1__gfdl.ncrc5-intel22__prod/history-manifest
