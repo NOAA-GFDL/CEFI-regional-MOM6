@@ -20,7 +20,7 @@ from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename="sss_eval.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.DEBUG)
+logging.basicConfig(filename="sss_eval.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.INFO)
 
 def plot_sss_eval(pp_root,config):
     model = open_var(pp_root, config['domain'], 'sos')
