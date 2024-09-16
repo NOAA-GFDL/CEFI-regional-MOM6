@@ -40,10 +40,10 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="RELEASE" value="2024.02"/>
 
   <!-- git tag for FMS source code -->
-  <property name="FMS_GIT_TAG" value="2024.02"/>
+  <property name="FMS_GIT_TAG" value="2024.03"/>
 
   <!-- git tag for shared source code -->
-  <property name="CPL_GIT_TAG" value="2024.02"/>
+  <property name="CPL_GIT_TAG" value="2024.03"/>
 
   <!-- git tag for shared source code -->
   <property name="NULL_TAG" value="2023.04"/>
@@ -170,7 +170,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
     </component>
 
     <component name="coupler" paths="mom6/src/coupler/full mom6/src/coupler/shared" requires="fms land_null atmos_null sis2 mom6_symmetric">
-      <description domainName="FMS Coupler" communityName="coupler" communityVersion="$(RELEASE)" communityGrid=""/>
+      <description domainName="FMS Coupler" communityName="coupler" communityVersion="$(CPL_GIT_TAG)" communityGrid=""/>
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
         <codeBase version="$(CPL_GIT_TAG)"> coupler.git </codeBase>
       </source>
