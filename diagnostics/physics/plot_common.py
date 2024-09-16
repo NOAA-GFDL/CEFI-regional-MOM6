@@ -19,7 +19,10 @@ def center_to_outer(center, left=None, right=None):
     Given an array of center coordinates, find the edge coordinates,
     including extrapolation for far left and right edge.
     """
-    edges = 0.5 * (center.values[0:-1] + center.values[1:])
+    if hasattr(center,'values'): # handle xarray dataarays and similar objects
+        edges = 0.5 * (center.values[0:-1] + center.values[1:])
+    else:
+        edges = 0.5 * (center[0:-1] + center[1:])
     if left is None:
         left = edges[0] - (edges[1] - edges[0])
     if right is None:

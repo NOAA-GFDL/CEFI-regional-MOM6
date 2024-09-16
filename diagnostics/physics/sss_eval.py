@@ -16,7 +16,7 @@ import xarray
 import xesmf
 import logging
 
-from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config, process_glorys, combine_regional_climatologies
+from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config, process_glorys, combine_regional_climatologies, center_to_outer
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
@@ -40,13 +40,11 @@ def plot_sss_eval(pp_root,config):
     # so mean ignores the nans from other regions and selects the available data.
     regional_grid = {'lat': np.arange( config['lat']['south'], config['lat']['north'], 0.1), 'lon': np.arange(config['lon']['west'], config['lon']['east'], 0.1)}
     # For plotting later
-    regional_gridc = {'lat': np.arange( config['lat']['south']-0.05, config['lat']['north']+0.05, 0.1), 'lon': np.arange(config['lon']['west']-0.05, config['lon']['east']-0.05, 0.1)}
     combined = combine_regional_climatologies( config, regional_grid)
 
     # Now interpolate to the model grid to compare.
-    regional_to_mod = xesmf.Regridder({'lat': combined.lat, 'lon': combined.lon}, model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'}), method='bilinear')
-    regional_rg = regional_to_mod(combined + 273) 
-    regional_rg = regional_rg.where(regional_rg > 0) - 273
+    regional_to_mod = xesmf.Regridder({'lat': combined.lat, 'lon': combined.lon}, model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'}), method='bilinear', unmapped_to_nan = True)
+    regional_rg = regional_to_mod(combined)
     delta_regional = model_ave - regional_rg
 
     glorys_rg, glorys_ave, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'so')
@@ -102,7 +100,7 @@ def plot_sss_eval(pp_root,config):
     cbar0.ax.set_xlabel('Mean SSS')
 
     # Regional climatologies
-    grid[1].pcolormesh(regional_gridc['lon'], regional_gridc['lat'], combined, transform=proj, **common)
+    grid[1].pcolormesh(center_to_outer(regional_grid['lon']), center_to_outer(regional_grid['lat']), combined, transform=proj, **common)
     grid[1].set_title('(b) Regional climatologies')
 
     # Model - regional
