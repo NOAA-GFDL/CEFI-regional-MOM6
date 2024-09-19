@@ -25,8 +25,8 @@ def rotate_uv(u, v, angle):
     Returns:
         Model-relative west-east and south-north components of velocity.
     """
-    urot = np.cos(angle) * u + np.sin(angle) * v
-    vrot = -np.sin(angle) * u + np.cos(angle) * v
+    urot = np.cos(angle) * u - np.sin(angle) * v
+    vrot = np.sin(angle) * u + np.cos(angle) * v
     return urot, vrot
 
 
