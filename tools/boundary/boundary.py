@@ -20,7 +20,7 @@ def rotate_uv(u, v, angle):
     Args:
         u: west-east component of velocity.
         v: south-north component of velocity.
-        angle: angle of rotation from true north to model north.
+        angle: angle of rotation from true north to model north (defined in a counterclockwise direction).
 
     Returns:
         Model-relative west-east and south-north components of velocity.
