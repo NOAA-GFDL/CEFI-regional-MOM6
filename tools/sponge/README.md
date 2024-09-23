@@ -1,17 +1,41 @@
 ## Sponges
 
-This folder contains tools for creating sponges for MOM6.
+This folder contains tools for creating temperature and salinity sponges for use in MOM6 based on the GLORYS reanalysis.
 
 ## preproc_scripts
 
-This folder contains scripts to subset, average, and fill the GLORYS data on the uda to preprocess it for the python scripts.
+Scripts to subset, average, and fill the GLORYS data on the uda to preprocess it for the python scripts.
 
-As written these preprocessing scripts must be run in three stages:
-1- submit
-2- submit
-3- submit 
+# Regional Subsetting
 
-##
+Regional subsets of the GLORYS reanalysis are created using `ncks` in `get_so_monthly.sh` and `get_thetao_monthly.sh`. 
+You should adjust the regional subset in the script to match the region of interest.
+
+For example:
+```
+ncks -d latitude,40.,90. -d longitude,0.,360 filein.nc fileout.nc
+```
+
+# Scripts
+
+As written these preprocessing scripts must be run in three stages.
+1. First, subset the temperature and salinity and create monthly averages
+```
+sbatch get_thetao_monthly.sh <YEAR> <MONTH>
+sbatch get_so_monthly.sh <YEAR> <MONTH>
+```
+
+2. Next, fill the data
+```
+sbatch fill_glorys_nn_monthly.sh <YEAR> <MONTH>
+```
+
+3. Finally, once the filled data for every month in a given yeas have been created, the merge script can be used.
+```
+sbatch merge_so_thetao_year.sh <YEAR>
+```
+
+This should produce data that is compatible with `write_nudging_data.py`
 
 ## Using these files in MOM6
 
