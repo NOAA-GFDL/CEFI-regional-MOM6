@@ -14,19 +14,31 @@ def check_angle_range(angle):
     if amax > (2 * np.pi) or amin < (-2 * np.pi):
         raise ValueError(f'Grid angle ranges from [{amin}, {amax}]. Expected from [-2pi, 2pi]. Are the units correct?')
 
-def rotate_uv(u, v, angle):
+
+def rotate_uv(uearth, vearth, angle_earth_to_model_rad):
     """Rotate velocities from earth-relative to model-relative.
+    Inputs should be velocity component in true east direction (uearth)
+    and true north direction (vearth), and the angle in radians in the standard
+    (counterclockwise) direction from the true east/north
+    direction to the model east/north direction.
+    For example, if the model east was aligned with the 
+    true northeast, the angle would be +pi/4 (45 deg). 
+    This function does a counterclockwise rotation of the 
+    coordinates, which is equivalent to a clockwise
+    rotation of the vector.
+    See https://mathworld.wolfram.com/RotationMatrix.html for a refresher
+    on how this works.
 
     Args:
-        u: west-east component of velocity.
-        v: south-north component of velocity.
-        angle: angle of rotation from true north to model north.
+        uearth: west-east component of velocity.
+        vearth: south-north component of velocity.
+        angle_earth_to_model_rad: angle of rotation from true north to model north [radians].
 
     Returns:
         Model-relative west-east and south-north components of velocity.
     """
-    urot = np.cos(angle) * u + np.sin(angle) * v
-    vrot = -np.sin(angle) * u + np.cos(angle) * v
+    urot = np.cos(angle_earth_to_model_rad) * uearth + np.sin(angle_earth_to_model_rad) * vearth
+    vrot = -np.sin(angle_earth_to_model_rad) * uearth + np.cos(angle_earth_to_model_rad) * vearth
     return urot, vrot
 
 

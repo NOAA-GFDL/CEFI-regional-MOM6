@@ -68,7 +68,7 @@ endif
 source $MODULESHOME/init/csh
 module use -a /home/fms/local/modulefiles
 module purge
-module load fre/bronx-21
+module load fre/bronx-22
 module load gcp
 module load git
 module use -a /home/ynt/modulefiles

@@ -15,6 +15,11 @@ python3 extract_obc.py
 popd
 
 #
+echo "prepare obc files for age tracer"
+cp ../z/west.nc obgc_obc.nc
+ncks -A ../z/east.nc obgc_obc.nc
+
+#
 echo "Run Sub domian"
 ../../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
 cat ./ocean.stats

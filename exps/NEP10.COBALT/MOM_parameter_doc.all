@@ -485,6 +485,12 @@ RESTART_CHECKSUMS_REQUIRED = True !   [Boolean] default = True
                                 ! may want to avoid this comparison if for example the restarts are made from a
                                 ! run with a different mask_table than the current run, in which case the
                                 ! checksums will not match and cause crash.
+STREAMING_FILTER_M2 = False     !   [Boolean] default = False
+                                ! If true, turn on streaming band-pass filter for detecting instantaneous tidal
+                                ! signals.
+STREAMING_FILTER_K1 = False     !   [Boolean] default = False
+                                ! If true, turn on streaming band-pass filter for detecting instantaneous tidal
+                                ! signals.
 
 ! === module MOM_tracer_flow_control ===
 USE_USER_TRACER_EXAMPLE = False !   [Boolean] default = False
@@ -588,6 +594,8 @@ ALE_COORDINATE_CONFIG = "FILE:vgrid_75_2m.nc,dz" ! default = "UNIFORM"
                                 !                by a comma or space, e.g. FILE:lev.nc,dz
                                 !                or FILE:lev.nc,interfaces=zw
                                 !  WOA09[:N]   - the WOA09 vertical grid (approximately)
+                                !  WOA09INT[:N] - layers spanned by the WOA09 depths
+                                !  WOA23INT[:N] - layers spanned by the WOA23 depths
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
@@ -735,6 +743,8 @@ DIAG_COORD_DEF_Z = "FILE:diag_dz.nc,dz" ! default = "WOA09"
                                 !                by a comma or space, e.g. FILE:lev.nc,dz
                                 !                or FILE:lev.nc,interfaces=zw
                                 !  WOA09[:N]   - the WOA09 vertical grid (approximately)
+                                !  WOA09INT[:N] - layers spanned by the WOA09 depths
+                                !  WOA23INT[:N] - layers spanned by the WOA23 depths
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
@@ -1182,6 +1192,23 @@ TIDE_MM_AMP = 0.022191          !   [m] default = 0.022191
 TIDE_MM_PHASE_T0 = -2.542600025447928 !   [radians] default = -2.542600025447928
                                 ! Phase of the MM tidal constituent at time 0. This is only used if TIDES and
                                 ! TIDE_MM are true.
+HA_START_TIME = 0.0             !   [days] default = 0.0
+                                ! Start time of harmonic analysis, in units of days after the start of the
+                                ! current run segment. Must be smaller than HA_END_TIME, otherwise harmonic
+                                ! analysis will not be performed. If negative, |HA_START_TIME| determines the
+                                ! length of harmonic analysis, and harmonic analysis will start |HA_START_TIME|
+                                ! days before HA_END_TIME, or at the beginning of the run segment, whichever
+                                ! occurs later.
+HA_END_TIME = 0.0               !   [days] default = 0.0
+                                ! End time of harmonic analysis, in units of days after the start of the current
+                                ! run segment. Must be positive and smaller than the length of the currnet run
+                                ! segment, otherwise harmonic analysis will not be performed.
+HA_SSH = False                  !   [Boolean] default = False
+                                ! If true, perform harmonic analysis of sea serface height.
+HA_UBT = False                  !   [Boolean] default = False
+                                ! If true, perform harmonic analysis of zonal barotropic velocity.
+HA_VBT = False                  !   [Boolean] default = False
+                                ! If true, perform harmonic analysis of meridional barotropic velocity.
 
 ! === module MOM_PressureForce ===
 ANALYTIC_FV_PGF = True          !   [Boolean] default = True
@@ -1200,6 +1227,11 @@ TIDES_ANSWER_DATE = 20230630    ! default = 20230630
                                 ! calculations in Boussinesq mode. Values below 20230701 recover the old answers
                                 ! in which the SAL is part of the tidal forcing calculation.  The change is due
                                 ! to a reordered summation and the difference is only at bit level.
+SSH_IN_EOS_PRESSURE_FOR_PGF = False !   [Boolean] default = False
+                                ! If true, include contributions from the sea surface height in the height-based
+                                ! pressure used in the equation of state calculations for the Boussinesq
+                                ! pressure gradient forces, including adjustments for atmospheric or sea-ice
+                                ! pressure.
 MASS_WEIGHT_IN_PRESSURE_GRADIENT = True !   [Boolean] default = False
                                 ! If true, use mass weighting when interpolating T/S for integrals near the
                                 ! bathymetry in FV pressure gradient calculations.
@@ -1622,7 +1654,7 @@ EVAP_CFL_LIMIT = 0.8            !   [nondim] default = 0.8
 MLD_EN_VALS = 3*0.0             !   [J/m2] default = 0.0
                                 ! The energy values used to compute MLDs.  If not set (or all set to 0.), the
                                 ! default will overwrite to 25., 2500., 250000.
-DIAG_MLD_DENSITY_DIFF = 0.1     !   [kg/m3] default = 0.1
+DIAG_MLD_DENSITY_DIFF = 0.03    !   [kg/m3] default = 0.1
                                 ! The density difference used to determine a diagnostic mixed layer depth,
                                 ! MLD_user, following the definition of Levitus 1982. The MLD is the depth at
                                 ! which the density is larger than the surface density by the specified amount.
@@ -1670,7 +1702,7 @@ ML_RADIATION = False            !   [Boolean] default = False
                                 ! If true, allow a fraction of TKE available from wind work to penetrate below
                                 ! the base of the mixed layer with a vertical decay scale determined by the
                                 ! minimum of: (1) The depth of the mixed layer, (2) an Ekman length scale.
-BBL_EFFIC = 0.01                !   [nondim] default = 0.2
+BBL_EFFIC = 0.0                 !   [nondim] default = 0.2
                                 ! The efficiency with which the energy extracted by bottom drag drives BBL
                                 ! diffusion.  This is only used if BOTTOMDRAGLAW is true.
 BBL_MIXING_MAX_DECAY = 200.0    !   [m] default = 200.0
@@ -1789,7 +1821,7 @@ KAPPA_N_OVER_S_SCALE_COEF2 = 0.0 !   [nondim] default = 0.0
                                 ! The square of the ratio of the coefficients of the buoyancy and shear scales
                                 ! in the diffusivity equation, Set this to 0 (the default) to eliminate the
                                 ! shear scale. This is only used if USE_JACKSON_PARAM is true.
-LZ_RESCALE = 1.0                !   [nondim] default = 1.0
+LZ_RESCALE = 0.2                !   [nondim] default = 1.0
                                 ! A coefficient to rescale the distance to the nearest solid boundary. This
                                 ! adjustment is to account for regions where 3 dimensional turbulence prevents
                                 ! the growth of shear instabilies [nondim].
@@ -1876,13 +1908,8 @@ DO_BRINE_PLUME = False          !   [Boolean] default = False
 VAR_PEN_SW = True               !   [Boolean] default = False
                                 ! If true, use one of the CHL_A schemes specified by OPACITY_SCHEME to determine
                                 ! the e-folding depth of incoming short wave radiation.
-CHL_FROM_FILE = True            !   [Boolean] default = True
+CHL_FROM_FILE = False           !   [Boolean] default = True
                                 ! If true, chl_a is read from a file.
-CHL_FILE = "seawifs-clim-1997-2010.nep.nc" !
-                                ! CHL_FILE is the file containing chl_a concentrations in the variable CHL_A. It
-                                ! is used when VAR_PEN_SW and CHL_FROM_FILE are true.
-CHL_VARNAME = "CHL_A"           ! default = "CHL_A"
-                                ! Name of CHL_A variable in CHL_FILE.
 
 ! === module MOM_energetic_PBL ===
 ML_OMEGA_FRAC = 0.001           !   [nondim] default = 0.0
@@ -1892,7 +1919,7 @@ ML_OMEGA_FRAC = 0.001           !   [nondim] default = 0.0
 EKMAN_SCALE_COEF = 1.0          !   [nondim] default = 1.0
                                 ! A nondimensional scaling factor controlling the inhibition of the diffusive
                                 ! length scale by rotation. Making this larger decreases the PBL diffusivity.
-EPBL_ANSWER_DATE = 99991231     ! default = 99991231
+EPBL_ANSWER_DATE = 20231231     ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the energetic PBL
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
@@ -2060,6 +2087,10 @@ TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "PLM"
                                 !   PLM    - Piecewise Linear Method
                                 !   PPM:H3 - Piecewise Parabolic Method (Huyhn 3rd order)
                                 !   PPM    - Piecewise Parabolic Method (Colella-Woodward)
+USE_HUYNH_STENCIL_BUG = False   !   [Boolean] default = False
+                                ! If true, use a stencil width of 2 in PPM:H3 tracer advection. This is
+                                ! incorrect and will produce regressions in certain configurations, but may be
+                                ! required to reproduce results in legacy simulations.
 
 ! === module MOM_tracer_hor_diff ===
 KHTR = 0.0                      !   [m2 s-1] default = 0.0
@@ -2103,6 +2134,23 @@ USE_NEUTRAL_DIFFUSION = False   !   [Boolean] default = False
 ! This module implements horizontal diffusion of tracers near boundaries
 USE_HORIZONTAL_BOUNDARY_DIFFUSION = False !   [Boolean] default = False
                                 ! If true, enables the horizonal boundary tracer's diffusion module.
+PHA_MLD_CALC = True             !   [Boolean] default = False
+                                ! If false, use a fixed value for the photoacclimation mixed layer depth within
+                                ! the generic tracer update. This MLD is only used for photoacclimation. This
+                                ! variable should be set to true if using COBALTv3 for the BGC.
+PHA_MLD_USE_DELTA_RHO = True    !   [Boolean] default = False
+                                ! If true, use a density difference to find the photoacclimation mixed layer
+                                ! depth within the generic tracer update. This MLD is only used for
+                                ! photoacclimation.
+PHA_MLD_USE_DELTA_ENG = False   !   [Boolean] default = False
+                                ! If true, use an energy difference to find the photoacclimation mixed layer
+                                ! depth with the generic tracer update. This MLD is only used for
+                                ! photoacclimation.
+PHA_MLD_HREF = 10.0             !   [m] default = 0.0
+                                ! The reference depth for a density difference based photoacclimation MLD [m].
+PHA_MLD_DRHO = 0.03             !   [kg/m3] default = 0.03
+                                ! The density difference for a density difference based photoacclimation MLD [kg
+                                ! m-3].
 OBSOLETE_DIAGNOSTIC_IS_FATAL = True !   [Boolean] default = True
                                 ! If an obsolete diagnostic variable appears in the diag_table, cause a FATAL
                                 ! error rather than issue a WARNING.
