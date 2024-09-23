@@ -1,0 +1,88 @@
+# POSTPROCESSING GUIDE
+#
+# The following yaml is designed to postprocess the ocean_monthly component of the 2024_06 version of the CEFI_NWA12_COBALT_V1 experiment
+# if postprocessing data from a different version of this experiment, be sure to change the FRE_STEM variable before postprocessing
+#
+# Quick start instructions and source code can be found here: https://github.com/NOAA-GFDL/fre-cli/tree/main/fre/pp
+#
+# 0.) Load module on GFDL Analysis: module load fre/canopy
+#
+# For modularity and compatibility with with cylc workflow engine, fre/canopy splits up the post processcing process into several sub steps:
+#
+# 1.) Checkout the git repo containing postprocessing scripts and related files with the folowing command:
+# fre pp checkout -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+#
+# 2.) Combine your main yaml and experiment yamls into a single yaml, then set up the cylc-src dir with the configure-yaml command:
+# fre yamltools combine-yamls -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y CEFI_NWA12_cobalt.yaml
+# fre pp configure-yaml -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y combined-CEFI_NWA12_COBALT_V1.yaml
+#
+#     2a.) Fre/canopy does not automatically create the pp dir for you, so you will have to mkdir this first to pass the validator:
+#     mkdir /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/pp
+#
+#     2b.) (OPTIONAL, BUT RECOMMENDED): Create a list of available tar files within your history tar archives to allow fre to catch a wider variety of errors
+#     tar -tf /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/19930101.nc.tar | grep -v tile[2-6] | sort > /home/$USER/cylc-src/CEFI_NWA12_COBALT_V1__gfdl.ncrc5-intel22__prod/history-manifest
+#
+# 3.) Validate that all configuration files are correct
+# fre pp validate -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+#
+# 4.) Create the cylc-run directory containing the final version of configuration files, scripts, and output directories
+# fre pp install -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+#
+# 5.) Run post processing
+# fre pp run -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+#
+# 6.) To monitor the status of each post processing step, run the following command:
+# fre pp status -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+
+
+
+fre_properties: 
+    - &FRE_STEM       "fre/cefi/NWA/2024_06"
+
+    - &PP_START_YEAR  "1993"
+    - &PP_END_YEAR    "2019"
+    - &PP_CHUNK_A     "P5Y"
+    - &PP_CHUNK_B     "P20Y"
+    - &PP_CHUNK_SHORT "P1Y"
+
+    - &GRID_SPEC      "/archive/acr/mom6_input/nwa12/nwa12_grid_75z.tar"
+
+    
+shared: 
+    directories: &shared_directories
+        history_dir:  !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, history]
+        pp_dir:       !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, pp]
+        ptmp_dir:     "/ptmp/$USER/"
+
+    postProcess:
+        settings: &shared_settings
+            history_segment: "P1Y"
+            site: "ppan"
+            pp_start: *PP_START_YEAR
+            pp_stop: *PP_END_YEAR
+            pp_chunk_a: *PP_CHUNK_A
+            pp_components: "ocean_monthly"
+            pp_chunk_b: *PP_CHUNK_B
+            pp_grid_spec: *GRID_SPEC
+        switches: &shared_switches
+            do_analysis: False
+            clean_work: True
+            do_atmos_plevel_masking: False
+            do_preanalysis: False
+            do_refinediag: False
+            do_statics: False
+            do_timeavgs: False
+
+    compile:
+        compileYaml: &compile_yaml
+        platformYaml:
+
+experiments: 
+    - name: "MOM6_SIS2_GENERIC_4P_compile_symm"
+      pp:
+          - "yaml_include/MOM6_postprocess.yaml"
+    - name: "CEFI_NWA12_COBALT_V1"
+      pp:
+          - "yaml_include/MOM6_postprocess.yaml"
+          - "yaml_include/Cobalt_postprocess.yaml"
+
