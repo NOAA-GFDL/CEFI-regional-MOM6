@@ -254,12 +254,14 @@ def get_end_of_climatology_period(clima_file):
     logger.info(f"Climatology year character: {end_year_char}")
 
     # Map the derived decade and year characters to an actual year, stored as an int
-    if end_decade_char == "A":
-        end_year = 2000 + int(end_year_char)
-    elif end_decade_char == "B":
-        end_year = 2010 + int(end_year_char)
-    elif end_decade_char == "C":
-        end_year = 2020 + int(end_year_char)
+    decade_mapping = {
+        "A": 2000,
+        "B": 2010,
+        "C": 2020,
+    }
+
+    if end_decade_char in decade_mapping:
+        end_year = decade_mapping[end_decade_char] + int(end_year_char)
     else:
         logger.error((f"ERROR: Found unrecognized decade code {end_decade_char} in {clima_file}."
         "please make sure that decadal climatology follows the National Centers for Environemntal"
