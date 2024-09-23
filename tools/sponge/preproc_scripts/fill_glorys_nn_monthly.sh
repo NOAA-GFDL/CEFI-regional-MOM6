@@ -5,6 +5,7 @@
 #SBATCH --partition=batch
 
 # Usage: sbatch fill_glorys_nn_monthly.sh <YEAR> <MONTH>
+# Original Author: Andrew Ross, modified by Theresa Morrison
 
 module load cdo
 module load nco/5.0.1
