@@ -1,0 +1,33 @@
+directories:
+    <<: *shared_directories
+
+postprocess: 
+    settings:
+        <<: *shared_settings
+    switches: 
+        <<: *shared_switches
+
+    components:
+        - type: "ocean_daily"
+          sources: "ocean_daily"
+            
+        - type: "ocean_neus"
+          sources: "ocean_neus"
+
+        - type: "ocean_monthly"
+          sources: "ocean_month"
+        
+        - type: "ocean_monthly_z"
+          sources: "ocean_month_z"
+        
+        - type: "ocean_annual"
+          sources: "ocean_annual"
+        
+        - type: "ocean_annual_z"
+          sources: "ocean_annual_z"
+        
+        - type: "ice_daily"
+          sources: "ice_daily"
+        
+        - type: "ice_monthly"
+          sources: "ice_month"

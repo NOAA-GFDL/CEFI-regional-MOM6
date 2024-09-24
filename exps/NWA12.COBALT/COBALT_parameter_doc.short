@@ -2,5 +2,11 @@
 
 ! === module COBALT ===
 do_case2_mod = True             !   [Boolean] default = False
-                                ! When ture, modify the opacity of case 2 (coastal) waterswhich are identified
-                                ! based on a temperature and depth threshold
+                                ! When true, modify the opacity of case 2 (coastal) waterswhich are identified
+                                ! based on a salinity and depth threshold
+z_burial = 20.0                 !   [m] default = 10.0
+                                ! depth scale for ramping up particulate organic burial
+z_denit = 20.0                  !   [m] default = 10.0
+                                ! depth scale for ramping up benthic denitrification
+scale_burial = 1.0              !   [none] default = 0.0
+                                ! scaling factor for particulate organic burial
