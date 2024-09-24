@@ -38,7 +38,10 @@ def plot_sss_eval(pp_root,config):
     # then average over the dimension.
     # with no overlap, only one region has data at any point, 
     # so mean ignores the nans from other regions and selects the available data.
-    regional_grid = {'lat': np.arange( config['lat']['south'], config['lat']['north'], 0.1), 'lon': np.arange(config['lon']['west'], config['lon']['east'], 0.1)}
+    regional_grid = {
+        'lat': np.arange( np.floor( config['lat']['south'] * 10) / 10 - 0.05, np.ceil( config['lat']['north'] * 10 ) / 10 + 0.1 , 0.1),
+        'lon': np.arange( np.floor( config['lon']['west'] * 10) / 10 - 0.05,  np.ceil( config['lon']['east'] * 10 ) / 10 + 0.1 , 0.1)
+        }
     # For plotting later
     combined = combine_regional_climatologies( config, regional_grid)
 

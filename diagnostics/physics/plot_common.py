@@ -275,7 +275,7 @@ def get_end_of_climatology_period(clima_file):
 def combine_regional_climatologies(config, regional_grid):
     """
     Given a list of domains and a data directory in the config fle, open the list of regional
-    climatology data files, regrid them to the grid defind in regional_grid, and then concat
+    climatology data files, regrid them to the grid defined in regional_grid, and then concat
     and return the result
 
     This function expects regional climatologies from 1995- 2004 and 2005 to 2014 for each domain
