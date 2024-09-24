@@ -19,7 +19,10 @@ def center_to_outer(center, left=None, right=None):
     Given an array of center coordinates, find the edge coordinates,
     including extrapolation for far left and right edge.
     """
-    edges = 0.5 * (center.values[0:-1] + center.values[1:])
+    if hasattr(center,'values'): # handle xarray dataarays and similar objects
+        edges = 0.5 * (center.values[0:-1] + center.values[1:])
+    else:
+        edges = 0.5 * (center[0:-1] + center[1:])
     if left is None:
         left = edges[0] - (edges[1] - edges[0])
     if right is None:
@@ -202,9 +205,14 @@ def process_oisst(config, target_grid, model_ave):
     logger.info("OISST data processed successfully.")
     return mom_rg, oisst_ave, oisst_lonc, oisst_latc
 
-def process_glorys(config, target_grid):
+def process_glorys(config, target_grid, var):
     """ Open and regrid glorys data, return regridded glorys data """
-    glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True)['thetao'] #.rename({'longitude': 'lon', 'latitude': 'lat'})
+    glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True) #.rename({'longitude': 'lon', 'latitude': 'lat'})
+    if var in glorys:
+        glorys = glorys[var]
+    else:
+        logger.error("The provided variable is not in the provided glorys file, now exiting")
+        raise Exception(f"Error: {var} data not found in glorys_sfc file")
 
     # Drop any latitude points greater than or equal to 90 to prevent errors when regridding, then get corner points
     try:
@@ -225,3 +233,100 @@ def process_glorys(config, target_grid):
 
     logger.info("Glorys data processed successfully.")
     return glorys_rg, glorys_ave, glorys_lonc, glorys_latc
+
+def get_end_of_climatology_period(clima_file):
+    """
+    Determine the time period covered by the last climatology file. This function is needed
+    because decadal climatology data may not be a decade long for the last available time
+    period - for example, the last decadal climatology file for the NWA domain extends from
+    2005 to 2017. If the climatology files are formatted in the standard NCEI format, the
+    last year of the decadal file should be readable from the last two characters of the
+    second _ separated entry in the file name.
+
+    """
+    # Extract the time period information from the given file path
+    logger.info(f"Finding the end year of the last climatology file using file name: {clima_file}")
+    period = os.path.basename(clima_file).split("_")[1]
+    logger.info(f"Climatology time period: {period}")
+    end_decade_char = period[-2]
+    logger.info(f"Climatology decade character: {end_decade_char}")
+    end_year_char = period[-1]
+    logger.info(f"Climatology year character: {end_year_char}")
+
+    # Map the derived decade and year characters to an actual year, stored as an int
+    decade_mapping = {
+        "A": 2000,
+        "B": 2010,
+        "C": 2020,
+    }
+
+    if end_decade_char in decade_mapping:
+        end_year = decade_mapping[end_decade_char] + int(end_year_char)
+    else:
+        logger.error((f"ERROR: Found unrecognized decade code {end_decade_char} in {clima_file}."
+        "please make sure that decadal climatology follows the National Centers for Environemntal"
+        "Information naming conventions"))
+        raise Exception("Error: unrecognized decade code {end_decade_char} in {clima_file}")
+
+    logger.info(f"Climatology end year: {end_year}")
+    logger.info(f"End year of last climatology file found successfully.")
+    return end_year
+
+def combine_regional_climatologies(config, regional_grid):
+    """
+    Given a list of domains and a data directory in the config fle, open the list of regional
+    climatology data files, regrid them to the grid defined in regional_grid, and then concat
+    and return the result
+
+    This function expects regional climatologies from 1995- 2004 and 2005 to 2014 for each domain
+    of interest to all exist in the rc dir, since these are the date range provided by the National Centers
+    for Environmental information via their website. The fuction supports end years other than 2014
+    in the second file. All files should follow the National Centers for Environmental
+    Information naming conventions ( i.e the default naming scheme when files are downloaded from the
+    NCEI website) :
+
+    [V][TT][FF][GG].nc
+    where:
+    [V] - variable ( name of the domain of interest)
+    [TT] - time period (95A4 for the 1995 - 2004 data, A5B2 for the 2005 - 2012 data)
+    [FF] - field type ( should be s00 for salinity data)
+    [GG] - grid (01- 1°, 04 - 1/4° 10 - 1/10°)
+
+    """
+    rcdir = config['rcdir']
+    rc_list = []
+
+    for region in config["rc_vars"]:
+        logger.info(f"Opening {region} climatology")
+
+        # NWA domain data extends from 2005 to 2017, so use globbing to find files for the second decade of interest to ensure compatibility across domains
+        second_period =  glob(os.path.join(rcdir, region+'_A5??_s00_10.nc'))
+        num_files = len(second_period)
+        if num_files  == 1:
+            file2005 = second_period[0]
+        else:
+            logger.error((f"ERROR: found {num_files} decadal average files for the period after 2005. Please make sure"
+            "you have a single file in rcdir covering this period"))
+            raise Exception("ERROR: found {num_files} for the post 2005 period, expected 1.")
+
+        logger.info(f"Using the following post 2005 files: {file2005}")
+
+        # NOTE that this is now using the nested method to to combine files. This is to prevent issues when combining files that have the same value for the time dimension
+        # It *should* reproduce the same results as the default combine_coords methods since that method typically combined along the time dimension( as all the other dimensions were the same
+        # for a given region and the combine_coords algorithm ignores dimensions that don't vary across the inputs), but this is still worth noting nonetheless.
+        rc = xarray.open_mfdataset([os.path.join(rcdir, region+'_95A4_s00_10.nc'), file2005], decode_times=False, combine='nested',concat_dim='time')
+
+        last_year = get_end_of_climatology_period(file2005)
+
+        # TODO: Is it a problem if climatologies for the same domain cover different time periods? Example: NEP climatology is 2005-2012, while NNP is 2005-2014
+        weights = xarray.DataArray([2004-1995+1, last_year-2005+1], dims=['time'], coords={'time': rc.time})
+        rc = rc.weighted(weights).mean('time')
+
+        rc_regrid = xesmf.Regridder(rc, regional_grid, method='bilinear', unmapped_to_nan=True)(rc.s_an.isel(depth=0))
+
+        rc_list.append(rc_regrid)
+        logger.info(f"Successfully opened and regridded {region} climatology data")
+
+    combined = xarray.concat( rc_list, dim='region').mean('region')
+
+    return combined
