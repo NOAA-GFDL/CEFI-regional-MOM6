@@ -14,11 +14,12 @@ module load gcp
 set year=$1
 set month=`printf "%02d" $2`
 
+set apath='/archive/Theresa.Morrison/datasets/glorys/GLOBAL_MULTIYEAR_PHY_001_030/monthly'
+
 # Regionally-slice and convert daily to monthly GLORYS reanalysis on archive beforehand.
 
 # dmget all of the files for this month from archive.
-dmget /archive/tnm/datasets/glorys/GLOBAL_MULTIYEAR_PHY_001_030/monthly/so/GLORYS_so_arctic_${year}_${month}.nc
-dmget /archive/tnm/datasets/glorys/GLOBAL_MULTIYEAR_PHY_001_030/monthly/thetao/GLORYS_thetao_arctic_${year}_${month}.nc
+dmget ${apath}/so/GLORYS_so_arctic_${year}_${month}.nc ${apath}/thetao/GLORYS_thetao_arctic_${year}_${month}.nc
 
 # copy from archive to vftmp for speed?
 #gcp /archive/acr/datasets/glorys/GLOBAL_MULTIYEAR_PHY_001_030/daily/GLORYS_REANALYSIS_${year}-${month}-*.nc $TMPDIR
