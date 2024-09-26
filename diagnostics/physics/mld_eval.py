@@ -16,11 +16,11 @@ import xarray
 import xesmf
 import logging
 
-from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var
+from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config
 
 # Configure logging for mld_eval
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename="mld_eval.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.DEBUG)
+logging.basicConfig(filename="mld_eval.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.INFO)
 
 def plot_mld_eval(pp_root, config):
     model = open_var(pp_root, config['domain'] , 'MLD_003')
@@ -165,8 +165,5 @@ if __name__ == '__main__':
     parser.add_argument('-p','--pp_root', help='Path to postprocessed data (up to but not including /pp/)', required = True)
     parser.add_argument('-c','--config', help='Path to config file', required = True)
     args = parser.parse_args()
-
-    import yaml
-    with open(args.config) as f:
-        config = yaml.safe_load(f)
+    config = load_config(args.config)
     plot_mld_eval(args.pp_root, config)
