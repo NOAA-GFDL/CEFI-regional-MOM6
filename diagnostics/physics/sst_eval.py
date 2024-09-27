@@ -34,7 +34,7 @@ def plot_sst_eval(pp_root, config):
     model_grid = model_grid.assign_coords( {'xh':model_grid.xh, 'yh':model_grid.yh } )
     model_ave = xarray.align(model_grid, model_ave,join='override')[1]
 
-    glorys_rg, glorys_ave, glorys_lonc, glorys_latc = process_glorys(config, target_grid)
+    glorys_rg, glorys_ave, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'thetao')
     delta_glorys = model_ave - glorys_rg
     logger.info("GLORYS_RG: %s",glorys_rg)
     logger.info("DELTA_GLORYS: %s",delta_glorys)
