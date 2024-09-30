@@ -8,7 +8,7 @@ Scripts to subset, average, and fill the GLORYS data on the uda to preprocess it
 
 # Regional Subsetting
 
-Regional subsets of the GLORYS reanalysis are created using `ncks` in `get_so_monthly.sh` and `get_thetao_monthly.sh`. 
+Regional subsets of the GLORYS reanalysis are created using `ncks` in `get_so_monthly.csh` and `get_thetao_monthly.csh`. 
 You should adjust the regional subset in the script to match the region of interest.
 
 For example:
@@ -21,18 +21,18 @@ ncks -d latitude,40.,90. -d longitude,0.,360 filein.nc fileout.nc
 As written these preprocessing scripts must be run in three stages.
 1. First, subset the temperature and salinity and create monthly averages
 ```
-sbatch get_thetao_monthly.sh <YEAR> <MONTH>
-sbatch get_so_monthly.sh <YEAR> <MONTH>
+sbatch get_thetao_monthly.csh <YEAR> <MONTH>
+sbatch get_so_monthly.csh <YEAR> <MONTH>
 ```
 
 2. Next, fill the data
 ```
-sbatch fill_glorys_nn_monthly.sh <YEAR> <MONTH>
+sbatch fill_glorys_nn_monthly.csh <YEAR> <MONTH>
 ```
 
-3. Finally, once the filled data for every month in a given yeas have been created, the merge script can be used.
+3. Finally, once the filled data for every month in a given year has been created, the merge script can be used.
 ```
-sbatch merge_so_thetao_year.sh <YEAR>
+sbatch merge_so_thetao_year.csh <YEAR>
 ```
 
 This should produce data that is compatible with `write_nudging_data.py`
