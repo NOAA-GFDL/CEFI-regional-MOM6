@@ -225,7 +225,7 @@ def process_glorys(config, target_grid, var):
         logger.info("Glorys data is using longitude/latitude")
     except:
         logger.error("Name of longitude and latitude variables is unknown")
-        raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
+        raise Exception("Error: Lat/Latitude, Lon/Longitude not found in glorys data")
 
     glorys_ave = glorys.mean('time').load()
     glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
