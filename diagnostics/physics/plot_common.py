@@ -215,7 +215,9 @@ def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp
 
     return mom_to_oisst, oisst_ave, oisst_lonc, oisst_latc
 
-def process_glorys(config, target_grid, var, sel_time = None, resamp_freq = None, do_regrid=True):
+def process_glorys(
+    config, target_grid, var, sel_time = None, resamp_freq = None, do_regrid=True
+    ) ->  ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
     """ Open and regrid glorys data, return regridded glorys data """
     glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True) #.rename({'longitude': 'lon', 'latitude': 'lat'})
     if var in glorys:
