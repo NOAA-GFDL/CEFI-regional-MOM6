@@ -1,7 +1,5 @@
 """
 Compare model SSH with 1993--2019 data from GLORYS.
-Includes a plot of the Gulf Stream position and index,
-and a comparison of time mean SSH.
 Uses whatever model data can be found within the directory pp_root,
 and does not try to match the model and observed time periods.
 How to use:
