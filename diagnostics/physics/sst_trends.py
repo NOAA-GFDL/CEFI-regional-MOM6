@@ -10,10 +10,11 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
 import xarray
-import xesmf
 import logging
 
-from plot_common import autoextend_colorbar, corners, get_map_norm, annotate_skill, open_var, save_figure, load_config, process_glorys
+from plot_common import( autoextend_colorbar, corners, get_map_norm,
+                         annotate_skill, open_var, save_figure, load_config,
+                         process_glorys, process_oisst)
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
@@ -41,40 +42,35 @@ def plot_sst_trends(pp_root, label, config):
 
     # Verify that xh/yh are set as coordinates, then make sure model coordinates match grid data
     model_grid = model_grid.assign_coords( {'xh':model_grid.xh, 'yh':model_grid.yh } )
-    model = xarray.align(model_grid, model, join='override',exclude='time')[1]
+    model = xarray.align(model_grid, model, join='override', exclude='time')[1]
     logger.info("Successfully modified coordinates of model grid, and aligned model coordinates to grid coordinates")
 
     model_trend = get_3d_trends(model['time.year'], model) * 10 # -> C / decade
+    # Convert to Data Array, since xskillscore expects dataarrays to calculate skill metrics
     model_trend = xarray.DataArray(model_trend, dims=['yh', 'xh'], coords={'yh': model.yh, 'xh': model.xh})
     logger.info("MODEL_TREND: %s", model_trend)
 
     target_grid = model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'})
 
     # Process OISST and get trend
-    oisst = (
-        xarray.open_mfdataset([config['oisst']+f'/sst.month.mean.{y}.nc' for y in range( int(config['start_year']), int(config['end_year'])+1)])
-        .sst
-        .sel(lat=slice(config['lat']['south'], config['lat']['north']), lon=slice(config['lon']['west'], config['lon']['east']))
-        .resample(time='1AS')
-        .mean('time')
-        .squeeze(drop=True)
-        .load()
-    )
+    mom_to_oisst, oisst, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model, start =  int(config['start_year']),
+                                                                end = int(config['end_year'])+1, resamp_freq = '1AS',
+                                                                do_regrid = False) # (note that model data is not used if do_regrid = False)
     logger.info("OISST: %s", oisst )
     oisst_trend = get_3d_trends(oisst['time.year'], oisst) * 10 # -> C / decade
-    oisst_lonc, oisst_latc = corners(oisst.lon, oisst.lat)
-    oisst_lonc -= 360
+    oisst_trend = xarray.DataArray(oisst_trend, dims=['lat','lon'], coords={'lat':oisst.lat,'lon':oisst.lon} )
     logger.info("OISST_TREND: %s",oisst_trend)
 
-    oisst_to_mom = xesmf.Regridder({'lat': oisst.lat, 'lon': oisst.lon}, target_grid, method='bilinear')
-    oisst_rg = oisst_to_mom(oisst_trend)
-    oisst_rg = xarray.DataArray(oisst_rg, dims=['yh', 'xh'], coords={'yh': model.yh, 'xh': model.xh})
-    oisst_delta = model_trend - oisst_rg
-    logger.info("OISST_RG: %s",oisst_rg)
+    mom_rg = mom_to_oisst(model_trend)
+    mom_rg = xarray.DataArray(mom_rg, dims = ['lat','lon'], coords = {'lat':oisst.lat, 'lon':oisst.lon} )
+    oisst_delta = mom_rg - oisst_trend
+    logger.info("MOM_RG: %s",mom_rg)
     logger.info("OISST_DELTA: %s",oisst_delta)
 
     # Process Glorys and get trend
-    glorys_to_mom , glorys, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'thetao', sel_time = slice(config['start_year'], config['end_year']), resamp_freq = '1AS', do_regrid=False)
+    glorys_to_mom , glorys, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'thetao',
+                                                                      sel_time = slice(config['start_year'], config['end_year']),
+                                                                      resamp_freq = '1AS', do_regrid=False)
     glorys_trend = get_3d_trends(glorys['time.year'], glorys) * 10 # -> C / decade
     logger.info("GLORYS_TREND: %s",glorys_trend)
 
@@ -132,9 +128,11 @@ def plot_sst_trends(pp_root, label, config):
     logger.info("Successfully plotted oisst")
 
     # MODEL - OISST
-    grid[2].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, oisst_delta, transform = proj, **bias_common)
+    grid[2].pcolormesh(oisst_lonc, oisst_latc, oisst_delta, transform = proj, **bias_common)
     grid[2].set_title('(c) Model - OISST')
-    annotate_skill(model_trend, oisst_rg, grid[2], weights=model_grid.areacello, x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
+    # NOTE: Oisst dims are [lat,lon], so dim argument is needed. Must use mom_rg though, since oisst also contains
+    # an extra time dimension that changes output of xskillscore functions and leads to error when annotating plot
+    annotate_skill(mom_rg, oisst_trend, grid[2], dim= list(mom_rg.dims), x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
     logger.info("Successfully plotted difference between model and oisst")
 
     # GLORYS

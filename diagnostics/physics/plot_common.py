@@ -176,13 +176,15 @@ def load_config(config_path: str):
         logger.error(f"Error loading configuration from {config_path}: {e}")
         raise
 
-def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp_freq = None, do_regrid=True):
+def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp_freq = None, do_regrid=True
+    ) -> ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
     """Open and regrid OISST dataset, return relevant vars from dataset."""
     try:
         oisst = (
             xarray.open_mfdataset([config['oisst'] + f'sst.month.mean.{y}.nc' for y in range(start, end)])
             .sst
             .sel(lat=slice(config['lat']['south'], config['lat']['north']), lon=slice(config['lon']['west'], config['lon']['east']))
+            .load()
         )
     except Exception as e:
         logger.error(f"Error processing OISST data: {e}")
@@ -203,9 +205,9 @@ def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp
 
     # If a resample frequency is provided, use it to resample the oisst data over time before taking the average
     if resamp_freq:
-        oisst = oisst.resample(time = resamp_freq)
+        oisst = oisst.resample( time = resamp_freq )
 
-    oisst_ave = oisst.mean('time').load()
+    oisst_ave = oisst.mean('time')
 
     # Either apply the regridder to the average, or return the regrid object itself
     if do_regrid:
