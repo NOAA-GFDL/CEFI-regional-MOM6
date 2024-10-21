@@ -176,13 +176,15 @@ def load_config(config_path: str):
         logger.error(f"Error loading configuration from {config_path}: {e}")
         raise
 
-def process_oisst(config, target_grid, model_ave):
+def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp_freq = None, do_regrid=True
+    ) -> ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
     """Open and regrid OISST dataset, return relevant vars from dataset."""
     try:
         oisst = (
-            xarray.open_mfdataset([config['oisst'] + f'sst.month.mean.{y}.nc' for y in range(1993, 2020)])
+            xarray.open_mfdataset([config['oisst'] + f'sst.month.mean.{y}.nc' for y in range(start, end)])
             .sst
             .sel(lat=slice(config['lat']['south'], config['lat']['north']), lon=slice(config['lon']['west'], config['lon']['east']))
+            .load()
         )
     except Exception as e:
         logger.error(f"Error processing OISST data: {e}")
@@ -193,6 +195,7 @@ def process_oisst(config, target_grid, model_ave):
 
     oisst_lonc, oisst_latc = corners(oisst.lon, oisst.lat)
     oisst_lonc -= 360
+
     mom_to_oisst = xesmf.Regridder(
         target_grid,
         {'lat': oisst.lat, 'lon': oisst.lon, 'lat_b': oisst_latc, 'lon_b': oisst_lonc},
@@ -200,12 +203,23 @@ def process_oisst(config, target_grid, model_ave):
         unmapped_to_nan=True
     )
 
-    oisst_ave = oisst.mean('time').load()
-    mom_rg = mom_to_oisst(model_ave)
-    logger.info("OISST data processed successfully.")
-    return mom_rg, oisst_ave, oisst_lonc, oisst_latc
+    # If a resample frequency is provided, use it to resample the oisst data over time before taking the average
+    if resamp_freq:
+        oisst = oisst.resample( time = resamp_freq )
 
-def process_glorys(config, target_grid, var):
+    oisst_ave = oisst.mean('time')
+
+    # Either apply the regridder to the average, or return the regrid object itself
+    if do_regrid:
+        mom_rg = mom_to_oisst(model_ave)
+        logger.info("OISST data processed successfully.")
+        return mom_rg, oisst_ave, oisst_lonc, oisst_latc
+
+    return mom_to_oisst, oisst_ave, oisst_lonc, oisst_latc
+
+def process_glorys(
+    config, target_grid, var, sel_time = None, resamp_freq = None, do_regrid=True
+    ) ->  ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
     """ Open and regrid glorys data, return regridded glorys data """
     glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True) #.rename({'longitude': 'lon', 'latitude': 'lat'})
     if var in glorys:
@@ -225,14 +239,26 @@ def process_glorys(config, target_grid, var):
         logger.info("Glorys data is using longitude/latitude")
     except:
         logger.error("Name of longitude and latitude variables is unknown")
-        raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
+        raise Exception("Error: Lat/Latitude, Lon/Longitude not found in glorys data")
+
+    # If a time slice is provided use it to select a portion of the glorys data
+    if sel_time:
+        glorys = glorys.sel( time = sel_time )
+
+    # If a resample frequency is provided, use it to resample the glorys data over time before taking the average
+    if resamp_freq:
+        glorys = glorys.resample(time = resamp_freq)
 
     glorys_ave = glorys.mean('time').load()
     glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
-    glorys_rg = glorys_to_mom(glorys_ave)
 
-    logger.info("Glorys data processed successfully.")
-    return glorys_rg, glorys_ave, glorys_lonc, glorys_latc
+    # Either apply the regridder to the average, or return the regrid object itself
+    if do_regrid:
+        glorys_rg = glorys_to_mom(glorys_ave)
+        logger.info("Glorys data processed successfully.")
+        return glorys_rg, glorys_ave, glorys_lonc, glorys_latc
+
+    return glorys_to_mom, glorys_ave, glorys_lonc, glorys_latc
 
 def get_end_of_climatology_period(clima_file):
     """
