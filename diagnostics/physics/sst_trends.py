@@ -50,7 +50,7 @@ def plot_sst_trends(pp_root, label, config):
     model_trend = xarray.DataArray(model_trend, dims=['yh', 'xh'], coords={'yh': model.yh, 'xh': model.xh})
     logger.info("MODEL_TREND: %s", model_trend)
 
-    target_grid = model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'})
+    target_grid = model_grid[ config['rename_map'].keys() ].rename( config['rename_map'] )
 
     # Process OISST and get trend
     mom_to_oisst, oisst, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model, start =  int(config['start_year']),
