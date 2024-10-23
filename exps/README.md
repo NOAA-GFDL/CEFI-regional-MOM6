@@ -26,14 +26,27 @@ sbatch run.sub
 ```
 
 # NWA12.COBALT
-Users can follow the instructions below to run NWA12 example on Gaea C5.
+Users can follow the instructions below to run NWA12 example on Gaea C6.
 
 ```console
 git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive
-cd CEFI-regional-MOM6/builds; ./linux-build.bash -m gaea -p ncrc5.intel23 -t repro -f mom6sis2
+cd CEFI-regional-MOM6/builds; ./linux-build.bash -m gaea -p ncrc6.intel23 -t repro -f mom6sis2
 cd ../exps
-ln -fs /gpfs/f5/cefi/world-shared/datasets ./
+ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
 cd NWA12.COBALT
 sbatch run.sub 
 ```
-If users do not have access to Gaea C5, the datasets for the `NWA12` case be downloaded from `ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_datasets.tar.gz`.
+If users do not have access to Gaea C6, the datasets for the `NWA12` case be downloaded from `ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_datasets.tar.gz`.
+
+# NEP10.COBALT
+Users can follow the instructions below to run NEP10 example on Gaea C6.
+
+```console
+git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive
+cd CEFI-regional-MOM6/builds; ./linux-build.bash -m gaea -p ncrc6.intel23 -t repro -f mom6sis2
+cd ../exps
+ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
+cd NEP10.COBALT
+sbatch run.sub
+```
+If users do not have access to Gaea C6, the datasets for the `NEP10` case be downloaded from `ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nep10_datasets.tar.gz`.
