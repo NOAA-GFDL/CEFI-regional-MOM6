@@ -43,6 +43,26 @@ OMEGA = 7.292E-05               !   [s-1] default = 7.2921E-05
 ! === module SIS_tracer_registry ===
 
 ! === module SIS_tracer_flow_control ===
+CONCENTRATION_INIT_CONFIG = "latitudes" ! default = "data_override"
+                                ! A string that determines how the initial total sea ice concentration is
+                                ! initialized for a new run:
+                                !     file - read sea ice concentrations from a specified file
+                                !     data_override - use the data_override capability or zero everywhere
+                                !     zero - there is no sea ice anywhere
+                                !     latitudes - initial sea ice concentration is a function of latitude.
+ICE_THICKNESS_INIT_CONFIG = "uniform" ! default = "data_override"
+                                ! A string that determines how the initial sea ice thickness is initialized for
+                                ! a new run:
+                                !     file - read sea ice thickesses from a specified file
+                                !     data_override - use the data_override capability or zero everywhere
+                                !     uniform - sea ice has uniform thickness where the concentration is
+                                !       nonzero.
+ARCTIC_ICE_EDGE_IC = 67.0       !   [degrees of latitude] default = 91.0
+                                ! The southern latitude of Arctic ice in an initial condition.
+ICE_INIT_MASS = 900.0           !   [kg m-2] default = 0.0
+                                ! A uniform initial sea ice mass per unit area where there is sea ice.
+ICE_SALINITY_IC = 4.0           !   [g kg-1] default = 0.0
+                                ! The uniform sea ice salinity used for the initial condition
 
 ! === module SIS_slow_thermo ===
 ! This module calculates the slow evolution of the ice mass, heat, and salt budgets.
@@ -57,16 +77,13 @@ ICE_RELATIVE_SALINITY = 0.1     !   [nondim] default = 0.0
 
 ! === module SIS_dyn_trans ===
 ! This module updates the ice momentum and does ice transport.
-DT_ICE_DYNAMICS = 600.0         !   [seconds] default = -1.0
+DT_ICE_DYNAMICS = 300.0         !   [seconds] default = -1.0
                                 ! The time step used for the slow ice dynamics, including stepping the
                                 ! continuity equation and interactions between the ice mass field and
                                 ! velocities.  If 0 or negative the coupling time step will be used.
 ICE_STATS_INTERVAL = 10.0       !   [days] default = 1.0
                                 ! The interval in units of TIMEUNIT between writes of the globally summed ice
                                 ! statistics and conservation checks.
-DT_RHEOLOGY = 50.0              !   [seconds] default = -1.0
-                                ! The sub-cycling time step for iterating the rheology and ice momentum
-                                ! equations. If DT_RHEOLOGY is negative, the time step is set via NSTEPS_DYN.
 ICE_COVER_DISCARD = 1.0E-30     !   [nondim] default = -1.0
                                 ! A tiny fractional ice coverage which if positive causes the mass in categories
                                 ! with less than this coverage to be discarded.

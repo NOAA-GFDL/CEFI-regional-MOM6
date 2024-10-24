@@ -196,7 +196,7 @@ USE_generic_tracer = True       !   [Boolean] default = False
                                 ! MOM_generic_tracer packages.
 
 ! === module register_MOM_generic_tracer ===
-GENERIC_TRACER_IC_FILE = "bgc_ics_75z.nc" ! default = ""
+GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc" ! default = ""
                                 ! The file in which the generic tracer initial values can be found, or an empty
                                 ! string for internal initialization.
 
@@ -271,6 +271,82 @@ REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
                                 ! PQM_IH6IH5  (5th-order accurate)
 
 ! === module MOM_state_initialization ===
+THICKNESS_CONFIG = "coord"      ! default = "uniform"
+                                ! A string that determines how the initial layer thicknesses are specified for a
+                                ! new run:
+                                !     file - read interface heights from the file specified
+                                !       by (THICKNESS_FILE).
+                                !     thickness_file - read thicknesses from the file specified
+                                !       by (THICKNESS_FILE).
+                                !     mass_file - read thicknesses in units of mass per unit area from the file
+                                !       specified by (THICKNESS_FILE).
+                                !     coord - determined by ALE coordinate.
+                                !     uniform - uniform thickness layers evenly distributed
+                                !       between the surface and MAXIMUM_DEPTH.
+                                !     list - read a list of positive interface depths.
+                                !     DOME - use a slope and channel configuration for the
+                                !       DOME sill-overflow test case.
+                                !     ISOMIP - use a configuration for the
+                                !       ISOMIP test case.
+                                !     benchmark - use the benchmark test case thicknesses.
+                                !     Neverworld - use the Neverworld test case thicknesses.
+                                !     search - search a density profile for the interface
+                                !       densities. This is not yet implemented.
+                                !     circle_obcs - the circle_obcs test case is used.
+                                !     DOME2D - 2D version of DOME initialization.
+                                !     adjustment2d - 2D lock exchange thickness ICs.
+                                !     sloshing - sloshing gravity thickness ICs.
+                                !     seamount - no motion test with seamount ICs.
+                                !     dumbbell - sloshing channel ICs.
+                                !     soliton - Equatorial Rossby soliton.
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     USER - call a user modified routine.
+TS_CONFIG = "file"              !
+                                ! A string that determines how the initial temperatures and salinities are
+                                ! specified for a new run:
+                                !     file - read velocities from the file specified
+                                !       by (TS_FILE).
+                                !     fit - find the temperatures that are consistent with
+                                !       the layer densities and salinity S_REF.
+                                !     TS_profile - use temperature and salinity profiles
+                                !       (read from TS_FILE) to set layer densities.
+                                !     benchmark - use the benchmark test case T & S.
+                                !     linear - linear in logical layer space.
+                                !     DOME2D - 2D DOME initialization.
+                                !     ISOMIP - ISOMIP initialization.
+                                !     adjustment2d - 2d lock exchange T/S ICs.
+                                !     sloshing - sloshing mode T/S ICs.
+                                !     seamount - no motion test with seamount ICs.
+                                !     dumbbell - sloshing channel ICs.
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     SCM_CVMix_tests - used in the SCM CVMix tests.
+                                !     USER - call a user modified routine.
+TS_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
+                                ! The initial condition file for temperature.
+TEMP_IC_VAR = "temp"            ! default = "PTEMP"
+                                ! The initial condition variable for potential temperature.
+SALT_IC_VAR = "salt"            ! default = "SALT"
+                                ! The initial condition variable for salinity.
+DEPRESS_INITIAL_SURFACE = True  !   [Boolean] default = False
+                                ! If true,  depress the initial surface to avoid huge tsunamis when a large
+                                ! surface pressure is applied.
+SURFACE_HEIGHT_IC_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
+                                ! The initial condition file for the surface height.
+SURFACE_HEIGHT_IC_VAR = "ssh"   ! default = "SSH"
+                                ! The initial condition variable for the surface height.
+VELOCITY_CONFIG = "file"        ! default = "zero"
+                                ! A string that determines how the initial velocities are specified for a new
+                                ! run:
+                                !     file - read velocities from the file specified
+                                !       by (VELOCITY_FILE).
+                                !     zero - the fluid is initially at rest.
+                                !     uniform - the flow is uniform (determined by
+                                !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     soliton - Equatorial Rossby soliton.
+                                !     USER - call a user modified routine.
+VELOCITY_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
+                                ! The name of the velocity initial condition file.
 OBC_SEGMENT_001_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos),TEMP=file:obcs.nc(thetao),SALT=file:obcs.nc(so),Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
                                 ! OBC segment docs
 OBC_SEGMENT_002_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos),TEMP=file:obcs.nc(thetao),SALT=file:obcs.nc(so),Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
@@ -515,6 +591,9 @@ ENERGETICS_SFC_PBL = True       !   [Boolean] default = False
 EPBL_IS_ADDITIVE = False        !   [Boolean] default = True
                                 ! If true, the diffusivity from ePBL is added to all other diffusivities.
                                 ! Otherwise, the larger of kappa-shear and ePBL diffusivities are used.
+HREF_FOR_MLD = 5.0              !   [m] default = 0.0
+                                ! Reference depth used to calculate the potential density used to find the mixed
+                                ! layer depth based on a delta rho = 0.03 kg/m3.
 DIAG_MLD_DENSITY_DIFF = 0.03    !   [kg/m3] default = 0.1
                                 ! The density difference used to determine a diagnostic mixed layer depth,
                                 ! MLD_user, following the definition of Levitus 1982. The MLD is the depth at

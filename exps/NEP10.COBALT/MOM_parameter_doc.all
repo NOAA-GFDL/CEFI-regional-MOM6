@@ -526,7 +526,7 @@ USE_NW2_TRACERS = False         !   [Boolean] default = False
                                 ! If true, use the NeverWorld2 tracers.
 
 ! === module register_MOM_generic_tracer ===
-GENERIC_TRACER_IC_FILE = "bgc_ics_75z.nc" ! default = ""
+GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc" ! default = ""
                                 ! The file in which the generic tracer initial values can be found, or an empty
                                 ! string for internal initialization.
 GENERIC_TRACER_IC_FILE_IS_Z = False !   [Boolean] default = False
@@ -684,6 +684,97 @@ FATAL_INCONSISTENT_RESTART_TIME = False !   [Boolean] default = False
                                 ! If true and a time_in value is provided to MOM_initialize_state, verify that
                                 ! the time read from a restart file is the same as time_in, and issue a fatal
                                 ! error if it is not.  Otherwise, simply set the time to time_in if present.
+INIT_LAYERS_FROM_Z_FILE = False !   [Boolean] default = False
+                                ! If true, initialize the layer thicknesses, temperatures, and salinities from a
+                                ! Z-space file on a latitude-longitude grid.
+THICKNESS_CONFIG = "coord"      ! default = "uniform"
+                                ! A string that determines how the initial layer thicknesses are specified for a
+                                ! new run:
+                                !     file - read interface heights from the file specified
+                                !       by (THICKNESS_FILE).
+                                !     thickness_file - read thicknesses from the file specified
+                                !       by (THICKNESS_FILE).
+                                !     mass_file - read thicknesses in units of mass per unit area from the file
+                                !       specified by (THICKNESS_FILE).
+                                !     coord - determined by ALE coordinate.
+                                !     uniform - uniform thickness layers evenly distributed
+                                !       between the surface and MAXIMUM_DEPTH.
+                                !     list - read a list of positive interface depths.
+                                !     DOME - use a slope and channel configuration for the
+                                !       DOME sill-overflow test case.
+                                !     ISOMIP - use a configuration for the
+                                !       ISOMIP test case.
+                                !     benchmark - use the benchmark test case thicknesses.
+                                !     Neverworld - use the Neverworld test case thicknesses.
+                                !     search - search a density profile for the interface
+                                !       densities. This is not yet implemented.
+                                !     circle_obcs - the circle_obcs test case is used.
+                                !     DOME2D - 2D version of DOME initialization.
+                                !     adjustment2d - 2D lock exchange thickness ICs.
+                                !     sloshing - sloshing gravity thickness ICs.
+                                !     seamount - no motion test with seamount ICs.
+                                !     dumbbell - sloshing channel ICs.
+                                !     soliton - Equatorial Rossby soliton.
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     USER - call a user modified routine.
+TS_CONFIG = "file"              !
+                                ! A string that determines how the initial temperatures and salinities are
+                                ! specified for a new run:
+                                !     file - read velocities from the file specified
+                                !       by (TS_FILE).
+                                !     fit - find the temperatures that are consistent with
+                                !       the layer densities and salinity S_REF.
+                                !     TS_profile - use temperature and salinity profiles
+                                !       (read from TS_FILE) to set layer densities.
+                                !     benchmark - use the benchmark test case T & S.
+                                !     linear - linear in logical layer space.
+                                !     DOME2D - 2D DOME initialization.
+                                !     ISOMIP - ISOMIP initialization.
+                                !     adjustment2d - 2d lock exchange T/S ICs.
+                                !     sloshing - sloshing mode T/S ICs.
+                                !     seamount - no motion test with seamount ICs.
+                                !     dumbbell - sloshing channel ICs.
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     SCM_CVMix_tests - used in the SCM CVMix tests.
+                                !     USER - call a user modified routine.
+TS_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
+                                ! The initial condition file for temperature.
+TEMP_IC_VAR = "temp"            ! default = "PTEMP"
+                                ! The initial condition variable for potential temperature.
+SALT_IC_VAR = "salt"            ! default = "SALT"
+                                ! The initial condition variable for salinity.
+SALT_FILE = "nep_10km_init_1993-01-01_glorys.nc" ! default = "nep_10km_init_1993-01-01_glorys.nc"
+                                ! The initial condition file for salinity.
+DEPRESS_INITIAL_SURFACE = True  !   [Boolean] default = False
+                                ! If true,  depress the initial surface to avoid huge tsunamis when a large
+                                ! surface pressure is applied.
+TRIM_IC_FOR_P_SURF = False      !   [Boolean] default = False
+                                ! If true, cuts way the top of the column for initial conditions at the depth
+                                ! where the hydrostatic pressure matches the imposed surface pressure which is
+                                ! read from file.
+SURFACE_HEIGHT_IC_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
+                                ! The initial condition file for the surface height.
+SURFACE_HEIGHT_IC_VAR = "ssh"   ! default = "SSH"
+                                ! The initial condition variable for the surface height.
+SURFACE_HEIGHT_IC_SCALE = 1.0   !   [variable] default = 1.0
+                                ! A scaling factor to convert SURFACE_HEIGHT_IC_VAR into units of m
+REGRID_ACCELERATE_INIT = False  !   [Boolean] default = False
+                                ! If true, runs REGRID_ACCELERATE_ITERATIONS iterations of the regridding
+                                ! algorithm to push the initial grid to be consistent with the initial
+                                ! condition. Useful only for state-based and iterative coordinates.
+VELOCITY_CONFIG = "file"        ! default = "zero"
+                                ! A string that determines how the initial velocities are specified for a new
+                                ! run:
+                                !     file - read velocities from the file specified
+                                !       by (VELOCITY_FILE).
+                                !     zero - the fluid is initially at rest.
+                                !     uniform - the flow is uniform (determined by
+                                !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
+                                !     rossby_front - a mixed layer front in thermal wind balance.
+                                !     soliton - Equatorial Rossby soliton.
+                                !     USER - call a user modified routine.
+VELOCITY_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
+                                ! The name of the velocity initial condition file.
 U_IC_VAR = "u"                  ! default = "u"
                                 ! The initial condition variable for zonal velocity in VELOCITY_FILE.
 V_IC_VAR = "v"                  ! default = "v"
@@ -782,6 +873,9 @@ RESOLN_SCALED_KHTR = False      !   [Boolean] default = False
 RESOLN_USE_EBT = False          !   [Boolean] default = False
                                 ! If true, uses the equivalent barotropic wave speed instead of first baroclinic
                                 ! wave for calculating the resolution fn.
+BACKSCAT_EBT_POWER = 0.0        !   [nondim] default = 0.0
+                                ! Power to raise EBT vertical structure to when backscatter has vertical
+                                ! structure.
 KHTH_USE_EBT_STRUCT = False     !   [Boolean] default = False
                                 ! If true, uses the equivalent barotropic structure as the vertical structure of
                                 ! thickness diffusivity.
@@ -1235,6 +1329,15 @@ SSH_IN_EOS_PRESSURE_FOR_PGF = False !   [Boolean] default = False
 MASS_WEIGHT_IN_PRESSURE_GRADIENT = True !   [Boolean] default = False
                                 ! If true, use mass weighting when interpolating T/S for integrals near the
                                 ! bathymetry in FV pressure gradient calculations.
+MASS_WEIGHT_IN_PRESSURE_GRADIENT_TOP = False !   [Boolean] default = False
+                                ! If true and MASS_WEIGHT_IN_PRESSURE_GRADIENT is true, use mass weighting when
+                                ! interpolating T/S for integrals near the top of the water column in FV
+                                ! pressure gradient calculations.
+CORRECTION_INTXPA = False       !   [Boolean] default = False
+                                ! If true, use a correction for surface pressure curvature in intx_pa.
+RESET_INTXPA_INTEGRAL = False   !   [Boolean] default = False
+                                ! If true, reset INTXPA to match pressures at first nonvanished cell. Includes
+                                ! pressure correction.
 USE_INACCURATE_PGF_RHO_ANOM = False !   [Boolean] default = False
                                 ! If true, use a form of the PGF that uses the reference density in an
                                 ! inaccurate way. This is not recommended.
@@ -1654,6 +1757,9 @@ EVAP_CFL_LIMIT = 0.8            !   [nondim] default = 0.8
 MLD_EN_VALS = 3*0.0             !   [J/m2] default = 0.0
                                 ! The energy values used to compute MLDs.  If not set (or all set to 0.), the
                                 ! default will overwrite to 25., 2500., 250000.
+HREF_FOR_MLD = 5.0              !   [m] default = 0.0
+                                ! Reference depth used to calculate the potential density used to find the mixed
+                                ! layer depth based on a delta rho = 0.03 kg/m3.
 DIAG_MLD_DENSITY_DIFF = 0.03    !   [kg/m3] default = 0.1
                                 ! The density difference used to determine a diagnostic mixed layer depth,
                                 ! MLD_user, following the definition of Levitus 1982. The MLD is the depth at

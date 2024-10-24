@@ -24,8 +24,15 @@ pushd ../
 ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
 popd
 
+#
+echo "clean RESTART folders ..."
+rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs/*
+rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs/*
+rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst/*
+
 echo "run 20x56 48hrs test ..."
 ln -fs input.nml_48hr input.nml
+ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs ./RESTART
 srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out1 2>err1
 mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
@@ -33,6 +40,7 @@ mv ocean.stats RESTART_48hrs
 #
 echo "run 20x56 24hrs test ..."
 ln -fs input.nml_24hr input.nml
+ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs ./RESTART
 srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out2 2>err2
 mv RESTART RESTART_24hrs
 mv ocean.stats RESTART_24hrs
@@ -46,6 +54,7 @@ popd
 #
 echo "run 20x56 24hrs rst test ..."
 ln -fs input.nml_24hr_rst input.nml
+ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst ./RESTART
 srun --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2 > out3 2>err3
 mv RESTART RESTART_24hrs_rst
 mv ocean.stats RESTART_24hrs_rst
@@ -68,4 +77,11 @@ done
 
 #
 echo "All restart files are identical, PASS"
+
+#
+echo "clean RESTART folders now ..."
+rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs/*
+rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs/*
+rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst/*
+
 echo "Test ended:  " `date`

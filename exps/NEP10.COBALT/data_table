@@ -20,7 +20,7 @@
 "ICE", "sw_flux_nir_dif_dn", "ssrd",   "INPUT/ERA5_ssrd_1993_padded.nc",   "bilinear",  5.9722e-5
 "ICE", "lprec",              "lp",     "INPUT/ERA5_lp_1993_padded.nc",     "bilinear",  0.277777778
 "ICE", "fprec",              "sf",     "INPUT/ERA5_sf_1993_padded.nc",     "bilinear",  0.277777778
-"ICE", "runoff",             "runoff", "INPUT//glofas_hill_dis_runoff_mac_1993.nc",      "none",      1.0
+"ICE", "runoff",             "runoff", "INPUT/glofas_v4_hill_dis_runoff_1993.nc",      "none",      1.0
 "ICE", "calving",            "",       "",                           "none",      0.0
 "ICE", "dhdt",               "",       "",                           "none",     80.0
 "ICE", "dedt",               "",       "",                           "none",      2.0e-6

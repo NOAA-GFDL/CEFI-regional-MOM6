@@ -259,6 +259,59 @@ USE_ICE_AGE_TRACER = False      !   [Boolean] default = False
 SIS_FAST_AVAILABLE_DIAGS_FILE = "SIS_fast.available_diags" ! default = "SIS_fast.available_diags"
                                 ! A file into which to write a list of all available sea ice diagnostics that
                                 ! can be included in a diag_table.
+CONCENTRATION_INIT_CONFIG = "latitudes" ! default = "data_override"
+                                ! A string that determines how the initial total sea ice concentration is
+                                ! initialized for a new run:
+                                !     file - read sea ice concentrations from a specified file
+                                !     data_override - use the data_override capability or zero everywhere
+                                !     zero - there is no sea ice anywhere
+                                !     latitudes - initial sea ice concentration is a function of latitude.
+ICE_THICKNESS_INIT_CONFIG = "uniform" ! default = "data_override"
+                                ! A string that determines how the initial sea ice thickness is initialized for
+                                ! a new run:
+                                !     file - read sea ice thickesses from a specified file
+                                !     data_override - use the data_override capability or zero everywhere
+                                !     uniform - sea ice has uniform thickness where the concentration is
+                                !       nonzero.
+SNOW_THICKNESS_INIT_CONFIG = "data_override" ! default = "data_override"
+                                ! A string that determines how the initial total snow thickness is initialized
+                                ! for a new run:
+                                !     file - read sea ice concentrations from a specified file
+                                !     data_override - use the data_override capability or zero everywhere
+                                !     uniform - snow has uniform thickness where the concentration is nonzero.
+ARCTIC_ICE_EDGE_IC = 67.0       !   [degrees of latitude] default = 91.0
+                                ! The southern latitude of Arctic ice in an initial condition.
+ANTARCTIC_ICE_EDGE_IC = -91.0   !   [degrees of latitude] default = -91.0
+                                ! The northern latitude of Antarctic ice in an initial condition.
+ICE_INIT_MASS = 900.0           !   [kg m-2] default = 0.0
+                                ! A uniform initial sea ice mass per unit area where there is sea ice.
+ICE_SALINITY_INIT_CONFIG = "uniform" ! default = "uniform"
+                                ! A string that determines how the sea ice salinity is initialized for a new
+                                ! run:
+                                !     uniform -  Use a constant ice salinity initial condition
+                                !     file - Read sea ice salinities from a specified file
+                                !     data_override - use the data_override capability or zero everywhere.
+ICE_ENTHALPY_INIT_CONFIG = "uniform_temp" ! default = "uniform_temp"
+                                ! A string that determines how the sea ice enthalpy is initialized for a new
+                                ! run:
+                                !     uniform_temp - Use a constant ice temperature initial condition
+                                !     relative_temp - Use an ice temperature initial condition with a
+                                !       specified depression below the bulk ice freezing point
+                                !     file - Read sea ice temperatures or enthalpies from a specified file
+                                !     data_override - use the data_override capability or freezing enthalpy
+                                !       everywhere.
+SNOW_ENTHALPY_INIT_CONFIG = "uniform_temp" ! default = "uniform_temp"
+                                ! A string that determines how the snow enthalpy is initialized for a new run:
+                                !     uniform_temp - Use a constant ice temperature initial condition
+                                !     relative_temp - Use an ice temperature initial condition with a
+                                !       specified depression below the bulk ice freezing point
+                                !     file - Read sea ice temperatures or enthalpies from a specified file
+                                !     data_override - use the data_override capability or freezing enthalpy
+                                !       everywhere.
+ICE_SALINITY_IC = 4.0           !   [g kg-1] default = 0.0
+                                ! The uniform sea ice salinity used for the initial condition
+ICE_TEMPERATURE_IC = -4.0       !   [degC] default = -4.0
+                                ! The uniform sea ice and snow temperature used for the initial condition
 
 ! === module SIS_slow_thermo ===
 ! This module calculates the slow evolution of the ice mass, heat, and salt budgets.
@@ -318,7 +371,7 @@ ICE_TEMP_RANGE_ESTIMATE = 40.0  !   [degC] default = 40.0
 
 ! === module SIS_dyn_trans ===
 ! This module updates the ice momentum and does ice transport.
-DT_ICE_DYNAMICS = 600.0         !   [seconds] default = -1.0
+DT_ICE_DYNAMICS = 300.0         !   [seconds] default = -1.0
                                 ! The time step used for the slow ice dynamics, including stepping the
                                 ! continuity equation and interactions between the ice mass field and
                                 ! velocities.  If 0 or negative the coupling time step will be used.
@@ -341,9 +394,12 @@ TIMEUNIT = 8.64E+04             !   [s] default = 8.64E+04
 ICE_STATS_INTERVAL = 10.0       !   [days] default = 1.0
                                 ! The interval in units of TIMEUNIT between writes of the globally summed ice
                                 ! statistics and conservation checks.
-DT_RHEOLOGY = 50.0              !   [seconds] default = -1.0
+DT_RHEOLOGY = -1.0              !   [seconds] default = -1.0
                                 ! The sub-cycling time step for iterating the rheology and ice momentum
                                 ! equations. If DT_RHEOLOGY is negative, the time step is set via NSTEPS_DYN.
+NSTEPS_DYN = 432                ! default = 432
+                                ! The number of iterations of the rheology and ice momentum equations for each
+                                ! slow ice time step.
 ICE_TDAMP_ELASTIC = -0.2        !   [s or nondim] default = -0.2
                                 ! The damping timescale associated with the elastic terms in the sea-ice
                                 ! dynamics equations (if positive) or the fraction of DT_ICE_DYNAMICS (if
