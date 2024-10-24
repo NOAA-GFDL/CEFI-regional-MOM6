@@ -176,8 +176,7 @@ def load_config(config_path: str):
         logger.error(f"Error loading configuration from {config_path}: {e}")
         raise
 
-def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp_freq = None, do_regrid=True
-    ) -> ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
+def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp_freq = None):
     """Open and regrid OISST dataset, return relevant vars from dataset."""
     try:
         oisst = (
@@ -209,17 +208,13 @@ def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp
 
     oisst_ave = oisst.mean('time')
 
-    # Either apply the regridder to the average, or return the regrid object itself
-    if do_regrid:
-        mom_rg = mom_to_oisst(model_ave)
-        logger.info("OISST data processed successfully.")
-        return mom_rg, oisst_ave, oisst_lonc, oisst_latc
-
-    return mom_to_oisst, oisst_ave, oisst_lonc, oisst_latc
+    mom_rg = mom_to_oisst(model_ave)
+    logger.info("OISST data processed successfully.")
+    return mom_rg, oisst_ave, oisst_lonc, oisst_latc
 
 def process_glorys(
     config, target_grid, var, sel_time = None, resamp_freq = None, do_regrid=True
-    ) ->  ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
+        ) ->  ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
     """ Open and regrid glorys data, return regridded glorys data """
     glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True) #.rename({'longitude': 'lon', 'latitude': 'lat'})
     if var in glorys:
@@ -259,6 +254,7 @@ def process_glorys(
         return glorys_rg, glorys_ave, glorys_lonc, glorys_latc
 
     return glorys_to_mom, glorys_ave, glorys_lonc, glorys_latc
+
 
 def get_end_of_climatology_period(clima_file):
     """

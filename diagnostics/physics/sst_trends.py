@@ -53,16 +53,14 @@ def plot_sst_trends(pp_root, label, config):
     target_grid = model_grid[ config['rename_map'].keys() ].rename( config['rename_map'] )
 
     # Process OISST and get trend
-    mom_to_oisst, oisst, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model, start =  int(config['start_year']),
-                                                                end = int(config['end_year'])+1, resamp_freq = '1AS',
-                                                                do_regrid = False) # (note that model data is not used if do_regrid = False)
+    mom_rg, oisst, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model_trend, start =  int(config['start_year']),
+                                                                end = int(config['end_year'])+1, resamp_freq = '1AS')
     logger.info("OISST: %s", oisst )
     oisst_trend = get_3d_trends(oisst['time.year'], oisst) * 10 # -> C / decade
     oisst_trend = xarray.DataArray(oisst_trend, dims=['lat','lon'], coords={'lat':oisst.lat,'lon':oisst.lon} )
     logger.info("OISST_TREND: %s",oisst_trend)
 
-    mom_rg = mom_to_oisst(model_trend)
-    mom_rg = xarray.DataArray(mom_rg, dims = ['lat','lon'], coords = {'lat':oisst.lat, 'lon':oisst.lon} )
+    #mom_rg = xarray.DataArray(mom_rg, dims = ['lat','lon'], coords = {'lat':oisst.lat, 'lon':oisst.lon} )
     oisst_delta = mom_rg - oisst_trend
     logger.info("MOM_RG: %s",mom_rg)
     logger.info("OISST_DELTA: %s",oisst_delta)
@@ -70,7 +68,7 @@ def plot_sst_trends(pp_root, label, config):
     # Process Glorys and get trend
     glorys_to_mom , glorys, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'thetao',
                                                                       sel_time = slice(config['start_year'], config['end_year']),
-                                                                      resamp_freq = '1AS', do_regrid=False)
+                                                                      resamp_freq = '1AS', do_regrid = False)
     glorys_trend = get_3d_trends(glorys['time.year'], glorys) * 10 # -> C / decade
     logger.info("GLORYS_TREND: %s",glorys_trend)
 
