@@ -48,15 +48,15 @@ def plot_ssh_eval(pp_root, config, label):
     # Set projection of each grid in the plot
     # For now, sst_eval.py will only support a projection for the arctic and a projection for all other domains
     if config['projection_grid'] == 'NorthPolarStereo':
-        proj = ccrs.NorthPolarStereo()
+        p = ccrs.NorthPolarStereo()
     else:
-        proj = ccrs.PlateCarree()
+        p = ccrs.PlateCarree()
 
     # Plot of time-mean SSH.
     fig = plt.figure(figsize=(6, 8))
     grid = AxesGrid(fig, 111,
         nrows_ncols=(2, 1),
-        axes_class = ( GeoAxes, dict( projection = proj ) ),
+        axes_class = ( GeoAxes, dict( projection = p ) ),
         axes_pad=0.55,
         cbar_location='right',
         cbar_mode='edge',
@@ -85,6 +85,10 @@ def plot_ssh_eval(pp_root, config, label):
     target_grid = model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'})
     glorys_to_mom = xesmf.Regridder(glorys_zos_ave, target_grid, method='bilinear', unmapped_to_nan=True)
     glorys_rg = glorys_to_mom(glorys_zos_ave)
+
+    # NOTE: make sure units of lat/lon in config match units of lat/lon in model_grid
+    # NOTE: In particular, these values don't match for the included config file, but they are
+    # NOTE: used for consistency. Change x/y to run script with current config file
     mod_mask = ( (model_grid.geolon >= config['lon']['west'])
                 & (model_grid.geolon <= config['lon']['east'])
                 & (model_grid.geolat >= config['lat']['south'])
