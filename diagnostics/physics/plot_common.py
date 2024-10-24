@@ -55,7 +55,7 @@ def get_map_norm(cmap, levels, no_offset=True):
     norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
     return cmap, norm
 
-def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False,**kwargs):
+def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False, **kwargs):
     """
     Annotate an axis with model vs obs skill metrics
     """
@@ -65,6 +65,7 @@ def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xi
     medae = xskillscore.median_absolute_error(model, obs, dim=dim, skipna=True)
 
     ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
+
     # Set plot_lat=True in order to plot skill along a line of latitude. Otherwise, plot along longitude
     if plot_lat:
         ax.text(x0-xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
@@ -113,20 +114,20 @@ def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
         extend = 'neither'
     return ax.colorbar(plot, extend=extend, **kwargs)
 
-def add_ticks(ax, xticks=np.arange(-100, -31, 1), yticks=np.arange(2, 61, 1), xlabelinterval=2, ylabelinterval=2, fontsize=10, **kwargs):
+def add_ticks(ax, xticks=np.arange(-100, -31, 1), yticks=np.arange(2, 61, 1), xlabelinterval=2, ylabelinterval=2, fontsize=10, projection = ccrs.PlateCarree(), **kwargs):
     """
     Add lat and lon ticks and labels to a plot axis.
     By default, tick at 1 degree intervals for x and y, and label every other tick.
     Additional kwargs are passed to LongitudeFormatter and LatitudeFormatter.
     """
     ax.yaxis.tick_right()
-    ax.set_xticks(xticks, crs=ccrs.PlateCarree())
+    ax.set_xticks(xticks, crs = projection)
     if xlabelinterval == 0:
         plt.setp(ax.get_xticklabels(), visible=False)
     else:
         plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval != 0], visible=False, fontsize=fontsize)
         plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval == 0], fontsize=fontsize)
-    ax.set_yticks(yticks, crs=ccrs.PlateCarree())
+    ax.set_yticks(yticks, crs = projection)
     if ylabelinterval == 0:
         plt.setp(ax.get_yticklabels(), visible=False)
     else:
