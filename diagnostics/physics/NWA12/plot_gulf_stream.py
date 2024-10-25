@@ -17,6 +17,9 @@ from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 
+# Need to append physics dir to path to access plot common
+import sys
+sys.path.append("..")
 from plot_common import open_var, add_ticks, save_figure
 
 def compute_gs(ssh, data_grid=None):
@@ -61,7 +64,7 @@ def plot_gulf_stream(pp_root, label):
     )
 
     # Get model grid
-    model_grid = xarray.open_dataset(  '../data/geography/ocean_static.nc' )
+    model_grid = xarray.open_dataset(  '../../data/geography/ocean_static.nc' )
 
     # Get model thetao data TODO: maki this comment better
     model_thetao = open_var(pp_root, 'ocean_monthly_z', 'thetao')
@@ -84,15 +87,15 @@ def plot_gulf_stream(pp_root, label):
     )
     
     # Get Glorys data
-    glorys_t200 = xarray.open_dataarray('../data/diagnostics/glorys_T200.nc')
+    glorys_t200 = xarray.open_dataarray('../../data/diagnostics/glorys_T200.nc')
     
     # Get satellite points
     #satellite_ssh_index, satellite_ssh_points = compute_gs(satellite['adt'])
     #satellite_ssh_points.to_netcdf('../data/obs/satellite_ssh_points.nc')
     #satellite_ssh_index.to_pickle('../data/obs/satellite_ssh_index.pkl')
     #read pre-calculate satellite_ssh_index and points
-    satellite_ssh_points = xarray.open_dataset('../data/obs/satellite_ssh_points.nc')
-    satellite_ssh_index = pd.read_pickle('../data/obs/satellite_ssh_index.pkl')
+    satellite_ssh_points = xarray.open_dataset('../../data/obs/satellite_ssh_points.nc')
+    satellite_ssh_index = pd.read_pickle('../../data/obs/satellite_ssh_index.pkl')
     satellite_rolled = satellite_ssh_index.rolling(25, center=True, min_periods=25).mean().dropna()
 
     #satellite = xarray.open_mfdataset([f'/net2/acr/altimetry/SEALEVEL_GLO_PHY_L4_MY_008_047/adt_{y}_{m:02d}.nc' for y in range(1993, 2020) for m in range(1, 13)])
@@ -142,7 +145,8 @@ def plot_gulf_stream(pp_root, label):
     ax.set_ylabel('Index (positive north)')
     ax.legend(ncol=4, loc='lower right', frameon=False, fontsize=8)
 
-    save_figure('gulfstream_eval', label=label, pdf=True)
+    # default to saving figures in current dir instead of dedicated figures dir
+    save_figure('gulfstream_eval', label=label, pdf=True, output_dir = ".")
 
 if __name__ == '__main__':
     from argparse import ArgumentParser

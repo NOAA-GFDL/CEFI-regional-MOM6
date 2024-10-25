@@ -96,14 +96,14 @@ def plot_ssh_eval(pp_root, config, label):
                )
 
     # MODEL
-    p = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ssh_ave, cmap=cmap, norm=norm, transform = proj )
+    p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ssh_ave, cmap=cmap, norm=norm, transform = proj )
     cbar = autoextend_colorbar(grid.cbar_axes[0], p)
     cbar.ax.set_title('SSH (m)', fontsize=10)
     grid[0].set_title('(a) Model mean SSH')
     logger.info("Successfully plotted model data")
 
     # GLORYS
-    p = grid[1].pcolormesh(glorys_lonc, glorys_latc, glorys_zos_ave, cmap=cmap, norm=norm, transform = proj )
+    p1 = grid[1].pcolormesh(glorys_lonc, glorys_latc, glorys_zos_ave, cmap=cmap, norm=norm, transform = proj )
     cbar = autoextend_colorbar(grid.cbar_axes[1], p)
     cbar.ax.set_title('SSH (m)', fontsize=10)
     grid[1].set_title('(b) GLORYS12 mean SSH')
