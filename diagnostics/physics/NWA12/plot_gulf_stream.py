@@ -146,7 +146,7 @@ def plot_gulf_stream(pp_root, label):
     ax.legend(ncol=4, loc='lower right', frameon=False, fontsize=8)
 
     # default to saving figures in current dir instead of dedicated figures dir
-    save_figure('gulfstream_eval', label=label, pdf=True, output_dir = ".")
+    save_figure('../figures/gulfstream_eval', label=label, pdf=True, output_dir = ".")
 
 if __name__ == '__main__':
     from argparse import ArgumentParser

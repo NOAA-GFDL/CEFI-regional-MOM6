@@ -89,22 +89,22 @@ def plot_ssh_eval(pp_root, config, label):
     # NOTE: make sure units of lat/lon in config match units of lat/lon in model_grid
     # NOTE: In particular, these values don't match for the included config file, but they are
     # NOTE: used for consistency. Change x/y to run script with current config file
-    mod_mask = ( (model_grid.geolon >= config['lon']['west'])
-                & (model_grid.geolon <= config['lon']['east'])
+    mod_mask = ( (model_grid.geolon >= (config['lon']['west'] - 360.0))
+                & (model_grid.geolon <= (config['lon']['east'] - 360.0))
                 & (model_grid.geolat >= config['lat']['south'])
                 & (model_grid.geolat <= config['lat']['north'])
                )
 
     # MODEL
     p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ssh_ave, cmap=cmap, norm=norm, transform = proj )
-    cbar = autoextend_colorbar(grid.cbar_axes[0], p)
+    cbar = autoextend_colorbar(grid.cbar_axes[0], p0)
     cbar.ax.set_title('SSH (m)', fontsize=10)
     grid[0].set_title('(a) Model mean SSH')
     logger.info("Successfully plotted model data")
 
     # GLORYS
     p1 = grid[1].pcolormesh(glorys_lonc, glorys_latc, glorys_zos_ave, cmap=cmap, norm=norm, transform = proj )
-    cbar = autoextend_colorbar(grid.cbar_axes[1], p)
+    cbar = autoextend_colorbar(grid.cbar_axes[1], p1)
     cbar.ax.set_title('SSH (m)', fontsize=10)
     grid[1].set_title('(b) GLORYS12 mean SSH')
     annotate_skill(
