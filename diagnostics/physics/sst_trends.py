@@ -20,11 +20,12 @@ from plot_common import( autoextend_colorbar, corners, get_map_norm,
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="sst_trends.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.INFO)
 
-def get_3d_trends(x, y):
-    x = np.array(x)
+def get_3d_trends(y):
+    x = np.array( y['time.year'] )
     y2 = np.array(y).reshape((len(x), -1))
     coefs = np.polyfit(x, y2, 1)
-    trends = coefs[0, :].reshape(y.shape[1:])
+    trends = coefs[0, :].reshape(y.shape[1:]) * 10 # -> C / decade
+
     return trends
 
 
@@ -45,7 +46,7 @@ def plot_sst_trends(pp_root, label, config):
     model = xarray.align(model_grid, model, join='override', exclude='time')[1]
     logger.info("Successfully modified coordinates of model grid, and aligned model coordinates to grid coordinates")
 
-    model_trend = get_3d_trends(model['time.year'], model) * 10 # -> C / decade
+    model_trend = get_3d_trends(model)
     # Convert to Data Array, since xskillscore expects dataarrays to calculate skill metrics
     model_trend = xarray.DataArray(model_trend, dims=['yh', 'xh'], coords={'yh': model.yh, 'xh': model.xh})
     logger.info("MODEL_TREND: %s", model_trend)
@@ -56,23 +57,21 @@ def plot_sst_trends(pp_root, label, config):
     mom_rg, oisst, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model_trend, start =  int(config['start_year']),
                                                                 end = int(config['end_year'])+1, resamp_freq = '1AS')
     logger.info("OISST: %s", oisst )
-    oisst_trend = get_3d_trends(oisst['time.year'], oisst) * 10 # -> C / decade
+    oisst_trend = get_3d_trends(oisst)
     oisst_trend = xarray.DataArray(oisst_trend, dims=['lat','lon'], coords={'lat':oisst.lat,'lon':oisst.lon} )
     logger.info("OISST_TREND: %s",oisst_trend)
 
-    #mom_rg = xarray.DataArray(mom_rg, dims = ['lat','lon'], coords = {'lat':oisst.lat, 'lon':oisst.lon} )
     oisst_delta = mom_rg - oisst_trend
     logger.info("MOM_RG: %s",mom_rg)
     logger.info("OISST_DELTA: %s",oisst_delta)
 
     # Process Glorys and get trend
-    glorys_to_mom , glorys, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'thetao',
+    # NOTE: Glorys_ave is glorys_trends because we call get_3d_trends on it.
+    glorys_rg, glorys_trend, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'thetao',
                                                                       sel_time = slice(config['start_year'], config['end_year']),
-                                                                      resamp_freq = '1AS', do_regrid = False)
-    glorys_trend = get_3d_trends(glorys['time.year'], glorys) * 10 # -> C / decade
+                                                                      resamp_freq = '1AS', preprocess_regrid = get_3d_trends)
     logger.info("GLORYS_TREND: %s",glorys_trend)
 
-    glorys_rg = glorys_to_mom(glorys_trend)
     glorys_rg = xarray.DataArray(glorys_rg, dims=['yh', 'xh'], coords={'yh': model.yh, 'xh': model.xh})
     glorys_delta = model_trend - glorys_rg
     logger.info("GLORYS_RG: %s",glorys_rg)

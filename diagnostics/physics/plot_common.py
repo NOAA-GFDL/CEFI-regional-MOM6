@@ -212,10 +212,15 @@ def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp
     logger.info("OISST data processed successfully.")
     return mom_rg, oisst_ave, oisst_lonc, oisst_latc
 
-def process_glorys(
-    config, target_grid, var, sel_time = None, resamp_freq = None, do_regrid=True
-        ) ->  ( (xesmf.Regridder | xarray.DataArray), xarray.DataArray, xarray.DataArray, xarray.DataArray ):
-    """ Open and regrid glorys data, return regridded glorys data """
+def process_glorys(config, target_grid, var, sel_time = None, resamp_freq = None, preprocess_regrid = None):
+    """
+    Open and regrid glorys data, return regridded glorys data
+    If a function is passed to the preprocess_regrid option, it will be called on the
+    data before it is passed to the regridder but after the regridder
+    is created and the average is calculated
+    NOTE: if preprocess_regrid returns numpy array, the return value of glorys_ave will
+    be a numpy array, not an xarray dataarray as is the default
+    """
     glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True) #.rename({'longitude': 'lon', 'latitude': 'lat'})
     if var in glorys:
         glorys = glorys[var]
@@ -245,15 +250,17 @@ def process_glorys(
         glorys = glorys.resample(time = resamp_freq)
 
     glorys_ave = glorys.mean('time').load()
+
     glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
 
-    # Either apply the regridder to the average, or return the regrid object itself
-    if do_regrid:
-        glorys_rg = glorys_to_mom(glorys_ave)
-        logger.info("Glorys data processed successfully.")
-        return glorys_rg, glorys_ave, glorys_lonc, glorys_latc
+    # If a preprocessing function is provided, call it before doing any regridding
+    # glorys_ave may not remain a xarray dataset after this step
+    if preprocess_regrid:
+        glorys_ave = preprocess_regrid(glorys_ave)
 
-    return glorys_to_mom, glorys_ave, glorys_lonc, glorys_latc
+    glorys_rg = glorys_to_mom(glorys_ave)
+    logger.info("Glorys data processed successfully.")
+    return glorys_rg, glorys_ave, glorys_lonc, glorys_latc
 
 
 def get_end_of_climatology_period(clima_file):
