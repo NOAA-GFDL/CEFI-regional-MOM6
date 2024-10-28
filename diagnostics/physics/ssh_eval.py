@@ -86,9 +86,7 @@ def plot_ssh_eval(pp_root, config, label):
     glorys_to_mom = xesmf.Regridder(glorys_zos_ave, target_grid, method='bilinear', unmapped_to_nan=True)
     glorys_rg = glorys_to_mom(glorys_zos_ave)
 
-    # NOTE: make sure units of lat/lon in config match units of lat/lon in model_grid
-    # NOTE: In particular, these values don't match for the included config file, but they are
-    # NOTE: used for consistency. Change x/y to run script with current config file
+    # TODO: Find more robust solution for model_grids using [-180,180] coordinates
     mod_mask = ( (model_grid.geolon >= (config['lon']['west'] - 360.0))
                 & (model_grid.geolon <= (config['lon']['east'] - 360.0))
                 & (model_grid.geolat >= config['lat']['south'])
