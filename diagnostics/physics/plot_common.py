@@ -55,7 +55,7 @@ def get_map_norm(cmap, levels, no_offset=True):
     norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
     return cmap, norm
 
-def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False,**kwargs):
+def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False, **kwargs):
     """
     Annotate an axis with model vs obs skill metrics
     """
@@ -65,6 +65,7 @@ def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xi
     medae = xskillscore.median_absolute_error(model, obs, dim=dim, skipna=True)
 
     ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
+
     # Set plot_lat=True in order to plot skill along a line of latitude. Otherwise, plot along longitude
     if plot_lat:
         ax.text(x0-xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
@@ -113,20 +114,20 @@ def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
         extend = 'neither'
     return ax.colorbar(plot, extend=extend, **kwargs)
 
-def add_ticks(ax, xticks=np.arange(-100, -31, 1), yticks=np.arange(2, 61, 1), xlabelinterval=2, ylabelinterval=2, fontsize=10, **kwargs):
+def add_ticks(ax, xticks=np.arange(-100, -31, 1), yticks=np.arange(2, 61, 1), xlabelinterval=2, ylabelinterval=2, fontsize=10, projection = ccrs.PlateCarree(), **kwargs):
     """
     Add lat and lon ticks and labels to a plot axis.
     By default, tick at 1 degree intervals for x and y, and label every other tick.
     Additional kwargs are passed to LongitudeFormatter and LatitudeFormatter.
     """
     ax.yaxis.tick_right()
-    ax.set_xticks(xticks, crs=ccrs.PlateCarree())
+    ax.set_xticks(xticks, crs = projection)
     if xlabelinterval == 0:
         plt.setp(ax.get_xticklabels(), visible=False)
     else:
         plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval != 0], visible=False, fontsize=fontsize)
         plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval == 0], fontsize=fontsize)
-    ax.set_yticks(yticks, crs=ccrs.PlateCarree())
+    ax.set_yticks(yticks, crs = projection)
     if ylabelinterval == 0:
         plt.setp(ax.get_yticklabels(), visible=False)
     else:
@@ -176,13 +177,14 @@ def load_config(config_path: str):
         logger.error(f"Error loading configuration from {config_path}: {e}")
         raise
 
-def process_oisst(config, target_grid, model_ave):
+def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp_freq = None):
     """Open and regrid OISST dataset, return relevant vars from dataset."""
     try:
         oisst = (
-            xarray.open_mfdataset([config['oisst'] + f'sst.month.mean.{y}.nc' for y in range(1993, 2020)])
+            xarray.open_mfdataset([config['oisst'] + f'sst.month.mean.{y}.nc' for y in range(start, end)])
             .sst
             .sel(lat=slice(config['lat']['south'], config['lat']['north']), lon=slice(config['lon']['west'], config['lon']['east']))
+            .load()
         )
     except Exception as e:
         logger.error(f"Error processing OISST data: {e}")
@@ -193,6 +195,7 @@ def process_oisst(config, target_grid, model_ave):
 
     oisst_lonc, oisst_latc = corners(oisst.lon, oisst.lat)
     oisst_lonc -= 360
+
     mom_to_oisst = xesmf.Regridder(
         target_grid,
         {'lat': oisst.lat, 'lon': oisst.lon, 'lat_b': oisst_latc, 'lon_b': oisst_lonc},
@@ -200,13 +203,25 @@ def process_oisst(config, target_grid, model_ave):
         unmapped_to_nan=True
     )
 
-    oisst_ave = oisst.mean('time').load()
+    # If a resample frequency is provided, use it to resample the oisst data over time before taking the average
+    if resamp_freq:
+        oisst = oisst.resample( time = resamp_freq )
+
+    oisst_ave = oisst.mean('time')
+
     mom_rg = mom_to_oisst(model_ave)
     logger.info("OISST data processed successfully.")
     return mom_rg, oisst_ave, oisst_lonc, oisst_latc
 
-def process_glorys(config, target_grid, var):
-    """ Open and regrid glorys data, return regridded glorys data """
+def process_glorys(config, target_grid, var, sel_time = None, resamp_freq = None, preprocess_regrid = None):
+    """
+    Open and regrid glorys data, return regridded glorys data
+    If a function is passed to the preprocess_regrid option, it will be called on the
+    data before it is passed to the regridder but after the regridder
+    is created and the average is calculated
+    NOTE: if preprocess_regrid returns numpy array, the return value of glorys_ave will
+    be a numpy array, not an xarray dataarray as is the default
+    """
     glorys = xarray.open_dataset( config['glorys'] ).squeeze(drop=True) #.rename({'longitude': 'lon', 'latitude': 'lat'})
     if var in glorys:
         glorys = glorys[var]
@@ -225,14 +240,29 @@ def process_glorys(config, target_grid, var):
         logger.info("Glorys data is using longitude/latitude")
     except:
         logger.error("Name of longitude and latitude variables is unknown")
-        raise Exception("Error: Lat/Latitude, Lon/Longitdue not found in glorys data")
+        raise Exception("Error: Lat/Latitude, Lon/Longitude not found in glorys data")
+
+    # If a time slice is provided use it to select a portion of the glorys data
+    if sel_time:
+        glorys = glorys.sel( time = sel_time )
+
+    # If a resample frequency is provided, use it to resample the glorys data over time before taking the average
+    if resamp_freq:
+        glorys = glorys.resample(time = resamp_freq)
 
     glorys_ave = glorys.mean('time').load()
-    glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
-    glorys_rg = glorys_to_mom(glorys_ave)
 
+    glorys_to_mom = xesmf.Regridder(glorys_ave, target_grid, method='bilinear', unmapped_to_nan=True)
+
+    # If a preprocessing function is provided, call it before doing any regridding
+    # glorys_ave may not remain a xarray dataset after this step
+    if preprocess_regrid:
+        glorys_ave = preprocess_regrid(glorys_ave)
+
+    glorys_rg = glorys_to_mom(glorys_ave)
     logger.info("Glorys data processed successfully.")
     return glorys_rg, glorys_ave, glorys_lonc, glorys_latc
+
 
 def get_end_of_climatology_period(clima_file):
     """

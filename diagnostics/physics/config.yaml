@@ -1,5 +1,6 @@
 figures_dir: 'figures/'
 glorys: '/work/acr/mom6/diagnostics/glorys/glorys_sfc.nc'
+glorys_zos: '/work/acr/glorys/GLOBAL_MULTIYEAR_PHY_001_030/monthly/glorys_monthly_z_fine_*.nc'
 model_grid: '../data/geography/ocean_static.nc'
 
 # Variables to rename
@@ -65,4 +66,16 @@ levels_step: 2
 # Colorbar for sst difference plots
 bias_min: -2
 bias_max: 2.1
+bias_min_trends: -1.5
+bias_max_trends: 1.51
 bias_step: 0.25
+ticks: [-2, -1, 0, 1, 2]
+
+# SST Trends Settings
+start_year: "2005"
+end_year: "2019"
+
+# Colorbar for ssh plots
+ssh_levels_min: -1.1
+ssh_levels_max: .8
+ssh_levels_step: .1
