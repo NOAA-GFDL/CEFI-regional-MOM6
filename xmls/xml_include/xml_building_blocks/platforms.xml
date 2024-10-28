@@ -1,7 +1,7 @@
 <freInclude xmlns:xi="http://www.w3.org/2003/XInclude">
-  <platform name="ncrc5.intel22">
+  <platform name="ncrc5.intel23">
     <freVersion>$(FRE_VERSION)</freVersion>
-    <compiler type="intel-classic" version="2022.0.2"/>
+    <compiler type="intel-classic" version="2023.2.0"/>
     <project>$(NCRC_GROUP)</project>
     <directory stem="$(FRE_STEM)">
       <root>/gpfs/f5/$(project)/scratch/$USER/$(stem)</root>
@@ -96,7 +96,7 @@
     ]]>
     </csh>
   </platform>
-  <platform name="gfdl.ncrc5-intel22">
+  <platform name="gfdl.ncrc5-intel23">
     <xi:include xpointer="xpointer(//freInclude/platform[@name='gfdl.default']/node())" />
   </platform>
   <platform name="gfdl.ncrc6-intel23">
