@@ -19,6 +19,7 @@
     <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
     <property name="NWA12_WORLD"       value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/nwa12_input"/>
     <property name="NWA_ERA5"          value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5"/>
+    <property name="NEP_WORLD"         value="/gpfs/f5/cefi/world-shared/NEP_input"/>
     <property name="GLOBAL_WORLD"      value="/gpfs/f5/gfdl_med/world-shared/global"/>
     <property name="ARCHIVE_NNZ"        value=""/>
     <property name="REFERENCE"         value=""/>
@@ -53,6 +54,7 @@
     <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
     <property name="NWA12_WORLD"       value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/nwa12_input"/>
     <property name="NWA_ERA5"          value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5"/>
+    <property name="NEP_WORLD"         value="/gpfs/f6/ira-cefi/world-shared/NEP_input"/>
     <property name="GLOBAL_WORLD"      value="/gpfs/f6/ira-cefi/world-shared/global"/>
     <property name="ARCHIVE_NNZ"        value=""/>
     <property name="REFERENCE"         value=""/>
