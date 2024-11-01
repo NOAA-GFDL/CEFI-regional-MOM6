@@ -19,7 +19,6 @@
 "ocean_cobalt_fluxes_int",      1, "months", 1, "days", "time"
 "ocean_cobalt_fdet_100",        1, "months", 1, "days", "time"
 "ocean_cobalt_tracers_month_z", 1, "months", 1, "days", "time"
-"ocean_cobalt_tracers_instant",12, "months", 1, "days", "time"
 "ocean_cobalt_daily_2d",       24, "hours",  1, "days", "time"
 "ocean_cobalt_omip_sfc",             1, "months", 1, "days", "time"
 "ocean_cobalt_omip_2d",              1, "months", 1, "days", "time"
