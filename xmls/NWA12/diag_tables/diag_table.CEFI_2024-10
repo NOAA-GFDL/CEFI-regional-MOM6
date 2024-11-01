@@ -477,7 +477,7 @@
  "generic_cobalt","fcadet_arag_100",  "fcadet_arag_100",  "ocean_cobalt_fdet_100","all","mean","none",2
  "generic_cobalt","flithdet_100",     "flithdet_100",     "ocean_cobalt_fdet_100","all","mean","none",2
 
-# COBALT integrated tracer variables
+# COBALT integrated tracer variables at 100 meters
  "generic_cobalt","nsmp_100",         "nsmp_100",        "ocean_cobalt_tracers_int","all","mean","none",2
  "generic_cobalt","nmdp_100",         "nmdp_100",        "ocean_cobalt_tracers_int","all","mean","none",2
  "generic_cobalt","nlgp_100",         "nlgp_100",        "ocean_cobalt_tracers_int","all","mean","none",2
@@ -491,18 +491,6 @@
  "generic_cobalt","don_100",          "don_100",         "ocean_cobalt_tracers_int","all","mean","none",2
  "generic_cobalt","ndet_100",         "ndet_100",        "ocean_cobalt_tracers_int","all","mean","none",2
  "generic_cobalt","mesozoo_200",      "mesozoo_200",     "ocean_cobalt_tracers_int","all","mean","none",2
-
-# Generic COBALT instant tracer variables (for budgets)
- "generic_cobalt","wc_vert_int_c",    "wc_vert_int_c",   "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_dic",  "wc_vert_int_dic", "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_doc",  "wc_vert_int_doc", "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_poc",  "wc_vert_int_poc", "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_n",    "wc_vert_int_n",   "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_p",    "wc_vert_int_p",   "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_fe",   "wc_vert_int_fe",  "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_si",   "wc_vert_int_si",  "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_o2",   "wc_vert_int_o2",  "ocean_cobalt_tracers_instant","all",".false.","none",2
- "generic_cobalt","wc_vert_int_alk",  "wc_vert_int_alk", "ocean_cobalt_tracers_instant","all",".false.","none",2
 
 # Generic COBALT integrated flux variables
  "generic_cobalt","jprod_nsmp_100",          "jprod_nsmp_100",           "ocean_cobalt_fluxes_int","all","mean","none",2
