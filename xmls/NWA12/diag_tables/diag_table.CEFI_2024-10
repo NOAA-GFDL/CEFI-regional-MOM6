@@ -22,8 +22,6 @@
 "ocean_cobalt_daily_2d",       24, "hours",  1, "days", "time"
 "ocean_cobalt_omip_sfc",             1, "months", 1, "days", "time"
 "ocean_cobalt_omip_2d",              1, "months", 1, "days", "time"
-"ocean_cobalt_omip_tracers_year_z",   12, "months", 1, "days", "time"
-"ocean_cobalt_omip_rates_year_z",     12, "months", 1, "days", "time"
 
 # ocean static information
  "ocean_model", "areacello",   "areacello",   "ocean_static", "all", "none", "none", 2
@@ -716,35 +714,3 @@
  "generic_cobalt","frn",             "frn",                 "ocean_cobalt_omip_2d","all","mean","none",2
  "generic_cobalt","fsfe",            "fsfe",                "ocean_cobalt_omip_2d","all","mean","none",2
  "generic_cobalt","frfe",            "frfe",                "ocean_cobalt_omip_2d","all","mean","none",2
-
-# 3-D yearly Marine Biogeochemical Rates of Production and Removal:  ocean_cobalt_omip_rates_year_z
- "ocean_model_z","volcello",        "volcello",               "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","pp",           "pp",                     "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","pnitrate",     "pnitrate",               "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","pbfe",         "pbfe",                   "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","pbsi",         "pbsi",                   "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","pcalc",        "pcalc",                  "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","parag",        "parag",                  "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","expc",         "expc",                   "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","expn",         "expn",                   "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","expp",         "expp",                   "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","expfe",        "expfe",                  "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","expsi",        "expsi",                  "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","expcalc",      "expcalc",                "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","exparag",      "exparag",                "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","remoc",        "remoc",                  "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","dcalc",        "dcalc",                  "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","darag",        "darag",                  "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","ppdiat",       "ppdiat",                 "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","ppdiaz",       "ppdiaz",                 "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","pppico",       "pppico",                 "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","ppmisc",       "ppmisc",                 "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","bddtdic",      "bddtdic",                "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","bddtdin",      "bddtdin",                "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","bddtdip",      "bddtdip",                "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","bddtdife",     "bddtdife",               "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","bddtdisi",     "bddtdisi",               "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","bddtalk",      "bddtalk",                "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","fescav",       "fescav",                 "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","fediss",       "fediss",                 "ocean_cobalt_omip_rates_year_z","all","mean","none",2
- "generic_cobalt_z","graz",         "graz",                   "ocean_cobalt_omip_rates_year_z","all","mean","none",2
