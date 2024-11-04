@@ -1,0 +1,60 @@
+# SIS2 sea-ice diagnostics files
+"ice_daily",              1, "days",   1, "days", "time"
+"ice_month",              1, "months", 1, "days", "time"
+"ice_static",            -1, "months", 1, "days", "time"
+
+# sea-ice static information
+"ice_model", "CELL_AREA",  "CELL_AREA",    "ice_static", "all", "none", "none", 2 # cell area
+"ice_model", "COSROT",     "COSROT",       "ice_static", "all", "none", "none", 2 # COSROT,SINROT points east
+"ice_model", "GEOLAT",     "GEOLAT",       "ice_static", "all", "none", "none", 2 # latitude
+"ice_model", "GEOLON",     "GEOLON",       "ice_static", "all", "none", "none", 2 # longitude
+"ice_model", "SINROT",     "SINROT",       "ice_static", "all", "none", "none", 2 # -SINROT,COSROT points north
+
+# Daily sea-ice
+"ice_model", "EXT",        "EXT",          "ice_daily", "all", "mean", "none", 2 # ice extension
+"ice_model", "siconc",     "siconc",       "ice_daily", "all", "mean", "none", 2 # ice concentration
+
+# Monthly sea-ice
+"ice_model", "ALB",        "ALB",          "ice_month", "all", "mean", "none", 2 # Shortwave flux weighted surface albedo, or 1 if no SW
+"ice_model", "BHEAT",      "BHEAT",        "ice_month", "all", "mean", "none", 2 # ocean to ice heat flux
+"ice_model", "BMELT",      "BMELT",        "ice_month", "all", "mean", "none", 2 # bottom surface melting energy flux
+"ice_model", "BSNK",       "BSNK",         "ice_month", "all", "mean", "none", 2 # frozen water local bottom sink
+"ice_model", "CN",         "CN",           "ice_month", "all", "mean", "none", 2 # ice concentration
+"ice_model", "E2MELT",     "E2MELT",       "ice_month", "all", "mean", "none", 2 # heat needed to melt ice
+"ice_model", "EXT",        "EXT",          "ice_month", "all", "mean", "none", 2 # ice extension 
+"ice_model", "EXT",        "EXT_MIN",      "ice_month", "all", "min",  "none", 2 # ice extension min 
+"ice_model", "EXT",        "EXT_MAX",      "ice_month", "all", "max",  "none", 2 # ice extension max 
+"ice_model", "FA_X",       "FA_X",         "ice_month", "all", "mean", "none", 2 # Air stress on ice on C-grid - x component
+"ice_model", "FA_Y",       "FA_Y",         "ice_month", "all", "mean", "none", 2 # Air stress on ice on C-grid - y component
+"ice_model", "FI_X",       "FI_X",         "ice_month", "all", "mean", "none", 2 # ice internal stress - x component
+"ice_model", "FI_Y",       "FI_Y",         "ice_month", "all", "mean", "none", 2 # ice internal stress - y component
+"ice_model", "FRAZIL",     "FRAZIL",       "ice_month", "all", "mean", "none", 2 # energy flux of frazil formation
+"ice_model", "IX_TRANS",   "IX_TRANS",     "ice_month", "all", "mean", "none", 2 # x-direction ice transport
+"ice_model", "IY_TRANS",   "IY_TRANS",     "ice_month", "all", "mean", "none", 2 # y-direction ice transport
+"ice_model", "LSNK",       "LSNK",         "ice_month", "all", "mean", "none", 2 # frozen water local sink
+"ice_model", "LSRC",       "LSRC",         "ice_month", "all", "mean", "none", 2 # frozen water local source
+"ice_model", "RAIN",       "RAIN",         "ice_month", "all", "mean", "none", 2 # rate of rain fall
+"ice_model", "SALTF",      "SALTF",        "ice_month", "all", "mean", "none", 2 # ice to ocean salt flux
+"ice_model", "SNOWFL",     "SNOWFL",       "ice_month", "all", "mean", "none", 2 # rate of snow fall
+"ice_model", "SN2IC",      "SN2IC",        "ice_month", "all", "mean", "none", 2 # rate of snow to ice conversion
+"ice_model", "TMELT",      "TMELT",        "ice_month", "all", "mean", "none", 2 # upper surface melting energy flux
+"ice_model", "TSN",        "TSN",          "ice_month", "all", "mean", "none", 2 # snow layer temperature
+"ice_model", "T1",         "T1",           "ice_month", "all", "mean", "none", 2 # ice layer 1 temperature
+"ice_model", "T2",         "T2",           "ice_month", "all", "mean", "none", 2 # ice layer 2 temperature
+"ice_model", "T3",         "T3",           "ice_month", "all", "mean", "none", 2 # ice layer 3 temperature
+"ice_model", "T4",         "T4",           "ice_month", "all", "mean", "none", 2 # ice layer 4 temperature
+"ice_model", "XPRT",       "XPRT",         "ice_month", "all", "mean", "none", 2 # frozen water transport convergence
+"ice_model", "siu",        "siu",          "ice_month", "all", "mean", "none", 2 # ice velocity - x component
+"ice_model", "siv",        "siv",          "ice_month", "all", "mean", "none", 2 # ice velocity - y component
+"ice_model", "sispeed",    "sispeed",      "ice_month", "all", "mean", "none", 2 # ice speed
+"ice_model", "STRENGTH_hf","STRENGTH_hf",  "ice_month", "all", "mean", "none", 2 # ice strength
+"ice_model", "sitimefrac", "sitimefrac",   "ice_month", "all", "mean", "none", 2 # time fraction of ice cover
+"ice_model", "sitemptop",  "sitemptop",    "ice_month", "all", "mean", "none", 2 # surface temperature
+"ice_model", "siconc",     "siconc",       "ice_month", "all", "mean", "none", 2 # ice concentration
+"ice_model", "sisnconc",   "sisnconc",     "ice_month", "all", "mean", "none", 2 # snow concentration
+"ice_model", "simass",     "simass",       "ice_month", "all", "mean", "none", 2 # ice mass
+"ice_model", "sisnmass",   "sisnmass",     "ice_month", "all", "mean", "none", 2 # snow mass
+"ice_model", "sisnthick",  "sisnthick",    "ice_month", "all", "mean", "none", 2 # snow thickness
+"ice_model", "sithick",    "sithick",      "ice_month", "all", "mean", "none", 2 # ice thickness
+"ice_model", "sivol",      "sivol",        "ice_month", "all", "mean", "none", 2 # ice volume
+"ice_model", "MIB",        "MIB",          "ice_month", "all", "mean", "none", 2 # ice + snow + bergs mass
