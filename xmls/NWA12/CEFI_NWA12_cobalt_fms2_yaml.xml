@@ -561,9 +561,9 @@ $baseDate
         <dataSource site="ncrc">./diag_tables/diag_table_CEFI_COBALT_default</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_COBALT_neus</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_MOM6_neus</dataSource>
-        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_MOM6_default</dataSource>
-        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_SIS_default</dataSource>
-        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_COBALT_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_MOM6_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_SIS_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_COBALT_default</dataSource>
         <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_COBALT_neus</dataSource>
         <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_MOM6_neus</dataSource>
       </dataFile>
