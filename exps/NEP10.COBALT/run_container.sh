@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#SBATCH --nodes=5
+#SBATCH --time=60
+#SBATCH --job-name="container_NEP10"
+#SBATCH --output=container_NEP10_o.%j
+#SBATCH --error=container_NEP10_e.%j
+#SBATCH --qos=debug
+#SBATCH --partition=batch
+#SBATCH --clusters=c6
+#SBATCH --account=ira-cefi
+
+echo "Model started:  " `date`
+
+#
+ln -fs input.nml_24hr input.nml
+
+#
+export img=/gpfs/f6/ira-cefi/world-shared/container/ubuntu22.04-intel-ufs-env-v1.8.0-llvm.img
+apptainer exec -B /gpfs $img bash ../../builds/container-scripts/externalize.sh -e container_exec -p ../../builds/docker/linux-intel.env ../../builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+srun --mpi=pmi2 --ntasks=904 --cpus-per-task=1 --export=ALL ./container_exec/MOM6SIS2
+
+echo "Model ended:    " `date`
