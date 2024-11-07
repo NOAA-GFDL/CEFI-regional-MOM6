@@ -189,10 +189,6 @@ OBC_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
                                 ! If true, use the OM4 remapping-via-subcells algorithm for neutral diffusion.
                                 ! See REMAPPING_USE_OM4_SUBCELLS for more details. We recommend setting this 
                                 ! option to false.
-OBC_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True 
-                                ! If true, use the OM4 remapping-via-subcells algorithm for neutral diffusion.
-                                ! See REMAPPING_USE_OM4_SUBCELLS for more details. We recommend setting this 
-                                ! option to false.
 MASKING_DEPTH = 1.0             !   [m] default = -9999.0
                                 ! The depth below which to mask points as land points, for which all
                                 ! fluxes are zeroed out. MASKING_DEPTH is ignored if negative.

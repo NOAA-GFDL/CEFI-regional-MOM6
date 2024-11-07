@@ -21,6 +21,9 @@ C6:
 fremake -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -t repro MOM6_SIS2_GENERIC_4P_compile_symm
 frerun  -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -t repro CEFI_NEP_COBALT_V1
 
+pp (on PPAN):
+frepp -t 2019 -c ocean_cobalt_tracers_month_z -d /archive/e1n/fre/cefi/NEP/2024_08/NEP10k_082024_clean_spinup/gfdl.ncrc5-intel22-repro/history/ -x CEFI_NEP_cobalt.xml -p gfdl.ncrc6-intel23 -T repro CEFI_NEP_COBALT_V1
+
 Regression test
 frerun -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -q debug -r test -t repro CEFI_NEP_COBALT_V1
 
@@ -63,7 +66,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="GFDL_GROUP" value="cefi"/>
 
   <!--Production run properties. Users can modify these according to their need and/or performance analysis-->
-  <property name="PROD_SIMTIME" value="1"/>
+  <property name="PROD_SIMTIME" value="27"/>
 
   <!--Post-processing  chunk lengths -->
   <property name="CHUNK_LENGTH_A" value="5yr"/>
@@ -599,12 +602,7 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override PHA_MLD_DRHO = 0.03
 #override HREF_FOR_MLD = 5.0 
 #override DIAG_MLD_DENSITY_DIFF = 0.03
-#override OBC_REMAPPING_USE_OM4_SUBCELLS = True
-#override REMAPPING_USE_OM4_SUBCELLS = True
-#override DIAG_REMAPPING_USE_OM4_SUBCELLS = True
 #override VISC_REM_BUG = True
-#override FRICTWORK_BUG = True
-#override INTWAVE_REMAPPING_USE_OM4_SUBCELLS = True
 #override GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc"
 MOM_OVERRIDE_EOF
 
@@ -696,6 +694,7 @@ COBALT_INPUT_EOF
       ]]></csh>
       <xi:include xpointer="xpointer(//freInclude[@name='MOM6_postprocess']/postProcess/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='COBALT_postprocess']/postProcess/node())"/>
+      <xi:include xpointer="xpointer(//freInclude[@name='COBALT_z_postprocess']/postProcess/node())"/>	    
     </postProcess>
 
   </experiment>
@@ -1001,8 +1000,10 @@ endif
       <component type="ocean_cobalt_tracers_month_z" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month_z">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_A)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_A)"/>
+        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
+        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
+        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
+        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
       <component type="ocean_cobalt_rates_year_z" start="$(PP_START_YEAR)" source="ocean_cobalt_rates_year_z">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
