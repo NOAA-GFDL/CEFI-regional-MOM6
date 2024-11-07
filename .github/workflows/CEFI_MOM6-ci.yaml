@@ -33,7 +33,7 @@ jobs:
         cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds
         pwd
         img=/gpfs/f6/ira-cefi/world-shared/container/ubuntu22.04-intel-ufs-env-v1.8.0-llvm.img
-        apptainer exec -B /gpfs $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
+        apptainer exec -B /gpfs -B /ncrc $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
         #jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
         ##
         #sleep 1

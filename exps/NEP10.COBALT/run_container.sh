@@ -21,7 +21,7 @@ rm /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_container/*
 
 #
 export img=/gpfs/f6/ira-cefi/world-shared/container/ubuntu22.04-intel-ufs-env-v1.8.0-llvm.img
-apptainer exec -B /gpfs $img bash ../../builds/container-scripts/externalize.sh -e container_exec -p ../../builds/docker/linux-intel.env ../../builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
+apptainer exec -B /gpfs -B /ncrc $img bash ../../builds/container-scripts/externalize.sh -e container_exec -p ../../builds/docker/linux-intel.env ../../builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
 
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
