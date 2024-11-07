@@ -13,6 +13,13 @@
 echo "Model started:  " `date`
 
 #
+echo "link datasets ..."
+pushd ../
+ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
+popd
+
+
+#
 ln -fs input.nml_24hr input.nml
 
 #
