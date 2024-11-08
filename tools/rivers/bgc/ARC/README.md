@@ -1,6 +1,6 @@
-## Example Scripts for NEP BGC runoff generation 
+## Example Scripts for ARC BGC runoff generation 
 
-This folder contains example scripts for NEP BGC runoff file generation. Users can follow the following instructions to generate BGC runoff file:
+This folder contains example scripts for ARC BGC runoff file generation. Users can follow the following instructions to generate BGC runoff file:
 
 1: Generate a monthly climatology of the river inputs on the model grid
 using `make_discharge_climatology.m`.  This routine creates a monthly climatology
@@ -10,7 +10,7 @@ regenerate files (or create new ones) is update the file path.  The file creates
 a matlab file (`*.mat`) with the discharge climatology.  This is used in the
 assignment of rivers to discharge points.
 ```
-matlab232 -nodisplay -nosplash -nodesktop -r "run('make_discharge_climatology_nep.m');exit;"
+matlab232 -nodisplay -nosplash -nodesktop -r "run('make_discharge_climatology_arctic.m');exit;"
 ```
 
 2: Use `mapriv_NEWS2.m` to create a river nutrient input file based on the
@@ -53,7 +53,7 @@ tar -xzf 260455.3.3.tar.gz --wildcards --strip-components=4 -C . "*/data/0-data/
 cd Data/GLORICH
 wget https://store.pangaea.de/Publications/HartmannJens-etal_2019/Glorich_V01_CSV_plus_Shapefiles_2019_05_24.zip 
 unzip Glorich_V01_CSV_plus_Shapefiles_2019_05_24.zip
-matlab232 -nodisplay -nosplash -nodesktop -r "run('NEP_GLORICH_Process.m');exit;"
+matlab232 -nodisplay -nosplash -nodesktop -r "run('Arctic_GLORICH_Process.m');exit;"
 ```
 
  - [ArcticGro](https://arcticgreatrivers.org/data/)
@@ -64,12 +64,12 @@ matlab232 -nodisplay -nosplash -nodesktop -r "run('NEP_GLORICH_Process.m');exit;
 cd Data/ArcticGro
 matlab232 -nodisplay -nosplash -nodesktop -r "run('ArcticGro_Process.m');exit;"
 ```
-4: run `mapriv_combined_NEP10k` to create river nutrient and carbon input
+4: run `mapriv_combined_Arctic` to create river nutrient and carbon input
 estimates based on available observation, while using GlobalNEWS to fill in
 some gaps. 
 ```
 cp /archive/ynt//woa_sst_climo.nc ./Data/
-matlab232 -nodisplay -nosplash -nodesktop -r "run('mapriv_combined_NEP10k.m');exit;"
+matlab232 -nodisplay -nosplash -nodesktop -r "run('mapriv_combined_Arctic.m');exit;"
 ```
 As was the case for globalNEWS2, I recommend running these with "inspect_map = 'y'" until
 you are satisfied with the results.  You can just "click through" each river mapping and 
