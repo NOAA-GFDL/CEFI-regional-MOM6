@@ -1,6 +1,6 @@
-## Example Scripts for BGC runoff generation 
+## Example Scripts for NWA BGC runoff generation 
 
-This folder contains example scripts for BGC runoff file generation. Users can follow the following instructions to generate BGC runoff file:
+This folder contains example scripts for NWA BGC runoff file generation. Users can follow the following instructions to generate BGC runoff file:
 ```
 # 1. First run write_glofas_ave.py to get climatological monthly runoff
 ./write_glofas_ave.py 

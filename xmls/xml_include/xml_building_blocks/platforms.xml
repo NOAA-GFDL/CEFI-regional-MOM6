@@ -1,7 +1,7 @@
 <freInclude xmlns:xi="http://www.w3.org/2003/XInclude">
-  <platform name="ncrc5.intel22">
+  <platform name="ncrc5.intel23">
     <freVersion>$(FRE_VERSION)</freVersion>
-    <compiler type="intel-classic" version="2022.0.2"/>
+    <compiler type="intel-classic" version="2023.2.0"/>
     <project>$(NCRC_GROUP)</project>
     <directory stem="$(FRE_STEM)">
       <root>/gpfs/f5/$(project)/scratch/$USER/$(stem)</root>
@@ -19,6 +19,7 @@
     <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
     <property name="NWA12_WORLD"       value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/nwa12_input"/>
     <property name="NWA_ERA5"          value="/gpfs/f5/gfdl_med/world-shared/northwest_atlantic/era5"/>
+    <property name="NEP_WORLD"         value="/gpfs/f5/cefi/world-shared/NEP_input"/>
     <property name="GLOBAL_WORLD"      value="/gpfs/f5/gfdl_med/world-shared/global"/>
     <property name="ARCHIVE_NNZ"        value=""/>
     <property name="REFERENCE"         value=""/>
@@ -53,6 +54,7 @@
     <property name="NB_ROOT"           value="/nbhome/$USER/$(FRE_STEM)$(PLATINFO)/$(name)"/>
     <property name="NWA12_WORLD"       value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/nwa12_input"/>
     <property name="NWA_ERA5"          value="/gpfs/f6/ira-cefi/world-shared/northwest_atlantic/era5"/>
+    <property name="NEP_WORLD"         value="/gpfs/f6/ira-cefi/world-shared/NEP_input"/>
     <property name="GLOBAL_WORLD"      value="/gpfs/f6/ira-cefi/world-shared/global"/>
     <property name="ARCHIVE_NNZ"        value=""/>
     <property name="REFERENCE"         value=""/>
@@ -96,7 +98,7 @@
     ]]>
     </csh>
   </platform>
-  <platform name="gfdl.ncrc5-intel22">
+  <platform name="gfdl.ncrc5-intel23">
     <xi:include xpointer="xpointer(//freInclude/platform[@name='gfdl.default']/node())" />
   </platform>
   <platform name="gfdl.ncrc6-intel23">

@@ -44,7 +44,7 @@ abs_rootdir=`cd $rootdir && pwd`
 #load modules              
 source $MODULESHOME/init/bash
 source $rootdir/$machine_name/$platform.env
-. $rootdir/$machine_name/$platform.env
+#. $rootdir/$machine_name/$platform.env
 
 makeflags="NETCDF=3"
 

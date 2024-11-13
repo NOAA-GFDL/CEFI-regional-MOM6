@@ -1,5 +1,8 @@
+# ------------- Dataset Locations and Variables ---------------
+
 figures_dir: 'figures/'
 glorys: '/work/acr/mom6/diagnostics/glorys/glorys_sfc.nc'
+glorys_zos: '/work/acr/glorys/GLOBAL_MULTIYEAR_PHY_001_030/monthly/glorys_monthly_z_fine_*.nc'
 model_grid: '../data/geography/ocean_static.nc'
 
 # Variables to rename
@@ -9,7 +12,8 @@ rename_map:
     geolon_c: lon_b
     geolat_c: lat_b
 
-# Domain and plotting details
+# ------------ Domain and General Plotting Details --------------
+
 domain: ocean_monthly
 
 # Lat/lon range 
@@ -30,7 +34,7 @@ y:
     min: 4
     max: 59
 
-# Projection ( current options are either NorthPolarStereo for the arctic, or PlateCarree for all other domains
+# Projection ( current options are either NorthPolarStereo or PlateCarree )
 projection_grid: 'PlateCarree'
 projection_data: 'PlateCarree'
 
@@ -47,15 +51,10 @@ text_xint: 4 # This is unused if col=1, so it is only included for completeness
 text_yint: 4
 plot_lat: False
 
-# SST_eval settings
-oisst: '/work/acr/oisstv2/' 
+# --------------- Script specific settings -----------------
 
-# SSS_eval settigns
-rcdir: '/net2/acr/regional_climatologies/'
-rc_vars:
-    - swa
-    - gom
-    - nwa
+# ---- sst_eval settings
+oisst: '/work/acr/oisstv2/'
 
 # Colorbar for sst plots
 levels_min: 2
@@ -65,4 +64,24 @@ levels_step: 2
 # Colorbar for sst difference plots
 bias_min: -2
 bias_max: 2.1
+bias_min_trends: -1.5
+bias_max_trends: 1.51
 bias_step: 0.25
+ticks: [-2, -1, 0, 1, 2]
+
+#  ---- sst_trends Settings
+start_year: "2005"
+end_year: "2019"
+
+#  ---- sss_eval settings
+rcdir: '/net2/acr/regional_climatologies/'
+rc_vars:
+    - swa
+    - gom
+    - nwa
+
+#  ---- ssh_eval settings
+# Colorbar for ssh plots
+ssh_levels_min: -1.1
+ssh_levels_max: .8
+ssh_levels_step: .1

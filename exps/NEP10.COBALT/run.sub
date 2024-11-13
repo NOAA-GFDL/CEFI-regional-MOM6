@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#SBATCH --nodes=9
+#SBATCH --time=60
+#SBATCH --job-name="NEP10_cobalt"
+#SBATCH --output=NEP10_cobalt_o.%j
+#SBATCH --error=NEP10_cobalt_e.%j
+#SBATCH --qos=normal
+#SBATCH --partition=batch
+#SBATCH --clusters=c6
+#SBATCH --account=ira-cefi
+
+echo "Model started:  " `date`
+
+#
+ln -fs input.nml_48hr input.nml
+
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+srun --ntasks=904 --cpus-per-task=1 --export=ALL ../../builds/build/gaea-ncrc6.intel23/ocean_ice/repro/MOM6SIS2
+
+echo "Model ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt

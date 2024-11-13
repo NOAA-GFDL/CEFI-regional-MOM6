@@ -13,13 +13,13 @@
 
 ! === module MOM_unit_scaling ===
 ! Parameters for doing unit scaling of variables.
-DIABATIC_FIRST = True           !   [Boolean] default = False
+DIABATIC_FIRST = False          !   [Boolean] default = False
                                 ! If true, apply diabatic and thermodynamic processes, including buoyancy
                                 ! forcing and mass gain or loss, before stepping the dynamics forward.
 USE_REGRIDDING = True           !   [Boolean] default = False
                                 ! If True, use the ALE algorithm (regridding/remapping). If False, use the
                                 ! layered isopycnal algorithm.
-REMAP_AUXILIARY_VARS = False    !   [Boolean] default = False
+REMAP_AUXILIARY_VARS = True     !   [Boolean] default = False
                                 ! If true, apply ALE remapping to all of the auxiliary 3-dimensional variables
                                 ! that are needed to reproduce across restarts, similarly to what is already
                                 ! being done with the primary state variables.  The default should be changed to
@@ -185,6 +185,14 @@ OBC_SEGMENT_004_VELOCITY_NUDGING_TIMESCALES = 3, 360.0 !   [days] default = 0.0
                                 ! velocities.
 BRUSHCUTTER_MODE = True         !   [Boolean] default = False
                                 ! If true, read external OBC data on the supergrid.
+OBC_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True 
+                                ! If true, use the OM4 remapping-via-subcells algorithm for neutral diffusion.
+                                ! See REMAPPING_USE_OM4_SUBCELLS for more details. We recommend setting this 
+                                ! option to false.
+OBC_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True 
+                                ! If true, use the OM4 remapping-via-subcells algorithm for neutral diffusion.
+                                ! See REMAPPING_USE_OM4_SUBCELLS for more details. We recommend setting this 
+                                ! option to false.
 MASKING_DEPTH = 1.0             !   [m] default = -9999.0
                                 ! The depth below which to mask points as land points, for which all
                                 ! fluxes are zeroed out. MASKING_DEPTH is ignored if negative.
@@ -292,7 +300,14 @@ REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
                                 ! PPM_IH4     (3rd-order accurate)
                                 ! PQM_IH4IH3  (4th-order accurate)
                                 ! PQM_IH6IH5  (5th-order accurate)
-
+INIT_BOUNDARY_EXTRAP = False    !   [Boolean] default = False
+                                ! If true, values at the interfaces of boundary cells are extrapolated instead
+                                ! of piecewise constant during initialization.Defaults to REMAP_BOUNDARY_EXTRAP.
+REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
+                                ! This selects the remapping algorithm used in OM4 that does not use the full
+                                ! reconstruction for the top- and lower-most sub-layers, but instead assumes
+                                ! they are always vanished (untrue) and so just uses their edge values. We
+                                ! recommend setting this option to false.
 ! === module MOM_grid ===
 ! Parameters providing information about the lateral grid.
 
@@ -302,7 +317,9 @@ OBC_SEGMENT_001_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos
 OBC_SEGMENT_002_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos),TEMP=file:obcs.nc(thetao),SALT=file:obcs.nc(so),Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
 OBC_SEGMENT_003_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos),TEMP=file:obcs.nc(thetao),SALT=file:obcs.nc(so),Uamp=file:tu_003.nc(uamp),Uphase=file:tu_003.nc(uphase),Vamp=file:tu_003.nc(vamp),Vphase=file:tu_003.nc(vphase),SSHamp=file:tz_003.nc(zamp),SSHphase=file:tz_003.nc(zphase)" !
 OBC_SEGMENT_004_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos),TEMP=file:obcs.nc(thetao),SALT=file:obcs.nc(so),Uamp=file:tu_004.nc(uamp),Uphase=file:tu_004.nc(uphase),Vamp=file:tu_004.nc(vamp),Vphase=file:tu_004.nc(vphase),SSHamp=file:tz_004.nc(zamp),SSHphase=file:tz_004.nc(zphase)" !
-
+!INIT_LAYERS_FROM_Z_FILE = True !   [Boolean] default = False
+                                ! If true, initialize the layer thicknesses, temperatures, and salinities from a
+                                ! Z-space file on a latitude-longitude grid.
 THICKNESS_CONFIG = "coord"      !
                                 ! A string that determines how the initial layer thicknesses are specified for a
                                 ! new run:
@@ -382,7 +399,10 @@ SURFACE_HEIGHT_IC_VAR = "ssh"    ! default = "SSH"
                                  ! The initial condition variable for the surface height.  
 
 ! === module MOM_diag_mediator ===
-
+DIAG_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
+                                ! If true, use the OM4 remapping-via-subcells algorithm for diagnostics. See
+                                ! REMAPPING_USE_OM4_SUBCELLS for details. We recommend setting this option to
+                                ! false.
 ! === module MOM_MEKE ===
 USE_MEKE = False                !   [Boolean] default = False
                                 ! If true, turns on the MEKE scheme which calculates a sub-grid mesoscale eddy
@@ -476,6 +496,14 @@ KHTH_MAX_CFL = 0.1              !   [nondimensional] default = 0.8
                                 ! models.
 ! === module MOM_continuity ===
 
+! === module MOM_dynamics_split_RK2 ===
+VISC_REM_BUG = False            !   [Boolean] default = True
+                                ! If true, visc_rem_[uv] in split mode is incorrectly calculated or accounted
+                                ! for in three places. This parameter controls the defaults of three individual
+                                ! flags, VISC_REM_TIMESTEP_FIX in MOM_dynamics_split_RK2(b),
+                                ! VISC_REM_BT_WEIGHT_FIX in MOM_barotropic, and VISC_REM_CONT_HVEL_FIX in
+                                ! MOM_continuity_PPM. Eventually, the three individual flags should be removed
+                                ! after tests and the default of VISC_REM_BUG should be to False.
 ! === module MOM_continuity_PPM ===
 ETA_TOLERANCE = 1.0E-06         !   [m] default = 2.5E-09
                                 ! The tolerance for the differences between the barotropic and baroclinic
@@ -524,7 +552,10 @@ SMAGORINSKY_AH = True           !   [Boolean] default = False
                                 ! If true, use a biharmonic Smagorinsky nonlinear eddy viscosity.
 SMAG_BI_CONST = 0.015           !   [nondim] default = 0.0
                                 ! The nondimensional biharmonic Smagorinsky constant, typically 0.015 - 0.06.
-
+FRICTWORK_BUG = False           !   [Boolean] default = True
+                                ! If true, retain an answer-changing bug in calculating the FrictWork, which
+                                ! cancels the h in thickness flux and the h at velocity point. This isnot
+                                ! recommended.
 ! === module MOM_vert_friction ===
 DIRECT_STRESS = True            !   [Boolean] default = False                                                         
                                 ! If true, the wind stress is distributed over the topmost HMIX_STRESS of fluid       
@@ -588,6 +619,11 @@ MLE_USE_PBL_MLD = True          !   [Boolean] default = False
                                 ! If true, the MLE parameterization will use the mixed-layer depth provided by
                                 ! the active PBL parameterization. If false, MLE will estimate a MLD based on a
                                 ! density difference with the surface using the parameter MLE_DENSITY_DIFF.
+! === module MOM_diagnostics ===
+INTWAVE_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True 
+                                ! If true, use the OM4 remapping-via-subcells algorithm for calculating EBT
+                                ! structure. See REMAPPING_USE_OM4_SUBCELLS for details. We recommend setting
+                                ! this option to false.
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
 USE_LEGACY_DIABATIC_DRIVER = False !   [Boolean] default = True
