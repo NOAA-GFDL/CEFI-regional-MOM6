@@ -1,4 +1,4 @@
-#exps 
+# exps 
 This folder contains example configurations to run MOM6-SIS2-cobalt 
 
 | directory    | Purpose |
