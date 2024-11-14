@@ -1,0 +1,5 @@
+! Put the contents of your COBALT_override file here.
+! For parameters which are not specified in the COBALT_input file, just set the new value, ex:  
+! do_case2_mod = True
+! For parameters which are specified in the COBALT_input file, specify an override, ex:
+!#override do_case2_mod = True

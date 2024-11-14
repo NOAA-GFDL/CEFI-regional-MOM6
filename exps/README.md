@@ -4,6 +4,7 @@ This folder contains example configurations to run MOM6-SIS2-cobalt
 | directory    | Purpose |
 | --------------    | ------- |
 | ```OM4.single_column.COBALT/```     | 1D MOM6-cobalt exmaple |
+| ```OM4p25.COBALT/```                | OM4 0.25deg MOM6-cobalt v3 exmaple |
 | ```dumbbell/```                     | dumbbell exmaple |
 | ```NWA12.COBALT/```                 | NWA12 MOM6-SIS2-cobalt example |
 | ```NEP10.COBALT/```                 | NEP10 MOM6-SIS2-cobalt example |
@@ -24,6 +25,17 @@ ln -fs /gpfs/f5/cefi/world-shared/datasets ./
 cd OM4.single_column.COBALT
 sbatch run.sub
 ```
+# OM4p25.COBALT
+Users can follow the instructions below to run OM4 0.25 COBALTv3 example on Gaea C6.
+```console
+git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive
+cd CEFI-regional-MOM6/builds; ./linux-build.bash -m gaea -p ncrc6.intel23 -t repro -f mom6sis2
+cd ../exps
+ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
+cd OM4p25.COBALT
+sbatch driver.sh
+```
+If users do not have access to Gaea C6, the datasets for the `OM4p25.COBALT` case be downloaded from `ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/OM4_datasets/OM4_025.JRA.tar.gz`.
 
 # NWA12.COBALT
 Users can follow the instructions below to run NWA12 example on Gaea C6.

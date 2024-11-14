@@ -1,0 +1,700 @@
+OM4_025_COBALTv3_jra55_const
+1958 1 1 0 0 0
+      # MOM6 ocean diagnostics files
+"ocean_daily",            1, "days",   1, "days", "time"
+"ocean_month",            1, "months", 1, "days", "time"
+"ocean_month_z",          1, "months", 1, "days", "time"
+"ocean_annual",          12, "months", 1, "days", "time"
+"ocean_annual_z",        12, "months", 1, "days", "time"
+"ocean_static",          -1, "months", 1, "days", "time"
+# ocean static information
+"ocean_model", "areacello",   "areacello",   "ocean_static", "all", "none", "none", 2 # Ocean Grid-Cell Area
+"ocean_model", "deptho",      "deptho",      "ocean_static", "all", "none", "none", 2 # Sea Floor Depth
+"ocean_model", "sftof",       "sftof",       "ocean_static", "all", "none", "none", 2 # Sea Area Fraction
+"ocean_model", "Coriolis",    "Coriolis",    "ocean_static", "all", "none", "none", 2 # Coriolis parameter at corner (Bu) points
+"ocean_model", "geolon",      "geolon",      "ocean_static", "all", "none", "none", 2 # Longitude of tracer (T) points
+"ocean_model", "geolat",      "geolat",      "ocean_static", "all", "none", "none", 2 # Latitude of tracer (T) points
+"ocean_model", "geolon_c",    "geolon_c",    "ocean_static", "all", "none", "none", 2 # Longitude of corner (Bu) points
+"ocean_model", "geolat_c",    "geolat_c",    "ocean_static", "all", "none", "none", 2 # Latitude of corner (Bu) points
+"ocean_model", "geolon_u",    "geolon_u",    "ocean_static", "all", "none", "none", 2 # Longitude of zonal velocity (Cu) points
+"ocean_model", "geolat_u",    "geolat_u",    "ocean_static", "all", "none", "none", 2 # Latitude of zonal velocity (Cu) points
+"ocean_model", "geolon_v",    "geolon_v",    "ocean_static", "all", "none", "none", 2 # Longitude of meridional velocity (Cv) points
+"ocean_model", "geolat_v",    "geolat_v",    "ocean_static", "all", "none", "none", 2 # Latitude of meridional velocity (Cv) points
+"ocean_model", "wet",         "wet",         "ocean_static", "all", "none", "none", 2 # 0 if land, 1 if ocean at tracer points
+"ocean_model", "wet_c",       "wet_c",       "ocean_static", "all", "none", "none", 2 # 0 if land, 1 if ocean at corner (Bu) points
+"ocean_model", "wet_u",       "wet_u",       "ocean_static", "all", "none", "none", 2 # 0 if land, 1 if ocean at zonal velocity (Cu) points
+"ocean_model", "wet_v",       "wet_v",       "ocean_static", "all", "none", "none", 2 # 0 if land, 1 if ocean at meridional velocity (Cv) points
+"ocean_model", "dxt",         "dxt",         "ocean_static", "all", "none", "none", 2 # Delta(x) at thickness/tracer points (meter)
+"ocean_model", "dyt",         "dyt",         "ocean_static", "all", "none", "none", 2 # Delta(y) at thickness/tracer points (meter)
+"ocean_model", "dxCu",        "dxCu",        "ocean_static", "all", "none", "none", 2 # Delta(x) at u points (meter)
+"ocean_model", "dyCu",        "dyCu",        "ocean_static", "all", "none", "none", 2 # Delta(y) at u points (meter)
+"ocean_model", "dxCv",        "dxCv",        "ocean_static", "all", "none", "none", 2 # Delta(x) at v points (meter)
+"ocean_model", "dyCv",        "dyCv",        "ocean_static", "all", "none", "none", 2 # Delta(y) at v points (meter)
+"ocean_model", "areacello_cu","areacello_cu","ocean_static", "all", "none", "none", 2 # Ocean Grid-Cell Area
+"ocean_model", "areacello_cv","areacello_cv","ocean_static", "all", "none", "none", 2 # Ocean Grid-Cell Area
+"ocean_model", "areacello_bu","areacello_bu","ocean_static", "all", "none", "none", 2 # Ocean Grid-Cell Area
+# Daily ocean
+"ocean_model",   "ssh",          "ssh",              "ocean_daily",         "all", "mean", "none",2 # Sea Surface Height
+"ocean_model",   "ssh",          "sshmin",           "ocean_daily",         "all", "min",  "none",2 # Sea Surface Height
+"ocean_model",   "ssh",          "sshmax",           "ocean_daily",         "all", "max",  "none",2 # Sea Surface Height
+"ocean_model",   "tos",          "tos",              "ocean_daily",         "all", "mean", "none",2 # Sea Surface Temperature
+"ocean_model",   "tos",          "tosmin",           "ocean_daily",         "all", "min" , "none",2 # Sea Surface Temperature
+"ocean_model",   "tos",          "tosmax",           "ocean_daily",         "all", "max" , "none",2 # Sea Surface Temperature
+"ocean_model",   "tossq",        "tossq",            "ocean_daily",         "all", "mean", "none",2 # Square of Sea Surface Temperature
+"ocean_model",   "tob",          "tob",              "ocean_daily",         "all", "mean", "none",2 # Sea Water Potential Temperature at Sea Floor
+"ocean_model",   "sos",          "sos",              "ocean_daily",         "all", "mean", "none",2 # Sea Surface Salinity
+"ocean_model",   "sossq",        "sossq",            "ocean_daily",         "all", "mean", "none",2 # Square of Sea Surface Salinity
+"ocean_model",   "sob",          "sob",              "ocean_daily",         "all", "mean", "none",2 # Sea Water Salinity at Sea Floor
+"ocean_model",   "SSU",          "ssu",              "ocean_daily",         "all", "mean", "none",2 # Sea Surface Zonal Velocity
+"ocean_model",   "SSV",          "ssv",              "ocean_daily",         "all", "mean", "none",2 # Sea Surface Meridional Velocity
+"ocean_model",   "ePBL_h_ML",    "omldamax",         "ocean_daily",         "all", "max",  "none",2 # Surface boundary layer depth
+# Monthly ocean in z* coordinates
+"ocean_model_z", "volcello",     "volcello",         "ocean_month_z",       "all", "mean", "none",2 # Ocean grid-cell volume
+"ocean_model_z", "thetao",       "thetao",           "ocean_month_z",       "all", "mean", "none",2 # Sea Water Potential Temperature
+"ocean_model_z", "so",           "so",               "ocean_month_z",       "all", "mean", "none",2 # Sea Water Salinity
+"ocean_model_z", "uo",           "uo",               "ocean_month_z",       "all", "mean", "none",2 # Sea Water X Velocity
+"ocean_model_z", "vo",           "vo",               "ocean_month_z",       "all", "mean", "none",2 # Sea Water Y Velocity
+"ocean_model_z", "umo",          "umo",              "ocean_month_z",       "all", "mean", "none",2 # Ocean Mass X Transport
+"ocean_model_z", "vmo",          "vmo",              "ocean_month_z",       "all", "mean", "none",2 # Ocean Mass Y Transport
+"ocean_model_z", "uhml",         "uhml",             "ocean_month_z",       "all", "mean", "none",2 # Zonal Thickness Flux to Restratify Mixed Layer
+"ocean_model_z", "vhml",         "vhml",             "ocean_month_z",       "all", "mean", "none",2 # Meridional Thickness Flux to Restratify Mixed Layer
+"ocean_model_z", "rhopot0",      "rhopot0",          "ocean_month_z",       "all", "mean", "none",2 # Potential density referenced to surface
+"ocean_model_z", "rhoinsitu",    "rhoinsitu",        "ocean_month_z",       "all", "mean", "none",2 # In situ density
+# Monthly ocean
+"ocean_model",   "pbo",          "pbo",              "ocean_month",         "all", "mean", "none",2 # Sea Water Pressure at Sea Floor
+"ocean_model",   "zos",          "zos",              "ocean_month",         "all", "mean", "none",2 # Sea surface height above geoid
+"ocean_model",   "ssh",          "ssh",              "ocean_month",         "all", "mean", "none",2 # Sea Surface Height
+"ocean_model",   "zossq",        "zossq",            "ocean_month",         "all", "mean", "none",2 # Square of sea surface height above geoid
+"ocean_model",   "tos",          "tos",              "ocean_month",         "all", "mean", "none",2 # Sea Surface Temperature
+"ocean_model",   "tossq",        "tossq",            "ocean_month",         "all", "mean", "none",2 # Square of Sea Surface Temperature
+"ocean_model",   "tob",          "tob",              "ocean_month",         "all", "mean", "none",2 # Sea Water Potential Temperature at Sea Floor
+"ocean_model",   "sos",          "sos",              "ocean_month",         "all", "mean", "none",2 # Sea Surface Salinity
+"ocean_model",   "sossq",        "sossq",            "ocean_month",         "all", "mean", "none",2 # Square of Sea Surface Salinity
+"ocean_model",   "sob",          "sob",              "ocean_month",         "all", "mean", "none",2 # Sea Water Salinity at Sea Floor
+"ocean_model",   "mlotst",       "mlotstmin",        "ocean_month",         "all", "min",  "none",2 # Ocean Mixed Layer Thickness Defined by Sigma T
+"ocean_model",   "mlotst",       "mlotstmax",        "ocean_month",         "all", "max",  "none",2 # Ocean Mixed Layer Thickness Defined by Sigma T
+"ocean_model",   "T_adx_2d",     "T_adx_2d",         "ocean_month",         "all", "mean", "none",2 # Vertically Integrated Advective Zonal Flux of Heat
+"ocean_model",   "T_ady_2d",     "T_ady_2d",         "ocean_month",         "all", "mean", "none",2 # Vertically Integrated Advective Meridional Flux of Heat
+"ocean_model",   "S_adx_2d",     "S_adx_2d",         "ocean_month",         "all", "mean", "none",2 # Vertically Integrated Advective Zonal Flux of Salt
+"ocean_model",   "S_ady_2d",     "S_ady_2d",         "ocean_month",         "all", "mean", "none",2 # Vertically Integrated Advective Meridional Flux of Salt
+"ocean_model",   "umo_2d",       "umo_2d",           "ocean_month",         "all", "mean", "none",2 # Ocean Mass X Transport Vertical Sum
+"ocean_model",   "vmo_2d",       "vmo_2d",           "ocean_month",         "all", "mean", "none",2 # Ocean Mass Y Transport Vertical Sum
+"ocean_model",   "prlq",         "prlq",             "ocean_month",         "all", "mean", "none",2 # Rainfall Flux where Ice Free Ocean over Sea
+"ocean_model",   "prsn",         "prsn",             "ocean_month",         "all", "mean", "none",2 # Snowfall Flux where Ice Free Ocean over Sea
+"ocean_model",   "evs",          "evs",              "ocean_month",         "all", "mean", "none",2 # Water Evaporation Flux Where Ice Free Ocean over Sea
+"ocean_model",   "friver",       "friver",           "ocean_month",         "all", "mean", "none",2 # Water Flux into Sea Water From Rivers
+"ocean_model",   "ficeberg",     "ficeberg",         "ocean_month",         "all", "mean", "none",2 # Water Flux into Seawater from Icebergs
+"ocean_model",   "fsitherm",     "fsitherm",         "ocean_month",         "all", "mean", "none",2 # water flux to ocean from sea ice melt(> 0) or form(< 0)
+"ocean_model",   "wfo",          "wfo",              "ocean_month",         "all", "mean", "none",2 # Water Flux Into Sea Water
+"ocean_model",   "net_massout",  "net_massout",      "ocean_month",         "all", "mean", "none",2 # Net mass leaving the ocean due to evaporation, seaice formation
+"ocean_model",   "net_massin",   "net_massin",       "ocean_month",         "all", "mean", "none",2 # Net mass entering ocean due to precip, runoff, ice melt
+"ocean_model",   "sfdsi",        "sfdsi",            "ocean_month",         "all", "mean", "none",2 # Downward Sea Ice Basal Salt Flux
+"ocean_model",   "hfrainds",      "hfrainds",        "ocean_month",         "all", "mean", "none",2 # Heat content (relative to 0degC) of liquid+frozen precip entering ocean
+"ocean_model",   "hfevapds",      "hfevapds",        "ocean_month",         "all", "mean", "none",2 # Heat Content (relative to 0degC) of Water Leaving Ocean via Evaporation and Ice Formation
+"ocean_model",   "hfrunoffds",    "hfrunoffds",      "ocean_month",         "all", "mean", "none",2 # Heat content (relative to 0C) of liquid+solid runoff into ocean
+"ocean_model",   "hfsnthermds",   "hfsnthermds",     "ocean_month",         "all", "mean", "none",2 # Latent Heat to Melt Frozen Precipitation
+"ocean_model",   "hfsifrazil",    "hfsifrazil",      "ocean_month",         "all", "mean", "none",2 # Heat Flux into Sea Water due to Frazil Ice Formation
+"ocean_model",   "hfibthermds",   "hfibthermds",     "ocean_month",         "all", "mean", "none",2 # Latent Heat to Melt Frozen Runoff/Iceberg
+"ocean_model",   "rlntds",        "rlntds",          "ocean_month",         "all", "mean", "none",2 # Surface Net Downward Longwave Radiation
+"ocean_model",   "hflso",         "hflso",           "ocean_month",         "all", "mean", "none",2 # Surface Downward Latent Heat Flux due to Evap + Melt Snow/Ice
+"ocean_model",   "hfsso",         "hfsso",           "ocean_month",         "all", "mean", "none",2 # Surface Downward Sensible Heat Flux
+"ocean_model",   "rsntds",        "rsntds",          "ocean_month",         "all", "mean", "none",2 # Net Downward Shortwave Radiation at Sea Water Surface
+"ocean_model",   "hfds",          "hfds",            "ocean_month",         "all", "mean", "none",2 # Surface ocean heat flux from SW+LW+latent+sensible+masstransfer+frazil+seaice_melt_heat
+"ocean_model",   "rsdo",          "rsdo",            "ocean_month",         "all", "mean", "none",2 # Downwelling Shortwave Flux in Sea Water at Grid Cell Upper Interface
+"ocean_model",   "net_heat_coupler",       "net_heat_coupler",       "ocean_month", "all", "mean", "none",2 # Surface ocean heat flux from SW+LW+latent+sensible+seaice_melt_heat (via the coupler)
+"ocean_model",   "heat_content_massin",    "heat_content_massin",    "ocean_month", "all", "mean", "none",2 # Heat content (relative to 0degC) of net mass entering ocean ocean
+"ocean_model",   "heat_content_massout",   "heat_content_massout",   "ocean_month", "all", "mean", "none",2 # Heat content (relative to 0degC) of net mass leaving ocean ocean via evap and ice form
+"ocean_model",   "heat_content_surfwater", "heat_content_surfwater", "ocean_month", "all", "mean", "none",2 # Heat content (relative to 0degC) of net water crossing ocean surface (frozen+liquid)
+"ocean_model",   "heat_content_fprec",     "heat_content_fprec",     "ocean_month", "all", "mean", "none",2 # Heat content (relative to 0degC) of frozen prec entering ocean
+"ocean_model",   "heat_content_cond",      "heat_content_cond",      "ocean_month", "all", "mean", "none",2 # Heat content (relative to 0degC) of water condensing into ocean
+"ocean_model",   "LwLatSens",              "LwLatSens",              "ocean_month", "all", "mean", "none",2 # Combined longwave, latent, and sensible heating at ocean surface
+"ocean_model",   "Heat_PmE",               "Heat_PmE",               "ocean_month", "all", "mean", "none",2 # Heat flux into ocean from mass flux into ocean
+"ocean_model",   "tauuo",        "tauuo",            "ocean_month",         "all", "mean", "none",2 # Surface Downward X Stress
+"ocean_model",   "tauvo",        "tauvo",            "ocean_month",         "all", "mean", "none",2 # Surface Downward Y Stress
+"ocean_model",   "ustar",        "ustar",            "ocean_month",         "all", "mean", "none",2 # Surface friction velocity = [(gustiness + tau_magnitude)/rho0]^(1/2)
+"ocean_model",   "speed",        "speed",            "ocean_month",         "all", "mean", "none",2 # Sea Surface Speed
+"ocean_model",   "MLD_003",      "MLD_003",          "ocean_month",         "all", "mean", "none",2 # Mixed layer depth (delta rho = 0.03)
+"ocean_model",   "MLD_003",      "MLD_003_min",      "ocean_month",         "all", "min",  "none",2 # Mixed layer depth (delta rho = 0.03)
+"ocean_model",   "MLD_003",      "MLD_003_max",      "ocean_month",         "all", "max",  "none",2 # Mixed layer depth (delta rho = 0.03)
+"ocean_model",   "MLD_restrat",  "MLD_restrat",      "ocean_month",         "all", "mean", "none",2 # Mixed Layer Depth as used in the mixed-layer restratification parameterization
+"ocean_model",   "udml_restrat", "udml_restrat",     "ocean_month",         "all", "mean", "none",2 # Transport stream function amplitude for zonal restratification of mixed layer
+"ocean_model",   "vdml_restrat", "vdml_restrat",     "ocean_month",         "all", "mean", "none",2 # Transport stream function amplitude for meridional restratification of mixed layer
+"ocean_model",   "uml_restrat",  "uml_restrat",      "ocean_month",         "all", "mean", "none",2 # Surface zonal velocity component of mixed layer restratification
+"ocean_model",   "vml_restrat",  "vml_restrat",      "ocean_month",         "all", "mean", "none",2 # Surface meridional velocity component of mixed layer restratification
+"ocean_model",   "MLD_EN1",      "MLD_EN1",          "ocean_month",         "all", "mean", "none",2 # Mixed layer depth for energy value set to      25.00 J/m2 (Energy set by 1st MLD_EN_VALS)
+"ocean_model",   "MLD_EN1",      "MLD_EN1_min",      "ocean_month",         "all", "min",  "none",2 # Mixed layer depth for energy value set to      25.00 J/m2 (Energy set by 1st MLD_EN_VALS)
+"ocean_model",   "MLD_EN1",      "MLD_EN1_max",      "ocean_month",         "all", "max",  "none",2 # Mixed layer depth for energy value set to      25.00 J/m2 (Energy set by 1st MLD_EN_VALS)
+"ocean_model",   "MSTAR",        "MSTAR",            "ocean_month",         "all", "mean", "none",2 # Total mstar that is used.
+# Annual ocean in z* coordinates
+"ocean_model_z", "volcello",     "volcello",         "ocean_annual_z",      "all", "mean", "none",2 # Ocean grid-cell volume
+"ocean_model_z", "thetao",       "thetao",           "ocean_annual_z",      "all", "mean", "none",2 # Sea Water Potential Temperature
+"ocean_model_z", "thetao_xyave", "thetao_xyave",     "ocean_annual_z",      "all", "mean", "none",2 # Sea Water Potential Temperature
+"ocean_model_z", "so",           "so",               "ocean_annual_z",      "all", "mean", "none",2 # Sea Water Salinity
+"ocean_model_z", "so_xyave",     "so_xyave",         "ocean_annual_z",      "all", "mean", "none",2 # Sea Water Salinity
+"ocean_model_z", "uo",           "uo",               "ocean_annual_z",      "all", "mean", "none",2 # Sea Water X Velocity
+"ocean_model_z", "vo",           "vo",               "ocean_annual_z",      "all", "mean", "none",2 # Sea Water Y Velocity
+"ocean_model_z", "umo",          "umo",              "ocean_annual_z",      "all", "mean", "none",2 # Ocean Mass X Transport
+"ocean_model_z", "vmo",          "vmo",              "ocean_annual_z",      "all", "mean", "none",2 # Ocean Mass Y Transport
+"ocean_model_z", "uhml",         "uhml",             "ocean_annual_z",      "all", "mean", "none",2 # Zonal Thickness Flux to Restratify Mixed Layer
+"ocean_model_z", "vhml",         "vhml",             "ocean_annual_z",      "all", "mean", "none",2 # Meridional Thickness Flux to Restratify Mixed Layer
+"ocean_model_z", "uh",           "uh",               "ocean_annual_z",      "all", "mean", "none",2 # Zonal Thickness Flux
+"ocean_model_z", "vh",           "vh",               "ocean_annual_z",      "all", "mean", "none",2 # Meridional Thickness Flux
+"ocean_model_z", "T_adx",        "T_adx",            "ocean_annual_z",      "all", "mean", "none",2 # Advective (by residual mean) Zonal Flux of Heat
+"ocean_model_z", "T_ady",        "T_ady",            "ocean_annual_z",      "all", "mean", "none",2 # Advective (by residual mean) Meridional Flux of Heat
+"ocean_model_z", "S_adx",        "S_adx",            "ocean_annual_z",      "all", "mean", "none",2 # Advective (by residual mean) Zonal Flux of Salt
+"ocean_model_z", "S_ady",        "S_ady",            "ocean_annual_z",      "all", "mean", "none",2 # Advective (by residual mean) Meridional Flux of Salt
+"ocean_model_z", "rsdoabsorb",   "rsdoabsorb",       "ocean_annual_z",      "all", "mean", "none",2 # Convergence of Penetrative Shortwave Flux in Sea Water Layer
+"ocean_model_z", "opottemptend", "opottemptend",     "ocean_annual_z",      "all", "mean", "none",2 # Tendency of Sea Water Potential Temperature Expressed as Heat Content
+"ocean_model_z", "opottempdiff", "opottempdiff",     "ocean_annual_z",      "all", "mean", "none",2 # Tendency of sea water potential temperature expressed as heat content due to parameterized dianeutral mixing
+"ocean_model_z", "osalttend",    "osalttend",        "ocean_annual_z",      "all", "mean", "none",2 # Tendency of Sea Water Salinity Expressed as Salt Content
+"ocean_model_z", "osaltpmdiff",  "osaltpmdiff",      "ocean_annual_z",      "all", "mean", "none",2 # Tendency of sea water salinity expressed as salt content due to parameterized mesoscale neutral diffusion
+"ocean_model_z", "osaltdiff",    "osaltdiff",        "ocean_annual_z",      "all", "mean", "none",2 # Tendency of sea water salinity expressed as salt content due to parameterized dianeutral mixing
+"ocean_model_z", "frazil_heat_tendency",           "frazil_heat_tendency",           "ocean_annual_z",   "all", "mean", "none",2 # Heat tendency due to frazil formation
+"ocean_model_z", "T_advection_xy",                 "T_advection_xy",                 "ocean_annual_z",   "all", "mean", "none",2 # Horizontal convergence of residual mean advective fluxes of heat
+"ocean_model_z", "S_advection_xy",                 "S_advection_xy",                 "ocean_annual_z",   "all", "mean", "none",2 # Horizontal convergence of residual mean advective fluxes of salt
+"ocean_model_z", "Th_tendency_vert_remap",         "Th_tendency_vert_remap",         "ocean_annual_z",   "all", "mean", "none",2 # Vertical remapping tracer content tendency for Heat
+"ocean_model_z", "Sh_tendency_vert_remap",         "Sh_tendency_vert_remap",         "ocean_annual_z",   "all", "mean", "none",2 # Vertical remapping tracer content tendency for Salt
+"ocean_model_z", "boundary_forcing_heat_tendency", "boundary_forcing_heat_tendency", "ocean_annual_z",   "all", "mean", "none",2 # Boundary forcing heat tendency
+"ocean_model_z", "boundary_forcing_salt_tendency", "boundary_forcing_salt_tendency", "ocean_annual_z",   "all", "mean", "none",2 # Boundary forcing salt tendency
+"ocean_model_z", "difvho",       "difvho",           "ocean_annual_z",      "all", "mean", "none",2 # Ocean vertical heat diffusivity
+"ocean_model_z", "difvso",       "difvso",           "ocean_annual_z",      "all", "mean", "none",2 # Ocean vertical salt diffusivity
+"ocean_model_z", "difmxybo",     "difmxybo",         "ocean_annual_z",      "all", "mean", "none",2 # Ocean lateral biharmonic viscosity
+"ocean_model_z", "Kd_interface", "Kd_interface",     "ocean_annual_z",      "all", "mean", "none",2 # Total diapycnal diffusivity at interfaces
+"ocean_model_z", "Kd_shear",     "Kd_shear",         "ocean_annual_z",      "all", "mean", "none",2 # Shear-driven Diapycnal Diffusivity
+"ocean_model_z", "Kd_ePBL",      "Kd_ePBL",          "ocean_annual_z",      "all", "mean", "none",2 # ePBL diapycnal diffusivity at interfaces
+"ocean_model_z", "Kd_heat",      "Kd_heat",          "ocean_annual_z",      "all", "mean", "none",2 # Total diapycnal diffusivity for heat at interfaces
+"ocean_model_z", "Kd_salt",      "Kd_salt",          "ocean_annual_z",      "all", "mean", "none",2 # Total diapycnal diffusivity for salt at interfaces
+"ocean_model_z", "rhopot0",      "rhopot0",          "ocean_annual_z",      "all", "mean", "none",2 # Potential density referenced to surface
+"ocean_model_z", "rhoinsitu",    "rhoinsitu",        "ocean_annual_z",      "all", "mean", "none",2 # In situ density
+# Annual ocean
+"ocean_model",   "volcello",     "volcello",         "ocean_annual",        "all", "mean", "none",2 # Ocean grid-cell volume
+"ocean_model",   "pbo",          "pbo",              "ocean_annual",        "all", "mean", "none",2 # Sea Water Pressure at Sea Floor
+"ocean_model",   "masscello",    "masscello",        "ocean_annual",        "all", "mean", "none",2 # Mass per unit area of liquid ocean grid cell
+"ocean_model",   "thkcello",     "thkcello",         "ocean_annual",        "all", "mean", "none",2 # Cell Thickness
+"ocean_model",   "ssh",          "ssh",              "ocean_annual",        "all", "mean", "none",2 # Sea Surface Height
+"ocean_model",   "zossq",        "zossq",            "ocean_annual",        "all", "mean", "none",2 # Square of sea surface height above geoid
+"ocean_model",   "thetao",       "thetao",           "ocean_annual",        "all", "mean", "none",2 # Sea Water Potential Temperature
+"ocean_model",   "tos",          "tos",              "ocean_annual",        "all", "mean", "none",2 # Sea Surface Temperature
+"ocean_model",   "tossq",        "tossq",            "ocean_annual",        "all", "mean", "none",2 # Square of Sea Surface Temperature
+"ocean_model",   "tob",          "tob",              "ocean_annual",        "all", "mean", "none",2 # Sea Water Potential Temperature at Sea Floor
+"ocean_model",   "so",           "so",               "ocean_annual",        "all", "mean", "none",2 # Sea Water Salinity
+"ocean_model",   "sos",          "sos",              "ocean_annual",        "all", "mean", "none",2 # Sea Surface Salinity
+"ocean_model",   "sossq",        "sossq",            "ocean_annual",        "all", "mean", "none",2 # Square of Sea Surface Salinity
+"ocean_model",   "sob",          "sob",              "ocean_annual",        "all", "mean", "none",2 # Sea Water Salinity at Sea Floor
+"ocean_model",   "mlotst",       "mlotstmin",        "ocean_annual",        "all", "min",  "none",2 # Ocean Mixed Layer Thickness Defined by Sigma T
+"ocean_model",   "mlotst",       "mlotstmax",        "ocean_annual",        "all", "max",  "none",2 # Ocean Mixed Layer Thickness Defined by Sigma T
+"ocean_model",   "T_adx_2d",     "T_adx_2d",         "ocean_annual",        "all", "mean", "none",2 # Vertically Integrated Advective Zonal Flux of Heat
+"ocean_model",   "T_ady_2d",     "T_ady_2d",         "ocean_annual",        "all", "mean", "none",2 # Vertically Integrated Advective Meridional Flux of Heat
+"ocean_model",   "umo_2d",       "umo_2d",           "ocean_annual",        "all", "mean", "none",2 # Ocean Mass X Transport Vertical Sum
+"ocean_model",   "vmo_2d",       "vmo_2d",           "ocean_annual",        "all", "mean", "none",2 # Ocean Mass Y Transport Vertical Sum
+"ocean_model",   "prlq",         "prlq",             "ocean_annual",        "all", "mean", "none",2 # Rainfall Flux where Ice Free Ocean over Sea
+"ocean_model",   "prsn",         "prsn",             "ocean_annual",        "all", "mean", "none",2 # Snowfall Flux where Ice Free Ocean over Sea
+"ocean_model",   "evs",          "evs",              "ocean_annual",        "all", "mean", "none",2 # Water Evaporation Flux Where Ice Free Ocean over Sea
+"ocean_model",   "friver",       "friver",           "ocean_annual",        "all", "mean", "none",2 # Water Flux into Sea Water From Rivers
+"ocean_model",   "wfo",          "wfo",              "ocean_annual",        "all", "mean", "none",2 # Water Flux Into Sea Water
+"ocean_model",   "net_massout",  "net_massout",      "ocean_annual",        "all", "mean", "none",2 # Net mass leaving the ocean due to evaporation, seaice formation
+"ocean_model",   "net_massin",   "net_massin",       "ocean_annual",        "all", "mean", "none",2 # Net mass entering ocean due to precip, runoff, ice melt
+"ocean_model",   "sfdsi",        "sfdsi",            "ocean_annual",        "all", "mean", "none",2 # Downward Sea Ice Basal Salt Flux
+"ocean_model",   "hfrainds",     "hfrainds",         "ocean_annual",        "all", "mean", "none",2 # Heat content (relative to 0degC) of liquid+frozen precip entering ocean
+"ocean_model",   "hfevapds",     "hfevapds",         "ocean_annual",        "all", "mean", "none",2 # Heat Content (relative to 0degC) of Water Leaving Ocean via Evaporation and Ice Formation
+"ocean_model",   "hfrunoffds",   "hfrunoffds",       "ocean_annual",        "all", "mean", "none",2 # Heat content (relative to 0C) of liquid+solid runoff into ocean
+"ocean_model",   "hfsnthermds",  "hfsnthermds",      "ocean_annual",        "all", "mean", "none",2 # Latent Heat to Melt Frozen Precipitation
+"ocean_model",   "hfsifrazil",   "hfsifrazil",       "ocean_annual",        "all", "mean", "none",2 # Heat Flux into Sea Water due to Frazil Ice Formation
+"ocean_model",   "rlntds",       "rlntds",           "ocean_annual",        "all", "mean", "none",2 # Surface Net Downward Longwave Radiation
+"ocean_model",   "hflso",        "hflso",            "ocean_annual",        "all", "mean", "none",2 # Surface Downward Latent Heat Flux due to Evap + Melt Snow/Ice
+"ocean_model",   "hfsso",        "hfsso",            "ocean_annual",        "all", "mean", "none",2 # Surface Downward Sensible Heat Flux
+"ocean_model",   "rsntds",       "rsntds",           "ocean_annual",        "all", "mean", "none",2 # Net Downward Shortwave Radiation at Sea Water Surface
+"ocean_model",   "rsdo",         "rsdo",             "ocean_annual",        "all", "mean", "none",2 # Downwelling Shortwave Flux in Sea Water at Grid Cell Upper Interface
+"ocean_model",   "hfds",         "hfds",             "ocean_annual",        "all", "mean", "none",2 # Surface ocean heat flux from SW+LW+latent+sensible+masstransfer+frazil+seaice_melt_heat
+"ocean_model", "net_heat_coupler",       "net_heat_coupler",       "ocean_annual", "all", "mean", "none",2 # Surface ocean heat flux from SW+LW+latent+sensible+seaice_melt_heat (via the coupler)
+"ocean_model", "heat_content_massin",    "heat_content_massin",    "ocean_annual", "all", "mean", "none",2 # Heat content (relative to 0degC) of net mass entering ocean ocean
+"ocean_model", "heat_content_massout",   "heat_content_massout",   "ocean_annual", "all", "mean", "none",2 # Heat content (relative to 0degC) of net mass leaving ocean ocean via evap and ice form
+"ocean_model", "heat_content_surfwater", "heat_content_surfwater", "ocean_annual", "all", "mean", "none",2 # Heat content (relative to 0degC) of net water crossing ocean surface (frozen+liquid)
+"ocean_model", "heat_content_fprec",     "heat_content_fprec",     "ocean_annual", "all", "mean", "none",2 # Heat content (relative to 0degC) of frozen prec entering ocean
+"ocean_model", "heat_content_cond",      "heat_content_cond",      "ocean_annual", "all", "mean", "none",2 # Heat content (relative to 0degC) of water condensing into ocean
+"ocean_model", "LwLatSens",              "LwLatSens",              "ocean_annual", "all", "mean", "none",2 # Combined longwave, latent, and sensible heating at ocean surface
+"ocean_model", "Heat_PmE",               "Heat_PmE",               "ocean_annual", "all", "mean", "none",2 # Heat flux into ocean from mass flux into ocean
+"ocean_model", "nonpenSW",               "nonpenSW",               "ocean_annual", "all", "mean", "none",2 # Non-downwelling SW radiation (i.e., SW absorbed in ocean surface with LW,SENS,LAT)
+"ocean_model",   "tauuo",        "tauuo",            "ocean_annual",        "all", "mean", "none",2 # Surface Downward X Stress
+"ocean_model",   "tauvo",        "tauvo",            "ocean_annual",        "all", "mean", "none",2 # Surface Downward Y Stress
+"ocean_model",   "ustar",        "ustar",            "ocean_annual",        "all", "mean", "none",2 # Surface friction velocity = [(gustiness + tau_magnitude)/rho0]^(1/2)
+"ocean_model",   "opottempmint", "opottempmint",     "ocean_annual",        "all", "mean", "none",2 # integral_wrt_depth_of_product_of_sea_water_density_and_potential_temperature
+"ocean_model",   "somint",       "somint",           "ocean_annual",        "all", "mean", "none",2 # integral_wrt_depth_of_product_of_sea_water_density_and_salinity
+"ocean_model",   "difmxybo",     "difmxybo",         "ocean_annual",        "all", "mean", "none",2 # Ocean lateral biharmonic viscosity
+"ocean_model",   "e",                "e",            "ocean_annual",        "all", "mean", "none",2 # Interface Height Relative to Mean Sea Level
+"ocean_model",   "speed",            "speed",        "ocean_annual",        "all", "mean", "none",2 # Sea Surface Speed
+"ocean_model",   "KE",               "KE",           "ocean_annual",        "all", "mean", "none",2 # Layer kinetic energy per unit mass
+"ocean_model",   "mass_wt",          "mass_wt",      "ocean_annual",        "all", "mean", "none",2 # The column mass for calculating mass-weighted average properties
+"ocean_model",   "MLD_003",          "MLD_003",      "ocean_annual",        "all", "mean", "none",2 # Mixed layer depth (delta rho = 0.03)
+"ocean_model",   "MLD_003",          "MLD_003_min",  "ocean_annual",        "all", "min",  "none",2 # Mixed layer depth (delta rho = 0.03)
+"ocean_model",   "MLD_003",          "MLD_003_max",  "ocean_annual",        "all", "max",  "none",2 # Mixed layer depth (delta rho = 0.03)
+"ocean_model",   "MLD_EN1",          "MLD_EN1",      "ocean_annual",        "all", "mean", "none",2 # Mixed layer depth for energy value set to      25.00 J/m2 (Energy set by 1st MLD_EN_VALS)
+"ocean_model",   "MLD_EN1",          "MLD_EN1_min",  "ocean_annual",        "all", "min",  "none",2 # Mixed layer depth for energy value set to      25.00 J/m2 (Energy set by 1st MLD_EN_VALS)
+"ocean_model",   "MLD_EN1",          "MLD_EN1_max",  "ocean_annual",        "all", "max",  "none",2 # Mixed layer depth for energy value set to      25.00 J/m2 (Energy set by 1st MLD_EN_VALS)
+"ocean_model",   "MSTAR",            "MSTAR",        "ocean_annual",        "all", "mean", "none",2 # Total mstar that is used.
+"ocean_model",   "subML_N2",         "subML_N2",     "ocean_annual",        "all", "mean", "none",2 # Squared buoyancy frequency below mixed layer
+"ocean_model",   "tos",              "tos_max",      "ocean_annual",        "all", "max",  "none",2 # Sea Surface Temperature
+"ocean_model",   "tos",              "tos_min",      "ocean_annual",        "all", "min",  "none",2 # Sea Surface Temperature
+"ocean_model","diabatic_diff_temp_tendency","diabatic_diff_temp_tendency","ocean_annual","all","mean","none",2 # Diabatic diffusion temperature tendency
+"ocean_model","diabatic_diff_saln_tendency","diabatic_diff_saln_tendency","ocean_annual","all","mean","none",2 # Diabatic diffusion salinity tendency
+"ocean_model", "T_tendency",        "T_tendency",    "ocean_annual","all","mean","none",2 # Net time tendency for potential temperature
+"ocean_model", "S_tendency",        "S_tendency",    "ocean_annual","all","mean","none",2 # Net time tendency for salinity
+"ocean_model", "opottemptend_2d",   "opottemptend_2d",    "ocean_annual","all","mean","none",2 # Tendency of Sea Water Potential Temperature Expressed as Heat Content Vertical Sum
+"ocean_model", "osalttend_2d",      "osalttend_2d",       "ocean_annual","all","mean","none",2 # Tendency of Sea Water Salinity Expressed as Salt Content Vertical Sum
+"ocean_model", "T_advection_xy_2d", "T_advection_xy_2d",  "ocean_annual","all","mean","none",2 # Vertical sum of horizontal convergence of residual mean advective fluxes of heat
+"ocean_model", "S_advection_xy_2d", "S_advection_xy_2d",  "ocean_annual","all","mean","none",2 # Vertical sum of horizontal convergence of residual mean advective fluxes of salt
+"ocean_model","T_tendency_vert_remap",     "T_tendency_vert_remap",     "ocean_annual","all","mean","none",2 # Vertical remapping tracer concentration tendency for temp
+"ocean_model","S_tendency_vert_remap",     "S_tendency_vert_remap",     "ocean_annual","all","mean","none",2 # Vertical remapping tracer concentration tendency for salt
+"ocean_model","Th_tendency_vert_remap_2d", "Th_tendency_vert_remap_2d", "ocean_annual","all","mean","none",2 # Vertical sum of vertical remapping tracer content tendency for Heat
+"ocean_model","Sh_tendency_vert_remap_2d", "Sh_tendency_vert_remap_2d", "ocean_annual","all","mean","none",2 # Vertical sum of vertical remapping tracer content tendency for Salt
+"ocean_model","frazil_heat_tendency_2d"           ,"frazil_heat_tendency_2d",          "ocean_annual","all","mean","none",2 # Depth integrated heat tendency due to frazil formation
+"ocean_model","boundary_forcing_heat_tendency_2d" ,"boundary_forcing_heat_tendency_2d","ocean_annual","all","mean","none",2 # Depth integrated boundary forcing of ocean heat
+"ocean_model","boundary_forcing_salt_tendency_2d" ,"boundary_forcing_salt_tendency_2d","ocean_annual","all","mean","none",2 # Depth integrated boundary forcing of ocean salt
+# SIS2 sea-ice diagnostics files
+"ice_daily",              1, "days",   1, "days", "time"
+"ice_month",              1, "months", 1, "days", "time"
+"ice_static",            -1, "months", 1, "days", "time"
+# sea-ice static information
+"ice_model", "CELL_AREA",  "CELL_AREA",    "ice_static", "all", "none", "none", 2 # cell area
+"ice_model", "COSROT",     "COSROT",       "ice_static", "all", "none", "none", 2 # COSROT,SINROT points east
+"ice_model", "GEOLAT",     "GEOLAT",       "ice_static", "all", "none", "none", 2 # latitude
+"ice_model", "GEOLON",     "GEOLON",       "ice_static", "all", "none", "none", 2 # longitude
+"ice_model", "SINROT",     "SINROT",       "ice_static", "all", "none", "none", 2 # -SINROT,COSROT points north
+# Daily sea-ice
+"ice_model", "EXT",        "EXT",          "ice_daily", "all", "mean", "none", 2 # ice extension
+"ice_model", "siconc",     "siconc",       "ice_daily", "all", "mean", "none", 2 # ice concentration
+# Monthly sea-ice
+"ice_model", "ALB",        "ALB",          "ice_month", "all", "mean", "none", 2 # Shortwave flux weighted surface albedo, or 1 if no SW
+"ice_model", "BHEAT",      "BHEAT",        "ice_month", "all", "mean", "none", 2 # ocean to ice heat flux
+"ice_model", "BMELT",      "BMELT",        "ice_month", "all", "mean", "none", 2 # bottom surface melting energy flux
+"ice_model", "BSNK",       "BSNK",         "ice_month", "all", "mean", "none", 2 # frozen water local bottom sink
+"ice_model", "CN",         "CN",           "ice_month", "all", "mean", "none", 2 # ice concentration
+"ice_model", "E2MELT",     "E2MELT",       "ice_month", "all", "mean", "none", 2 # heat needed to melt ice
+"ice_model", "EXT",        "EXT",          "ice_month", "all", "mean", "none", 2 # ice extension 
+"ice_model", "EXT",        "EXT_MIN",      "ice_month", "all", "min",  "none", 2 # ice extension min 
+"ice_model", "EXT",        "EXT_MAX",      "ice_month", "all", "max",  "none", 2 # ice extension max 
+"ice_model", "FA_X",       "FA_X",         "ice_month", "all", "mean", "none", 2 # Air stress on ice on C-grid - x component
+"ice_model", "FA_Y",       "FA_Y",         "ice_month", "all", "mean", "none", 2 # Air stress on ice on C-grid - y component
+"ice_model", "FI_X",       "FI_X",         "ice_month", "all", "mean", "none", 2 # ice internal stress - x component
+"ice_model", "FI_Y",       "FI_Y",         "ice_month", "all", "mean", "none", 2 # ice internal stress - y component
+"ice_model", "FRAZIL",     "FRAZIL",       "ice_month", "all", "mean", "none", 2 # energy flux of frazil formation
+"ice_model", "IX_TRANS",   "IX_TRANS",     "ice_month", "all", "mean", "none", 2 # x-direction ice transport
+"ice_model", "IY_TRANS",   "IY_TRANS",     "ice_month", "all", "mean", "none", 2 # y-direction ice transport
+"ice_model", "LSNK",       "LSNK",         "ice_month", "all", "mean", "none", 2 # frozen water local sink
+"ice_model", "LSRC",       "LSRC",         "ice_month", "all", "mean", "none", 2 # frozen water local source
+"ice_model", "RAIN",       "RAIN",         "ice_month", "all", "mean", "none", 2 # rate of rain fall
+"ice_model", "SALTF",      "SALTF",        "ice_month", "all", "mean", "none", 2 # ice to ocean salt flux
+"ice_model", "SNOWFL",     "SNOWFL",       "ice_month", "all", "mean", "none", 2 # rate of snow fall
+"ice_model", "SN2IC",      "SN2IC",        "ice_month", "all", "mean", "none", 2 # rate of snow to ice conversion
+"ice_model", "TMELT",      "TMELT",        "ice_month", "all", "mean", "none", 2 # upper surface melting energy flux
+"ice_model", "TSN",        "TSN",          "ice_month", "all", "mean", "none", 2 # snow layer temperature
+"ice_model", "T1",         "T1",           "ice_month", "all", "mean", "none", 2 # ice layer 1 temperature
+"ice_model", "T2",         "T2",           "ice_month", "all", "mean", "none", 2 # ice layer 2 temperature
+"ice_model", "T3",         "T3",           "ice_month", "all", "mean", "none", 2 # ice layer 3 temperature
+"ice_model", "T4",         "T4",           "ice_month", "all", "mean", "none", 2 # ice layer 4 temperature
+"ice_model", "XPRT",       "XPRT",         "ice_month", "all", "mean", "none", 2 # frozen water transport convergence
+"ice_model", "siu",        "siu",          "ice_month", "all", "mean", "none", 2 # ice velocity - x component
+"ice_model", "siv",        "siv",          "ice_month", "all", "mean", "none", 2 # ice velocity - y component
+"ice_model", "sispeed",    "sispeed",      "ice_month", "all", "mean", "none", 2 # ice speed
+"ice_model", "STRENGTH_hf","STRENGTH_hf",  "ice_month", "all", "mean", "none", 2 # ice strength
+"ice_model", "sitimefrac", "sitimefrac",   "ice_month", "all", "mean", "none", 2 # time fraction of ice cover
+"ice_model", "sitemptop",  "sitemptop",    "ice_month", "all", "mean", "none", 2 # surface temperature
+"ice_model", "siconc",     "siconc",       "ice_month", "all", "mean", "none", 2 # ice concentration
+"ice_model", "sisnconc",   "sisnconc",     "ice_month", "all", "mean", "none", 2 # snow concentration
+"ice_model", "simass",     "simass",       "ice_month", "all", "mean", "none", 2 # ice mass
+"ice_model", "sisnmass",   "sisnmass",     "ice_month", "all", "mean", "none", 2 # snow mass
+"ice_model", "sisnthick",  "sisnthick",    "ice_month", "all", "mean", "none", 2 # snow thickness
+"ice_model", "sithick",    "sithick",      "ice_month", "all", "mean", "none", 2 # ice thickness
+"ice_model", "sivol",      "sivol",        "ice_month", "all", "mean", "none", 2 # ice volume
+"ice_model", "MIB",        "MIB",          "ice_month", "all", "mean", "none", 2 # ice + snow + bergs mass
+# CEFI OBGC/COBALT diagnostics files 
+"ocean_cobalt_sfc",             1, "months", 1, "days", "time"
+"ocean_cobalt_btm",             1, "months", 1, "days", "time"
+"ocean_cobalt_tracers_int",     1, "months", 1, "days", "time"
+"ocean_cobalt_fluxes_int",      1, "months", 1, "days", "time"
+"ocean_cobalt_fdet_100",        1, "months", 1, "days", "time"
+"ocean_cobalt_tracers_month_z", 1, "months", 1, "days", "time"
+"ocean_cobalt_daily_2d",       24, "hours",  1, "days", "time"
+"ocean_cobalt_omip_sfc",             1, "months", 1, "days", "time"
+"ocean_cobalt_omip_2d",              1, "months", 1, "days", "time"
+# Daily COBALT 2D fileds
+"generic_cobalt", "phos",             "phos",             "ocean_cobalt_daily_2d","all","mean","none",2 # Surface pH
+"generic_cobalt", "no3os",            "no3os",            "ocean_cobalt_daily_2d","all","mean","none",2 # Surface Dissolved Nitrate Concentration
+"generic_cobalt", "pco2surf",         "pco2surf",         "ocean_cobalt_daily_2d","all","mean","none",2 # Oceanic pCO2
+"generic_cobalt", "mesozoo_200",      "mesozoo_200",      "ocean_cobalt_daily_2d","all","mean","none",2 # Mesozooplankton biomass, 200m integral
+"generic_cobalt", "btm_o2",           "btm_o2",           "ocean_cobalt_daily_2d","all","mean","none",2 # Bottom Oxygen
+"generic_cobalt", "btm_co3_sol_arag", "btm_co3_sol_arag", "ocean_cobalt_daily_2d","all","mean","none",2 # Bottom Aragonite Solubility
+"generic_cobalt", "btm_co3_sol_calc", "btm_co3_sol_calc", "ocean_cobalt_daily_2d","all","mean","none",2 # Bottom Calcite Solubility
+"generic_cobalt", "btm_co3_ion",      "btm_co3_ion",      "ocean_cobalt_daily_2d","all","mean","none",2 # Bottom Carbonate Ion
+"generic_cobalt", "btm_htotal",       "btm_htotal",       "ocean_cobalt_daily_2d","all","mean","none",2 # Bottom Htotal
+"generic_cobalt","chlos",             "chlos",            "ocean_cobalt_daily_2d","all","mean","none",2 # Surface Mass Concentration of Total Phytoplankton expressed as Chlorophyll in sea water
+"generic_cobalt","phycos",            "phycos",           "ocean_cobalt_daily_2d","all","mean","none",2 # Surface Phytoplankton Carbon Concentration
+# Monthly COBALT surface fields (2D)
+"generic_cobalt","dic_csurf",         "dic_csurf",        "ocean_cobalt_sfc","all","mean","none",2 # Ocean surface gas concentration of dic
+"generic_cobalt","dic_deltap",        "dic_deltap",       "ocean_cobalt_sfc","all","mean","none",2 # Ocn minus Atm pressure of dic
+"generic_cobalt","dic_kw",            "dic_kw",           "ocean_cobalt_sfc","all","mean","none",2 # Gas Exchange piston velocity for dic
+"generic_cobalt","dic_sc_no",         "dic_sc_no",        "ocean_cobalt_sfc","all","mean","none",2 # Ocean surface Schmidt Number for dic
+"generic_cobalt","pco2surf",          "pco2surf",         "ocean_cobalt_sfc","all","mean","none",2 # Oceanic pCO2
+"generic_cobalt","o2_alpha",          "o2_alpha",         "ocean_cobalt_sfc","all","mean","none",2 # Atmospheric saturation for o2
+"generic_cobalt","o2_csurf",          "o2_csurf",         "ocean_cobalt_sfc","all","mean","none",2 # Ocean surface gas concentration of o2
+"generic_cobalt","o2_deltap",         "o2_deltap",        "ocean_cobalt_sfc","all","mean","none",2 # Ocn minus Atm pressure of o2
+"generic_cobalt","o2_kw",             "o2_kw",            "ocean_cobalt_sfc","all","mean","none",2 # Gas Exchange piston velocity for o2
+"generic_cobalt","o2_sc_no",          "o2_sc_no",         "ocean_cobalt_sfc","all","mean","none",2 # Ocean surface Schmidt Number for o2
+"generic_cobalt","dic_stf_gas",       "dic_stf_gas",      "ocean_cobalt_sfc","all","mean","none",2 # Gas exchange flux of dic into Ocean Surface
+"generic_cobalt","o2_stf_gas",        "o2_stf_gas",       "ocean_cobalt_sfc","all","mean","none",2 # Gas exchange flux of o2 into Ocean Surface
+"generic_cobalt","dep_dry_fed",       "dep_dry_fed",      "ocean_cobalt_sfc","all","mean","none",2 # Dry Deposition of Iron to the ocean
+"generic_cobalt","dep_dry_nh4",       "dep_dry_nh4",      "ocean_cobalt_sfc","all","mean","none",2 # Dry Deposition of Ammonia to the ocean
+"generic_cobalt","dep_dry_no3",       "dep_dry_no3",      "ocean_cobalt_sfc","all","mean","none",2 # Dry Deposition of Nitrate to the ocean
+"generic_cobalt","dep_dry_po4",       "dep_dry_po4",      "ocean_cobalt_sfc","all","mean","none",2 # Dry Deposition of Phosphate to the ocean
+"generic_cobalt","dep_dry_lith",      "dep_dry_lith",     "ocean_cobalt_sfc","all","mean","none",2 # Dry Deposition of Lithogenic Material
+"generic_cobalt","dep_wet_fed",       "dep_wet_fed",      "ocean_cobalt_sfc","all","mean","none",2 # Wet Deposition of Iron to the ocean
+"generic_cobalt","dep_wet_nh4",       "dep_wet_nh4",      "ocean_cobalt_sfc","all","mean","none",2 # Wet Deposition of Ammonia to the ocean
+"generic_cobalt","dep_wet_no3",       "dep_wet_no3",      "ocean_cobalt_sfc","all","mean","none",2 # Wet Deposition of Nitrate to the ocean
+"generic_cobalt","dep_wet_lith",      "dep_wet_lith",     "ocean_cobalt_sfc","all","mean","none",2 # Wet Deposition of Lithogenic Material
+"generic_cobalt","runoff_flux_alk",   "runoff_flux_alk",  "ocean_cobalt_sfc","all","mean","none",2 # Alkalinity runoff flux to the ocean
+"generic_cobalt","runoff_flux_dic",   "runoff_flux_dic",  "ocean_cobalt_sfc","all","mean","none",2 # Dissolved Inorganic Carbon runoff flux to the ocean
+"generic_cobalt","runoff_flux_fed",   "runoff_flux_fed",  "ocean_cobalt_sfc","all","mean","none",2 # Iron runoff flux to the ocean
+"generic_cobalt","runoff_flux_lith",  "runoff_flux_lith", "ocean_cobalt_sfc","all","mean","none",2 # Lithogenic runoff flux to the ocean
+"generic_cobalt","runoff_flux_no3",   "runoff_flux_no3",  "ocean_cobalt_sfc","all","mean","none",2 # Nitrate runoff flux to the ocean
+"generic_cobalt","runoff_flux_ldon",  "runoff_flux_ldon", "ocean_cobalt_sfc","all","mean","none",2 # LDON runoff flux to the ocean
+"generic_cobalt","runoff_flux_sldon", "runoff_flux_sldon","ocean_cobalt_sfc","all","mean","none",2 # SLDON runoff flux to the ocean
+"generic_cobalt","runoff_flux_srdon", "runoff_flux_srdon","ocean_cobalt_sfc","all","mean","none",2 # SRDON runoff flux to the ocean
+"generic_cobalt","runoff_flux_ndet",  "runoff_flux_ndet", "ocean_cobalt_sfc","all","mean","none",2 # NDET runoff flux to the ocean
+"generic_cobalt","runoff_flux_pdet",  "runoff_flux_pdet", "ocean_cobalt_sfc","all","mean","none",2 # PDET runoff flux to the ocean
+"generic_cobalt","runoff_flux_po4",   "runoff_flux_po4",  "ocean_cobalt_sfc","all","mean","none",2 # PO4 runoff flux to the ocean
+"generic_cobalt","runoff_flux_ldop",  "runoff_flux_ldop", "ocean_cobalt_sfc","all","mean","none",2 # LDOP runoff flux to the ocean
+"generic_cobalt","runoff_flux_sldop", "runoff_flux_sldop","ocean_cobalt_sfc","all","mean","none",2 # SLDOP runoff flux to the ocean
+"generic_cobalt","runoff_flux_srdop", "runoff_flux_srdop","ocean_cobalt_sfc","all","mean","none",2 # SRDOP runoff flux to the ocean
+"generic_cobalt","sfc_def_fe_di",     "sfc_def_fe_di",    "ocean_cobalt_sfc","all","mean","none",2 # Surface diazotroph iron deficiency
+"generic_cobalt","sfc_def_fe_lgp",    "sfc_def_fe_lgp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. iron deficiency
+"generic_cobalt","sfc_def_fe_mdp",    "sfc_def_fe_mdp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. iron deficiency
+"generic_cobalt","sfc_def_fe_smp",    "sfc_def_fe_smp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. iron deficiency
+"generic_cobalt","sfc_felim_di",      "sfc_felim_di",     "ocean_cobalt_sfc","all","mean","none",2 # Surface diazotroph iron uptake limitation
+"generic_cobalt","sfc_felim_lgp",     "sfc_felim_lgp",    "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. iron uptake limitation
+"generic_cobalt","sfc_felim_mdp",     "sfc_felim_mdp",    "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. iron uptake limitation
+"generic_cobalt","sfc_felim_smp",     "sfc_felim_smp",    "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. iron uptake limitation
+"generic_cobalt","sfc_irrlim_di",     "sfc_irrlim_di",    "ocean_cobalt_sfc","all","mean","none",2 # Surface diazotroph light limitation
+"generic_cobalt","sfc_irrlim_lgp",    "sfc_irrlim_lgp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. light limitation
+"generic_cobalt","sfc_irrlim_mdp",    "sfc_irrlim_mdp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. light limitation
+"generic_cobalt","sfc_irrlim_smp",    "sfc_irrlim_smp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. light limitation
+"generic_cobalt","sfc_theta_di",      "sfc_theta_di",     "ocean_cobalt_sfc","all","mean","none",2 # Surface diazotroph Chl:C
+"generic_cobalt","sfc_theta_lgp",     "sfc_theta_lgp",    "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. Chl:C
+"generic_cobalt","sfc_theta_mdp",     "sfc_theta_mdp",    "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. Chl:C
+"generic_cobalt","sfc_theta_smp",     "sfc_theta_smp",    "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. Chl:C
+"generic_cobalt","sfc_mu_di",         "sfc_mu_di",        "ocean_cobalt_sfc","all","mean","none",2 # Surface diazotroph growth rate
+"generic_cobalt","sfc_mu_lgp",        "sfc_mu_lgp",       "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. Chl:C
+"generic_cobalt","sfc_mu_mdp",        "sfc_mu_mdp",       "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. Chl:C
+"generic_cobalt","sfc_mu_smp",        "sfc_mu_smp",       "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. Chl:C
+"generic_cobalt","sfc_nh4lim_lgp",    "sfc_nh4lim_lgp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. ammonia limitation
+"generic_cobalt","sfc_nh4lim_mdp",    "sfc_nh4lim_mdp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. ammonia limitation
+"generic_cobalt","sfc_nh4lim_smp",    "sfc_nh4lim_smp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. ammonia limitation
+"generic_cobalt","sfc_no3lim_lgp",    "sfc_no3lim_lgp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. nitrate limitation
+"generic_cobalt","sfc_no3lim_mdp",    "sfc_no3lim_mdp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. nitrate limitation
+"generic_cobalt","sfc_no3lim_smp",    "sfc_no3lim_smp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. nitrate limitation
+"generic_cobalt","sfc_po4lim_di",     "sfc_po4lim_di",    "ocean_cobalt_sfc","all","mean","none",2 # Surface diazotroph phosphate limitation
+"generic_cobalt","sfc_po4lim_lgp",    "sfc_po4lim_lgp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. phosphate limitation
+"generic_cobalt","sfc_po4lim_mdp",    "sfc_po4lim_mdp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. phosphate limitation
+"generic_cobalt","sfc_po4lim_smp",    "sfc_po4lim_smp",   "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. phosphate limitation
+"generic_cobalt","sfc_q_fe_2_n_di",   "sfc_q_fe_2_n_di",  "ocean_cobalt_sfc","all","mean","none",2 # Surface diazotroph iron:nitrogen
+"generic_cobalt","sfc_q_fe_2_n_lgp",  "sfc_q_fe_2_n_lgp", "ocean_cobalt_sfc","all","mean","none",2 # Surface large phyto. iron:nitrogen
+"generic_cobalt","sfc_q_fe_2_n_mdp",  "sfc_q_fe_2_n_mdp", "ocean_cobalt_sfc","all","mean","none",2 # Surface medium phyto. iron:nitrogen
+"generic_cobalt","sfc_q_fe_2_n_smp",  "sfc_q_fe_2_n_smp", "ocean_cobalt_sfc","all","mean","none",2 # Surface small phyto. iron:nitrogen
+"generic_cobalt","nh4_stf",           "nh4_stf",          "ocean_cobalt_sfc","all","mean","none",2 # Total flux of nh4 into Ocean Surface
+"generic_cobalt","sfc_no3",           "sfc_no3",           "ocean_cobalt_sfc","all","mean","none",2 # Surface NO3
+"generic_cobalt","sfc_po4",           "sfc_po4",           "ocean_cobalt_sfc","all","mean","none",2 # Surface PO4
+"generic_cobalt","sfc_sio4",          "sfc_sio4",          "ocean_cobalt_sfc","all","mean","none",2 # Surface SiO4
+"generic_cobalt","sfc_co3_sol_arag",  "sfc_co3_sol_arag",  "ocean_cobalt_sfc","all","mean","none",2 # Surface Carbonate Ion Solubility for Aragonite
+"generic_cobalt","sfc_co3_sol_calc",  "sfc_co3_sol_calc",  "ocean_cobalt_sfc","all","mean","none",2 # Surface Carbonate Ion Solubility for Calcite
+"generic_cobalt","sfc_co3_ion",       "sfc_co3_ion",       "ocean_cobalt_sfc","all","mean","none",2 # Surface Carbonate Ion
+# Monthly COBALT bottom fields (2D)
+"generic_cobalt","btm_temp",         "btm_temp",        "ocean_cobalt_btm","all","mean","none",2 # Bottom Temperature
+"generic_cobalt","btm_o2",           "btm_o2",          "ocean_cobalt_btm","all","mean","none",2 # Bottom Oxygen
+"generic_cobalt","ffedet_btm",       "ffedet_btm",      "ocean_cobalt_btm","all","mean","none",2 # fedet sinking flux burial
+"generic_cobalt","ffedi_btm",        "ffedi_btm",       "ocean_cobalt_btm","all","mean","none",2 # diazo Fe sinking flux to bottom
+"generic_cobalt","ffetot_btm",       "ffetot_btm",       "ocean_cobalt_btm","all","mean","none",2 # Total Fe sinking flux to bottom
+"generic_cobalt","ffemd_btm",        "ffemd_btm",       "ocean_cobalt_btm","all","mean","none",2 # medium phyto Fe sinking flux to bottom
+"generic_cobalt","ffelg_btm",        "ffelg_btm",       "ocean_cobalt_btm","all","mean","none",2 # large phyto Fe sinking flux to bottom
+"generic_cobalt","ffe_sed",          "ffe_sed",         "ocean_cobalt_btm","all","mean","none",2 # Sediment iron efflux
+"generic_cobalt","flithdet_btm",     "flithdet_btm",    "ocean_cobalt_btm","all","mean","none",2 # Lithogenic detrital sinking flux burial
+"generic_cobalt","fndet_btm",        "fndet_btm",       "ocean_cobalt_btm","all","mean","none",2 # ndet sinking flux to bottom
+"generic_cobalt","fndi_btm",         "fndi_btm",        "ocean_cobalt_btm","all","mean","none",2 # diazo N sinking flux to bottom
+"generic_cobalt","fntot_btm",        "fntot_btm",        "ocean_cobalt_btm","all","mean","none",2 # Total N sinking flux to bottom
+"generic_cobalt","fnmd_btm",         "fnmd_btm",        "ocean_cobalt_btm","all","mean","none",2 # medium phyto N sinking flux to bottom
+"generic_cobalt","fnlg_btm",         "fnlg_btm",        "ocean_cobalt_btm","all","mean","none",2 # large phyto N sinking flux to bottom
+"generic_cobalt","fpdet_btm",        "fpdet_btm",       "ocean_cobalt_btm","all","mean","none",2 # pdet sinking flux to bottom
+"generic_cobalt","fpdi_btm",         "fpdi_btm",        "ocean_cobalt_btm","all","mean","none",2 # diazo P sinking flux to bottom
+"generic_cobalt","fptot_btm",        "fptot_btm",        "ocean_cobalt_btm","all","mean","none",2 # Total P sinking flux to bottom
+"generic_cobalt","fpmd_btm",         "fpmd_btm",        "ocean_cobalt_btm","all","mean","none",2 # medium phyto P sinking flux to bottom
+"generic_cobalt","fplg_btm",         "fplg_btm",        "ocean_cobalt_btm","all","mean","none",2 # large phyto P sinking flux to bottom
+"generic_cobalt","fsidet_btm",       "fsidet_btm",      "ocean_cobalt_btm","all","mean","none",2 # sidet sinking flux to bottom
+"generic_cobalt","fsimd_btm",        "fsimd_btm",       "ocean_cobalt_btm","all","mean","none",2 # medium phyto Si sinking flux to bottom
+"generic_cobalt","fsilg_btm",        "fsilg_btm",       "ocean_cobalt_btm","all","mean","none",2 # large phyto Si sinking flux to bottom
+"generic_cobalt","fcadet_arag_btm",  "fcadet_arag_btm", "ocean_cobalt_btm","all","mean","none",2 # Aragonite sinking flux at bottom
+"generic_cobalt","fcadet_calc_btm",  "fcadet_calc_btm", "ocean_cobalt_btm","all","mean","none",2 # Calcite sinking flux at bottom
+"generic_cobalt","fcased_burial",    "fcased_burial",   "ocean_cobalt_btm","all","mean","none",2 # Calcite permanent burial flux
+"generic_cobalt","fcased_redis",     "fcased_redis",    "ocean_cobalt_btm","all","mean","none",2 # Calcite redissolution from sediments
+"generic_cobalt","fnfeso4red_sed",   "fnfeso4red_sed",  "ocean_cobalt_btm","all","mean","none",2 # Sediment Ndet Fe and SO4 reduction flux
+"generic_cobalt","fno3denit_sed",    "fno3denit_sed",   "ocean_cobalt_btm","all","mean","none",2 # Sediment denitrification flux
+"generic_cobalt","fnoxic_sed",       "fnoxic_sed",      "ocean_cobalt_btm","all","mean","none",2 # Sediment oxic Ndet remineralization flux
+"generic_cobalt","cased_2d",         "cased",           "ocean_cobalt_btm","all","mean","none",2 # calcium carbonate in sediment
+"generic_cobalt","btm_co3_sol_arag", "btm_co3_sol_arag","ocean_cobalt_btm","all","mean","none",2 # Bottom Aragonite Solubility
+"generic_cobalt","btm_co3_sol_calc", "btm_co3_sol_calc","ocean_cobalt_btm","all","mean","none",2 # Bottom Calcite Solubility
+"generic_cobalt","btm_co3_ion",      "btm_co3_ion",     "ocean_cobalt_btm","all","mean","none",2 # Bottom Carbonate Ion
+"generic_cobalt","btm_htotal",       "btm_htotal",      "ocean_cobalt_btm","all","mean","none",2 # Bottom Htotal
+"generic_cobalt","fcased_redis_surfresp","fcased_redis_surfresp","ocean_cobalt_btm","all","mean","none",2 # Calcite redissolution rom sediments, surfresp
+"generic_cobalt","cased_redis_coef",     "cased_redis_coef",     "ocean_cobalt_btm","all","mean","none",2 # Calcite redissolution from sediments, deepresp coefficient,
+"generic_cobalt","cased_redis_delz",     "cased_redis_delz",     "ocean_cobalt_btm","all","mean","none",2 # Calcite redissolution from sediments, effective depth
+# COBALT downward fluxes at 100 meters
+"generic_cobalt","fndet_100",        "fndet_100",        "ocean_cobalt_fdet_100","all","mean","none",2 # Nitrogen detritus sinking flux @ 100m
+"generic_cobalt","fntot_100",        "fntot_100",        "ocean_cobalt_fdet_100","all","mean","none",2 # total nitrogen sinking flux @ 100m
+"generic_cobalt","fpdet_100",        "fpdet_100",        "ocean_cobalt_fdet_100","all","mean","none",2 # Phosphorous detritus sinking flux @ 100m
+"generic_cobalt","fptot_100",        "fptot_100",        "ocean_cobalt_fdet_100","all","mean","none",2 # total phosphorous sinking flux @ 100m
+"generic_cobalt","ffedet_100",       "ffedet_100",       "ocean_cobalt_fdet_100","all","mean","none",2 # Iron detritus sinking flux @ 100m
+"generic_cobalt","fsidet_100",       "fsidet_100",       "ocean_cobalt_fdet_100","all","mean","none",2 # Silicon detritus sinking flux @ 100m
+"generic_cobalt","fcadet_calc_100",  "fcadet_calc_100",  "ocean_cobalt_fdet_100","all","mean","none",2 # Calcite detritus sinking flux @ 100m
+"generic_cobalt","fcadet_arag_100",  "fcadet_arag_100",  "ocean_cobalt_fdet_100","all","mean","none",2 # Aragonite detritus sinking flux @ 100m
+"generic_cobalt","flithdet_100",     "flithdet_100",     "ocean_cobalt_fdet_100","all","mean","none",2 # Lithogenic detritus sinking flux @ 100m
+# COBALT integrated tracer variables at 100 meters
+"generic_cobalt","nsmp_100",         "nsmp_100",        "ocean_cobalt_tracers_int","all","mean","none",2 # Small phytoplankton nitrogen biomass in upper 100m
+"generic_cobalt","nmdp_100",         "nmdp_100",        "ocean_cobalt_tracers_int","all","mean","none",2 # Medium phytoplankton nitrogen biomass in upper 100m
+"generic_cobalt","nlgp_100",         "nlgp_100",        "ocean_cobalt_tracers_int","all","mean","none",2 # Large phytoplankton nitrogen biomass in upper 100m
+"generic_cobalt","ndi_100",          "ndi_100",         "ocean_cobalt_tracers_int","all","mean","none",2 # Diazotroph nitrogen biomass in upper 100m
+"generic_cobalt","silgp_100",        "silgp_100",       "ocean_cobalt_tracers_int","all","mean","none",2 # Large phytoplankton silicon biomass in upper 100m
+"generic_cobalt","simdp_100",        "simdp_100",       "ocean_cobalt_tracers_int","all","mean","none",2 # Medium phytoplankton silicon biomass in upper 100m
+"generic_cobalt","nsmz_100",         "nsmz_100",        "ocean_cobalt_tracers_int","all","mean","none",2 # Small zooplankton nitrogen biomass in upper 100m
+"generic_cobalt","nmdz_100",         "nmdz_100",        "ocean_cobalt_tracers_int","all","mean","none",2 # Medium zooplankton nitrogen biomass in upper 100m
+"generic_cobalt","nlgz_100",         "nlgz_100",        "ocean_cobalt_tracers_int","all","mean","none",2 # Large zooplankton nitrogen biomass in upper 100m
+"generic_cobalt","nbact_100",        "nbact_100",       "ocean_cobalt_tracers_int","all","mean","none",2 # Bacterial nitrogen biomass in upper 100m
+"generic_cobalt","don_100",          "don_100",         "ocean_cobalt_tracers_int","all","mean","none",2 # Dissolved organic nitrogen (sr+sl+l) in upper 100m
+"generic_cobalt","ndet_100",         "ndet_100",        "ocean_cobalt_tracers_int","all","mean","none",2 # Nitrogen detritus biomass in upper 100m
+"generic_cobalt","mesozoo_200",      "mesozoo_200",     "ocean_cobalt_tracers_int","all","mean","none",2 # Mesozooplankton biomass, 200m integral
+# Generic COBALT integrated flux variables
+"generic_cobalt","jprod_nsmp_100",          "jprod_nsmp_100",           "ocean_cobalt_fluxes_int","all","mean","none",2 # Small phyto. nitrogen  prim. prod. integral in upper 100m
+"generic_cobalt","jprod_nmdp_100",          "jprod_nmdp_100",           "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium phyto. nitrogen  prim. prod. integral in upper 100m
+"generic_cobalt","jprod_nlgp_100",          "jprod_nlgp_100",           "ocean_cobalt_fluxes_int","all","mean","none",2 # Large phyto. nitrogen  prim. prod. integral in upper 100m
+"generic_cobalt","jprod_ndi_100",           "jprod_ndi_100",            "ocean_cobalt_fluxes_int","all","mean","none",2 # Diazotroph nitrogen prim. prod. integral in upper 100m
+"generic_cobalt","jprod_nsmp_new_100",      "jprod_nsmp_new_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Small phyto. new (NO3-based) prim. prod. integral in upper 100m
+"generic_cobalt","jprod_nmdp_new_100",      "jprod_nmdp_new_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium phyto. new (NO3-based) prim. prod. integral in upper 100m
+"generic_cobalt","jprod_nlgp_new_100",      "jprod_nlgp_new_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Large phyto. new (NO3-based) prim. prod. integral in upper 100m
+"generic_cobalt","jprod_ndi_new_100",       "jprod_ndi_new_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Diazotroph new (NO3-based) prim. prod. integral in upper 100m
+"generic_cobalt","jprod_ndi_n2_100",        "jprod_ndi_n2_100",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Diazotroph nitrogen fixation in upper 100m
+"generic_cobalt","jprod_nsmz_100",          "jprod_nsmz_100",           "ocean_cobalt_fluxes_int","all","mean","none",2 # Small zooplankton nitrogen prod. integral in upper 100m
+"generic_cobalt","jprod_nmdz_100",          "jprod_nmdz_100",           "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium zooplankton nitrogen prod. integral in upper 100m
+"generic_cobalt","jprod_nlgz_100",          "jprod_nlgz_100",           "ocean_cobalt_fluxes_int","all","mean","none",2 # Large zooplankton nitrogen prod. integral in upper 100m
+"generic_cobalt","jprod_nbact_100",         "jprod_nbact_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Bacteria nitrogen prod. integral in upper 100m
+"generic_cobalt","jprod_mesozoo_200",       "jprod_mesozoo_200",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Mesozooplankton Production, 200m integration
+"generic_cobalt","jzloss_nsmp_100",         "jzloss_nsmp_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Small phyto. nitrogen loss to zooplankton integral in upper 100m
+"generic_cobalt","jzloss_nmdp_100",         "jzloss_nmdp_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium phyto. nitrogen loss to zooplankton integral in upper 100m
+"generic_cobalt","jzloss_nlgp_100",         "jzloss_nlgp_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Large phyto. nitrogen loss to zooplankton integral in upper 100m
+"generic_cobalt","jzloss_ndi_100",          "jzloss_ndi_100",           "ocean_cobalt_fluxes_int","all","mean","none",2 # Diazotroph nitrogen loss to zooplankton integral in upper 100m
+"generic_cobalt","jaggloss_nsmp_100",       "jaggloss_nsmp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Small phyto. nitrogen aggregation loss integral in upper 100m
+"generic_cobalt","jaggloss_nmdp_100",       "jaggloss_nmdp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium phyto. nitrogen aggregation loss integral in upper 100m
+"generic_cobalt","jaggloss_nlgp_100",       "jaggloss_nlgp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Large phyto. nitrogen aggregation loss integral in upper 100m
+"generic_cobalt","jvirloss_nsmp_100",       "jvirloss_nsmp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Small phyto. nitrogen virus loss integral in upper 100m
+"generic_cobalt","jvirloss_nmdp_100",       "jvirloss_nmdp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium phyto. nitrogen virus loss integral in upper 100m
+"generic_cobalt","jvirloss_nlgp_100",       "jvirloss_nlgp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Large phyto. nitrogen virus loss integral in upper 100m
+"generic_cobalt","jmortloss_nsmp_100",      "jmortloss_nsmp_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Small phyto. nitrogen mortality loss integral in upper 100m
+"generic_cobalt","jmortloss_nmdp_100",      "jmortloss_nmdp_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium phyto. nitrogen mortality loss integral in upper 100m
+"generic_cobalt","jmortloss_nlgp_100",      "jmortloss_nlgp_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Large phyto. nitrogen mortality loss integral in upper 100m
+"generic_cobalt","jmortloss_ndi_100",       "jmortloss_ndi_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Diazotroph nitrogen mortality loss integral in upper 100m
+"generic_cobalt","jexuloss_nsmp_100",       "jexuloss_nsmp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Small phyto. nitrogen exudation loss integral in upper 100m
+"generic_cobalt","jexuloss_nmdp_100",       "jexuloss_nmdp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium phyto. nitrogen exudation loss integral in upper 100m
+"generic_cobalt","jexuloss_nlgp_100",       "jexuloss_nlgp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Large phyto. nitrogen exudation loss integral in upper 100m
+"generic_cobalt","jexuloss_ndi_100",        "jexuloss_ndi_100",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Diazotroph nitrogen exudation loss integral in upper 100m
+"generic_cobalt","jingest_n_nsmz_100",      "jingest_n_nsmz_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Small zooplankton nitrogen ingestion integral in upper 100m
+"generic_cobalt","jingest_n_nmdz_100",      "jingest_n_nmdz_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium zooplankton nitrogen ingestion integral in upper 100m
+"generic_cobalt","jingest_n_nlgz_100",      "jingest_n_nlgz_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Large zooplankton nitrogen ingestion integral in upper 100m
+"generic_cobalt","jingest_n_hp_100",        "jingest_n_hp_100",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Higher predator ingestion of nitrogen integral in upper 100m
+"generic_cobalt","jzloss_nsmz_100",         "jzloss_nsmz_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Small zooplankton nitrogen loss to zooplankton integral in upper 100m
+"generic_cobalt","jzloss_nmdz_100",         "jzloss_nmdz_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium zooplankton nitrogen loss to zooplankton integral in upper 100m
+"generic_cobalt","jhploss_nmdz_100",        "jhploss_nmdz_100",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium zooplankton nitrogen loss to higher preds. integral in upper 100m
+"generic_cobalt","jhploss_nlgz_100",        "jhploss_nlgz_100",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Large zooplankton nitrogen loss to higher preds. integral in upper 100m
+"generic_cobalt","jprod_ndet_nmdz_100",     "jprod_ndet_nmdz_100",      "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium zooplankton nitrogen detritus prod. integral in upper 100m
+"generic_cobalt","jprod_ndet_nlgz_100",     "jprod_ndet_nlgz_100",      "ocean_cobalt_fluxes_int","all","mean","none",2 # Large zooplankton nitrogen detritus prod. integral in upper 100m
+"generic_cobalt","jprod_ndet_hp_100",       "jprod_ndet_hp_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Higher predator nitrogen detritus prod. integral in upper 100m
+"generic_cobalt","jprod_don_nsmz_100",      "jprod_don_nsmz_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Small zooplankton dissolved org. nitrogen prod. integral in upper 100m
+"generic_cobalt","jprod_don_nmdz_100",      "jprod_don_nmdz_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium zooplankton dissolved org. nitrogen prod. integral in upper 100m
+"generic_cobalt","jremin_n_nsmz_100",       "jremin_n_nsmz_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Small zooplankton nitrogen remineralization integral in upper 100m
+"generic_cobalt","jremin_n_nmdz_100",       "jremin_n_nmdz_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Medium zooplankton nitrogen remineralization integral in upper 100m
+"generic_cobalt","jremin_n_nlgz_100",       "jremin_n_nlgz_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Large zooplankton nitrogen remineralization integral in upper 100m
+"generic_cobalt","jremin_n_hp_100",         "jremin_n_hp_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Higher predator nitrogen remineralization integral in upper 100m
+"generic_cobalt","juptake_ldon_nbact_100",  "juptake_ldon_nbact_100",   "ocean_cobalt_fluxes_int","all","mean","none",2 # Bacterial uptake of labile dissolved org. nitrogen in upper 100m
+"generic_cobalt","jvirloss_nbact_100",      "jvirloss_nbact_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Bacteria nitrogen loss to viruses integral in upper 100m
+"generic_cobalt","jzloss_nbact_100",        "jzloss_nbact_100",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Bacteria nitrogen loss to zooplankton integral in upper 100m
+"generic_cobalt","jremin_n_nbact_100",      "jremin_n_nbact_100",       "ocean_cobalt_fluxes_int","all","mean","none",2 # Bacteria nitrogen remineralization integral in upper 100m
+"generic_cobalt","jprod_lithdet_100",       "jprod_lithdet_100",        "ocean_cobalt_fluxes_int","all","mean","none",2 # Lithogenic detritus production integral in upper 100m
+"generic_cobalt","jprod_sidet_100",         "jprod_sidet_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Silica detritus production integral in upper 100m
+"generic_cobalt","jprod_cadet_calc_100",    "jprod_cadet_calc_100",     "ocean_cobalt_fluxes_int","all","mean","none",2 # Calcite detritus production integral in upper 100m
+"generic_cobalt","jprod_cadet_arag_100",    "jprod_cadet_arag_100",     "ocean_cobalt_fluxes_int","all","mean","none",2 # Aragonite detritus production integral in upper 100m
+"generic_cobalt ","jremin_ndet_100",        "jremin_ndet_100",          "ocean_cobalt_fluxes_int","all","mean","none",2 # Remineralization of nitrogen detritus integral in upper 100m
+"generic_cobalt ","wc_vert_int_jdiss_sidet","wc_vert_int_jdiss_sidet",  "ocean_cobalt_fluxes_int","all","mean","none",2 # Water column silica dissolution vertical integral
+"generic_cobalt ","wc_vert_int_jdiss_cadet","wc_vert_int_jdiss_cadet",  "ocean_cobalt_fluxes_int","all","mean","none",2 # Water column calcium carbonate dissolution vertical integral
+"generic_cobalt ","wc_vert_int_jo2resp",    "wc_vert_int_jo2resp",      "ocean_cobalt_fluxes_int","all","mean","none",2 # Water column oxygen respired vertical integral
+"generic_cobalt ","wc_vert_int_jprod_cadet","wc_vert_int_jprod_cadet",  "ocean_cobalt_fluxes_int","all","mean","none",2 # Water column calcium carbonate production vertical integral
+"generic_cobalt ","wc_vert_int_jno3denit",  "wc_vert_int_jno3denit",    "ocean_cobalt_fluxes_int","all","mean","none",2 # Water column denitrification vertical integral
+"generic_cobalt ","wc_vert_int_jprod_no3nitrif","wc_vert_int_jprod_no3nitrif","ocean_cobalt_fluxes_int","all","mean","none",2 # Water column nitrification vertical integral
+"generic_cobalt ","wc_vert_int_juptake_nh4","wc_vert_int_juptake_nh4",  "ocean_cobalt_fluxes_int","all","mean","none",2 #  Water column ammonia based NPP vertical integral
+"generic_cobalt ","wc_vert_int_juptake_no3","wc_vert_int_juptake_no3",  "ocean_cobalt_fluxes_int","all","mean","none",2 # Water column nitrate based NPP, vertical integral
+"generic_cobalt ","wc_vert_int_nfix",       "wc_vert_int_nfix",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Nitrogen fixation vertical integral
+"generic_cobalt ","wc_vert_int_jprod_nh4",  "wc_vert_int_jprod_nh4",    "ocean_cobalt_fluxes_int","all","mean","none",2 #  Water column ammonia production vertical integral
+"generic_cobalt ","wc_vert_int_npp",         "wc_vert_int_npp",         "ocean_cobalt_fluxes_int","all","mean","none",2 # Water column net primary production vertical integral
+# Monthly cobalt tracers in z* coordinates
+"generic_cobalt_z","htotal",             "htotal",             "ocean_cobalt_tracers_month_z","all","mean","none",2 # H+ ion concentration
+"ocean_model_z","volcello",              "volcello",           "ocean_cobalt_tracers_month_z","all","mean","none",2 # Ocean grid-cell volume
+"generic_cobalt_z","no3",                "no3",               "ocean_cobalt_tracers_month_z","all","mean","none",2 # Nitrate
+"generic_cobalt_z","o2",                 "o2",                "ocean_cobalt_tracers_month_z","all","mean","none",2 # Oxygen
+"generic_cobalt_z","o2",                 "o2min",             "ocean_cobalt_tracers_month_z","all","min","none",2 # Oxygen
+"generic_cobalt_z","o2",                 "o2max",             "ocean_cobalt_tracers_month_z","all","max","none",2 # Oxygen
+"generic_cobalt_z","omega_arag",         "omega_arag",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Carbonate Ion Saturation State for Aragonite
+"generic_cobalt_z","omega_calc",         "omega_calc",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Carbonate Ion Saturation State for Calcite
+"generic_cobalt_z","ndi",                "ndi",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Diazotroph Nitrogen
+"generic_cobalt_z","nlg",                "nlg",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Large Phytoplankton Nitrogen
+"generic_cobalt_z","nmd",                "nmd",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium Phytoplankton Nitrogen
+"generic_cobalt_z","nsm",                "nsm",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Small Phytoplankton Nitrogen
+"generic_cobalt_z","pdi",                "pdi",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Diazotroph Phosphorus
+"generic_cobalt_z","plg",                "plg",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Large Phytoplankton Phosphorus
+"generic_cobalt_z","pmd",                "pmd",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium Phytoplankton Phosphorus
+"generic_cobalt_z","psm",                "psm",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Small Phytoplankton Phosphorus
+"generic_cobalt_z","q_p_2_n_Sm",         "q_p_2_n_Sm",   "ocean_cobalt_tracers_month_z","all","mean","none",2 # P:N ratio of Small Phyto
+"generic_cobalt_z","q_p_2_n_Md",         "q_p_2_n_Md",   "ocean_cobalt_tracers_month_z","all","mean","none",2 # P:N ratio of Medium Phyto
+"generic_cobalt_z","q_p_2_n_Lg",         "q_p_2_n_Lg",   "ocean_cobalt_tracers_month_z","all","mean","none",2 # P:N ratio of Large Phyto
+"generic_cobalt_z","q_p_2_n_Di",         "q_p_2_n_Di",   "ocean_cobalt_tracers_month_z","all","mean","none",2 # P:N ratio of Diaz. Phyto
+"generic_cobalt_z","silg",               "silg",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # Large Phytoplankton Silicon
+"generic_cobalt_z","simd",               "simd",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium Phytoplankton Silicon
+"generic_cobalt_z","chl",                "chl",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Chlorophyll
+"generic_cobalt_z","chl_Lg",             "chl_Lg",       "ocean_cobalt_tracers_month_z","all","mean","none",2 # Large Phyto. Chlorophyll
+"generic_cobalt_z","chl_Md",             "chl_Md",       "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium Phyto. Chlorophyll
+"generic_cobalt_z","chl_Sm",             "chl_Sm",       "ocean_cobalt_tracers_month_z","all","mean","none",2 # Small Phyto. Chlorophyll
+"generic_cobalt_z","chl_Di",             "chl_Di",       "ocean_cobalt_tracers_month_z","all","mean","none",2 # Diaz. Phyto. Chlorophyll
+"generic_cobalt_z","mu_Lg",              "mu_Lg",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Large Phyto. Overall Growth Rate
+"generic_cobalt_z","mu_Md",              "mu_Md",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium Phyto. Overall Growth Rate
+"generic_cobalt_z","mu_Sm",              "mu_Sm",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Small Phyto. Growth Rate
+"generic_cobalt_z","mu_Di",              "mu_Di",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Diaz. Phyto. Overall Growth Rate
+"generic_cobalt_z","irrlim_Lg",          "irrlim_Lg",    "ocean_cobalt_tracers_month_z","all","mean","none",2 # Large Phyto. Light Limitation
+"generic_cobalt_z","irrlim_Md",          "irrlim_Md",    "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium Phyto. Light Limitation
+"generic_cobalt_z","irrlim_Sm",          "irrlim_Sm",    "ocean_cobalt_tracers_month_z","all","mean","none",2 # Small Phyto. Light Limitation
+"generic_cobalt_z","irrlim_Di",          "irrlim_Di",    "ocean_cobalt_tracers_month_z","all","mean","none",2 # Diaz. Phyto. Light Limitation
+"generic_cobalt_z","nbact",              "nbact",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # bacterial
+"generic_cobalt_z","nsmz",               "nsmz",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # Small Zooplankton Nitrogen
+"generic_cobalt_z","nmdz",               "nmdz",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium-sized zooplankton Nitrogen
+"generic_cobalt_z","nlgz",               "nlgz",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # large Zooplankton Nitrogen
+"generic_cobalt_z","po4",                "po4",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Phosphate
+"generic_cobalt_z","nh4",                "nh4",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Ammonia
+"generic_cobalt_z","fed",                "fed",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Dissolved Iron
+"generic_cobalt_z","fedet",              "fedet",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Detrital Iron
+"generic_cobalt_z","ndet",               "ndet",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # ndet
+"generic_cobalt_z","feprime",            "feprime",      "ocean_cobalt_tracers_month_z","all","mean","none",2 # Free iron concentration
+"generic_cobalt_z","theta_Lg",           "theta_Lg",     "ocean_cobalt_tracers_month_z","all","mean","none",2 # Large Phyto. Chl:C
+"generic_cobalt_z","theta_Md",           "theta_Md",     "ocean_cobalt_tracers_month_z","all","mean","none",2 # Medium Phyto. Chl:C
+"generic_cobalt_z","theta_Sm",           "theta_Sm",     "ocean_cobalt_tracers_month_z","all","mean","none",2 # Small Phyto. Chl:C
+"generic_cobalt_z","theta_Di",           "theta_Di",     "ocean_cobalt_tracers_month_z","all","mean","none",2 # Diaz. Phyto. Chl:C
+"generic_cobalt_z","irr_mix",            "irr_mix",      "ocean_cobalt_tracers_month_z","all","mean","none",2 # Instantaneous light, avg over mixing layer
+"generic_cobalt_z","irr_inst",           "irr_inst",     "ocean_cobalt_tracers_month_z","all","mean","none",2 # Instantaneous Light
+"generic_cobalt_z","dissic",             "dissic",       "ocean_cobalt_tracers_month_z","all","mean","none",2 # Dissolved Inorganic Carbon Concentration
+"generic_cobalt_z","dissoc",             "dissoc",       "ocean_cobalt_tracers_month_z","all","mean","none",2 # Dissolved Organic Carbon Concentration
+"generic_cobalt_z","talk",               "talk",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # Total Alkalinity
+"generic_cobalt_z","si",                 "si",           "ocean_cobalt_tracers_month_z","all","mean","none",2 # Total Dissolved Inorganic Silicon Concentration
+"generic_cobalt_z","co3",                "co3",          "ocean_cobalt_tracers_month_z","all","mean","none",2 # Carbonate Ion Concentration
+"generic_cobalt_z","calc",               "calc",         "ocean_cobalt_tracers_month_z","all","mean","none",2 # Calcite Concentration
+"generic_cobalt_z","zmeso",              "zmeso",        "ocean_cobalt_tracers_month_z","all","mean","none",2 # Mole Concentration of Mesozooplankton expressed as Carbon in sea water
+"generic_cobalt_z","zmicro",             "zmicro",       "ocean_cobalt_tracers_month_z","all","mean","none",2 # Mole Concentration of Microzooplankton expressed as Carbon in sea water
+# 2-D Monthly Marine Biogeochemical Surface Tracer Fields
+"generic_cobalt","dissicos",       "dissicos",             "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Dissolved Inorganic Carbon Concentration
+"generic_cobalt","dissocos",       "dissocos",             "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Dissolved Organic Carbon Concentration
+"generic_cobalt","phycos",         "phycos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Phytoplankton Carbon Concentration
+"generic_cobalt","zoocos",         "zoocos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Zooplankton Carbon Concentration
+"generic_cobalt","baccos",         "baccos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Bacterial Carbon Concentration
+"generic_cobalt","detocos",        "detocos",              "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Detrital Organic Carbon Concentration
+"generic_cobalt","calcos",         "calcos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Calcite Concentration
+"generic_cobalt","aragos",         "aragos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Aragonite Concentration
+"generic_cobalt","phydiatos",      "phydiatos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Diatoms expressed as Carbon in sea water
+"generic_cobalt","phydiazos",      "phydiazos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Diazotrophs expressed as Carbon in sea water
+"generic_cobalt","phypicoos",      "phypicoos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Picophytoplankton expressed as Carbon in sea water
+"generic_cobalt","phymiscos",      "phymiscos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Miscellaneous Phytoplankton expressed as Carbon in sea water
+"generic_cobalt","zmicroos",       "zmicroos",             "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Microzooplankton expressed as Carbon in sea water
+"generic_cobalt","zmesoos",        "zmesoos",              "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Mesozooplankton expressed as Carbon in sea water
+"generic_cobalt","talkos",         "talkos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Total Alkalinity
+"generic_cobalt","phos",           "phos",                 "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface pH
+"generic_cobalt","o2os",           "o2os",                 "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Dissolved Oxygen Concentration
+"generic_cobalt","o2satos",        "o2satos",              "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Dissolved Oxygen Concentration at Saturation
+"generic_cobalt","no3os",          "no3os",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Dissolved Nitrate Concentration
+"generic_cobalt","nh4os",          "nh4os",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Dissolved Ammonium Concentration
+"generic_cobalt","po4os",          "po4os",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Total Dissolved Inorganic Phosphorus Concentration
+"generic_cobalt","dfeos",          "dfeos",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Dissolved Iron Concentration
+"generic_cobalt","sios",           "sios",                 "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Total Dissolved Inorganic Silicon Concentration
+"generic_cobalt","chlos",          "chlos",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mass Concentration of Total Phytoplankton expressed as Chlorophyll in sea water
+"generic_cobalt","chldiatos",      "chldiatos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mass Concentration of Diatoms expressed as Chlorophyll in sea water
+"generic_cobalt","chldiazos",      "chldiazos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mass Concentration of Diazotrophs expressed as Chlorophyll in sea water
+"generic_cobalt","chlpicoos",      "chlpicoos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mass Concentration of Picophytoplankton expressed as Chlorophyll in sea water
+"generic_cobalt","chlmiscos",      "chlmiscos",            "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mass Concentration of Other Phytoplankton expressed as Chlorophyll in sea water
+"generic_cobalt","ponos",          "ponos",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Particulate Organic Matter expressed as Nitrogen in sea water
+"generic_cobalt","popos",          "popos",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Particulate Organic Matter expressed as Phosphorus in sea water
+"generic_cobalt","bfeos",          "bfeos",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Particulate Organic Matter expressed as Iron in sea water
+"generic_cobalt","bsios",          "bsios",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Particulate Organic Matter expressed as Silicon in sea water
+"generic_cobalt","phynos",         "phynos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Phytoplankton Nitrogen in sea water
+"generic_cobalt","phypos",         "phypos",               "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Total Phytoplankton expressed as Phosphorus in sea water
+"generic_cobalt","phyfeos",        "phyfeos",              "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Total Phytoplankton expressed as Iron in sea water
+"generic_cobalt","physios",        "physios",              "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Total Phytoplankton expressed as Silicon in sea water
+"generic_cobalt","co3os",          "co3os",                "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Carbonate Ion Concentration
+"generic_cobalt","co3satcalcos",   "co3satcalcos",         "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Carbonate Ion in Equilibrium with Pure Calcite in sea water
+"generic_cobalt","co3sataragos",   "co3sataragos",         "ocean_cobalt_omip_sfc","all","mean","none",2 # Surface Mole Concentration of Carbonate Ion in Equilibrium with Pure Aragonite in sea water
+# Additional 2-D monthly Marine Biogeochemical Fields (e.g. vertically integrated, 100m, etc)
+"generic_cobalt","limndiat",        "limndiat",            "ocean_cobalt_omip_2d","all","mean","none",2 # Nitrogen Limitation of Diatoms
+"generic_cobalt","limnpico",        "limnpico",            "ocean_cobalt_omip_2d","all","mean","none",2 # Nitrogen Limitation of Picophytoplankton
+"generic_cobalt","limnmisc",        "limnmisc",            "ocean_cobalt_omip_2d","all","mean","none",2 # Nitrogen Limitation of Other Phytoplankton
+"generic_cobalt","limirrdiat",      "limirrdiat",          "ocean_cobalt_omip_2d","all","mean","none",2 # Irradiance Limitation of Diatoms
+"generic_cobalt","limirrdiaz",      "limirrdiaz",          "ocean_cobalt_omip_2d","all","mean","none",2 # Irradiance Limitation of Diazotrophs
+"generic_cobalt","limirrpico",      "limirrpico",          "ocean_cobalt_omip_2d","all","mean","none",2 # Irradiance Limitation of Picophytoplankton
+"generic_cobalt","limirrmisc",      "limirrmisc",          "ocean_cobalt_omip_2d","all","mean","none",2 # Irradiance Limitation of Other Phytoplankton
+"generic_cobalt","limfediat",       "limfediat",           "ocean_cobalt_omip_2d","all","mean","none",2 # Iron Limitation of Diatoms
+"generic_cobalt","limfediaz",       "limfediaz",           "ocean_cobalt_omip_2d","all","mean","none",2 # Iron Limitation of Diazotrophs
+"generic_cobalt","limfepico",       "limfepico",           "ocean_cobalt_omip_2d","all","mean","none",2 # Iron Limitation of Picophytoplankton
+"generic_cobalt","limfemisc",       "limfemisc",           "ocean_cobalt_omip_2d","all","mean","none",2 # Iron Limitation of Other Phytoplankton
+"generic_cobalt","limpdiat",        "limpdiat",            "ocean_cobalt_omip_2d","all","mean","none",2 # Phosphorus Limitation of Diatoms
+"generic_cobalt","limpdiaz",        "limpdiaz",            "ocean_cobalt_omip_2d","all","mean","none",2 # Phosphorus Limitation of Diazotrophs
+"generic_cobalt","limppico",        "limppico",            "ocean_cobalt_omip_2d","all","mean","none",2 # Phosphorus Limitation of Picophytoplankton
+"generic_cobalt","limpmisc",        "limpmisc",            "ocean_cobalt_omip_2d","all","mean","none",2 # Phosphorus Limitation of Other Phytoplankton
+"generic_cobalt","intpp",           "intpp",               "ocean_cobalt_omip_2d","all","mean","none",2 # Primary Organic Carbon Production by All Types of Phytoplankton
+"generic_cobalt","intppnitrate",    "intppnitrate",        "ocean_cobalt_omip_2d","all","mean","none",2 # Primary Organic Carbon Production by Phytoplankton Based on Nitrate Uptake Alone
+"generic_cobalt","intppdiat",       "intppdiat",           "ocean_cobalt_omip_2d","all","mean","none",2 # Net Primary Organic Carbon Production by Diatoms
+"generic_cobalt","intppdiaz",       "intppdiaz",           "ocean_cobalt_omip_2d","all","mean","none",2 # Net Primary Mole Productivity of Carbon by Diazotrophs
+"generic_cobalt","intpppico",       "intpppico",           "ocean_cobalt_omip_2d","all","mean","none",2 # Net Primary Mole Productivity of Carbon by Picophytoplankton
+"generic_cobalt","intppmisc",       "intppmisc",           "ocean_cobalt_omip_2d","all","mean","none",2 # Net Primary Organic Carbon Production by Other Phytoplankton
+"generic_cobalt","intpbn",          "intpbn",              "ocean_cobalt_omip_2d","all","mean","none",2 # Nitrogen Production
+"generic_cobalt","intpbp",          "intpbp",              "ocean_cobalt_omip_2d","all","mean","none",2 # Phosphorus Production
+"generic_cobalt","intpbfe",         "intpbfe",             "ocean_cobalt_omip_2d","all","mean","none",2 # Iron Production
+"generic_cobalt","intpbsi",         "intpbsi",             "ocean_cobalt_omip_2d","all","mean","none",2 # Silicon Production
+"generic_cobalt","intpcalcite",     "intpcalcite",         "ocean_cobalt_omip_2d","all","mean","none",2 # Calcite Production
+"generic_cobalt","intparag",        "intparag",            "ocean_cobalt_omip_2d","all","mean","none",2 # Aragonite Production
+"generic_cobalt","epc100",          "epc100",              "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Flux of Particulate Organic Carbon
+"generic_cobalt","epn100",          "epn100",              "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Flux of Particulate Nitrogen
+"generic_cobalt","epp100",          "epp100",              "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Flux of Particulate Phosphorus
+"generic_cobalt","epfe100",         "epfe100",             "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Flux of Particulate Iron
+"generic_cobalt","epsi100",         "epsi100",             "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Flux of Particulate Silicon
+"generic_cobalt","epcalc100",       "epcalc100",           "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Flux of Calcite
+"generic_cobalt","eparag100",       "eparag100",           "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Flux of Aragonite
+"generic_cobalt","intdic",          "intdic",              "ocean_cobalt_omip_2d","all","mean","none",2 # Dissolved Inorganic Carbon Content
+"generic_cobalt","intdoc",          "intdoc",              "ocean_cobalt_omip_2d","all","mean","none",2 # Dissolved Organic Carbon Content
+"generic_cobalt","intpoc",          "intpoc",              "ocean_cobalt_omip_2d","all","mean","none",2 # Particulate Organic Carbon Content
+"generic_cobalt","spco2",           "spco2",               "ocean_cobalt_omip_2d","all","mean","none",2 # Surface Aqueous Partial Pressure of CO2
+"generic_cobalt","dpco2",           "dpco2",               "ocean_cobalt_omip_2d","all","mean","none",2 # Delta PCO2
+"generic_cobalt","dpo2",            "dpo2",                "ocean_cobalt_omip_2d","all","mean","none",2 # Delta PO2
+"generic_cobalt","fgco2",           "fgco2",               "ocean_cobalt_omip_2d","all","mean","none",2 # Surface Downward Flux of Total CO2
+"generic_cobalt","fgo2",            "fgo2",                "ocean_cobalt_omip_2d","all","mean","none",2 # Surface Downward Flux of O2
+"generic_cobalt","icfriver",        "icfriver",            "ocean_cobalt_omip_2d","all","mean","none",2 # Flux of Inorganic Carbon Into Ocean Surface by Runoff
+"generic_cobalt","fric",            "fric",                "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Inorganic Carbon Flux at Ocean Bottom
+"generic_cobalt","ocfriver",        "ocfriver",            "ocean_cobalt_omip_2d","all","mean","none",2 # Flux of Organic Carbon Into Ocean Surface by Runoff
+"generic_cobalt","froc",            "froc",                "ocean_cobalt_omip_2d","all","mean","none",2 # Downward Organic Carbon Flux at Ocean Bottom
+"generic_cobalt","intpn2",          "intpn2",              "ocean_cobalt_omip_2d","all","mean","none",2 # Nitrogen Fixation Rate in Ocean
+"generic_cobalt","fsn",             "fsn",                 "ocean_cobalt_omip_2d","all","mean","none",2 # Surface Downward Net Flux of Nitrogen
+"generic_cobalt","frn",             "frn",                 "ocean_cobalt_omip_2d","all","mean","none",2 # Nitrogen Loss to Sediments and through Denitrification
+"generic_cobalt","fsfe",            "fsfe",                "ocean_cobalt_omip_2d","all","mean","none",2 # Surface Downward Net Flux of Iron
+"generic_cobalt","frfe",            "frfe",                "ocean_cobalt_omip_2d","all","mean","none",2 # Iron Loss to Sediments
+# MOM6 ocean diagnostics only used in a CORE/OMIP (no interactive atmos). 
+# These terms provide diagnostics for the surface salinity / fresh water restoring. 
+"ocean_model", "vprec",        "vprec",        "ocean_annual", "all", "mean", "none",2
+"ocean_model", "salt_flux_added",  "salt_flux_added",  "ocean_annual", "all", "mean", "none",2
+"ocean_model", "vprec",        "vprec",        "ocean_month", "all", "mean", "none",2
+"ocean_model", "salt_flux_added",  "salt_flux_added",  "ocean_month", "all", "mean", "none",2
+#
+"ocean_model_z", "opottemppmdiff", "opottemppmdiff", "ocean_annual_z", "all", "mean", "none",2
