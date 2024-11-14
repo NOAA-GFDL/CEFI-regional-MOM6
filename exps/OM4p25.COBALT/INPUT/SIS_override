@@ -1,0 +1,5 @@
+#override U_TRUNC_FILE = "SIS_U_truncations"
+#override V_TRUNC_FILE = "SIS_V_truncations"
+#override MIN_OCN_INTERTIAL_H = 2.
+#override ADD_DIURNAL_SW = False 
+#override ICE_STATS_INTERVAL = 30

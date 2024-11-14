@@ -1,0 +1,74 @@
+ "ATM", "p_surf",             "psl",      "./INPUT/JRA_psl.nc",      "bilinear",   1.0
+ "ATM", "p_bot",              "psl",      "./INPUT/JRA_psl.nc",      "bilinear",   1.0
+ "ATM", "t_bot",              "tas",      "./INPUT/JRA_tas.nc",      "bilinear",   1.0
+ "ATM", "sphum_bot",          "huss",     "./INPUT/JRA_huss.nc",     "bilinear",   1.0
+ "ATM", "u_bot",              "uas",      "./INPUT/JRA_uas.nc",      "bicubic",    1.0
+ "ATM", "v_bot",              "vas",      "./INPUT/JRA_vas.nc",      "bicubic",    1.0
+ "ATM", "z_bot",              "",         "",                        "bilinear",  10.0
+ "ATM", "gust",               "",         "",                        "bilinear",   1.0e-4
+ "ICE", "lw_flux_dn",         "rlds",     "./INPUT/JRA_rlds.nc",     "bilinear",   1.0
+ "ICE", "sw_flux_vis_dir_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.285
+ "ICE", "sw_flux_vis_dif_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.285
+ "ICE", "sw_flux_nir_dir_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.215
+ "ICE", "sw_flux_nir_dif_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.215
+ "ICE", "lprec",              "prra",     "./INPUT/JRA_prra.nc",     "bilinear",   1.0
+ "ICE", "fprec",              "prsn",     "./INPUT/JRA_prsn.nc",     "bilinear",   1.0
+ "ICE", "calving",            "",         "",                        "none",       0.0
+ "ICE", "dhdt",               "",         "",                        "none",      80.0
+ "ICE", "dedt",               "",         "",                        "none",       2.0e-6
+ "ICE", "drdt",               "",         "",                        "none",      10.0
+ "LND", "t_surf",             "",         "",                        "none",     273.0
+ "LND", "t_ca",               "",         "",                        "none",     273.0
+ "LND", "q_ca",               "",         "",                        "none",       0.0
+ "LND", "rough_mom",          "",         "",                        "none",       0.01
+ "LND", "rough_heat",         "",         "",                        "none",       0.1
+ "LND", "albedo",             "",         "",                        "none",       0.1
+ "LND", "sphum_surf",         "",         "",                        "none",       0.0
+ "LND", "sphum_ca",           "",         "",                        "none",       0.0
+ "LND", "t_flux",             "",         "",                        "none",       0.0
+ "LND", "sphum_flux",         "",         "",                        "none",       0.0
+ "LND", "lw_flux",            "",         "",                        "none",       0.0
+ "LND", "sw_flux",            "",         "",                        "none",       0.0
+ "LND", "lprec",              "",         "",                        "none",       0.0
+ "LND", "fprec",              "",         "",                        "none",       0.0
+ "LND", "dhdt",               "",         "",                        "none",       5.0
+ "LND", "dedt",               "",         "",                        "none",       2e-6
+ "LND", "dedq",               "",         "",                        "none",       0.0
+ "LND", "drdt",               "",         "",                        "none",       5.0
+ "LND", "drag_q",             "",         "",                        "none",       0.0
+ "LND", "p_surf",             "",         "",                        "none",       1.e5
+        "ICE", "runoff",             "runoff",   "./INPUT/runoff.daitren.clim.1440x1080.v20180328.nc",   "none",       1.0
+"OCN", "runoff_no3_flux_ice_ocn",   "NO3_CONC",   "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_ldon_flux_ice_ocn",  "LDON_CONC",  "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_sldon_flux_ice_ocn", "SLDON_CONC", "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_srdon_flux_ice_ocn", "SRDON_CONC", "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_ndet_flux_ice_ocn",  "NDET_CONC",  "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_po4_flux_ice_ocn",   "PO4_CONC",   "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_ldop_flux_ice_ocn",  "LDOP_CONC",  "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_sldop_flux_ice_ocn", "SLDOP_CONC", "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_srdop_flux_ice_ocn", "SRDOP_CONC", "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_pdet_flux_ice_ocn",  "PDET_CONC",  "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_fed_flux_ice_ocn",   "FED_CONC",   "./INPUT/news_nutrients.nc","none",1.0e-3
+"OCN", "runoff_alk_flux_ice_ocn",   "",  "",                         "none", 0.42e-3
+"OCN", "runoff_dic_flux_ice_ocn",   "",  "",                         "none", 0.32e-3
+"OCN", "runoff_lith_flux_ice_ocn",  "",  "",                         "none", 13.0e-3
+#
+# jgj data table for o2 gas exchange
+#
+"ATM", "o2_flux_pcair_atm",  ""     , ""               , "none", 0.214
+#
+"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
+"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
+"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
+#ocean-ice specific
+"OCN", "dry_dep_fed_flux_ice_ocn",  "FLUX",         "./INPUT/Soluble_Fe_Flux_AM4.nc",                    "bilinear", -1.0
+"OCN", "dry_dep_lith_flux_ice_ocn", "FLUX_MINERAL", "./INPUT/Mineral_Flux_AM4.nc",                       "bilinear", -1.0
+"OCN", "dry_dep_po4_flux_ice_ocn",  "FLUX_MINERAL", "./INPUT/Mineral_Flux_AM4.nc",                       "bilinear", -4.0e-6
+#"OCN", "wet_dep_no3_flux_ice_ocn",  "NO3_WET_DEP",  "./INPUT/depflux_total.mean.1860.nc",                "bilinear",  -1.0
+#"OCN", "dry_dep_no3_flux_ice_ocn",  "NO3_DRY_DEP",  "./INPUT/depflux_total.mean.1860.nc",                "bilinear",  -1.0
+#"OCN", "wet_dep_nh4_flux_ice_ocn",  "NH4_WET_DEP",  "./INPUT/depflux_total.mean.1860.nc",                "bilinear",  -1.0
+#"OCN", "dry_dep_nh4_flux_ice_ocn",  "NH4_DRY_DEP",  "./INPUT/depflux_total.mean.1860.nc",                "bilinear",  -1.0
+"OCN", "wet_dep_no3_flux_ice_ocn",  "wetnoy",    "./INPUT/esm4_wetnoy_climo_1993-2014.nc",                "bilinear",  -1.0
+"OCN", "dry_dep_no3_flux_ice_ocn",  "drynoy",    "./INPUT/esm4_drynoy_climo_1993-2014.nc",                "bilinear",  -1.0
+"OCN", "wet_dep_nh4_flux_ice_ocn",  "wetnh4",    "./INPUT/esm4_wetnh4_climo_1993-2014.nc",                "bilinear",  -1.0
+"OCN", "dry_dep_nh4_flux_ice_ocn",  "drynh4",    "./INPUT/esm4_drynh4_climo_1993-2014.nc",                "bilinear",  -1.0
