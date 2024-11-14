@@ -1,7 +1,7 @@
 """
 Compare model surface chla with data from occci-v6.0.
 How to use:
-python chl_eval.py -p /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod -c ../physics/config.yaml
+python chl_eval.py -p /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod -c config.yaml
 """
 
 import cartopy.crs as ccrs
@@ -52,7 +52,7 @@ def plot_chl(pp_root, label, config, dev):
     # Flip to right side up.
     # satellite = satellite.isel(lat=slice(None, None, -1))
     log_model = np.log10(np.maximum(model_climo, 1e-14))
-    log_sat = np.log10(satellite)
+    log_sat = np.log10(np.maximum(satellite,1e-14))
     logger.info("SATELITE: %s",satellite)
     logger.info("Successfully opened model grid and calculated climotology")
 

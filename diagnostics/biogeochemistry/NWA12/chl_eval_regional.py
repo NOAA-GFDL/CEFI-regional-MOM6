@@ -140,7 +140,7 @@ def plot_chl_regional(pp_root, label, config, dev):
     cbar.set_ticks([0.25, 0.5, 1, 2, 4, 8])
     cbar.set_ticklabels([0.25, 0.5, 1, 2, 4, 8])
     logger.info("Saving figure")
-    save_figure('regional_chl', label=label)
+    save_figure('regional_chl', label=label, output_dir = "../figures")
 
 
 if __name__ == '__main__':
