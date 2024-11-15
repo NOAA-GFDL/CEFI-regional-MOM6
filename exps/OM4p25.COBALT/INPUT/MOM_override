@@ -1,0 +1,20 @@
+# Turn on generic tracers
+USE_generic_tracer = True
+#override CHL_FROM_FILE = False
+GENERIC_TRACER_IC_FILE = "MOM_GENERICS.res.nc"
+#override NUM_DIAG_COORDS = 2
+#override MAX_FIELDS=500
+#override DIAG_COORDS = "z 01 ZSTAR,zsfc 02 ZSTAR"
+#override DIAG_COORD_DEF_01 = "WOA09"
+#override DIAG_COORD_DEF_02 = "UNIFORM:50,250."
+# Use bug fixes not in old OM4 runs. 
+#override DEFAULT_ANSWER_DATE = 99991231
+#override FLUXCONST = 0.0834
+# New WOA18 temp and salinity initial conditions
+#override TEMP_Z_INIT_FILE = "woa18_decav_ptemp_monthly_fulldepth_01.nc"
+#override SALT_Z_INIT_FILE = "woa18_decav_s_monthly_fulldepth_01.nc" 
+#override Z_INIT_REMAP_OLD_ALG = False
+#override PHA_MLD_CALC = True
+#override PHA_MLD_USE_DELTA_RHO = True
+#override PHA_MLD_HREF = 10.0
+#override PHA_MLD_DRHO = 0.03

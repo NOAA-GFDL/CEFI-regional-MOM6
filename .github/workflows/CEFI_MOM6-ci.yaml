@@ -1,7 +1,7 @@
 name: CEFI-MOM6-ci
 
 on:
-  # Triggers this workflow on pull request event with "CEFI_MOM6_RT_gaea_c5" label
+  # Triggers this workflow on pull request event with "CEFI_MOM6_RT_container" label
   pull_request:
     branches: [ "main" ]
     types: [ labeled ]
@@ -14,8 +14,8 @@ env:
 #
 jobs:
   checkout-build:
-    if: ${{ github.event.label.name == 'CEFI_MOM6_RT_gaea_c5' }}
-    runs-on: self-hosted
+    if: ${{ github.event.label.name == 'CEFI_MOM6_RT_container' }}
+    runs-on: [self-hosted, container]
     timeout-minutes: 600
     strategy:
       max-parallel: 1    
@@ -28,9 +28,12 @@ jobs:
         fetch-depth: 1  
         submodules: recursive
 
-    - name: Build MOM6SIS2
+    - name: Build MOM6SIS2 using container
       run: |
         cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds
+        pwd
+        #img=/gpfs/f6/ira-cefi/world-shared/container/ubuntu22.04-intel-ufs-env-v1.8.0-llvm.img
+        #apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
         jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
         #
         sleep 1
@@ -45,8 +48,8 @@ jobs:
             fi
             sleep 60  # Adjust the sleep duration as needed
         done
-        #
-        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/gaea-ncrc5.intel23/ocean_ice/repro/MOM6SIS2"
+        
+        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2"
         if [ -f "$check_file" ]; then
             echo "PASSED: $check_file"
         else
@@ -56,16 +59,16 @@ jobs:
 
   run-CEFI_MOM6-ci:
     needs: checkout-build
-    runs-on: self-hosted
+    runs-on: [self-hosted, container]
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       matrix:
-        case: ["NWA12.COBALT", "NEP10.COBALT"]
+        case: ["NEP10.COBALT"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
-          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
+          jobid=$(sbatch --parsable run_container.sh | awk -F';' '{print $1}' | cut -f1) 
           #
           sleep 1
           while :; do
@@ -80,7 +83,7 @@ jobs:
               sleep 60  # Adjust the sleep duration as needed
           done
           # 
-          expected_string="All restart files are identical, PASS"
+          expected_string="ocean.stats is identical to ref, PASS"
           check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
           if [ -f "$check_file" ]; then
              if grep -qF "$expected_string" $check_file; then
@@ -96,22 +99,22 @@ jobs:
 
   add-pass-label:
     needs: run-CEFI_MOM6-ci
-    runs-on: self-hosted
+    runs-on: [self-hosted, container]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     steps:
-      - name: Add "pass_CEFI_MOM6_RT" label on success
+      - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
           TOKEN=${{ secrets.GITHUB_TOKEN }}
-          RT_TEST_LABEL="CEFI_MOM6_RT_gaea_c5"
-          PASS_LABEL="pass_CEFI_MOM6_RT"
+          RT_TEST_LABEL="CEFI_MOM6_RT_container"
+          PASS_LABEL="pass_CEFI_MOM6_RT_container"
 
-          # Remove the "CEFI_MOM6_RT_gaea_c5" label
+          # Remove the "CEFI_MOM6_RT_container" label
           curl -X DELETE \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
 
-          # Add the "pass_CEFI_MOM6_RT" label
+          # Add the "pass_CEFI_MOM6_RT_container" label
           curl -X POST \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
@@ -120,7 +123,7 @@ jobs:
 
   clean-up:
     needs: add-pass-label
-    runs-on: self-hosted
+    runs-on: [self-hosted, container]
     strategy:
       max-parallel: 1
     steps:
