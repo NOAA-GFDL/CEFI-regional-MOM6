@@ -1,7 +1,7 @@
 """
 Compare model surface chla with data from occci-v6.0 over a subset of the NWA domain
 How to use:
-python chl_eval_regional.py -p /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod -c ../physics/config.yaml
+python chl_eval_regional.py -p /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod -c ../config.yaml
 """
 import cartopy.crs as ccrs
 from cartopy.mpl.geoaxes import GeoAxes
@@ -15,20 +15,20 @@ import xesmf
 import matplotlib.colors as colors
 from string import ascii_lowercase
 import logging
-import os
+from pathlib import Path
 import sys
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.getcwd())
-sys.path.append(os.path.join(script_dir, 'physics'))
+# Add physics/plot_common to path in order to access tools located there
+diag_dir = Path.cwd().parent.parent
+sys.path.append( str( diag_dir.joinpath('physics') ) )
 from plot_common import add_ticks, autoextend_colorbar, corners, annotate_skill, open_var, save_figure, load_config
 
 # Configure logging
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename="chl_eval.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.INFO)
+logging.basicConfig(filename="chl_eval_regional.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.INFO)
 
 def plot_chl_regional(pp_root, label, config, dev):
-    model_grid = xarray.open_dataset( config['model_grid'] )
+    model_grid = xarray.open_dataset( "../../data/geography/ocean_static.nc" )
     model = open_var(pp_root, 'ocean_cobalt_omip_sfc', 'chlos') * 1e6 # kg m-3 -> mg m-3
     if dev:
         print('Using any available model data')
@@ -63,7 +63,6 @@ def plot_chl_regional(pp_root, label, config, dev):
     logger.info("SAT_RG: %s",sat_rg)
     logger.info("DELTA: %s",sat_rg)
     logger.info("Successfully regridded satellite data")
-    model_grid = xarray.open_dataset( config['model_grid'] )
 
     PC = ccrs.PlateCarree()
         
