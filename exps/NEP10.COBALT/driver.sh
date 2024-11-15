@@ -86,7 +86,7 @@ for FILE in "${FILES[@]}"; do
 done
 
 #
-echo "All MOM restart files are identical, PASS"
+echo "All restart files are identical, PASS"
 
 #
 echo "clean RESTART folders now ..."
