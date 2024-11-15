@@ -30,7 +30,7 @@ echo $abs_rootdir
 #load modules              
 source $MODULESHOME/init/bash
 source $rootdir/$machine_name/$platform.env
-. $rootdir/$machine_name/$platform.env
+#. $rootdir/$machine_name/$platform.env
 
 makeflags="NETCDF=3"
 
