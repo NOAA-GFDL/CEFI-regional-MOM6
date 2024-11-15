@@ -61,9 +61,9 @@ jobs:
     needs: checkout-build
     runs-on: [self-hosted]
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       matrix:
-        case: ["NWA12.COBALT", "NEP10.COBALT"]
+        case: ["NWA12.COBALT"] #["NWA12.COBALT", "NEP10.COBALT"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |
