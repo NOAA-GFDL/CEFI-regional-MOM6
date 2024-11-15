@@ -27,9 +27,11 @@ abs_rootdir=$rootdir
 
 echo $abs_rootdir
 
-#load modules              
+#load modules
 source $MODULESHOME/init/bash
-source $rootdir/$machine_name/$platform.env
+module use -a /ncrc/home2/fms/local/modulefiles
+module load fre/bronx-22
+#source $rootdir/$machine_name/$platform.env
 #. $rootdir/$machine_name/$platform.env
 
 makeflags="NETCDF=3"
