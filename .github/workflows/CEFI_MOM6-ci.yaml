@@ -79,9 +79,8 @@ jobs:
     
       - name: Run Experiment ${{ matrix.case }}
         run: |
+          chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
-          pwd
-          ls
           jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
           #
           sleep 1
