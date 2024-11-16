@@ -116,6 +116,18 @@ jobs:
              exit 10
           fi
 
+      - name: Clean-up workspace for ${{ matrix.case }}
+        run: |
+          echo "Cleaning up ${{ env.TEST_DIR }}"
+          rm -rf ${{ env.TEST_DIR }}
+          # Check if the tar.gz file exists and delete it if found
+          if [ -f "${{ github.workspace }}/CEFI_MOM6_CHECK.tar.gz" ]; then
+              echo "Found CEFI_MOM6_CHECK.tar.gz, deleting it."
+              rm "${{ github.workspace }}/CEFI_MOM6_CHECK.tar.gz"
+          else
+              echo "CEFI_MOM6_CHECK.tar.gz not found, skipping deletion."
+          fi
+
   add-pass-label:
     needs: run-CEFI_MOM6-ci
     runs-on: [self-hosted]
@@ -138,15 +150,4 @@ jobs:
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
-            -d "{\"labels\":[\"$PASS_LABEL\"]}"
-
-  clean-up:
-    needs: add-pass-label
-    runs-on: [self-hosted]
-    strategy:
-      max-parallel: 1
-    steps:
-      - name: Clean-up
-        run: |
-          cd ${{ github.workspace }}
-          rm -rf ${{ github.run_id }}        
+            -d "{\"labels\":[\"$PASS_LABEL\"]}"     
