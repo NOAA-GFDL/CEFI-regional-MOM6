@@ -15,7 +15,7 @@ env:
 jobs:
   checkout-build:
     if: ${{ github.event.label.name == 'CEFI_MOM6_RT_container' }}
-    runs-on: [self-hosted, container]
+    runs-on: [self-hosted]
     timeout-minutes: 600
     strategy:
       max-parallel: 1    
@@ -31,7 +31,7 @@ jobs:
     - name: Build MOM6SIS2 using container
       run: |
         cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds
-        pwd
+        #pwd
         #img=/gpfs/f6/ira-cefi/world-shared/container/ubuntu22.04-intel-ufs-env-v1.8.0-llvm.img
         #apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
         jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
@@ -59,16 +59,16 @@ jobs:
 
   run-CEFI_MOM6-ci:
     needs: checkout-build
-    runs-on: [self-hosted, container]
+    runs-on: [self-hosted]
     strategy:
       max-parallel: 1
       matrix:
-        case: ["NEP10.COBALT"]
+        case: ["NWA12.COBALT", "NEP10.COBALT"]
     steps:
       - name: Run Experiment ${{ matrix.case }}
         run: |
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
-          jobid=$(sbatch --parsable run_container.sh | awk -F';' '{print $1}' | cut -f1) 
+          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
           #
           sleep 1
           while :; do
@@ -83,7 +83,7 @@ jobs:
               sleep 60  # Adjust the sleep duration as needed
           done
           # 
-          expected_string="ocean.stats is identical to ref, PASS"
+          expected_string="All restart files are identical, PASS"
           check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
           if [ -f "$check_file" ]; then
              if grep -qF "$expected_string" $check_file; then
@@ -99,7 +99,7 @@ jobs:
 
   add-pass-label:
     needs: run-CEFI_MOM6-ci
-    runs-on: [self-hosted, container]
+    runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     steps:
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
@@ -123,7 +123,7 @@ jobs:
 
   clean-up:
     needs: add-pass-label
-    runs-on: [self-hosted, container]
+    runs-on: [self-hosted]
     strategy:
       max-parallel: 1
     steps:
