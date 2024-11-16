@@ -57,17 +57,31 @@ jobs:
             exit 1
         fi 
 
+    - name: Upload the whole TEST_DIR as an artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CEFI_MOM6_CHECK
+        path: ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
+
   run-CEFI_MOM6-ci:
     needs: checkout-build
     runs-on: [self-hosted]
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         case: ["NWA12.COBALT", "NEP10.COBALT"]
     steps:
+      - name: Download CEFI_MOM6_CHECK folder
+        uses: actions/download-artifact@v3
+        with:
+          name: CEFI_MOM6_CHECK
+          path: ${{ env.TEST_DIR }}
+    
       - name: Run Experiment ${{ matrix.case }}
         run: |
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
+          pwd
+          ls
           jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
           #
           sleep 1
