@@ -219,15 +219,9 @@ zmld_ref = 10.0                 !   [m] default = 10.0
                                 ! reference depth for mixed layer calculation
 densdiff_mld = 0.03             !   [kg m-3] default = 0.03
                                 ! potential density difference for determining mixed layer depth
-do_case2_mod = True             !   [Boolean] default = False
+do_case2_mod = False            !   [Boolean] default = False
                                 ! When true, modify the opacity of case 2 (coastal) waterswhich are identified
                                 ! based on a salinity and depth threshold
-case2_depth = 30.0              !   [m] default = 30.0
-                                ! Depth threshold to identify Case 2 water when using a modified opacity.
-case2_salt = 30.0               !   [PSU] default = 30.0
-                                ! Salinity threshold to identify Case 2 water when using a modified opacity.
-case2_opac_add = 0.05           !   [m-1] default = 0.05
-                                ! Additional opactity added in Case 2 waters when using a modified opacity.
 min_daylength = 6.0             !   [hours] default = 6.0
                                 ! minimum daylength for calculating the daytime irradiance
 refuge_conc = 1.0E-10           !   [mol N kg-1] default = 1.0E-10
@@ -561,10 +555,10 @@ half_life_14c = 5730.0          !   [s] default = 5730.0
                                 ! half_life_14c
 lambda_14c = 1.209680943385594E-04 !   [-s] default = 1.209680943385594E-04
                                 ! lambda_14c
-ca_2_n_arag = 0.055             !   [mol cadet_arag mol org. C-1] default = 0.055
+ca_2_n_arag = 0.035             !   [mol cadet_arag mol org. C-1] default = 0.055
                                 ! ratio of aragonite detritus prod. to org. C detritus prod. by aragonite shell
                                 ! formers
-ca_2_n_calc = 0.05              !   [mol cadet_calc mol org. C-1] default = 0.05
+ca_2_n_calc = 0.025             !   [mol cadet_calc mol org. C-1] default = 0.05
                                 ! ratio of calcite detritus prod. to org. C detritus prod. by calcite shell
                                 ! formers
 caco3_sat_max = 10.0            !   [none] default = 10.0
@@ -621,9 +615,9 @@ bottom_thickness = 1.0          !   [m] default = 1.0
                                 ! effective bottom layer thickness for calculating rates of benthic processes
 z_sed = 0.1                     !   [m] default = 0.1
                                 ! effective sediment layer thickness
-z_burial = 20.0                 !   [m] default = 10.0
+z_burial = 50.0                 !   [m] default = 10.0
                                 ! depth scale for ramping up particulate organic burial
-z_denit = 20.0                  !   [m] default = 10.0
+z_denit = 10.0                  !   [m] default = 10.0
                                 ! depth scale for ramping up benthic denitrification
 scale_burial = 1.0              !   [none] default = 0.0
                                 ! scaling factor for particulate organic burial
