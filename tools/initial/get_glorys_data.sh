@@ -1,73 +1,73 @@
 #!/bin/bash
 
-# How to use
-#./get_glorys_data.sh -u USERNAME -p PASSWORD -o "./datasets/glorys/daily" -x -100 -X -35 -y 0 -Y 60 -s "1993-01-01" -e "1993-01-01"
+# How to use:
+# To sync with copernicus marine servers
+#./get_glorys_data.sh -u USERNAME -p PASSWORD -f "_*199301*" -s
+#
+# To store files in a directory of your choosing
+#./get_glorys_data.sh -u USERNAME -p PASSWORD -o "./datasets/glorys/daily"  -f "_*199301*" -s
+#
+# If you have already logged in to the service before
+#./get_glorys_data.sh -f "_*199301*" -s
 
 # Default values
 outdir="./datasets/glorys/daily"
-lon=(-100 -35)
-lat=(0 60)
-startDate="1993-01-01"
-endDate="1993-01-01"
-username=""
-Password=""
+sync=false
+interim=false
+data_version="202311" # This is the latest avaiable version of glorys as of November 2024
+
+# TODO: add comment to README explaining filter, as well as 
+# to top of this script
 
 # Parse command-line arguments
-while getopts ":u:p:o:x:X:y:Y:s:e:" opt; do
+while getopts ":u:p:o:f:sid:" opt; do
   case $opt in
     u) username="$OPTARG";;
     p) password="$OPTARG";;
     o) outdir="$OPTARG";;
-    x) lon[0]="$OPTARG";;
-    X) lon[1]="$OPTARG";;
-    y) lat[0]="$OPTARG";;
-    Y) lat[1]="$OPTARG";;
-    s) startDate="$OPTARG";;
-    e) endDate="$OPTARG";;
+    f) filter="$OPTARG";;
+    s) sync=true;;
+    i) interim=true;;
+    d) data_version="$OPTARG";;
     \?) echo "Invalid option: -$OPTARG" >&2; exit 1;;
     :) echo "Option -$OPTARG requires an argument." >&2; exit 1;;
   esac
 done
 
-
-#check if both username and password are provided
+# Check if username and password are provided
 if [ -z "$username" ] || [ -z "$password" ]; then
-    echo "Error: Both username and password are required."
+    login=""
+else
+    login="--username $username --password $password"
+fi
+
+# Check if filter is provided, exit if it is not availble
+if [ -z "$filter" ] ; then
+    echo "ERROR: Please provide a filter for specific files on the copernicusmarine "
+    echo "ERROR: server to avoid downloading too many files. More information filtering"
+    echo "ERROR: copernicus data can be found here: "
+    echo "ERROR: https://help.marine.copernicus.eu/en/articles/7983226-copernicus-marine-toolbox-cli-get-original-files#h_6fca0c5cb2"
     exit 1
 fi
 
-# Log in to copernicus Marine
-command_string="copernicusmarine login --username $username --password $password --skip-if-user-logged-in"
-eval "$command_string"
+# Check if syncing data to servers, or if defining own directories
+if [ $sync = true ]; then
+    sync=" --sync --dataset-version $data_version " 
+else
+    sync=" -o $outdir "
+fi
 
-# Product and dataset IDs
-serviceId="GLOBAL_MULTIYEAR_PHY_001_030-TDS"
-productId="cmems_mod_glo_phy_my_0.083deg_P1D-m"
+# Check if getting Interim product and dataset IDs
+if [ $interim = true ]; then
+    productId="cmems_mod_glo_phy_myint_0.083deg_P1D-m"
+else
+    productId="cmems_mod_glo_phy_my_0.083deg_P1D-m"
+fi
 
-# Variables
-variable=("so" "thetao" "uo" "vo" "zos")
+echo "=========== Starting download ==========="
 
-# time step
-addDays=1
-
-endDate=$(date -d "$endDate + $addDays days" +%Y-%m-%d)
-
-# Time range loop
-while [[ "$startDate" != "$endDate" ]]; do
-
-    echo "=============== Date: $startDate ===================="
-
-    command="copernicusmarine subset -i $productId \
-    -v ${variable[0]} -v ${variable[1]} -v ${variable[2]} -v ${variable[3]} -v ${variable[4]} \
-    -x ${lon[0]} -X ${lon[1]} -y ${lat[0]} -Y ${lat[1]} \
-    -t \"$startDate\" -T \"$startDate\" \
-    --force-download -o $outdir -f GLORYS_REANALYSIS_$(date -d "$startDate" +%Y-%m-%d).nc"
-
-    echo -e "$command \n============="
-    eval "$command"
-
-    startDate=$(date -d "$startDate + $addDays days" +%Y-%m-%d)
-
-done
+command="copernicusmarine get -i $productId $login --filter $filter --force-download $sync --log-level DEBUG"
+echo -e $command
+eval "$command"
 
 echo "=========== Download completed! ==========="
