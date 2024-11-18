@@ -5,7 +5,7 @@
 #./get_glorys_data.sh -u USERNAME -p PASSWORD -f "_*199301*" -s
 #
 # To store files in a directory of your choosing
-#./get_glorys_data.sh -u USERNAME -p PASSWORD -o "./datasets/glorys/daily"  -f "_*199301*" -s
+#./get_glorys_data.sh -u USERNAME -p PASSWORD -o "./datasets/glorys/daily"  -f "_*199301*"
 #
 # If you have already logged in to the service before
 #./get_glorys_data.sh -f "_*199301*" -s
@@ -15,9 +15,6 @@ outdir="./datasets/glorys/daily"
 sync=false
 interim=false
 data_version="202311" # This is the latest avaiable version of glorys as of November 2024
-
-# TODO: add comment to README explaining filter, as well as 
-# to top of this script
 
 # Parse command-line arguments
 while getopts ":u:p:o:f:sid:" opt; do
