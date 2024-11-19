@@ -52,7 +52,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NWA/2024_09_FMS2"/>
+  <property name="FRE_STEM" value="fre/cefi/NWA/2024_11_FMS2"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <property name="NCRC_GROUP" value="ira-cefi"/>
@@ -556,16 +556,16 @@ $name
 $baseDate
       </diagTable>
       <dataFile label="diagTable" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">./diag_tables/diag_table_COBALT_2023-04</dataSource>
-        <dataSource site="ncrc">./diag_tables/diag_table_MOM6_2024-09</dataSource>
-        <dataSource site="ncrc">./diag_tables/diag_table.SIS</dataSource>
+        <dataSource site="ncrc">./diag_tables/diag_table_CEFI_MOM6_default</dataSource>
+        <dataSource site="ncrc">./diag_tables/diag_table_CEFI_SIS_default</dataSource>
+        <dataSource site="ncrc">./diag_tables/diag_table_CEFI_COBALT_default</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_COBALT_neus</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_MOM6_neus</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_COBALT_2023-04</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_MOM6_2023-03</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table.SIS</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_COBALT_neus</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_MOM6_neus</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_MOM6_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_SIS_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_COBALT_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_COBALT_neus</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_MOM6_neus</dataSource>
       </dataFile>
       <dataFile label="initCond" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2023_10_spinup/NWA12_COBALT_2023_10_spinup_2003.nc</dataSource>
@@ -927,15 +927,7 @@ endif
         <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
-      <component type="ocean_cobalt_daily_2D" start="$(PP_START_YEAR)" source="ocean_cobalt_daily_2D">
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_B)" />
-      </component>
       <component type="ocean_cobalt_daily_2d" start="$(PP_START_YEAR)" source="ocean_cobalt_daily_2d">
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_B)" />
-      </component>
-      <component type="ocean_cobalt_omip_daily" start="$(PP_START_YEAR)" source="ocean_cobalt_omip_daily">
         <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_B)" />
       </component>
@@ -973,21 +965,9 @@ endif
         <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
-      <component type="ocean_cobalt_daily" start="$(PP_START_YEAR)" source="ocean_cobalt_daily">
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_B)" />
-      </component>
       <component type="ocean_cobalt_neus"   start="$(PP_START_YEAR)" source="ocean_cobalt_neus">
         <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" source="ocean_cobalt_neus"/>
         <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_B)" source="ocean_cobalt_neus"/>
-      </component>
-      <component type="ocean_cobalt_tracers_month" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
       <component type="ocean_cobalt_tracers_month_z" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month_z">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
@@ -1005,27 +985,6 @@ endif
         <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
-    </postProcess>
-  </freInclude>
-  <freInclude name="COBALT_budget_postprocess">
-    <postProcess>
-      <component type="ocean_cobalt_budget_annual" start="$(PP_START_YEAR)" source="ocean_cobalt_budget_annual">
-        <!-- No monthly for this because it's an annual field -->
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_budget_instant" start="$(PP_START_YEAR)" source="ocean_cobalt_budget_instant">
-        <!-- No monthly for this because it's an annual field -->
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <!-- don't process this; it is 14 day averages
-      <component type="ocean_cobalt_budget" start="$(PP_START_YEAR)" source="ocean_cobalt_budget">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_SHORT)" />
-      </component>
-      -->
     </postProcess>
   </freInclude>
   <freInclude name="MOM6_postprocess">

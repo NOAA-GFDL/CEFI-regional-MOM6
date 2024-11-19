@@ -1,0 +1,35 @@
+# ------------- Dataset Locations and Variables ---------------
+model_grid: '../data/geography/ocean_static.nc'
+
+# ------------ Domain and General Plotting Details --------------
+
+# Xlim/ylim to plot
+x: 
+    min: -99
+    max: -35
+
+y:
+    min: 4
+    max: 59
+
+# Projection ( current options are either NorthPolarStereo or PlateCarree )
+projection_grid: 'PlateCarree'
+projection_data: 'PlateCarree'
+
+# Location of skill score annotations in plot
+text_x: -98.5
+text_y: 54
+
+# Space between skill score text
+text_xint: 4 # This is unused if col=1, so it is only included for completeness
+text_yint: 4
+plot_lat: False
+
+# --------------- Script specific settings -----------------
+#  ---- chl_eval settings
+chl_satellite: '/work/acr/occci-v6.0/oc-cci_chl_19970901_20191130_climo.nc'
+chl_start: '1997-09-01'
+chl_end: '2019-11-30'
+chl_ticks: [-4, -2, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 2, 4]
+chl_ticks_labels: ['-4', '-2', '-0.5', '0', '0.5', '2', '4']
+chl_cbar_ticks: [0.25, 0.5, 1, 2, 4, 8]

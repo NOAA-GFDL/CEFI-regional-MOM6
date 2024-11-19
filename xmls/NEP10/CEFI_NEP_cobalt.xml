@@ -57,7 +57,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="ICEPACK_GIT_TAG" value="Icepack1.3.3"/>
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NEP/2024_10"/>
+  <property name="FRE_STEM" value="fre/cefi/NEP/2024_11"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <!-- NCRC_GROUP will only have impact for your root dir and work dir on gaea c5/c6-->
@@ -145,7 +145,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
       </compile>
     </component>
 
-    <component name="Icepack" paths="mom6/src/Icepack/columnphysics" requires="fms mom6_symmetric" includeDir="$HOME/$(stem)/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
+    <component name="Icepack" paths="mom6/src/Icepack/columnphysics" requires="fms mom6_symmetric" includeDir="$root/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
       <source versionControl="git" root="https://github.com/CICE-Consortium/">
         <codeBase version="$(ICEPACK_GIT_TAG)"> Icepack.git </codeBase>
       </source>
@@ -154,7 +154,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
       </compile>
     </component>
 
-    <component name="sis2" paths="mom6/src/SIS2/config_src/dynamic_symmetric mom6/src/SIS2/src mom6/src/icebergs/src mom6/src/ice_param" requires="fms mom6_symmetric Icepack" includeDir="$HOME/$(stem)/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
+    <component name="sis2" paths="mom6/src/SIS2/config_src/dynamic_symmetric mom6/src/SIS2/src mom6/src/icebergs/src mom6/src/ice_param" requires="fms mom6_symmetric Icepack" includeDir="$root/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
         <codeBase version="$(RELEASE)"> ice_param.git </codeBase>
       </source>
@@ -568,12 +568,12 @@ $name
 $baseDate
       </diagTable>
       <dataFile label="diagTable" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/nwa-xml/diag_tables/diag_table_COBALT_2024-04</dataSource>
-        <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/nwa-xml/diag_tables/diag_table_MOM6_2024-04</dataSource>
-	<dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/nwa-xml/diag_tables/diag_table.SIS</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_COBALT_2024-04</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_MOM6_2024-04</dataSource>
-	<dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table.SIS</dataSource>
+	<dataSource site="ncrc">../NWA12/diag_tables/diag_table_CEFI_MOM6_default</dataSource>
+	<dataSource site="ncrc">../NWA12/diag_tables/diag_table_CEFI_SIS_default</dataSource>
+	<dataSource site="ncrc">../NWA12/diag_tables/diag_table_CEFI_COBALT_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_MOM6_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_SIS_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_COBALT_default</dataSource>
       </dataFile>
       <csh type='always'>
         <![CDATA[
@@ -636,8 +636,16 @@ COBALT_INPUT_EOF
       <regression name="month">
         <run months="1">
           <resources jobWallclock="04:00:00">
-            <ice                         layout = "40,40" io_layout = "1,1" mask_table="MOM_mask_table"/>
+            <ice                          layout = "40,40" io_layout = "1,1" mask_table="MOM_mask_table"/>
             <ocn ranks="1600" threads="1" layout = "40,40" io_layout = "1,1" mask_table="MOM_mask_table"/>
+          </resources>
+        </run>
+      </regression>
+      <regression name="year">
+        <run months="12">
+          <resources jobWallclock="12:00:00">
+            <ice                          layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
+            <ocn ranks="2036" threads="1" layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
           </resources>
         </run>
       </regression>
@@ -946,12 +954,6 @@ endif
         <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
-      <component type="ocean_cobalt_tracers_instant" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_instant">
-        <!-- No monthly for this because it's an annual field -->
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
       <component type="ocean_cobalt_sfc" start="$(PP_START_YEAR)" source="ocean_cobalt_sfc">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
@@ -961,17 +963,6 @@ endif
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
       <component type="ocean_cobalt_fluxes_int" start="$(PP_START_YEAR)" source="ocean_cobalt_fluxes_int">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_daily" start="$(PP_START_YEAR)" source="ocean_cobalt_daily">
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" />
-      </component>
-      <component type="ocean_cobalt_tracers_month" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
@@ -991,12 +982,6 @@ endif
   </freInclude>
   <freInclude name="COBALT_z_postprocess">
     <postProcess>
-      <component type="ocean_cobalt_omip_tracers_month_z" start="$(PP_START_YEAR)" source="ocean_cobalt_omip_tracers_month_z">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_A)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_A)"/>
-      </component>
       <component type="ocean_cobalt_tracers_month_z" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month_z">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
@@ -1004,11 +989,6 @@ endif
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
         <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_rates_year_z" start="$(PP_START_YEAR)" source="ocean_cobalt_rates_year_z">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_A)"/>
       </component>
     </postProcess>
   </freInclude>

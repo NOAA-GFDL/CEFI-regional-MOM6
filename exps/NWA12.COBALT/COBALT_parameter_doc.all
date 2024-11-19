@@ -285,15 +285,15 @@ bresp_bact = 0.0075             !   [day-1] default = 0.0075
                                 ! basal respiration rate for bacteria at 0 deg. C
 q_p_2_n_bact = 0.0625           !   [mol P mol N-1] default = 0.0625
                                 ! Bacteria P:N
-frac_mu_stress_Sm = 0.25        !   [none] default = 0.25
+frac_mu_stress_Sm = 0.4         !   [none] default = 0.4
                                 ! fraction of max growth when stress-dependent losses initiate for small
                                 ! phytoplankton
-frac_mu_stress_Di = 0.25        !   [none] default = 0.25
+frac_mu_stress_Di = 0.4         !   [none] default = 0.4
                                 ! fraction of max growth when stress-dependent losses initiate for diazotrophs
-frac_mu_stress_Lg = 0.25        !   [none] default = 0.25
+frac_mu_stress_Lg = 0.4         !   [none] default = 0.4
                                 ! fraction of max growth when stress-dependent losses initiate for large
                                 ! phytoplankton
-frac_mu_stress_Md = 0.25        !   [none] default = 0.25
+frac_mu_stress_Md = 0.4         !   [none] default = 0.4
                                 ! fraction of max growth when stress-dependent losses initiate for medium
                                 ! phytoplankton
 agg_Sm = 0.05                   !   [day-1 (micromol N kg-1)-1] default = 0.05
@@ -429,104 +429,122 @@ mswitch_mdz = 2.0               !   [none] default = 2.0
                                 ! prey switching parameter 2 for medium zooplankton
 mswitch_lgz = 2.0               !   [none] default = 2.0
                                 ! prey switching parameter 2 for large zooplankton
-gge_max_smz = 0.4               !   [unitless] default = 0.4
-                                ! gge_max_smz
-gge_max_mdz = 0.4               !   [unitless] default = 0.4
-                                ! gge_max_mdz
-gge_max_lgz = 0.4               !   [unitless] default = 0.4
-                                ! gge_max_lgz
+gge_max_smz = 0.4               !   [none] default = 0.4
+                                ! maximum gross growth efficiency for small zooplankton
+gge_max_mdz = 0.4               !   [none] default = 0.4
+                                ! maximum gross growth efficiency for medium zooplankton
+gge_max_lgz = 0.4               !   [none] default = 0.4
+                                ! maximum gross growth efficiency for large zooplankton
 bresp_smz = 0.016               !   [day-1] default = 0.016
-                                ! bresp_smz
+                                ! basal respiration rate for small zooplankton
 bresp_mdz = 0.008               !   [day-1] default = 0.008
-                                ! bresp_mdz
+                                ! basal respiration rate for medium zooplankton
 bresp_lgz = 0.0032              !   [day-1] default = 0.0032
-                                ! bresp_lgz
-phi_det_smz = 0.0               !   [unitless] default = 0.0
-                                ! phi_det_smz
-phi_det_mdz = 0.15              !   [unitless] default = 0.15
-                                ! phi_det_mdz
-phi_det_lgz = 0.3               !   [unitless] default = 0.3
-                                ! phi_det_lgz
-phi_ldon_smz = 0.1875           !   [unitless] default = 0.1875
-                                ! phi_ldon_smz
-phi_ldon_mdz = 0.09375          !   [unitless] default = 0.09375
-                                ! phi_ldon_mdz
-phi_ldon_lgz = 0.0              !   [unitless] default = 0.0
-                                ! phi_ldon_lgz
-phi_ldop_smz = 0.1725           !   [unitless] default = 0.1725
-                                ! phi_ldop_smz
-phi_ldop_mdz = 0.08625          !   [unitless] default = 0.08625
-                                ! phi_ldop_mdz
-phi_ldop_lgz = 0.0              !   [unitless] default = 0.0
-                                ! phi_ldop_lgz
-phi_srdon_smz = 0.0225          !   [unitless] default = 0.0225
-                                ! phi_srdon_smz
-phi_srdon_mdz = 0.01125         !   [unitless] default = 0.01125
-                                ! phi_srdon_mdz
-phi_srdon_lgz = 0.0             !   [unitless] default = 0.0
-                                ! phi_srdon_lgz
-phi_srdop_smz = 0.0375          !   [unitless] default = 0.0375
-                                ! phi_srdop_smz
-phi_srdop_mdz = 0.01875         !   [unitless] default = 0.01875
-                                ! phi_srdop_mdz
-phi_srdop_lgz = 0.0             !   [unitless] default = 0.0
-                                ! phi_srdop_lgz
-phi_sldon_smz = 0.09            !   [unitless] default = 0.09
-                                ! phi_sldon_smz
-phi_sldon_mdz = 0.045           !   [unitless] default = 0.045
-                                ! phi_sldon_mdz
-phi_sldon_lgz = 0.0             !   [unitless] default = 0.0
-                                ! phi_sldon_lgz
-phi_sldop_smz = 0.09            !   [unitless] default = 0.09
-                                ! phi_sldop_smz
-phi_sldop_mdz = 0.045           !   [unitless] default = 0.045
-                                ! phi_sldop_mdz
-phi_sldop_lgz = 0.0             !   [unitless] default = 0.0
-                                ! phi_sldop_lgz
-phi_ldon_vir = 0.625            !   [unitless] default = 0.625
-                                ! phi_ldon_vir
-phi_srdon_vir = 0.075           !   [unitless] default = 0.075
-                                ! phi_srdon_vir
-phi_sldon_vir = 0.3             !   [unitless] default = 0.3
-                                ! phi_sldon_vir
-phi_ldop_vir = 0.575            !   [unitless] default = 0.575
-                                ! phi_ldop_vir
-phi_srdop_vir = 0.125           !   [unitless] default = 0.125
-                                ! phi_srdop_vir
-phi_sldop_vir = 0.3             !   [unitless] default = 0.3
-                                ! phi_sldop_vir
+                                ! basal respiration rate for large zooplankton
+phi_det_smz = 0.0               !   [none] default = 0.0
+                                ! fraction of ingestion by small zooplankton to detritus
+phi_det_mdz = 0.15              !   [none] default = 0.15
+                                ! fraction of ingestion by medium zooplankton to detritus
+phi_det_lgz = 0.3               !   [none] default = 0.3
+                                ! fraction of ingestion by large zooplankton to detritus
+phi_ldon_smz = 0.1875           !   [none] default = 0.1875
+                                ! fraction of N ingestion by small zooplankton to labile dissolved organic
+                                ! nitrogen
+phi_ldon_mdz = 0.09375          !   [none] default = 0.09375
+                                ! fraction of N ingestion by medium zooplankton to labile dissolved organic
+                                ! nitrogen
+phi_ldon_lgz = 0.0              !   [none] default = 0.0
+                                ! fraction of N ingestion by large zooplankton to labile dissolved organic
+                                ! nitrogen
+phi_ldop_smz = 0.1725           !   [none] default = 0.1725
+                                ! fraction of P ingestion by small zooplankton to labile dissolved organic
+                                ! phosphorus
+phi_ldop_mdz = 0.08625          !   [none] default = 0.08625
+                                ! fraction of P ingestion by medium zooplankton to labile dissolved organic
+                                ! phosphorus
+phi_ldop_lgz = 0.0              !   [none] default = 0.0
+                                ! fraction of P ingestion by large zooplankton to labile dissolved organic
+                                ! phosphorus
+phi_srdon_smz = 0.0225          !   [none] default = 0.0225
+                                ! fraction of N ingestion by small zooplankton to semi-refractory dissolved
+                                ! organic nitrogen
+phi_srdon_mdz = 0.01125         !   [none] default = 0.01125
+                                ! fraction of N ingestion by medium zooplankton to semi-refractory dissolved
+                                ! organic nitrogen
+phi_srdon_lgz = 0.0             !   [none] default = 0.0
+                                ! fraction of N ingestion by large zooplankton to semi-refractory dissolved
+                                ! organic nitrogen
+phi_srdop_smz = 0.0375          !   [none] default = 0.0375
+                                ! fraction of P ingestion by small zooplankton to semi-refractory dissolved
+                                ! organic phosphorus
+phi_srdop_mdz = 0.01875         !   [none] default = 0.01875
+                                ! fraction of P ingestion by medium zooplankton to semi-refractory dissolved
+                                ! organic phosphorus
+phi_srdop_lgz = 0.0             !   [none] default = 0.0
+                                ! fraction of P ingestion by large zooplankton to semi-refractory dissolved
+                                ! organic phosphorus
+phi_sldon_smz = 0.09            !   [none] default = 0.09
+                                ! fraction of N ingestion by small zooplankton to semi-labile dissolved organic
+                                ! nitrogen
+phi_sldon_mdz = 0.045           !   [none] default = 0.045
+                                ! fraction of N ingestion by medium zooplankton to semi-labile dissolved organic
+                                ! nitrogen
+phi_sldon_lgz = 0.0             !   [none] default = 0.0
+                                ! fraction of N ingestion by large zooplankton to semi-labile dissolved organic
+                                ! nitrogen
+phi_sldop_smz = 0.09            !   [none] default = 0.09
+                                ! fraction of P ingestion by small zooplankton to semi-labile dissolved organic
+                                ! phosphorus
+phi_sldop_mdz = 0.045           !   [none] default = 0.045
+                                ! fraction of P ingestion by medium zooplankton to semi-labile dissolved organic
+                                ! phosphorus
+phi_sldop_lgz = 0.0             !   [none] default = 0.0
+                                ! fraction of P ingestion by large zooplankton to semi-labile dissolved organic
+                                ! phosphorus
+phi_ldon_vir = 0.625            !   [none] default = 0.625
+                                ! fraction of viral lysis of N to labile dissolved organic nitrogen
+phi_srdon_vir = 0.075           !   [none] default = 0.075
+                                ! fraction of viral lysis of N to semi-refractory dissolved organic nitrogen
+phi_sldon_vir = 0.3             !   [none] default = 0.3
+                                ! fraction of viral lysis of N to semi-labile dissolved organic nitrogen
+phi_ldop_vir = 0.575            !   [none] default = 0.575
+                                ! fraction of viral lysis of P to labile dissolved organic phosphorus
+phi_srdop_vir = 0.125           !   [none] default = 0.125
+                                ! fraction of viral lysis of P to semi-refractory dissolved organic phosphorus
+phi_sldop_vir = 0.3             !   [none] default = 0.3
+                                ! fraction of viral lysis of P to semi-labile dissolved organic phosphorus
 imax_hp = 0.09                  !   [day-1] default = 0.09
-                                ! imax_hp
+                                ! max ingestion rate for higher predators @ 0 deg. C
 ki_hp = 1.25E-06                !   [mol N kg-1] default = 1.25E-06
-                                ! ki_hp
-coef_hp = 2.0                   !   [unitless] default = 2.0
-                                ! coef_hp
-ktemp_hp = 0.063                !   [C-1] default = 0.063
-                                ! ktemp_hp
-nswitch_hp = 2.0                !   [unitless] default = 2.0
-                                ! nswitch_hp
-mswitch_hp = 2.0                !   [unitless] default = 2.0
-                                ! mswitch_hp
-hp_ipa_smp = 0.0                !   [unitless] default = 0.0
-                                ! hp_ipa_smp
-hp_ipa_mdp = 0.0                !   [unitless] default = 0.0
-                                ! hp_ipa_mdp
-hp_ipa_lgp = 0.0                !   [unitless] default = 0.0
-                                ! hp_ipa_lgp
-hp_ipa_diaz = 0.0               !   [unitless] default = 0.0
-                                ! hp_ipa_diaz
-hp_ipa_smz = 0.0                !   [unitless] default = 0.0
-                                ! hp_ipa_smz
-hp_ipa_mdz = 1.0                !   [unitless] default = 1.0
-                                ! hp_ipa_mdz
-hp_ipa_lgz = 1.0                !   [unitless] default = 1.0
-                                ! hp_ipa_lgz
-hp_ipa_bact = 0.0               !   [unitless] default = 0.0
-                                ! hp_ipa_bact
-hp_ipa_det = 0.0                !   [unitless] default = 0.0
-                                ! hp_ipa_det
-hp_phi_det = 0.35               !   [unitless] default = 0.35
-                                ! hp_phi_det
+                                ! half-sat for ingestion by higher predators
+coef_hp = 2.0                   !   [none] default = 2.0
+                                ! coefficient for higher predator losses (2=quadratic)
+ktemp_hp = 0.063                !   [deg. C-1] default = 0.063
+                                ! exponential temperature dependence of higher predator rates
+nswitch_hp = 2.0                !   [none] default = 2.0
+                                ! prey switching parameter 1 for higher predators
+mswitch_hp = 2.0                !   [none] default = 2.0
+                                ! prey switching parameter 2 for higher predators
+hp_ipa_smp = 0.0                !   [none] default = 0.0
+                                ! innate availability of small phytoplankton to higher predator feeding (0-1)
+hp_ipa_mdp = 0.0                !   [none] default = 0.0
+                                ! innate availability of medium phytoplankton to higher predator feeding (0-1)
+hp_ipa_lgp = 0.0                !   [none] default = 0.0
+                                ! innate availability of large phytoplankton to higher predator feeding (0-1)
+hp_ipa_diaz = 0.0               !   [none] default = 0.0
+                                ! innate availability of diazotrophs to higher predator feeding (0-1)
+hp_ipa_smz = 0.0                !   [none] default = 0.0
+                                ! innate availability of small zooplankton to higher predator feeding (0-1)
+hp_ipa_mdz = 1.0                !   [none] default = 1.0
+                                ! innate availability of medium zooplankton to higher predator feeding (0-1)
+hp_ipa_lgz = 1.0                !   [none] default = 1.0
+                                ! innate availability of large zooplankton to higher predator feeding (0-1)
+hp_ipa_bact = 0.0               !   [none] default = 0.0
+                                ! innate availability of bacteria to higher predator feeding (0-1)
+hp_ipa_det = 0.0                !   [none] default = 0.0
+                                ! innate availability of detritus to higher predator feeding (0-1)
+hp_phi_det = 0.35               !   [none] default = 0.35
+                                ! fraction of ingestion by higher predators to detritus
 ffe_sed_max = 170.0             !   [micromoles Fe m-2 day-1] default = 170.0
                                 ! maximum iron release from the sediment
 ffe_geotherm_ratio = 2.0E-12    !   [mol Fe m-2 s-1 (W m-2)-1] default = 2.0E-12

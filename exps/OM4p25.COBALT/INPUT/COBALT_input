@@ -1,0 +1,5 @@
+! Put the contents of your COBALT_input file here
+ca_2_n_arag = 0.035
+ca_2_n_calc = 0.025
+z_burial = 50.0
+scale_burial = 1.0		      
