@@ -55,7 +55,7 @@ jobs:
         docker run --rm \
         -v ${{ github.workspace }}:/workspace \
         -w /workspace \
-        -it noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0 \
+        noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0 \
         sh -c "ls -al && echo 'I am inside container now!'"
 
 #    - name: Build mom6solo
