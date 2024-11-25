@@ -11,12 +11,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image: noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0
-      options: --user=root
+#    container:
+#      image: noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0
+#      options: --user=root
         
-    env:
-      PR_NUMBER: ${{ github.event.number }}
+#    env:
+#      PR_NUMBER: ${{ github.event.number }}
 
     steps:        
     - name: Checkout
@@ -24,12 +24,25 @@ jobs:
       with:
         fetch-depth: 1
         submodules: recursive
-        
-    - name: Build mom6solo
-      working-directory: ./builds
+
+    - name: Clean up disk space
       run: |
-        echo "build mom6solo ..."
-        ./linux-build.bash -m docker -p linux-intel -t repro -f mom6solo
+        echo "maximize disk space on git-runner ..."
+        df -h 
+        sudo apt-get clean
+        sudo rm -rf /var/lib/apt/lists/* /tmp/* ~/.cache
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        docker system prune -af
+        df -h
+
+#    - name: Build mom6solo
+#      working-directory: ./builds
+#      run: |
+#        echo "build mom6solo ..."
+#        ./linux-build.bash -m docker -p linux-intel -t repro -f mom6solo
 
 #    - name: Download 1d model dataset
 #      working-directory: ./exps
