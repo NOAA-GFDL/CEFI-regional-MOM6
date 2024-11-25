@@ -38,7 +38,7 @@ jobs:
         docker system prune -af
         df -h
 
-    - name:Set up Docker
+    - name: Set up Docker
       uses: docker/setup-buildx-action@v3
 
     - name: Download Image
