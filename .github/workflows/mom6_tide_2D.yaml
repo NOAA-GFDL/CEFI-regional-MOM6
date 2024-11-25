@@ -38,6 +38,16 @@ jobs:
         docker system prune -af
         df -h
 
+    - name:Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Download Image
+      run: |
+        echo "Pull the Image ..."
+        docker pull noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0
+        docker images        
+        df -h
+
 #    - name: Build mom6solo
 #      working-directory: ./builds
 #      run: |
