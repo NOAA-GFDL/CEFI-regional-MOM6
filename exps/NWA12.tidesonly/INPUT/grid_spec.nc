@@ -1,1 +1,1 @@
-../../datasets/nwa12_input/grid_spec.nc
+../../datasets/nwa12_tide_input/grid_spec.nc
