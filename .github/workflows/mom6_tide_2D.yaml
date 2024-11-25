@@ -56,11 +56,13 @@ jobs:
         -v ${{ github.workspace }}:/workspace \
         -w /workspace \
         noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0 \
-        sh -c "cd builds/ && ./linux-build.bash -m docker -p linux-intel -t repro -f mom6solo \
-        && ../exps \
-        &&  wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_tideonly_ci_datasets.tar.gz && tar -zxvf nwa12_tideonly_ci_datasets.tar.gz \
-        && cd NWA12.tidesonly && mpirun -np 4 ../../builds/build/gaea-ncrc6.intel23/ocean_only/repro/MOM6 \
-        && diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different."; echo "Plz check."; exit 1; }"
+        sh -c "cd builds/;
+        ./linux-build.bash -m docker -p linux-intel -t repro -f mom6solo;
+        cd ../exps;
+        wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_tideonly_ci_datasets.tar.gz && tar -zxvf nwa12_tideonly_ci_datasets.tar.gz;
+        cd NWA12.tidesonly;
+        mpirun -np 4 ../../builds/build/gaea-ncrc6.intel23/ocean_only/repro/MOM6;
+        diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different."; echo "Plz check."; exit 1; }"
 
 #    - name: Build mom6solo
 #      working-directory: ./builds
