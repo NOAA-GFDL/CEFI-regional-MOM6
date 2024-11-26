@@ -63,7 +63,7 @@ jobs:
         cd NWA12.tidesonly;
         source /root/.bashenv
         mpirun -np 4 ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6;
-        diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different."; echo "Plz check."; exit 1; }"
+        diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats"
 
 #    - name: Build mom6solo
 #      working-directory: ./builds
