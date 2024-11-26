@@ -61,7 +61,7 @@ jobs:
         cd ../exps;
         wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_tideonly_ci_datasets.tar.gz && tar -zxvf nwa12_tideonly_ci_datasets.tar.gz;
         cd NWA12.tidesonly;
-        mpirun --allow-run-as-root -np 4 ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6;
+        mpirun -np 4 ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6;
         diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats > /dev/null || { echo "Error: ocean.stats are different."; echo "Plz check."; exit 1; }"
 
 #    - name: Build mom6solo
