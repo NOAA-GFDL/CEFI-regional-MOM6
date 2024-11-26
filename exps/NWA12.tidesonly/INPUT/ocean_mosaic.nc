@@ -1,1 +1,1 @@
-../../datasets/nwa12_input/ocean_mosaic.nc
+../../datasets/nwa12_tide_input/ocean_mosaic.nc

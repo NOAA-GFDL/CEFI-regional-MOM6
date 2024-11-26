@@ -114,7 +114,7 @@ CFLAGS := -traceback
 # Flags based on perforance target (production (OPT), reproduction (REPRO), or debug (DEBUG)
 CFLAGS_OPT = -O2 -debug minimal
 CFLAGS_REPRO = -O2 -debug minimal
-CFLAGS_DEBUG = -O0 -g -ftrapuv
+CFLAGS_DEBUG = -O0 -g -ftrapv
 
 # Flags to add additional build options
 CFLAGS_OPENMP = -qopenmp
