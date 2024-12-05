@@ -690,15 +690,23 @@ COBALT_INPUT_EOF
     <postProcess>
       <csh><![CDATA[
          cd $work
-         #Make a directory to trick FRE to pick up and archive in ascii
-	 mkdir extra.results
-         mv *velocity_truncations MOM_parameter_doc* SIS_parameter_doc* COBALT_parameter_doc* seaice.stats* ocean.stats* extra.results/
-	 cp diag_table INPUT/*_input INPUT/*_override INPUT/*.xml extra.results/.
-         cp $scriptName extra.results/runscript.csh
-	 #When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
-         #This causes problems for ferret and python tools for analysis.
-         #Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scipts .
-         cp $work/INPUT/ocean_static_no_mask_table.nc $work/ocean_static.nc
+         # Make a directory to trick FRE to pick up and archive the stats files in ascii
+         mkdir extra.results
+         mv seaice.stats* ocean.stats* *velocity_truncations extra.results/
+         # Also archive an assortment of model input files and model metadata
+         mkdir metadata.out
+         mv MOM_parameter_doc* SIS_parameter_doc* COBALT_parameter_doc* metadata.out/
+         cp diag_table input.nml metadata.out/
+         cp INPUT/*_input INPUT/*_override metadata.out/
+         # Save the Git commit hash for each source code submodule
+         git -C $root/$(LIBS_ROOT)/src/mom6 submodule status --recursive > metadata.out/git_submodule_status
+         # Archive a copy of the xml used to run the model and the run scipt (fre sets these)
+         cp $rtsxml metadata.out/
+         cp $scriptName metadata.out/runscript.csh
+         # When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
+         # This causes problems for ferret and python tools for analysis.
+         # Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scipts.
+         cp $work/INPUT/ocean_static_no_mask_table.nc $work/
       ]]></csh>
       <xi:include xpointer="xpointer(//freInclude[@name='MOM6_postprocess']/postProcess/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='COBALT_postprocess']/postProcess/node())"/>
