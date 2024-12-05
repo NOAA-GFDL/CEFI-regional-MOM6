@@ -3,6 +3,16 @@
 ! === module COBALT ===
 init = False                    !   [Boolean] default = False
                                 ! init
+htotal_in = 1.0E-08             ! default = 1.0E-08
+                                ! htotal_in
+wsink = 100.0                   !   [m day-1] default = 100.0
+                                ! wsink
+ice_restart_file = "ice_cobalt.res.nc" ! default = "ice_cobalt.res.nc"
+                                ! ice_restart_file
+ocean_restart_file = "ocean_cobalt.res.nc" ! default = "ocean_cobalt.res.nc"
+                                ! ocean_restart_file
+IC_file = ""                    ! default = ""
+                                ! IC_file
 htotal_scale_lo = 0.01          ! default = 0.01
                                 ! scaling factor for initializing carbon chemistry solver
 htotal_scale_hi = 100.0         ! default = 100.0
@@ -663,3 +673,15 @@ o2_min_nit = 1.0E-08            !   [mol O2 kg-1] default = 1.0E-08
                                 ! o2_min_nit
 tracer_debug = False            !   [Boolean] default = False
                                 ! tracer_debug
+
+! === module MOM_file_parser ===
+SEND_LOG_TO_STDOUT = False      !   [Boolean] default = False
+                                ! If true, all log messages are also sent to stdout.
+DOCUMENT_FILE = "COBALT_parameter_doc" ! default = "MOM_parameter_doc"
+                                ! The basename for files where run-time parameters, their settings, units and
+                                ! defaults are documented. Blank will disable all parameter documentation.
+COMPLETE_DOCUMENTATION = True   !   [Boolean] default = True
+                                ! If true, all run-time parameters are documented in COBALT_parameter_doc.all .
+MINIMAL_DOCUMENTATION = True    !   [Boolean] default = True
+                                ! If true, non-default run-time parameters are documented in
+                                ! COBALT_parameter_doc.short .
