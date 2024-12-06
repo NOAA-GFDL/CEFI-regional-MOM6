@@ -597,6 +597,8 @@ DT_OBC_SEG_UPDATE_OBGC = 1800
 #override PHA_MLD_DRHO = 0.03
 #override HREF_FOR_MLD = 10.0
 #override DIAG_MLD_DENSITY_DIFF = 0.03
+#override U_TRUNC_FILE = "U.velocity_truncations"
+#override V_TRUNC_FILE = "V.velocity_truncations"
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override

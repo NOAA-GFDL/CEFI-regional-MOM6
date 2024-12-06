@@ -604,6 +604,8 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override DIAG_MLD_DENSITY_DIFF = 0.03
 #override VISC_REM_BUG = True
 #override GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc"
+#override U_TRUNC_FILE = "U.velocity_truncations"
+#override V_TRUNC_FILE = "V.velocity_truncations"
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override
