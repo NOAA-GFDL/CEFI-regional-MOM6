@@ -711,7 +711,7 @@ diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
          # When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
          # This causes problems for ferret and python tools for analysis.
          # Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scripts.
-         cp $work/INPUT/ocean_static_no_mask_table.nc $work/
+         cp $work/INPUT/ocean_static_no_mask_table.nc $work/ocean_static.nc
       ]]></csh>
       <xi:include xpointer="xpointer(//freInclude[@name='MOM6_postprocess']/postProcess/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='COBALT_postprocess']/postProcess/node())"/>
