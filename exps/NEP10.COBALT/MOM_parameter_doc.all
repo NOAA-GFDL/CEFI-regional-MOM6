@@ -370,7 +370,7 @@ REMAPPING_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! Values below 20190101 result in the use of older, less accurate expressions
                                 ! that were in use at the end of 2018.  Higher values result in the use of more
                                 ! robust and accurate forms of mathematically equivalent expressions.
-OBC_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
+OBC_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = False
                                 ! If true, use the OM4 remapping-via-subcells algorithm for neutral diffusion.
                                 ! See REMAPPING_USE_OM4_SUBCELLS for more details. We recommend setting this
                                 ! option to false.
@@ -728,7 +728,7 @@ OBC_USER_CONFIG = "none"        ! default = "none"
 NUM_DIAG_COORDS = 1             ! default = 1
                                 ! The number of diagnostic vertical coordinates to use. For each coordinate, an
                                 ! entry in DIAG_COORDS must be provided.
-DIAG_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
+DIAG_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = False
                                 ! If true, use the OM4 remapping-via-subcells algorithm for diagnostics. See
                                 ! REMAPPING_USE_OM4_SUBCELLS for details. We recommend setting this option to
                                 ! false.
@@ -1281,11 +1281,6 @@ USE_ZB2020 = False              !   [Boolean] default = False
                                 ! mesoscale eddies.
 
 ! === module MOM_hor_visc ===
-HOR_VISC_ANSWER_DATE = 99991231 ! default = 99991231
-                                ! The vintage of the order of arithmetic and expressions in the horizontal
-                                ! viscosity calculations.  Values below 20190101 recover the answers from the
-                                ! end of 2018, while higher values use updated and more robust forms of the same
-                                ! expressions.
 USE_CONT_THICKNESS = False      !   [Boolean] default = False
                                 ! If true, use thickness at velocity points from continuity solver. This option
                                 ! currently only works with split mode.
@@ -1615,7 +1610,7 @@ INTERNAL_WAVE_SPEED_MIN = 0.0   !   [m s-1] default = 0.0
 INTERNAL_WAVE_SPEED_BETTER_EST = True !   [Boolean] default = True
                                 ! If true, use a more robust estimate of the first mode wave speed as the
                                 ! starting point for iterations.
-INTWAVE_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
+INTWAVE_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = False
                                 ! If true, use the OM4 remapping-via-subcells algorithm for calculating EBT
                                 ! structure. See REMAPPING_USE_OM4_SUBCELLS for details. We recommend setting
                                 ! this option to false.

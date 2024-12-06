@@ -159,10 +159,6 @@ OBC_TRACER_RESERVOIR_LENGTH_SCALE_IN = 9000.0 !   [m] default = 0.0
                                 ! boundaries to values from the interior when the flow is entering the domain.
 BRUSHCUTTER_MODE = True         !   [Boolean] default = False
                                 ! If true, read external OBC data on the supergrid.
-OBC_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
-                                ! If true, use the OM4 remapping-via-subcells algorithm for neutral diffusion.
-                                ! See REMAPPING_USE_OM4_SUBCELLS for more details. We recommend setting this
-                                ! option to false.
 OBC_TIDE_CONSTITUENTS = "M2,S2,N2,K2,K1,O1,P1,Q1,MM,MF" !
                                 ! Names of tidal constituents being added to the open boundaries.
 OBC_TIDE_ADD_EQ_PHASE = True    !   [Boolean] default = False
@@ -290,10 +286,6 @@ OBC_SEGMENT_004_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos
                                 ! OBC segment docs
 
 ! === module MOM_diag_mediator ===
-DIAG_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
-                                ! If true, use the OM4 remapping-via-subcells algorithm for diagnostics. See
-                                ! REMAPPING_USE_OM4_SUBCELLS for details. We recommend setting this option to
-                                ! false.
 DIAG_COORD_DEF_Z = "FILE:diag_dz.nc,dz" ! default = "WOA09"
                                 ! Determines how to specify the coordinate resolution. Valid options are:
                                 !  PARAM       - use the vector-parameter DIAG_COORD_RES_Z
@@ -518,10 +510,6 @@ MLE_USE_PBL_MLD = True          !   [Boolean] default = False
                                 ! density difference with the surface using the parameter MLE_DENSITY_DIFF.
 
 ! === module MOM_diagnostics ===
-INTWAVE_REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
-                                ! If true, use the OM4 remapping-via-subcells algorithm for calculating EBT
-                                ! structure. See REMAPPING_USE_OM4_SUBCELLS for details. We recommend setting
-                                ! this option to false.
 
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
