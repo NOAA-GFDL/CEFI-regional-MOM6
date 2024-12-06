@@ -694,10 +694,7 @@ COBALT_INPUT_EOF
     <postProcess>
       <csh><![CDATA[
          cd $work
-         # Make a directory to trick FRE to pick up and archive the stats files in ascii
-         mkdir extra.results
-         mv seaice.stats* ocean.stats* *velocity_truncations extra.results/
-         # Also archive an assortment of model input files and model metadata
+         # Archive an assortment of model input files and model metadata
          mkdir metadata.out
          mv MOM_parameter_doc* SIS_parameter_doc* COBALT_parameter_doc* metadata.out/
          cp diag_table input.nml metadata.out/
