@@ -105,7 +105,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc5.intel23'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc5-intel23'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc6.intel23'])"/>
-    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>    
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>
   </setup>
 
   <!--= COMPILE =-->
@@ -586,7 +586,7 @@ DT_OBC_SEG_UPDATE_OBGC = 1800
 #override CHL_FROM_FILE = False
 #override DO_GEOTHERMAL = True
 #override GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc"
-#override EPBL_ANSWER_DATE = 20231231		     
+#override EPBL_ANSWER_DATE = 20231231
 #override MLD_ITERATION_GUESS = False
 #override REMAP_AUXILIARY_VARS = True
 #override DIABATIC_FIRST = False
@@ -595,7 +595,7 @@ DT_OBC_SEG_UPDATE_OBGC = 1800
 #override PHA_MLD_USE_DELTA_RHO = True
 #override PHA_MLD_HREF = 10.0
 #override PHA_MLD_DRHO = 0.03
-#override HREF_FOR_MLD = 10.0 
+#override HREF_FOR_MLD = 10.0
 #override DIAG_MLD_DENSITY_DIFF = 0.03
 MOM_OVERRIDE_EOF
 
@@ -617,7 +617,7 @@ z_burial = 20.0
 z_denit = 20.0
 COBALT_INPUT_EOF
 
-#hack to test yaml diag_table, convert the diag_table to yaml format 
+#hack to test yaml diag_table, convert the diag_table to yaml format
 diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
         ]]>
       </csh>
@@ -705,12 +705,12 @@ diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
          cp INPUT/*_input INPUT/*_override metadata.out/
          # Save the Git commit hash for each source code submodule
          git -C $root/$(LIBS_ROOT)/src/mom6 submodule status --recursive > metadata.out/git_submodule_status
-         # Archive a copy of the xml used to run the model and the run scipt (fre sets these)
+         # Archive a copy of the xml used to run the model and the run script (fre sets these)
          cp $rtsxml metadata.out/
          cp $scriptName metadata.out/runscript.csh
          # When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
          # This causes problems for ferret and python tools for analysis.
-         # Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scipts.
+         # Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scripts.
          cp $work/INPUT/ocean_static_no_mask_table.nc $work/
       ]]></csh>
       <xi:include xpointer="xpointer(//freInclude[@name='MOM6_postprocess']/postProcess/node())"/>

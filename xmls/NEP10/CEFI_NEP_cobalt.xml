@@ -107,7 +107,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc5.intel23'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc5-intel23'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc6.intel23'])"/>
-    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>    
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>
   </setup>
 
   <!--= COMPILE =-->
@@ -600,7 +600,7 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override PHA_MLD_USE_DELTA_RHO = True
 #override PHA_MLD_HREF = 10.0
 #override PHA_MLD_DRHO = 0.03
-#override HREF_FOR_MLD = 5.0 
+#override HREF_FOR_MLD = 5.0
 #override DIAG_MLD_DENSITY_DIFF = 0.03
 #override VISC_REM_BUG = True
 #override GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc"
@@ -681,8 +681,8 @@ COBALT_INPUT_EOF
         <run days="2">
           <resources jobWallclock="01:00:00">
             <ice                         layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
-            <ocn ranks="2036" threads="1" layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>          
-          </resources>                                                                                       
+            <ocn ranks="2036" threads="1" layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
+          </resources>
         </run>
       </regression>
     </runtime>
@@ -700,17 +700,17 @@ COBALT_INPUT_EOF
          cp INPUT/*_input INPUT/*_override metadata.out/
          # Save the Git commit hash for each source code submodule
          git -C $root/$(LIBS_ROOT)/src/mom6 submodule status --recursive > metadata.out/git_submodule_status
-         # Archive a copy of the xml used to run the model and the run scipt (fre sets these)
+         # Archive a copy of the xml used to run the model and the run script (fre sets these)
          cp $rtsxml metadata.out/
          cp $scriptName metadata.out/runscript.csh
          # When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
          # This causes problems for ferret and python tools for analysis.
-         # Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scipts.
+         # Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scripts.
          cp $work/INPUT/ocean_static_no_mask_table.nc $work/
       ]]></csh>
       <xi:include xpointer="xpointer(//freInclude[@name='MOM6_postprocess']/postProcess/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='COBALT_postprocess']/postProcess/node())"/>
-      <xi:include xpointer="xpointer(//freInclude[@name='COBALT_z_postprocess']/postProcess/node())"/>	    
+      <xi:include xpointer="xpointer(//freInclude[@name='COBALT_z_postprocess']/postProcess/node())"/>
     </postProcess>
 
   </experiment>
@@ -806,7 +806,7 @@ ln -sf nep_10km_glorys_obcs_${fyear}.nc obcs.nc
 ln -sf glorys_monthly_NEP_sponge_${fyear}_clim.nc  nep_10k_glorys_mnClim.nc
 
 if ( $(target) == 'debug' ) then
-echo "we are testing in debug mode. Need to re-create grid masks!"      
+echo "we are testing in debug mode. Need to re-create grid masks!"
 cd $work/INPUT
 rm -rf $work/INPUT/ocean_mask.nc
 rm -rf $work/INPUT/ocean_mosaic.nc
@@ -817,7 +817,7 @@ make_solo_mosaic --num_tiles 1 --dir . --mosaic_name ocean_mosaic --tile_file oc
 make_quick_mosaic --input_mosaic ocean_mosaic.nc --mosaic_name grid_spec --ocean_topog ocean_topog.nc
 ln -fs $work/INPUT/ocean_topog.nc $work/INPUT/topog.nc
 endif
-        
+
       ]]>
       </csh>
     </input>
