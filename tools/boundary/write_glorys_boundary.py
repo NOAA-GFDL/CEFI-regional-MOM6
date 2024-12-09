@@ -52,11 +52,13 @@ def write_year(year, glorys_dir, segments, variables, is_first_year=False, is_la
                 seg.regrid_tracer(glorys['zos'], suffix=year, flood=False)
 
 
-def ncrcat_years(nsegments, output_dir, variables):            
-    for var in variables:
-        for seg in range(1, nsegments+1):
-            run([f'ncrcat -O {var}_{seg:03d}_* {var}_{seg:03d}.nc'], cwd=output_dir, shell=True)
+def ncrcat_years(nsegments, output_dir, variables, ncrcat_names):
+    if not ncrcat_names:
+        ncrcat_names = variables[:]
 
+    for var,var_name in zip(variables,ncrcat_names):
+        for seg in range(1, nsegments+1):
+            run([f'ncrcat -O {var}_{seg:03d}_* {var_name}_{seg:03d}.nc'], cwd=output_dir, shell=True)
 
 def main(config_file):
     # Load configuration from YAML file
@@ -69,6 +71,7 @@ def main(config_file):
     output_dir = config.get('output_dir', './outputs')
     hgrid_file = config.get('hgrid', '../../datasets/grid/ocean_hgrid.nc')
     ncrcat_years_flag = config.get('ncrcat_years', False)
+    ncrcat_names = config.get('ncrcat_names', [])
 
     # Create output directory if it doesn't exist
     if not path.exists(output_dir):
@@ -92,7 +95,11 @@ def main(config_file):
 
     # Optional step: ncrcat_years
     if ncrcat_years_flag:
-        ncrcat_years(len(segments), output_dir, variables)
+        assert len(ncrcat_names) == len(variables), ("Could not concatenate annual files because the the "
+                                                     "number of file output names did not match the number "
+                                                     "of variables provided. Please concatenate the files manually.")
+
+        ncrcat_years(len(segments), output_dir, variables, ncrcat_names)
 
 if __name__ == '__main__':
     # Set default config file name
