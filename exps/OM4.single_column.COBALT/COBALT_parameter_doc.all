@@ -549,18 +549,6 @@ hp_ipa_det = 0.0                !   [none] default = 0.0
                                 ! innate availability of detritus to higher predator feeding (0-1)
 hp_phi_det = 0.35               !   [none] default = 0.35
                                 ! fraction of ingestion by higher predators to detritus
-ffe_sed_max = 170.0             !   [micromoles Fe m-2 day-1] default = 170.0
-                                ! maximum iron release from the sediment
-ffe_geotherm_ratio = 2.0E-12    !   [mol Fe m-2 s-1 (W m-2)-1] default = 2.0E-12
-                                ! iron release per unit of geothermal heat
-jfe_iceberg_ratio = 1.0E-07     !   [mol Fe kg-1 ice melt] default = 1.0E-07
-                                ! iron release per kg of ice melt
-jno3_iceberg_ratio = 2.0E-06    !   [mol N kg-1 ice melt] default = 2.0E-06
-                                ! nitrate release per kg of ice melt
-jpo4_iceberg_ratio = 1.1E-07    !   [mol P kg-1 ice melt] default = 1.1E-07
-                                ! phosphate release per kg of ice melt
-fe_coast = 0.0                  !   [m-1] default = 0.0
-                                ! coastal iron flux parameter
 half_life_14c = 5730.0          !   [s] default = 5730.0
                                 ! half_life_14c
 lambda_14c = 1.209680943385594E-04 !   [-s] default = 1.209680943385594E-04
@@ -622,57 +610,71 @@ kfe_eq_lig_ll = 1.0E+12         !   [(mol lig-1 kg)-1] default = 1.0E+12
 kfe_eq_lig_hl = 1.0E+09         !   [(mol lig-1 kg)-1] default = 1.0E+09
                                 ! high light ligand binding strength
 bottom_thickness = 1.0          !   [m] default = 1.0
-                                ! effective bottom layer thickness for calculating rates of benthic processes
-z_sed = 0.1                     !   [m] default = 0.1
-                                ! effective sediment layer thickness
+                                ! bottom ocean layer thickness for calculating tracer concentrations impacting
+                                ! benthic processes
 z_burial = 10.0                 !   [m] default = 10.0
                                 ! depth scale for ramping up particulate organic burial
 z_denit = 10.0                  !   [m] default = 10.0
                                 ! depth scale for ramping up benthic denitrification
 scale_burial = 0.0              !   [none] default = 0.0
                                 ! scaling factor for particulate organic burial
+z_sed = 0.1                     !   [m] default = 0.1
+                                ! effective sediment layer thickness for calcite cycling calculations
+phi_surfresp_cased = 0.14307    !   [unitless] default = 0.14307
+                                ! surface calcite dissolution efficiency
+phi_deepresp_cased = 4.1228     !   [none] default = 4.1228
+                                ! coefficient controlling reduction of pore water calcite saturation from slow
+                                ! organic matter respiration
+alpha_cased = 2.7488            !   [none] default = 2.7488
+                                ! undersaturation nonlinear exponent for sediment calcite dissolution
+beta_cased = -2.2185            !   [none] default = -2.2185
+                                ! dissolution length-scale nonlinear exponent for sediment calcite
+gamma_cased = 0.03607           !   [year-1] default = 0.03607
+                                ! sediment calcite dissolution rate constant
+Co_cased = 8100.0               !   [mol m-3] default = 8100.0
+                                ! Calcite concentration for pure calcite sediment
 cased_steady = False            !   [Boolean] default = False
                                 ! cased_steady
-phi_surfresp_cased = 0.14307    !   [unitless] default = 0.14307
-                                ! phi_surfresp_cased
-phi_deepresp_cased = 4.1228     !   [unitless] default = 4.1228
-                                ! phi_deepresp_cased
-alpha_cased = 2.7488            !   [unitless] default = 2.7488
-                                ! alpha_cased
-beta_cased = -2.2185            !   [unitless] default = -2.2185
-                                ! beta_cased
-gamma_cased = 0.03607           !   [year-1] default = 0.03607
-                                ! gamma_cased
-Co_cased = 8100.0               !   [mol m-3] default = 8100.0
-                                ! Co_cased
-gamma_srdon = 10.0              !   [1/(default*spery)] default = 10.0
-                                ! gamma_srdon
-gamma_srdop = 4.0               !   [1/(default*spery)] default = 4.0
-                                ! gamma_srdop
-gamma_sldon = 90.0              !   [1/(default*sperd)] default = 90.0
-                                ! gamma_sldon
-gamma_sldop = 90.0              !   [1/(default*sperd)] default = 90.0
-                                ! gamma_sldop
-doc_background = 4.0E-05        !   [uM] default = 4.0E-05
-                                ! doc_background
-gamma_nitrif = 30.0             !   [gamma_nitrif /(default*sperd)] default = 30.0
-                                ! gamma_nitrif
-knh4_nitrif = 3.1E-09           !   [mol kg-1] default = 3.1E-09
-                                ! knh4_nitrif
+ffe_sed_max = 170.0             !   [micromoles Fe m-2 day-1] default = 170.0
+                                ! maximum iron release from the sediment
+ffe_geotherm_ratio = 2.0E-12    !   [mol Fe m-2 s-1 (W m-2)-1] default = 2.0E-12
+                                ! iron release per unit of geothermal heat
+fe_coast = 0.0                  !   [m-1] default = 0.0
+                                ! coastal iron flux parameter
+jfe_iceberg_ratio = 1.0E-07     !   [mol Fe kg-1 ice melt] default = 1.0E-07
+                                ! iron release per kg of ice melt
+jno3_iceberg_ratio = 2.0E-06    !   [mol N kg-1 ice melt] default = 2.0E-06
+                                ! nitrate release per kg of ice melt
+jpo4_iceberg_ratio = 1.1E-07    !   [mol P kg-1 ice melt] default = 1.1E-07
+                                ! phosphate release per kg of ice melt
+gamma_srdon = 0.1               !   [years-1] default = 0.1
+                                ! rate constant for converting semi-refractory DON to labile DON
+gamma_srdop = 0.25              !   [years-1] default = 0.25
+                                ! rate constant for converting semi-refractory DOP to labile DOP
+gamma_sldon = 0.0111111111111111 !   [day-1] default = 0.0111111111111111
+                                ! rate constant for converting semi-labile DON to labile DON at 0 deg. C
+gamma_sldop = 0.0111111111111111 !   [day-1] default = 0.0111111111111111
+                                ! rate constant for converting semi-labile DOP to labile DOP at 0 deg. C
+doc_background = 4.0E-05        !   [moles kg-1] default = 4.0E-05
+                                ! background refractory dissolved organic carbon concentration
+gamma_nitrif = 1.3503086419753085 !   [(moles kg)-1 sec-1] default = 1.3503086419753085
+                                ! nitrification rate constant
+knh3_nitrif = 3.1E-09           !   [mol kg-1] default = 3.1E-09
+                                ! nitrification half-saturation
 irr_inhibit = 10.0              !   [W m-2] default = 10.0
-                                ! irr_inhibit
+                                ! half-saturation for light inhibition of nitrification
+k_o2_nit = 3.9E-06              !   [mol O2 kg-1] default = 3.9E-06
+                                ! oxygen half-saturation constant for nitrification
+o2_min_nit = 1.0E-08            !   [mol O2 kg-1] default = 1.0E-08
+                                ! Minimum oxygen level for nitrification
 gamma_nh4amx = 0.0              !   [day-1] default = 0.0
-                                ! gamma_nh4amx
-o2_min_amx = 4.0E-06            !   [mol O2 kg-1] default = 4.0E-06
-                                ! o2_min_amx
+                                ! annamox rate constant
+o2_max_amx = 4.0E-06            !   [mol O2 kg-1] default = 4.0E-06
+                                ! maximum o2 concentration for anammox to occur
 k_no3_amx = 1.0E-06             !   [mol NO3 kg-1] default = 1.0E-06
                                 ! nitrate half-saturation for anammox
-k_o2_nit = 3.9E-06              !   [mol O2 kg-1] default = 3.9E-06
-                                ! k_o2_nit
-o2_min_nit = 1.0E-08            !   [mol O2 kg-1] default = 1.0E-08
-                                ! o2_min_nit
 tracer_debug = False            !   [Boolean] default = False
-                                ! tracer_debug
+                                ! flag for tracer debug operations
 
 ! === module MOM_file_parser ===
 SEND_LOG_TO_STDOUT = False      !   [Boolean] default = False

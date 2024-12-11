@@ -314,25 +314,25 @@ OBC_TIDE_N_CONSTITUENTS = 10    ! default = 0
                                 ! Number of tidal constituents being added to the open boundary.
 OBC_SEGMENT_001 = "J=N,I=N:0,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_002 = "I=N,J=0:N,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_002_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_002_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_003 = "J=0,I=0:N,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_003_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_003_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_004 = "I=0,J=N:0,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_004_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_004_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
@@ -384,43 +384,43 @@ OBC_TIDE_REF_DATE = 1993, 1, 1  !
                                 ! Reference date to use for tidal calculations and equilibrium phase.
 OBC_TIDE_NODAL_REF_DATE = 1993, 7, 2 ! default = 0
                                 ! Fixed reference date to use for nodal modulation of boundary tides.
-TIDE_M2_FREQ = 1.405189E-04     !   [s-1] default = 1.405189E-04
+TIDE_M2_FREQ = 1.405189E-04     !   [rad s-1] default = 1.405189E-04
                                 ! Frequency of the M2 tidal constituent. This is only used if TIDES and TIDE_M2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and M2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_S2_FREQ = 1.454441E-04     !   [s-1] default = 1.454441E-04
+TIDE_S2_FREQ = 1.454441E-04     !   [rad s-1] default = 1.454441E-04
                                 ! Frequency of the S2 tidal constituent. This is only used if TIDES and TIDE_S2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and S2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_N2_FREQ = 1.378797E-04     !   [s-1] default = 1.378797E-04
+TIDE_N2_FREQ = 1.378797E-04     !   [rad s-1] default = 1.378797E-04
                                 ! Frequency of the N2 tidal constituent. This is only used if TIDES and TIDE_N2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and N2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_K2_FREQ = 1.4584234E-04    !   [s-1] default = 1.4584234E-04
+TIDE_K2_FREQ = 1.4584234E-04    !   [rad s-1] default = 1.4584234E-04
                                 ! Frequency of the K2 tidal constituent. This is only used if TIDES and TIDE_K2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and K2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_K1_FREQ = 7.292117E-05     !   [s-1] default = 7.292117E-05
+TIDE_K1_FREQ = 7.292117E-05     !   [rad s-1] default = 7.292117E-05
                                 ! Frequency of the K1 tidal constituent. This is only used if TIDES and TIDE_K1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and K1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_O1_FREQ = 6.759774E-05     !   [s-1] default = 6.759774E-05
+TIDE_O1_FREQ = 6.759774E-05     !   [rad s-1] default = 6.759774E-05
                                 ! Frequency of the O1 tidal constituent. This is only used if TIDES and TIDE_O1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and O1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_P1_FREQ = 7.252295E-05     !   [s-1] default = 7.252295E-05
+TIDE_P1_FREQ = 7.252295E-05     !   [rad s-1] default = 7.252295E-05
                                 ! Frequency of the P1 tidal constituent. This is only used if TIDES and TIDE_P1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and P1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_Q1_FREQ = 6.495854E-05     !   [s-1] default = 6.495854E-05
+TIDE_Q1_FREQ = 6.495854E-05     !   [rad s-1] default = 6.495854E-05
                                 ! Frequency of the Q1 tidal constituent. This is only used if TIDES and TIDE_Q1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and Q1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_MM_FREQ = 2.6392E-06       !   [s-1] default = 2.6392E-06
+TIDE_MM_FREQ = 2.6392E-06       !   [rad s-1] default = 2.6392E-06
                                 ! Frequency of the MM tidal constituent. This is only used if TIDES and TIDE_MM
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and MM is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_MF_FREQ = 5.3234E-06       !   [s-1] default = 5.3234E-06
+TIDE_MF_FREQ = 5.3234E-06       !   [rad s-1] default = 5.3234E-06
                                 ! Frequency of the MF tidal constituent. This is only used if TIDES and TIDE_MF
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and MF is in
                                 ! OBC_TIDE_CONSTITUENTS.
@@ -1666,7 +1666,7 @@ EVAP_CFL_LIMIT = 0.8            !   [nondim] default = 0.8
                                 ! The largest fraction of a layer than can be lost to forcing (e.g. evaporation,
                                 ! sea-ice formation) in one time-step. The unused mass loss is passed down
                                 ! through the column.
-MLD_EN_VALS = 3*0.0             !   [J/m2] default = 0.0
+MLD_EN_VALS = 25.0, 2500.0, 2.5E+05 !   [J/m2] default = 25.0, 2500.0, 2.5E+05
                                 ! The energy values used to compute MLDs.  If not set (or all set to 0.), the
                                 ! default will overwrite to 25., 2500., 250000.
 DIAG_MLD_DENSITY_DIFF = 0.03    !   [kg/m3] default = 0.1

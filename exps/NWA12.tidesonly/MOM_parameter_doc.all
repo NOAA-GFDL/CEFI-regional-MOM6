@@ -345,43 +345,43 @@ OBC_TIDE_REF_DATE = 1993, 1, 1  !
                                 ! Reference date to use for tidal calculations and equilibrium phase.
 OBC_TIDE_NODAL_REF_DATE = 0, 0, 0 ! default = 0
                                 ! Fixed reference date to use for nodal modulation of boundary tides.
-TIDE_M2_FREQ = 1.405189E-04     !   [s-1] default = 1.405189E-04
+TIDE_M2_FREQ = 1.405189E-04     !   [rad s-1] default = 1.405189E-04
                                 ! Frequency of the M2 tidal constituent. This is only used if TIDES and TIDE_M2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and M2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_S2_FREQ = 1.454441E-04     !   [s-1] default = 1.454441E-04
+TIDE_S2_FREQ = 1.454441E-04     !   [rad s-1] default = 1.454441E-04
                                 ! Frequency of the S2 tidal constituent. This is only used if TIDES and TIDE_S2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and S2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_N2_FREQ = 1.378797E-04     !   [s-1] default = 1.378797E-04
+TIDE_N2_FREQ = 1.378797E-04     !   [rad s-1] default = 1.378797E-04
                                 ! Frequency of the N2 tidal constituent. This is only used if TIDES and TIDE_N2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and N2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_K2_FREQ = 1.4584234E-04    !   [s-1] default = 1.4584234E-04
+TIDE_K2_FREQ = 1.4584234E-04    !   [rad s-1] default = 1.4584234E-04
                                 ! Frequency of the K2 tidal constituent. This is only used if TIDES and TIDE_K2
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and K2 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_K1_FREQ = 7.292117E-05     !   [s-1] default = 7.292117E-05
+TIDE_K1_FREQ = 7.292117E-05     !   [rad s-1] default = 7.292117E-05
                                 ! Frequency of the K1 tidal constituent. This is only used if TIDES and TIDE_K1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and K1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_O1_FREQ = 6.759774E-05     !   [s-1] default = 6.759774E-05
+TIDE_O1_FREQ = 6.759774E-05     !   [rad s-1] default = 6.759774E-05
                                 ! Frequency of the O1 tidal constituent. This is only used if TIDES and TIDE_O1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and O1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_P1_FREQ = 7.252295E-05     !   [s-1] default = 7.252295E-05
+TIDE_P1_FREQ = 7.252295E-05     !   [rad s-1] default = 7.252295E-05
                                 ! Frequency of the P1 tidal constituent. This is only used if TIDES and TIDE_P1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and P1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_Q1_FREQ = 6.495854E-05     !   [s-1] default = 6.495854E-05
+TIDE_Q1_FREQ = 6.495854E-05     !   [rad s-1] default = 6.495854E-05
                                 ! Frequency of the Q1 tidal constituent. This is only used if TIDES and TIDE_Q1
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and Q1 is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_MM_FREQ = 2.6392E-06       !   [s-1] default = 2.6392E-06
+TIDE_MM_FREQ = 2.6392E-06       !   [rad s-1] default = 2.6392E-06
                                 ! Frequency of the MM tidal constituent. This is only used if TIDES and TIDE_MM
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and MM is in
                                 ! OBC_TIDE_CONSTITUENTS.
-TIDE_MF_FREQ = 5.3234E-06       !   [s-1] default = 5.3234E-06
+TIDE_MF_FREQ = 5.3234E-06       !   [rad s-1] default = 5.3234E-06
                                 ! Frequency of the MF tidal constituent. This is only used if TIDES and TIDE_MF
                                 ! are true, or if OBC_TIDE_N_CONSTITUENTS > 0 and MF is in
                                 ! OBC_TIDE_CONSTITUENTS.
@@ -555,6 +555,7 @@ THICKNESS_CONFIG = "uniform"    ! default = "uniform"
                                 !     uniform - uniform thickness layers evenly distributed
                                 !       between the surface and MAXIMUM_DEPTH.
                                 !     list - read a list of positive interface depths.
+                                !     param - use thicknesses from parameter THICKNESS_INIT_VALUES.
                                 !     DOME - use a slope and channel configuration for the
                                 !       DOME sill-overflow test case.
                                 !     ISOMIP - use a configuration for the
