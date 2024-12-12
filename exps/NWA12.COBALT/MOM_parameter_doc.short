@@ -131,19 +131,19 @@ OBC_TIDE_N_CONSTITUENTS = 10    ! default = 0
                                 ! Number of tidal constituents being added to the open boundary.
 OBC_SEGMENT_001 = "J=0,I=0:N,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_002 = "J=N,I=N:0,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_002_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_002_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_003 = "I=N,J=0:N,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_003_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_003_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
@@ -327,8 +327,6 @@ KHTH_MAX_CFL = 0.1              !   [nondimensional] default = 0.8
                                 ! thickness diffusivity. 1.0 is the marginally unstable value in a pure layered
                                 ! model, but much smaller numbers (e.g. 0.1) seem to work better for ALE-based
                                 ! models.
-
-! === module MOM_porous_barriers ===
 
 ! === module MOM_dynamics_split_RK2 ===
 TIDES = True                    !   [Boolean] default = False

@@ -1,0 +1,18 @@
+! This file was written by the model and records the non-default parameters used at run-time.
+
+! === module COBALT ===
+ca_2_n_arag = 0.035             !   [mol cadet_arag mol org. C-1] default = 0.055
+                                ! ratio of aragonite detritus prod. to org. C detritus prod. by aragonite shell
+                                ! formers
+ca_2_n_calc = 0.025             !   [mol cadet_calc mol org. C-1] default = 0.05
+                                ! ratio of calcite detritus prod. to org. C detritus prod. by calcite shell
+                                ! formers
+z_burial = 50.0                 !   [m] default = 10.0
+                                ! depth scale for ramping up particulate organic burial
+scale_burial = 1.0              !   [none] default = 0.0
+                                ! scaling factor for particulate organic burial
+
+! === module MOM_file_parser ===
+DOCUMENT_FILE = "COBALT_parameter_doc" ! default = "MOM_parameter_doc"
+                                ! The basename for files where run-time parameters, their settings, units and
+                                ! defaults are documented. Blank will disable all parameter documentation.

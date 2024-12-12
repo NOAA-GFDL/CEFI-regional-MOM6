@@ -1,0 +1,97 @@
+name: mom6_tide_2d
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:    
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+#    container:
+#      image: noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0
+#      options: --user=root
+        
+#    env:
+#      PR_NUMBER: ${{ github.event.number }}
+
+    steps:        
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        submodules: recursive
+
+    - name: Clean up disk space
+      run: |
+        echo "maximize disk space on git-runner ..."
+        df -h 
+        sudo apt-get clean
+        sudo rm -rf /var/lib/apt/lists/* /tmp/* ~/.cache
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        docker system prune -af
+        df -h
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Download Image
+      run: |
+        echo "Pull the Image ..."
+        docker pull noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0
+        docker images        
+        df -h
+
+    - name: running Doker
+      run: |
+        echo "Run Docker Image ..."
+        pwd
+        docker run --rm \
+        -v ${{ github.workspace }}:/workspace \
+        -w /workspace \
+        noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0 \
+        sh -c "cd builds/;
+        ./linux-build.bash -m docker -p linux-intel -t repro -f mom6solo;
+        cd ../exps;
+        wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_tideonly_ci_datasets.tar.gz && tar -zxvf nwa12_tideonly_ci_datasets.tar.gz;
+        cd NWA12.tidesonly;
+        source /root/.bashenv
+        mpirun -np 4 ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6;
+        cat ./ocean.stats;
+        diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats"
+
+#    - name: Build mom6solo
+#      working-directory: ./builds
+#      run: |
+#        echo "build mom6solo ..."
+#        ./linux-build.bash -m docker -p linux-intel -t repro -f mom6solo
+
+#    - name: Download 1d model dataset
+#      working-directory: ./exps
+#      run: | 
+#       wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
+
+#    - name: Run 1D toy case and check repro across restarts
+#      working-directory: ./exps/OM4.single_column.COBALT
+#      run: | 
+#       ./driver.sh 
+
+#    - name: Run mppnccombine to combine sub-region diag outputs 
+#      working-directory: ./exps/OM4.single_column.COBALT
+#      run: |
+#       /opt/bin/mppnccombine -64 -h 16384 -m -k 100 20040102.ocean_daily_subset.nc 20040102.ocean_daily_subset.nc.00*
+
+#    - name: Check ref
+#      working-directory: ./exps/OM4.single_column.COBALT
+#      run: | 
+#       echo "new 48hrs ocean.stats: "
+#       cat ./RESTART_48hrs/ocean.stats
+#       echo "baseline 48 hrs ocean.stats: "
+#       cat ./ref/ocean.stats
+#       diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different."; echo "Plz update exps/OM4.single_column.COBALT/ref/ocean.stats with the following: "; cat ./RESTART_48hrs/ocean.stats; exit 1; }

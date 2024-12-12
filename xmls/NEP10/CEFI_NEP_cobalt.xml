@@ -21,6 +21,9 @@ C6:
 fremake -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -t repro MOM6_SIS2_GENERIC_4P_compile_symm
 frerun  -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -t repro CEFI_NEP_COBALT_V1
 
+pp (on PPAN):
+frepp -t 2019 -c ocean_cobalt_tracers_month_z -d /archive/e1n/fre/cefi/NEP/2024_08/NEP10k_082024_clean_spinup/gfdl.ncrc5-intel22-repro/history/ -x CEFI_NEP_cobalt.xml -p gfdl.ncrc6-intel23 -T repro CEFI_NEP_COBALT_V1
+
 Regression test
 frerun -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -q debug -r test -t repro CEFI_NEP_COBALT_V1
 
@@ -54,7 +57,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="ICEPACK_GIT_TAG" value="Icepack1.3.3"/>
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NEP/2024_10"/>
+  <property name="FRE_STEM" value="fre/cefi/NEP/2024_11"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <!-- NCRC_GROUP will only have impact for your root dir and work dir on gaea c5/c6-->
@@ -63,7 +66,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="GFDL_GROUP" value="cefi"/>
 
   <!--Production run properties. Users can modify these according to their need and/or performance analysis-->
-  <property name="PROD_SIMTIME" value="1"/>
+  <property name="PROD_SIMTIME" value="27"/>
 
   <!--Post-processing  chunk lengths -->
   <property name="CHUNK_LENGTH_A" value="5yr"/>
@@ -104,7 +107,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc5.intel23'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc5-intel23'])"/>
     <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='ncrc6.intel23'])"/>
-    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>    
+    <xi:include href="../xml_include/xml_building_blocks/platforms.xml" xpointer="xpointer(//freInclude/platform[@name='gfdl.ncrc6-intel23'])"/>
   </setup>
 
   <!--= COMPILE =-->
@@ -142,7 +145,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
       </compile>
     </component>
 
-    <component name="Icepack" paths="mom6/src/Icepack/columnphysics" requires="fms mom6_symmetric" includeDir="$HOME/$(stem)/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
+    <component name="Icepack" paths="mom6/src/Icepack/columnphysics" requires="fms mom6_symmetric" includeDir="$root/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
       <source versionControl="git" root="https://github.com/CICE-Consortium/">
         <codeBase version="$(ICEPACK_GIT_TAG)"> Icepack.git </codeBase>
       </source>
@@ -151,7 +154,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
       </compile>
     </component>
 
-    <component name="sis2" paths="mom6/src/SIS2/config_src/dynamic_symmetric mom6/src/SIS2/src mom6/src/icebergs/src mom6/src/ice_param" requires="fms mom6_symmetric Icepack" includeDir="$HOME/$(stem)/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
+    <component name="sis2" paths="mom6/src/SIS2/config_src/dynamic_symmetric mom6/src/SIS2/src mom6/src/icebergs/src mom6/src/ice_param" requires="fms mom6_symmetric Icepack" includeDir="$root/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
         <codeBase version="$(RELEASE)"> ice_param.git </codeBase>
       </source>
@@ -565,12 +568,12 @@ $name
 $baseDate
       </diagTable>
       <dataFile label="diagTable" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/nwa-xml/diag_tables/diag_table_COBALT_2024-04</dataSource>
-        <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/nwa-xml/diag_tables/diag_table_MOM6_2024-04</dataSource>
-	<dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/nwa-xml/diag_tables/diag_table.SIS</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_COBALT_2024-04</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table_MOM6_2024-04</dataSource>
-	<dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/diag_tables/diag_table.SIS</dataSource>
+	<dataSource site="ncrc">../NWA12/diag_tables/diag_table_CEFI_MOM6_default</dataSource>
+	<dataSource site="ncrc">../NWA12/diag_tables/diag_table_CEFI_SIS_default</dataSource>
+	<dataSource site="ncrc">../NWA12/diag_tables/diag_table_CEFI_COBALT_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_MOM6_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_SIS_default</dataSource>
+        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_COBALT_default</dataSource>
       </dataFile>
       <csh type='always'>
         <![CDATA[
@@ -597,15 +600,12 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override PHA_MLD_USE_DELTA_RHO = True
 #override PHA_MLD_HREF = 10.0
 #override PHA_MLD_DRHO = 0.03
-#override HREF_FOR_MLD = 5.0 
+#override HREF_FOR_MLD = 5.0
 #override DIAG_MLD_DENSITY_DIFF = 0.03
-#override OBC_REMAPPING_USE_OM4_SUBCELLS = True
-#override REMAPPING_USE_OM4_SUBCELLS = True
-#override DIAG_REMAPPING_USE_OM4_SUBCELLS = True
 #override VISC_REM_BUG = True
-#override FRICTWORK_BUG = True
-#override INTWAVE_REMAPPING_USE_OM4_SUBCELLS = True
 #override GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc"
+#override U_TRUNC_FILE = "U.velocity_truncations"
+#override V_TRUNC_FILE = "V.velocity_truncations"
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override
@@ -638,8 +638,16 @@ COBALT_INPUT_EOF
       <regression name="month">
         <run months="1">
           <resources jobWallclock="04:00:00">
-            <ice                         layout = "40,40" io_layout = "1,1" mask_table="MOM_mask_table"/>
+            <ice                          layout = "40,40" io_layout = "1,1" mask_table="MOM_mask_table"/>
             <ocn ranks="1600" threads="1" layout = "40,40" io_layout = "1,1" mask_table="MOM_mask_table"/>
+          </resources>
+        </run>
+      </regression>
+      <regression name="year">
+        <run months="12">
+          <resources jobWallclock="12:00:00">
+            <ice                          layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
+            <ocn ranks="2036" threads="1" layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
           </resources>
         </run>
       </regression>
@@ -675,8 +683,8 @@ COBALT_INPUT_EOF
         <run days="2">
           <resources jobWallclock="01:00:00">
             <ice                         layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
-            <ocn ranks="2036" threads="1" layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>          
-          </resources>                                                                                       
+            <ocn ranks="2036" threads="1" layout = "32,80" io_layout = "1,1" mask_table="mask_table.524.32x80"/>
+          </resources>
         </run>
       </regression>
     </runtime>
@@ -684,18 +692,24 @@ COBALT_INPUT_EOF
     <postProcess>
       <csh><![CDATA[
          cd $work
-         #Make a directory to trick FRE to pick up and archive in ascii
-	 mkdir extra.results
-         mv *velocity_truncations MOM_parameter_doc* SIS_parameter_doc* COBALT_parameter_doc* seaice.stats* ocean.stats* extra.results/
-	 cp diag_table INPUT/*_input INPUT/*_override INPUT/*.xml extra.results/.
-         cp $scriptName extra.results/runscript.csh
-	 #When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
-         #This causes problems for ferret and python tools for analysis.
-         #Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scipts .
+         # Archive an assortment of model input files and model metadata
+         mkdir metadata.out
+         mv MOM_parameter_doc* SIS_parameter_doc* COBALT_parameter_doc* metadata.out/
+         cp diag_table input.nml metadata.out/
+         cp INPUT/*_input INPUT/*_override metadata.out/
+         # Save the Git commit hash for each source code submodule
+         git -C $root/$(LIBS_ROOT)/src/mom6 submodule status --recursive > metadata.out/git_submodule_status
+         # Archive a copy of the xml used to run the model and the run script (fre sets these)
+         cp $rtsxml metadata.out/
+         cp $scriptName metadata.out/runscript.csh
+         # When the ocean uses a mask_table the ocean_static.nc file produced by the model run has holes in coordinates (geolon,geolat)
+         # This causes problems for ferret and python tools for analysis.
+         # Copy a non-masked version of ocean_static.nc to be saved as a history file to be used by the analysis scripts.
          cp $work/INPUT/ocean_static_no_mask_table.nc $work/ocean_static.nc
       ]]></csh>
       <xi:include xpointer="xpointer(//freInclude[@name='MOM6_postprocess']/postProcess/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='COBALT_postprocess']/postProcess/node())"/>
+      <xi:include xpointer="xpointer(//freInclude[@name='COBALT_z_postprocess']/postProcess/node())"/>
     </postProcess>
 
   </experiment>
@@ -791,7 +805,7 @@ ln -sf nep_10km_glorys_obcs_${fyear}.nc obcs.nc
 ln -sf glorys_monthly_NEP_sponge_${fyear}_clim.nc  nep_10k_glorys_mnClim.nc
 
 if ( $(target) == 'debug' ) then
-echo "we are testing in debug mode. Need to re-create grid masks!"      
+echo "we are testing in debug mode. Need to re-create grid masks!"
 cd $work/INPUT
 rm -rf $work/INPUT/ocean_mask.nc
 rm -rf $work/INPUT/ocean_mosaic.nc
@@ -802,7 +816,7 @@ make_solo_mosaic --num_tiles 1 --dir . --mosaic_name ocean_mosaic --tile_file oc
 make_quick_mosaic --input_mosaic ocean_mosaic.nc --mosaic_name grid_spec --ocean_topog ocean_topog.nc
 ln -fs $work/INPUT/ocean_topog.nc $work/INPUT/topog.nc
 endif
-        
+
       ]]>
       </csh>
     </input>
@@ -947,12 +961,6 @@ endif
         <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
-      <component type="ocean_cobalt_tracers_instant" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_instant">
-        <!-- No monthly for this because it's an annual field -->
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
       <component type="ocean_cobalt_sfc" start="$(PP_START_YEAR)" source="ocean_cobalt_sfc">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
@@ -962,17 +970,6 @@ endif
         <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
       <component type="ocean_cobalt_fluxes_int" start="$(PP_START_YEAR)" source="ocean_cobalt_fluxes_int">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_daily" start="$(PP_START_YEAR)" source="ocean_cobalt_daily">
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" />
-      </component>
-      <component type="ocean_cobalt_tracers_month" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
@@ -992,22 +989,13 @@ endif
   </freInclude>
   <freInclude name="COBALT_z_postprocess">
     <postProcess>
-      <component type="ocean_cobalt_omip_tracers_month_z" start="$(PP_START_YEAR)" source="ocean_cobalt_omip_tracers_month_z">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_A)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_A)"/>
-      </component>
       <component type="ocean_cobalt_tracers_month_z" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month_z">
         <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
         <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_A)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_A)"/>
-      </component>
-      <component type="ocean_cobalt_rates_year_z" start="$(PP_START_YEAR)" source="ocean_cobalt_rates_year_z">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_A)"/>
+        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
+        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
+        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
+        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
       </component>
     </postProcess>
   </freInclude>

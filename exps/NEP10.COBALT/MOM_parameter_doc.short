@@ -129,25 +129,25 @@ OBC_TIDE_N_CONSTITUENTS = 10    ! default = 0
                                 ! Number of tidal constituents being added to the open boundary.
 OBC_SEGMENT_001 = "J=N,I=N:0,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_002 = "I=N,J=0:N,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_002_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_002_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_003 = "J=0,I=0:N,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_003_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_003_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
 OBC_SEGMENT_004 = "I=0,J=N:0,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
-OBC_SEGMENT_004_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days] default = 0.0
+OBC_SEGMENT_004_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
                                 ! Timescales in days for nudging along a segment, for inflow, then outflow.
                                 ! Setting both to zero should behave like SIMPLE obcs for the baroclinic
                                 ! velocities.
@@ -269,84 +269,13 @@ REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
                                 ! WENO_HYBGEN (3rd-order accurate)
                                 ! PQM_IH4IH3  (4th-order accurate)
                                 ! PQM_IH6IH5  (5th-order accurate)
+REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
+                                ! This selects the remapping algorithm used in OM4 that does not use the full
+                                ! reconstruction for the top- and lower-most sub-layers, but instead assumes
+                                ! they are always vanished (untrue) and so just uses their edge values. We
+                                ! recommend setting this option to false.
 
 ! === module MOM_state_initialization ===
-THICKNESS_CONFIG = "coord"      ! default = "uniform"
-                                ! A string that determines how the initial layer thicknesses are specified for a
-                                ! new run:
-                                !     file - read interface heights from the file specified
-                                !       by (THICKNESS_FILE).
-                                !     thickness_file - read thicknesses from the file specified
-                                !       by (THICKNESS_FILE).
-                                !     mass_file - read thicknesses in units of mass per unit area from the file
-                                !       specified by (THICKNESS_FILE).
-                                !     coord - determined by ALE coordinate.
-                                !     uniform - uniform thickness layers evenly distributed
-                                !       between the surface and MAXIMUM_DEPTH.
-                                !     list - read a list of positive interface depths.
-                                !     DOME - use a slope and channel configuration for the
-                                !       DOME sill-overflow test case.
-                                !     ISOMIP - use a configuration for the
-                                !       ISOMIP test case.
-                                !     benchmark - use the benchmark test case thicknesses.
-                                !     Neverworld - use the Neverworld test case thicknesses.
-                                !     search - search a density profile for the interface
-                                !       densities. This is not yet implemented.
-                                !     circle_obcs - the circle_obcs test case is used.
-                                !     DOME2D - 2D version of DOME initialization.
-                                !     adjustment2d - 2D lock exchange thickness ICs.
-                                !     sloshing - sloshing gravity thickness ICs.
-                                !     seamount - no motion test with seamount ICs.
-                                !     dumbbell - sloshing channel ICs.
-                                !     soliton - Equatorial Rossby soliton.
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     USER - call a user modified routine.
-TS_CONFIG = "file"              !
-                                ! A string that determines how the initial temperatures and salinities are
-                                ! specified for a new run:
-                                !     file - read velocities from the file specified
-                                !       by (TS_FILE).
-                                !     fit - find the temperatures that are consistent with
-                                !       the layer densities and salinity S_REF.
-                                !     TS_profile - use temperature and salinity profiles
-                                !       (read from TS_FILE) to set layer densities.
-                                !     benchmark - use the benchmark test case T & S.
-                                !     linear - linear in logical layer space.
-                                !     DOME2D - 2D DOME initialization.
-                                !     ISOMIP - ISOMIP initialization.
-                                !     adjustment2d - 2d lock exchange T/S ICs.
-                                !     sloshing - sloshing mode T/S ICs.
-                                !     seamount - no motion test with seamount ICs.
-                                !     dumbbell - sloshing channel ICs.
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     SCM_CVMix_tests - used in the SCM CVMix tests.
-                                !     USER - call a user modified routine.
-TS_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
-                                ! The initial condition file for temperature.
-TEMP_IC_VAR = "temp"            ! default = "PTEMP"
-                                ! The initial condition variable for potential temperature.
-SALT_IC_VAR = "salt"            ! default = "SALT"
-                                ! The initial condition variable for salinity.
-DEPRESS_INITIAL_SURFACE = True  !   [Boolean] default = False
-                                ! If true,  depress the initial surface to avoid huge tsunamis when a large
-                                ! surface pressure is applied.
-SURFACE_HEIGHT_IC_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
-                                ! The initial condition file for the surface height.
-SURFACE_HEIGHT_IC_VAR = "ssh"   ! default = "SSH"
-                                ! The initial condition variable for the surface height.
-VELOCITY_CONFIG = "file"        ! default = "zero"
-                                ! A string that determines how the initial velocities are specified for a new
-                                ! run:
-                                !     file - read velocities from the file specified
-                                !       by (VELOCITY_FILE).
-                                !     zero - the fluid is initially at rest.
-                                !     uniform - the flow is uniform (determined by
-                                !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     soliton - Equatorial Rossby soliton.
-                                !     USER - call a user modified routine.
-VELOCITY_FILE = "nep_10km_init_1993-01-01_glorys.nc" !
-                                ! The name of the velocity initial condition file.
 OBC_SEGMENT_001_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos),TEMP=file:obcs.nc(thetao),SALT=file:obcs.nc(so),Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
                                 ! OBC segment docs
 OBC_SEGMENT_002_DATA = "U=file:obcs.nc(u),V=file:obcs.nc(v),SSH=file:obcs.nc(zos),TEMP=file:obcs.nc(thetao),SALT=file:obcs.nc(so),Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
@@ -410,8 +339,6 @@ KHTH_MAX_CFL = 0.1              !   [nondimensional] default = 0.8
                                 ! thickness diffusivity. 1.0 is the marginally unstable value in a pure layered
                                 ! model, but much smaller numbers (e.g. 0.1) seem to work better for ALE-based
                                 ! models.
-
-! === module MOM_porous_barriers ===
 
 ! === module MOM_dynamics_split_RK2 ===
 TIDES = True                    !   [Boolean] default = False
@@ -488,6 +415,10 @@ SMAGORINSKY_AH = True           !   [Boolean] default = False
                                 ! If true, use a biharmonic Smagorinsky nonlinear eddy viscosity.
 SMAG_BI_CONST = 0.015           !   [nondim] default = 0.0
                                 ! The nondimensional biharmonic Smagorinsky constant, typically 0.015 - 0.06.
+FRICTWORK_BUG = False           !   [Boolean] default = True
+                                ! If true, retain an answer-changing bug in calculating the FrictWork, which
+                                ! cancels the h in thickness flux and the h at velocity point. This isnot
+                                ! recommended.
 
 ! === module MOM_vert_friction ===
 DIRECT_STRESS = True            !   [Boolean] default = False
@@ -591,9 +522,6 @@ ENERGETICS_SFC_PBL = True       !   [Boolean] default = False
 EPBL_IS_ADDITIVE = False        !   [Boolean] default = True
                                 ! If true, the diffusivity from ePBL is added to all other diffusivities.
                                 ! Otherwise, the larger of kappa-shear and ePBL diffusivities are used.
-HREF_FOR_MLD = 5.0              !   [m] default = 0.0
-                                ! Reference depth used to calculate the potential density used to find the mixed
-                                ! layer depth based on a delta rho = 0.03 kg/m3.
 DIAG_MLD_DENSITY_DIFF = 0.03    !   [kg/m3] default = 0.1
                                 ! The density difference used to determine a diagnostic mixed layer depth,
                                 ! MLD_user, following the definition of Levitus 1982. The MLD is the depth at

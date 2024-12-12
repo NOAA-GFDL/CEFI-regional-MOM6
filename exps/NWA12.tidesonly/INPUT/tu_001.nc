@@ -1,1 +1,1 @@
-../../datasets/nwa12_input/tu_001.nc
+../../datasets/nwa12_tide_input/tu_001.nc
