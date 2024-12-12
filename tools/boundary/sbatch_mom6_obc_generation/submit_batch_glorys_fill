@@ -1,0 +1,12 @@
+#!/bin/bash
+
+for yr in {1994..2020}; do
+    echo $yr
+
+    for mon in {1..12} ; do
+
+        sbatch fill_glorys.sh $yr $mon
+               
+    done
+
+done

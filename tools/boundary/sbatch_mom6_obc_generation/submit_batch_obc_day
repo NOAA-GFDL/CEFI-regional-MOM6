@@ -1,0 +1,31 @@
+#!/bin/bash
+
+obc_dir=/work/Liz.Drenkard/mom6/nep_5km/setup/boundary/batch_submit/
+
+nmdays=(31 28 31 30 31 30 31 31 30 31 30 31)
+
+for yr in {1993..1993}; do
+    #echo $yr
+    ineq=$((yr%4))
+    if (($ineq == 0)); then
+       nmdays[1]=29
+    else
+       nmdays[1]=28
+    fi
+
+    for mon in {1..12} ; do
+        monstr=$(printf %02d $mon)
+        dmon=${nmdays[$((mon-1))]}
+        nday=1
+
+        while (($nday <= $dmon)); do
+              daystr=$(printf %02d $nday)
+              #echo $daystr
+              sbatch ${obc_dir}submit_python_make_obc_day.sh ${obc_dir}write_glorys_boundary.py $yr $monstr $daystr $obc_dir
+              ((nday+=1))   
+        done
+    done
+done
+
+
+

@@ -1,0 +1,14 @@
+#!/bin/bash
+arch_dir=/archive/e1n/mom6/NEP/obcs/glorys/nep_5k/original/
+
+
+yr=1993
+
+while (($yr < 2021)); do
+
+      cp nep_5km_glorys_obcs_${yr}.nc $arch_dir/nep_5km_glorys_obcs_${yr}.nc.orig 
+
+      ((yr+=1))
+done
+
+

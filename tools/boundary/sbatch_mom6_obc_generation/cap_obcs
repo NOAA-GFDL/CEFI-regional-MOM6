@@ -1,0 +1,51 @@
+#!/bin/bash
+# NOTE: this was specific to a particular setup/ available files. check dates on the current obc files before rerunning
+obc_dir=/work/Liz.Drenkard/mom6/nep_5km/setup/boundary/batch_submit/
+arch_dir=/archive/e1n/mom6/NEP/obcs/glorys/nep_5k/original/
+
+Fyear=1993
+
+yr=1993
+
+while (($yr < 1994)); do
+      echo $yr
+
+      if [ $yr -lt 2020 ]; then 
+         ncks -O -d time,-1 $arch_dir/nep_5km_glorys_obcs_${yr}.nc.orig last_${yr}.nc
+      fi
+
+      ncks -O -d time,0 $arch_dir/nep_5km_glorys_obcs_${yr}.nc.orig first_${yr}.nc
+
+      ((yr+=1))
+done
+
+yr=1993
+while (($yr < 1994)); do
+      echo $yr
+      if [ ! -f nep_5km_glorys_obcs_${yr}.nc.orig ]; then
+         cp $arch_dir/nep_5km_glorys_obcs_${yr}.nc.orig nep_5km_glorys_obcs_${yr}.nc.orig
+      fi        
+
+      if [ $yr == $Fyear ]; then
+         # Set time to midnight 
+         python edit_first_time.py
+ 
+         wait
+         # Concatenate midnight of first day and first day of next year
+         ncrcat -O first_${yr}.nc nep_5km_glorys_obcs_${yr}.nc.orig first_$((yr+1)).nc nep_5km_glorys_obcs_${yr}.nc
+        
+      elif [ $yr == 2020 ]; then
+         # Concatenate the last day of prior year (no next year to go on towards)
+         ncrcat -O last_$((yr-1)).nc nep_5km_glorys_obcs_${yr}.nc.orig nep_5km_glorys_obcs_${yr}.nc      
+
+      else 
+         # Concatenate the last day of the prior year and the first day of the following year
+         ncrcat -O last_$((yr-1)).nc nep_5km_glorys_obcs_${yr}.nc.orig first_$((yr+1)).nc nep_5km_glorys_obcs_${yr}.nc
+      fi
+
+      ((yr+=1))
+done
+
+
+
+
