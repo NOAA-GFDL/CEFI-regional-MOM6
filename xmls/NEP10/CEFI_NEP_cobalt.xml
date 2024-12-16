@@ -63,6 +63,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <!-- NCRC_GROUP will only have impact for your root dir and work dir on gaea c5/c6-->
   <!-- You have to either use -A or go to xml_include/xml_building_blocks/platforms.xml to change project for your project allocation-->
   <property name="NCRC_GROUP" value="ira-cefi"/>
+  <property name="NCRC_GROUP_C5" value="cefi"/>
   <property name="GFDL_GROUP" value="cefi"/>
 
   <!--Production run properties. Users can modify these according to their need and/or performance analysis-->
