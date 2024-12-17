@@ -19,7 +19,7 @@ The main script, `mom6_obc_workflow.sh`, orchestrates the entire OBC generation 
    - Submits jobs to execute the `write_glorys_boundary_daily.py` script for each day.  
    - Regrids GLORYS data and generates daily OBC files.
 
-Template scripts for these steps are provided in the `template` directory. User-specific parameters are configured using `uwtools` to render templates, creating a `config.yaml` file based on user input.
+Template scripts for these steps are provided in the `template` directory. User-specific parameters are configured using [uwtools](https://github.com/ufs-community/uwtools) to render templates, creating a `config.yaml` file based on user input.
 
 ---
 
@@ -51,9 +51,9 @@ first_date: "$START_DATE"
 last_date: "$END_DATE"
 
 # Python script parameters
-glorys_dir: "/archive/user/datasets/glorys/NWA12/filled"
-output_dir: "./outputs"
-hgrid: "./ocean_hgrid.nc"
+glorys_dir: "/archive/user/datasets/glorys/NWA12/filled" # daily subset of GLORYS DATA after filling NaN
+output_dir: "./outputs" # output path for the obc files
+hgrid: "./ocean_hgrid.nc" # grid file
 ncrcat_names:
   - "thetao"
   - "so"
@@ -76,7 +76,50 @@ variables:
 # Workflow Usage
 
 ## Step 1: Modify Configuration
-Update the cat <<EOF > config.yaml part in the script with parameters specific to your domain and workflow requirements.
+Update the `cat <<EOF > config.yaml` part in `mom6_obc_workflow.sh` with parameters specific to your domain and workflow requirements.
+
+```
+cat <<EOF > config.yaml
+_WALLTIME: "1440"
+_NPROC: "1"
+_EMAIL_NOTIFACTION: "fail"
+_USER_EMAIL: "yi-cheng.teng@noaa.gov"
+_LOG_PATH: "./log/$CURRENT_DATE/%x.o%j"
+_UDA_GLORYS_DIR: "/uda/Global_Ocean_Physics_Reanalysis/global/daily"
+_UDA_GLORYS_FILENAME: "mercatorglorys12v1_gl12_mean"
+_REGIONAL_GLORYS_ARCHIVE: "/archive/ynt/datasets/glorys"
+_BASIN_NAME: "NWA12"
+_OUTPUT_PREFIX: "GLORYS"
+_VARS: "thetao so uo vo zos"
+_LON_MIN: "-100.0"
+_LON_MAX: "-30.0"
+_LAT_MIN: "5.0"
+_LAT_MAX: "60.0"
+_PYTHON_SCRIPT: "$PYTHON_SCRIPT"
+first_date: "$START_DATE"
+last_date: "$END_DATE"
+glorys_dir: "/archive/ynt/datasets/glorys/NWA12/filled"
+output_dir: "./outputs"
+hgrid: './ocean_hgrid.nc'
+ncrcat_names:
+  - 'thetao'
+  - 'so'
+  - 'zos'
+  - 'uv'
+segments:
+  - id: 1
+    border: 'south'
+  - id: 2
+    border: 'north'
+  - id: 3
+    border: 'east'
+variables:
+  - 'thetao'
+  - 'so'
+  - 'zos'
+  - 'uv'
+EOF
+```
 
 ## Step 2: Generate OBC Files
 Run the workflow for a specific year or date range:
