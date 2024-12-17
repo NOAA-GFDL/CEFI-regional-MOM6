@@ -2,7 +2,7 @@
   <platform name="ncrc5.intel23">
     <freVersion>$(FRE_VERSION)</freVersion>
     <compiler type="intel-classic" version="2023.2.0"/>
-    <project>$(NCRC_GROUP)</project>
+    <project>$(NCRC_GROUP_C5)</project>
     <directory stem="$(FRE_STEM)">
       <root>/gpfs/f5/$(project)/scratch/$USER/$(stem)</root>
       <scripts>$(rootDir)/$(name)/$(platform)-$(target)/scripts</scripts>
