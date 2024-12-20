@@ -127,18 +127,19 @@ Run the workflow for a specific year or date range:
 ```bash
 ./mom6_obc_workflow.sh 2022-01-01 2022-12-31
 ./mom6_obc_workflow.sh 2023-01-01 2023-12-31
+```
 
 ## Step 3: Concatenate Multiple Years of OBC Files
-To merge OBC files from multiple years into a single file, use the `--ncrcat` option:
+To merge OBC files from multiple years into a single file, use the `--ncrcat` option. Ensure the dates in the command match the range for which you generated OBC files:
 
 ```bash
 ./mom6_obc_workflow.sh 2022-01-01 2023-12-31 --ncrcat
 ```
-
-Step 4 (optional): Adjust Timestamps
-To adjust the timestamps of the first and last records for compatibility for MOM6 yearly simulation, you can add the `--adjust-timestamps` option:
+### Adjust Timestamps (Optional Substep)
+If you need to adjust the timestamps of the first and last records for compatibility with `MOM6` yearly simulation, use the `--adjust-timestamps` option in combination with `--ncrcat`. Note that this is an alternative to the command above and should not be run afterward: 
 ```
 ./mom6_obc_workflow.sh 2022-01-01 2023-12-31 --ncrcat --adjust-timestamps
 ``` 
+**Note**: Ensure the date range specified in your command corresponds to the dates for which you generated OBC files. Running this step with a mismatched date range will cause it to fail if files for the specified dates are missing.
 
 TODO:
