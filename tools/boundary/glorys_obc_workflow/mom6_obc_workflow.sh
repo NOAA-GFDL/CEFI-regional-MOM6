@@ -1,10 +1,11 @@
 #!/bin/bash
-set -eu
 
 # Load required modules and environments
 source $MODULESHOME/init/sh
 module load miniforge
 conda activate /nbhome/role.medgrp/.conda/envs/uwtools || { echo "Error activating conda environment. Exiting."; exit 1; }
+
+set -eu
 
 # Helper functions
 print_usage() {
@@ -85,11 +86,11 @@ cat <<EOF > config.yaml
 _WALLTIME: "1440"
 _NPROC: "1"
 _EMAIL_NOTIFACTION: "fail"
-_USER_EMAIL: "yi-cheng.teng@noaa.gov"
+_USER_EMAIL: "$USER@noaa.gov"
 _LOG_PATH: "./log/$CURRENT_DATE/%x.o%j"
 _UDA_GLORYS_DIR: "/uda/Global_Ocean_Physics_Reanalysis/global/daily"
 _UDA_GLORYS_FILENAME: "mercatorglorys12v1_gl12_mean"
-_REGIONAL_GLORYS_ARCHIVE: "/archive/ynt/datasets/glorys"
+_REGIONAL_GLORYS_ARCHIVE: "/archive/$USER/datasets/glorys"
 _BASIN_NAME: "NWA12"
 _OUTPUT_PREFIX: "GLORYS"
 _VARS: "thetao so uo vo zos"
@@ -100,7 +101,7 @@ _LAT_MAX: "60.0"
 _PYTHON_SCRIPT: "$PYTHON_SCRIPT"
 first_date: "$START_DATE"
 last_date: "$END_DATE"
-glorys_dir: "/archive/ynt/datasets/glorys/NWA12/filled"
+glorys_dir: "/archive/$USER/datasets/glorys/NWA12/filled"
 output_dir: "./outputs"
 hgrid: './ocean_hgrid.nc'
 ncrcat_names:
