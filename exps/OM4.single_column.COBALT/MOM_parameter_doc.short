@@ -420,12 +420,12 @@ EPBL_LANGMUIR_SCHEME = "ADDITIVE" ! default = "NONE"
                                 !    NONE     - Do not do any extra mixing due to Langmuir turbulence
                                 !    RESCALE  - Use a multiplicative rescaling of mstar to account for Langmuir
                                 !      turbulence
-                                !    ADDITIVE - Add a Langmuir turblence contribution to mstar to other
+                                !    ADDITIVE - Add a Langmuir turbulence contribution to mstar to other
                                 !      contributions
 LT_ENHANCE_COEF = 0.044         !   [nondim] default = 0.447
                                 ! Coefficient for Langmuir enhancement of mstar
 LT_ENHANCE_EXP = -1.5           !   [nondim] default = -1.33
-                                ! Exponent for Langmuir enhancementt of mstar
+                                ! Exponent for Langmuir enhancement of mstar
 LT_MOD_LAC1 = 0.0               !   [nondim] default = -0.87
                                 ! Coefficient for modification of Langmuir number due to MLD approaching Ekman
                                 ! depth.

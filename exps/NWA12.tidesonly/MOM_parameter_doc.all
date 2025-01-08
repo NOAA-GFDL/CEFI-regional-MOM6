@@ -343,7 +343,7 @@ OBC_TIDE_ADD_NODAL = False      !   [Boolean] default = False
                                 ! If true, include 18.6 year nodal modulation in the boundary tidal forcing.
 OBC_TIDE_REF_DATE = 1993, 1, 1  !
                                 ! Reference date to use for tidal calculations and equilibrium phase.
-OBC_TIDE_NODAL_REF_DATE = 0, 0, 0 ! default = 0
+OBC_TIDE_NODAL_REF_DATE = 0, 0, 0 ! default = 0, 0, 0
                                 ! Fixed reference date to use for nodal modulation of boundary tides.
 TIDE_M2_FREQ = 1.405189E-04     !   [rad s-1] default = 1.405189E-04
                                 ! Frequency of the M2 tidal constituent. This is only used if TIDES and TIDE_M2
@@ -1051,7 +1051,7 @@ TIDAL_SAL_FROM_FILE = False     !   [Boolean] default = False
 USE_PREVIOUS_TIDES = False      !   [Boolean] default = False
                                 ! If true, use the SAL from the previous iteration of the tides to facilitate
                                 ! convergent iteration. This is only used if TIDES is true.
-TIDE_REF_DATE = 0, 0, 0         ! default = 0
+TIDE_REF_DATE = 0, 0, 0         ! default = 0, 0, 0
                                 ! Year,month,day to use as reference date for tidal forcing. If not specified,
                                 ! defaults to 0.
 TIDE_USE_EQ_PHASE = False       !   [Boolean] default = False
@@ -1559,8 +1559,7 @@ BUOY_CONFIG = "zero"            ! default = "zero"
 WIND_CONFIG = "zero"            ! default = "zero"
                                 ! The character string that indicates how wind forcing is specified.  Valid
                                 ! options include (file), (data_override), (2gyre), (1gyre), (gyres), (zero),
-                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_ideal_hurr),
-                                ! (SCM_CVmix_tests) and (USER).
+                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_CVmix_tests) and (USER).
 RESTOREBUOY = False             !   [Boolean] default = False
                                 ! If true, the buoyancy fluxes drive the model back toward some specified
                                 ! surface state with a rate given by FLUXCONST.
