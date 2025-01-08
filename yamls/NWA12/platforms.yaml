@@ -1,0 +1,49 @@
+platforms:
+   - name: ncrc5.intel22
+     compiler: intel
+     modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
+     modules: [ !join [*INTEL,"/2022.2.1"],"fre/bronx-22",cray-hdf5, cray-netcdf]
+     #fc: ftn
+     #cc: cc
+     mkTemplate: !join ["/ncrc/home2/fms/local/opt/fre-commands/bronx-22/site/ncrc5/", *INTEL, ".mk" ]
+     modelRoot: /gpfs/f5/cefi/scratch/Utheri.Wagura/fre/cefi/NWA/Canopy_202412/
+
+   - name: ncrc5.intel23
+     compiler: intel
+     modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
+     modules: [ !join [*INTEL, "/2023.1.0"],"fre/bronx-22",cray-hdf5, cray-netcdf]
+     #fc: ftn
+     #cc: cc
+     mkTemplate: !join ["/ncrc/home2/fms/local/opt/fre-commands/bronx-22/site/ncrc5/", *INTEL, ".mk"]
+     modelRoot: /gpfs/f5/cefi/scratch/Utheri.Wagura/fre/cefi/NWA/Canopy_202412/
+
+   - name: ncrc6.intel22
+     compiler: intel
+     modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
+     modules: [ !join [*INTEL,"/2022.2.1"],"fre/bronx-22",cray-hdf5, cray-netcdf]
+     #fc: ftn
+     #cc: cc
+     mkTemplate: !join ["/ncrc/home2/fms/local/opt/fre-commands/bronx-22/site/ncrc6/", *INTEL, ".mk" ]
+     modelRoot: /gpfs/f6/ira-cefi/scratch/Utheri.Wagura/fre/cefi/NWA/Canopy_202412/
+
+   - name: ncrc6.intel23
+     compiler: intel
+     modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
+     modules: [ !join [*INTEL, "/2023.1.0"],"fre/bronx-22",cray-hdf5, cray-netcdf]
+     #fc: ftn
+     #cc: cc
+     mkTemplate: !join ["/ncrc/home2/fms/local/opt/fre-commands/bronx-22/site/ncrc6/", *INTEL, ".mk"]
+     modelRoot: /gpfs/f6/ira-cefi/scratch/Utheri.Wagura/fre/cefi/NWA/Canopy_202412/
+
+   - name: hpcme.2023
+     compiler: intel
+     RUNenv: [". /spack/share/spack/setup-env.sh", "spack load libyaml", "spack load netcdf-fortran@4.5.4", "spack load hdf5@1.14.0"]
+     modelRoot: /apps
+     #fc: mpiifort
+     #cc: mpiicc
+     container: true
+     containerBase: "ecpe4s/noaa-intel-prototype:2023.09.25"
+     containerBuild: "podman"
+     containerRun: "apptainer" 
+     # NOTE: c5 and c6 make templates are currently the same. Defaulting to c6 for container runs
+     mkTemplate: "/apps/mkmf/templates/hpcme-intel23.mk"

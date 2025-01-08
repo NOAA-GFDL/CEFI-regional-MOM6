@@ -35,9 +35,8 @@
 # fre pp status -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
 
 
-
 fre_properties: 
-    - &FRE_STEM       "fre/cefi/NWA/2024_06"
+    - &FRE_STEM       "fre/cefi/NWA/2025_01"
 
     - &PP_START_YEAR  "1993"
     - &PP_END_YEAR    "2019"
@@ -47,7 +46,17 @@ fre_properties:
 
     - &GRID_SPEC      "/archive/acr/mom6_input/nwa12/nwa12_grid_75z.tar"
 
-    
+    # Compile properties
+    - &FMSincludes    "-IFMS/fms2_io/include -IFMS/include -IFMS/mpp/include"
+    - &F2003_FLAGS    " -DINTERNAL_FILE_NML -g "
+    - &momIncludes    "-Imom6/src/MOM6/pkg/CVMix-src/include"
+    - &sisincludes    "-Imom6/src/MOM6/src/framework"
+    - &MOM6_GIT_FIX   "main"
+    - &FMS_GIT_TAG    "2024.01.02"
+    - &CPL_GIT_TAG    "2024.01.02"
+    - &INTEL          "intel-classic"
+
+
 shared: 
     directories: &shared_directories
         history_dir:  !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, history]
@@ -76,6 +85,21 @@ shared:
     compile:
         compileYaml: &compile_yaml
         platformYaml:
+
+#################################################################################################
+# COMPILE                                                                                       #
+#################################################################################################
+
+## The location for yamls
+build:
+  platformYaml: platforms.yaml
+  compileYaml: compile.yaml
+## User defined properties for building
+#release: "2024.01"
+
+#################################################################################################
+# POST-PROCESSING                                                                               #
+#################################################################################################
 
 experiments: 
     - name: "MOM6_SIS2_GENERIC_4P_compile_symm"
