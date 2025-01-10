@@ -1630,6 +1630,11 @@ MKE_TO_TKE_EFFIC = 0.0          !   [nondim] default = 0.0
 TKE_DECAY = 0.01                !   [nondim] default = 2.5
                                 ! TKE_DECAY relates the vertical rate of decay of the TKE available for
                                 ! mechanical entrainment to the natural Ekman depth.
+DIRECT_EPBL_MIXING_CALC = False !   [Boolean] default = False
+                                ! If true and there is no conversion from mean kinetic energy to ePBL turbulent
+                                ! kinetic energy, use a direct calculation of the diffusivity that is supported
+                                ! by a given energy input instead of the more general but slower iterative
+                                ! solver.
 EPBL_MSTAR_SCHEME = "CONSTANT"  ! default = "CONSTANT"
                                 ! EPBL_MSTAR_SCHEME selects the method for setting mstar.  Valid values are:
                                 !    CONSTANT   - Use a fixed mstar given by MSTAR
@@ -1663,10 +1668,13 @@ EPBL_MLD_BISECTION = False      !   [Boolean] default = False
                                 ! mixed layer depth.  Otherwise use the false position after a maximum and
                                 ! minimum bound have been evaluated and the returned value or bisection before
                                 ! this.
+EPBL_MLD_ITER_BUG = True        !   [Boolean] default = True
+                                ! If true, use buggy logic that gives the wrong bounds for the next iteration
+                                ! when successive guesses increase by exactly EPBL_MLD_TOLERANCE.
 EPBL_MLD_MAX_ITS = 20           ! default = 20
                                 ! The maximum number of iterations that can be used to find a self-consistent
-                                ! mixed layer depth.  If EPBL_MLD_BISECTION is true, the maximum number
-                                ! iteractions needed is set by Depth/2^MAX_ITS < EPBL_MLD_TOLERANCE.
+                                ! mixed layer depth.  If EPBL_MLD_BISECTION is true, the maximum number of
+                                ! iterations needed is set by Depth/2^MAX_ITS < EPBL_MLD_TOLERANCE.
 EPBL_MIN_MIX_LEN = 0.0          !   [meter] default = 0.0
                                 ! The minimum mixing length scale that will be used by ePBL.  The default (0)
                                 ! does not set a minimum.
@@ -1689,6 +1697,9 @@ EPBL_VEL_SCALE_FACTOR = 1.0     !   [nondim] default = 1.0
                                 ! the PBL diffusivity.
 VSTAR_SURF_FAC = 1.2            !   [nondim] default = 1.2
                                 ! The proportionality times ustar to set vstar at the surface.
+EPBL_BBL_EFFIC = 0.0            !   [nondim] default = 0.0
+                                ! The efficiency of bottom boundary layer mixing via ePBL.  Setting this to a
+                                ! value that is greater than 0 to enable bottom boundary layer mixing from EPBL.
 USE_LA_LI2016 = True            !   [Boolean] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
@@ -1698,12 +1709,12 @@ EPBL_LANGMUIR_SCHEME = "ADDITIVE" ! default = "NONE"
                                 !    NONE     - Do not do any extra mixing due to Langmuir turbulence
                                 !    RESCALE  - Use a multiplicative rescaling of mstar to account for Langmuir
                                 !      turbulence
-                                !    ADDITIVE - Add a Langmuir turblence contribution to mstar to other
+                                !    ADDITIVE - Add a Langmuir turbulence contribution to mstar to other
                                 !      contributions
 LT_ENHANCE_COEF = 0.044         !   [nondim] default = 0.447
                                 ! Coefficient for Langmuir enhancement of mstar
 LT_ENHANCE_EXP = -1.5           !   [nondim] default = -1.33
-                                ! Exponent for Langmuir enhancementt of mstar
+                                ! Exponent for Langmuir enhancement of mstar
 LT_MOD_LAC1 = 0.0               !   [nondim] default = -0.87
                                 ! Coefficient for modification of Langmuir number due to MLD approaching Ekman
                                 ! depth.
@@ -1719,6 +1730,10 @@ LT_MOD_LAC4 = 0.0               !   [nondim] default = 0.95
 LT_MOD_LAC5 = 0.22              !   [nondim] default = 0.95
                                 ! Coefficient for modification of Langmuir number due to ratio of Ekman to
                                 ! unstable Obukhov depth.
+EPBL_OPTIONS_DIFF = 0           ! default = 0
+                                ! If positive, this is a coded integer indicating a pair of settings whose
+                                ! differences are diagnosed in a passive diagnostic mode  via extra calls to
+                                ! ePBL_column.  If this is 0 or negative no extra calls occur.
 !EPBL_USTAR_MIN = 1.45842E-18   !   [m s-1]
                                 ! The (tiny) minimum friction velocity used within the ePBL code, derived from
                                 ! OMEGA and ANGSTROM.
