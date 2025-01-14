@@ -3,27 +3,28 @@
 # The following yaml is designed to compile and postprocess the ocean_monthly component of the CEFI_NWA12_COBALT_V1 experiment
 # Full Documentation is available here: https://noaa-gfdl.github.io/fre-cli/index.html
 # 
-# 0.) Begin by setting up your environment by calling module load fre/2025.01
+# 0.) Set up your environment by running "module use -a /ncrc/home2/fms/local/modulefiles" followed by "module load fre/2025.01"
 #
 # For modularity and compatibility with with cylc workflow engine, fre/2025.01 splits up the compile and post processcing process 
 # into several sub steps.
 #
 # COMPILE GUIDE - BAREMETAL RUN
 # 
-# 1.) Create script that will be used to checkout model components
-# fre make create-checkout -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod
+# 1.) Create script that will be used to checkout model components and OPTIONALLY run it with the --execute flag. You can manually run the
+# checkout script after this step as well
+# fre make create-checkout -y CEFI_NWA12_cobalt.yaml -p ncrc5.intel23 -t prod --execute
 # 
 # 2.) Create Makefile
-# fre make create-makefile -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod
+# fre make create-makefile -y CEFI_NWA12_cobalt.yaml -p ncrc5.intel23 -t prod
 #
 # 3.) Create script that will compile the model, and OPTIONALLY run it with the --execute flag. You can manually run the 
 # compile script after this step as well
-# fre make create-compile -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod --execute
+# fre make create-compile -y CEFI_NWA12_cobalt.yaml -p ncrc5.intel23 -t prod --execute
 #
 # COMPILE GUIDE - CONTAINERS
 #
 # 1.) Create checkout script with the "no parallel checkouts option" - this is required for container builds
-# fre make create-checkout -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod --npc
+# fre make create-checkout -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod -npc
 # 
 # 2.) Create Makefile AND a Docker file. You can then build the container by manually running the createContainer.sh
 # script, or by OPTIONALLY including the --execute file when creating the container
@@ -35,33 +36,33 @@
 # 0.) Load module on GFDL Analysis: module load fre/2025.01
 # 
 # 1.) Checkout the git repo containing postprocessing scripts and related files with the folowing command:
-# fre pp checkout -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+# fre pp checkout -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel23 -t prod
 #
 # 2.) Combine your main yaml and experiment yamls into a single yaml, then set up the cylc-src dir with the configure-yaml command:
-# fre yamltools combine-yamls -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y CEFI_NWA12_cobalt.yaml
-# fre pp configure-yaml -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod -y combined-CEFI_NWA12_COBALT_V1.yaml
+# fre yamltools combine-yamls -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel23 -t prod -y CEFI_NWA12_cobalt.yaml
+# fre pp configure-yaml -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel23 -t prod -y CEFI_NWA12_cobalt.yaml --use pp
 #
 #     2a.) fre/2025.01 does not automatically create the pp dir for you, so you will have to mkdir this first to pass the validator:
-#     mkdir /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/pp
+#     mkdir /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel23-prod/pp
 #
 #     2b.) (OPTIONAL, BUT RECOMMENDED): Create a list of available tar files within your history tar archives to allow fre to catch a wider variety of errors
-#     tar -tf /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel22-prod/history/19930101.nc.tar | grep -v tile[2-6] | sort > /home/$USER/cylc-src/CEFI_NWA12_COBALT_V1__gfdl.ncrc5-intel22__prod/history-manifest
+#     tar -tf /archive/$USER/fre/cefi/NWA/2024_06/CEFI_NWA12_COBALT_V1/gfdl.ncrc5-intel23-prod/history/19930101.nc.tar | grep -v tile[2-6] | sort > /home/$USER/cylc-src/CEFI_NWA12_COBALT_V1__gfdl.ncrc5-intel23__prod/history-manifest
 #
 # 3.) Validate that all configuration files are correct
-# fre pp validate -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+# fre pp validate -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel23 -t prod
 #
 # 4.) Create the cylc-run directory containing the final version of configuration files, scripts, and output directories
-# fre pp install -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+# fre pp install -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel23 -t prod
 #
 # 5.) Run post processing
-# fre pp run -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+# fre pp run -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel23 -t prod
 #
 # 6.) To monitor the status of each post processing step, run the following command:
-# fre pp status -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel22 -t prod
+# fre pp status -e CEFI_NWA12_COBALT_V1 -p gfdl.ncrc5-intel23 -t prod
 
 
 fre_properties: 
-    - &FRE_STEM       "fre/cefi/NWA/2024_11"
+    - &FRE_STEM       "fre/cefi/NWA/ShortCanopyTest"
 
     - &PP_START_YEAR  "1993"
     - &PP_END_YEAR    "2019"
@@ -77,8 +78,8 @@ fre_properties:
     - &momIncludes    "-Imom6/src/MOM6/pkg/CVMix-src/include"
     - &sisincludes    "-Imom6/src/MOM6/src/framework"
     - &MOM6_GIT_FIX   "main"
-    - &FMS_GIT_TAG    "2024.01.02"
-    - &CPL_GIT_TAG    "2024.01.02"
+    - &FMS_GIT_TAG    "2024.03"
+    - &CPL_GIT_TAG    "2024.03"
     - &INTEL          "intel-classic"
 
 
