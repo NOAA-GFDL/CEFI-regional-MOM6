@@ -1,0 +1,65 @@
+compile:
+  experiment: "mom6_sis2_generic_4p_compile_symm_yaml"
+  container_addlibs:
+  baremetal_linkerflags:
+  src:
+       - component: FMS
+         paths: [FMS]
+         repo: "https://github.com/NOAA-GFDL/FMS.git"
+         branch: *FMS_GIT_TAG
+         cppdefs: " -DINTERNAL_FILE_NML -g -Duse_libMPI -Duse_netCDF -Duse_yaml  -DMAXFIELDMETHODS_=600" #this uses deprecated IO
+         otherFlags: *FMSincludes
+
+       - component: mom6
+         requires: [FMS]
+         repo: "https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git"
+         branch: *MOM6_GIT_FIX
+         paths: [mom6/src/MOM6/config_src/memory/dynamic_symmetric, 
+                 mom6/src/MOM6/config_src/drivers/FMS_cap,
+                 mom6/src/MOM6/src/*/,
+                 mom6/src/MOM6/src/*/*/,
+                 mom6/src/MOM6/config_src/external/ODA_hooks,
+                 mom6/src/MOM6/config_src/external/stochastic_physics,
+                 mom6/src/MOM6/config_src/external/drifters,
+                 mom6/src/MOM6/config_src/external/database_comms,
+                 mom6/src/ocean_BGC/generic_tracers,
+                 mom6/src/ocean_BGC/mocsy/src,
+                 mom6/src/MOM6/pkg/GSW-Fortran/modules,
+                 mom6/src/MOM6/pkg/GSW-Fortran/toolbox,
+                 mom6/src/MOM6/config_src/infra/FMS2]
+         #makeOverrides: 'OPENMP=""'
+         otherFlags: !join [*FMSincludes," ", *momIncludes]
+         cppdefs: "-DINTERNAL_FILE_NML -g -DINTERNAL_FILE_NML -DMAX_FIELDS_=100 -DUSE_FMS2_IO 
+           -DNOT_SET_AFFINITY -D_USE_MOM6_DIAG -D_USE_GENERIC_TRACER  -DUSE_PRECISION=2 "
+
+       - component: sis2
+         requires: [FMS, mom6]
+         repo: "https://github.com/NOAA-GFDL/ice_param.git"
+         paths: [mom6/src/SIS2/config_src/dynamic_symmetric,
+                 mom6/src/SIS2/config_src/external/Icepack_interfaces,
+                 mom6/src/SIS2/src,
+                 mom6/src/icebergs/src,
+                 mom6/src/ice_param]
+         otherFlags: !join [*FMSincludes," ", *momIncludes," ", *sisincludes]
+         #makeOverrides: 'OPENMP=""'
+         cppdefs: -DINTERNAL_FILE_NML -g -DUSE_FMS2_IO 
+
+       - component: land_null
+         requires: [FMS]
+         repo: "https://github.com/NOAA-GFDL/land_null.git"
+         paths: [mom6/src/land_null]
+
+       - component: atmos_null
+         requires: [FMS]
+         repo: "https://github.com/NOAA-GFDL/atmos_null.git"
+         paths: [ mom6/src/atmos_null ]
+         otherFlags: !join [*FMSincludes," ", *momIncludes]
+         cppdefs: -DINTERNAL_FILE_NML -g
+
+       - component: coupler
+         repo: "https://github.com/NOAA-GFDL/FMScoupler.git"
+         requires: [FMS, mom6, sis2, land_null, atmos_null]
+         paths: [mom6/src/coupler/shared,
+                 mom6/src/coupler/full ]
+         otherFlags: !join [*FMSincludes," ", *momIncludes]
+         cppdefs: -DINTERNAL_FILE_NML -g -DUSE_FMS2_IO -D_USE_LEGACY_LAND_ -Duse_AM3_physics
