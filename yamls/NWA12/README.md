@@ -75,7 +75,7 @@ frerun -x CEFI_NWA12_cobalt.xml -p ncrc5.intel23 -t prod CEFI_NWA12_COBALT_V1 --
 Like `fre make`, postprocessing is split into several subcommands to improve modularity. On PPAN, load the appropriate module: 
 ```
 module load fre/2025.01
-``
+```
 
 Checkout the git repo containing postprocessing scripts and related files with the folowing command:
 ```
