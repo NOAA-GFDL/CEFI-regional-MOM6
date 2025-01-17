@@ -5,6 +5,7 @@
 #SBATCH --mail-type={{ _EMAIL_NOTIFACTION }}
 #SBATCH --mail-user={{ _USER_EMAIL }}
 #SBATCH --output={{ _LOG_PATH }}
+#SBATCH --error={{ _LOG_PATH }}
 
 # Usage: sbatch submit_python_make_obc_day.sh <YEAR> <MONTH> <DAY>
 # This script is used to submit sbatch jobs for daily GLORYS OBC file generation on GFDL PPAN

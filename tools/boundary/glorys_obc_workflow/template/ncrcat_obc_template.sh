@@ -4,7 +4,8 @@
 #SBATCH --ntasks={{ _NPROC }}
 #SBATCH --mail-type={{ _EMAIL_NOTIFACTION }}
 #SBATCH --mail-user={{ _USER_EMAIL }}
-#SBATCH --output=./log/%x.o%j
+#SBATCH --output={{ _LOG_PATH }}
+#SBATCH --error={{ _LOG_PATH }}
 
 # Usage: sbatch ncrcat_obc.sh <ncrcat_arg>
 # This script is used to submit sbatch jobs for concatenating daily obc file on GFDL PPAN

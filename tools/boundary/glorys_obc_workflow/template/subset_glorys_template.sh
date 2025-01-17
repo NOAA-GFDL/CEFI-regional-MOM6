@@ -5,6 +5,7 @@
 #SBATCH --mail-type={{ _EMAIL_NOTIFACTION }}
 #SBATCH --mail-user={{ _USER_EMAIL }}
 #SBATCH --output={{ _LOG_PATH }}
+#SBATCH --error={{ _LOG_PATH }}
 
 # Usage: sbatch subset_glorys.sh <YEAR> <MONTH> <DAY>
 
