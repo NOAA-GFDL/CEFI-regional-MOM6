@@ -31,6 +31,7 @@ from subprocess import run
 from os import path
 
 import xarray
+import numpy as np
 import yaml
 from boundary import Segment
 
@@ -53,18 +54,24 @@ def write_day(date, glorys_dir, segments, variables, output_prefix):
         return
 
     glorys = (
-        xarray.open_dataset(file_path)
+        xarray.open_dataset(file_path, decode_times=False)
         .rename({'latitude': 'lat', 'longitude': 'lon', 'depth': 'z'})
     )
+
+    # Capture time attributes and encoding
+    time_attrs = glorys['time'].attrs if 'time' in glorys.coords else None
+    time_encoding = glorys['time'].encoding if 'time' in glorys.coords else None
 
     for segment in segments:
         for variable in variables:
             if variable == 'uv':
                 print(f"Processing {segment.border} {variable}")
-                segment.regrid_velocity(glorys['uo'], glorys['vo'], suffix=f"{date:%Y%m%d}", flood=False)
+                segment.regrid_velocity(glorys['uo'], glorys['vo'], suffix=f"{date:%Y%m%d}", flood=False,
+                                        time_attrs=time_attrs, time_encoding=time_encoding )
             elif variable in ['thetao', 'so', 'zos']:
                 print(f"Processing {segment.border} {variable}")
-                segment.regrid_tracer(glorys[variable], suffix=f"{date:%Y%m%d}", flood=False)
+                segment.regrid_tracer(glorys[variable], suffix=f"{date:%Y%m%d}", flood=False,
+                                      time_attrs=time_attrs, time_encoding=time_encoding)
 
 def concatenate_files(nsegments, output_dir, variables, ncrcat_names, first_date, last_date, adjust_timestamps=False):
     """Concatenate annual files using ncrcat."""
@@ -97,7 +104,7 @@ def adjust_file_timestamps(file_path):
     Adjust timestamps for the first and last records in a file while preserving attributes and raw numerical format.
     """
     with xarray.open_dataset(file_path, decode_times=False) as ds:
-        # Explicitly load the dataset into memory to ovid lazy-loaded
+        # Explicitly load the dataset into memory if it's lazy-loaded
         ds.load()
 
         if 'time' in ds:
@@ -124,7 +131,7 @@ def adjust_file_timestamps(file_path):
             # Assign the new time variable back to the dataset
             ds = ds.assign_coords(time=new_time)
 
-            # Reapply the original encoding
+            # Reapply the original encoding to ensure consistency 
             ds['time'].encoding = time_encoding
 
             # Save the updated dataset
