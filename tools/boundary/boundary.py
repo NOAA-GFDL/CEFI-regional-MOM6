@@ -496,7 +496,8 @@ class Segment():
     def regrid_velocity(
                 self, usource, vsource, 
                 method='nearest_s2d', periodic=False, write=True, 
-                flood=False, fill='b', xdim='lon', ydim='lat', zdim='z', rotate=True, **kwargs):
+                flood=False, fill='b', xdim='lon', ydim='lat', zdim='z', rotate=True, 
+                time_attrs=None, time_encoding=None, **kwargs):
         """Interpolate velocity onto segment and (optionally) write to file.
 
         Args:
@@ -607,6 +608,12 @@ class Segment():
 
         ds_uv = self.rename_dims(ds_uv)
 
+        # Restore time attributes and encoding
+        if time_attrs:
+            ds_uv['time'].attrs = time_attrs
+        if time_encoding:
+            ds_uv['time'].encoding = time_encoding
+
         if write:
             self.to_netcdf(ds_uv, 'uv', **kwargs)
         
@@ -616,7 +623,8 @@ class Segment():
             self, tsource, 
             method='nearest_s2d', periodic=False, write=True, 
             flood=False, fill='b', xdim='lon', ydim='lat', zdim='z',
-            regrid_suffix='t', source_var=None, **kwargs):
+            regrid_suffix='t', source_var=None, 
+            time_attrs=None, time_encoding=None, **kwargs):
         """Regrid a tracer onto segment and (optionally) write to file.
 
         Args:
@@ -685,6 +693,12 @@ class Segment():
         
         tdest = self.rename_dims(tdest)
         tdest = tdest.rename({name: f'{name}_{self.segstr}'})
+
+        # Restore time attributes and encoding
+        if time_attrs:
+            tdest['time'].attrs = time_attrs
+        if time_encoding:
+            tdest['time'].encoding = time_encoding
         
         if write:
             self.to_netcdf(tdest, name, **kwargs)

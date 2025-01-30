@@ -31,6 +31,7 @@ from subprocess import run
 from os import path
 
 import xarray
+import numpy as np
 import yaml
 from boundary import Segment
 
@@ -53,18 +54,24 @@ def write_day(date, glorys_dir, segments, variables, output_prefix):
         return
 
     glorys = (
-        xarray.open_dataset(file_path)
+        xarray.open_dataset(file_path, decode_times=False)
         .rename({'latitude': 'lat', 'longitude': 'lon', 'depth': 'z'})
     )
+
+    # Capture time attributes and encoding
+    time_attrs = glorys['time'].attrs if 'time' in glorys.coords else None
+    time_encoding = glorys['time'].encoding if 'time' in glorys.coords else None
 
     for segment in segments:
         for variable in variables:
             if variable == 'uv':
                 print(f"Processing {segment.border} {variable}")
-                segment.regrid_velocity(glorys['uo'], glorys['vo'], suffix=f"{date:%Y%m%d}", flood=False)
+                segment.regrid_velocity(glorys['uo'], glorys['vo'], suffix=f"{date:%Y%m%d}", flood=False,
+                                        time_attrs=time_attrs, time_encoding=time_encoding )
             elif variable in ['thetao', 'so', 'zos']:
                 print(f"Processing {segment.border} {variable}")
-                segment.regrid_tracer(glorys[variable], suffix=f"{date:%Y%m%d}", flood=False)
+                segment.regrid_tracer(glorys[variable], suffix=f"{date:%Y%m%d}", flood=False,
+                                      time_attrs=time_attrs, time_encoding=time_encoding)
 
 def concatenate_files(nsegments, output_dir, variables, ncrcat_names, first_date, last_date, adjust_timestamps=False):
     """Concatenate annual files using ncrcat."""
@@ -93,16 +100,41 @@ def concatenate_files(nsegments, output_dir, variables, ncrcat_names, first_date
                 adjust_file_timestamps(output_file)
 
 def adjust_file_timestamps(file_path):
-    """Adjust timestamps for the first and last records in a file."""
-    with xarray.open_dataset(file_path) as ds:
-        if 'time' in ds:
-            time = ds['time'].copy()
-            adjusted_time = time.astype('datetime64[ns]')
-            
-            adjusted_time[0] = adjusted_time[0].dt.floor('D')
-            adjusted_time[-1] = adjusted_time[-1].dt.ceil('D')
+    """
+    Adjust timestamps for the first and last records in a file while preserving attributes and raw numerical format.
+    """
+    with xarray.open_dataset(file_path, decode_times=False) as ds:
+        # Explicitly load the dataset into memory if it's lazy-loaded
+        ds.load()
 
-            ds = ds.assign_coords(time=adjusted_time)
+        if 'time' in ds:
+            # Extract the time variable, attributes, and encoding
+            time = ds['time']
+            time_attrs = time.attrs  # Save the original attributes
+            time_encoding = time.encoding  # Save the original encoding
+            time_values = time.values.copy()
+
+            # Ensure the 'time' variable has more than one entry
+            if len(time_values) > 1:
+                # Adjust the first and last timestamps in raw numerical format
+                time_values[0] = np.floor(time_values[0])  # Floor to the start of the day
+                time_values[-1] = np.ceil(time_values[-1])  # Ceil to the end of the day
+
+            # Create a new DataArray for time while preserving attributes
+            new_time = xarray.DataArray(
+                time_values,
+                dims=time.dims,
+                attrs=time_attrs,
+                name='time'
+            )
+
+            # Assign the new time variable back to the dataset
+            ds = ds.assign_coords(time=new_time)
+
+            # Reapply the original encoding to ensure consistency 
+            ds['time'].encoding = time_encoding
+
+            # Save the updated dataset
             ds.to_netcdf(file_path)
             print(f"Timestamps adjusted for {file_path}")
 
