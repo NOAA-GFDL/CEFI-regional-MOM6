@@ -624,6 +624,8 @@ z_denit = 20.0                  !   [m] default = 10.0
                                 ! depth scale for ramping up benthic denitrification
 scale_burial = 1.0              !   [none] default = 0.0
                                 ! scaling factor for particulate organic burial
+do_fnso4red_sed = False         !   [Boolean] default = False
+                                ! logical flag to include O2 demand and alk impact of H2S- sediment release
 z_sed = 0.1                     !   [m] default = 0.1
                                 ! effective sediment layer thickness for calcite cycling calculations
 phi_surfresp_cased = 0.14307    !   [unitless] default = 0.14307
@@ -681,6 +683,8 @@ k_no3_amx = 1.0E-06             !   [mol NO3 kg-1] default = 1.0E-06
                                 ! nitrate half-saturation for anammox
 tracer_debug = False            !   [Boolean] default = False
                                 ! flag for tracer debug operations
+min_thickness_for_imbalance = 0.001 !   [m] default = 0.001
+                                ! minimum thickness of a layer that will be checked for source/sink imbalances
 
 ! === module MOM_file_parser ===
 SEND_LOG_TO_STDOUT = False      !   [Boolean] default = False
