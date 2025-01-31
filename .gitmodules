@@ -10,10 +10,6 @@
 	path = src/land_null
 	url = https://github.com/NOAA-GFDL/land_null.git
 	branch = 2023.04
-[submodule "src/atmos_null"]
-	path = src/atmos_null
-	url = https://github.com/NOAA-GFDL/atmos_null.git
-	branch = 2023.04
 [submodule "src/mkmf"]
 	path = src/mkmf
 	url = https://github.com/NOAA-GFDL/mkmf.git
@@ -45,4 +41,8 @@
 [submodule "src/coupler"]
 	path = src/coupler
 	url = https://github.com/NOAA-GFDL/FMScoupler.git
+	branch = 2025.01
+[submodule "src/atmos_null"]
+	path = src/atmos_null
+	url = https://github.com/NOAA-GFDL/atmos_null.git
 	branch = 2025.01
