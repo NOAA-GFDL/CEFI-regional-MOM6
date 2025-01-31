@@ -40,10 +40,10 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="RELEASE" value="2024.02"/>
 
   <!-- git tag for FMS source code -->
-  <property name="FMS_GIT_TAG" value="2024.03"/>
+  <property name="FMS_GIT_TAG" value="2025.01"/>
 
   <!-- git tag for shared source code -->
-  <property name="CPL_GIT_TAG" value="2024.03"/>
+  <property name="CPL_GIT_TAG" value="2025.01"/>
 
   <!-- git tag for shared source code -->
   <property name="NULL_TAG" value="2023.04"/>
@@ -52,7 +52,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NWA/2024_11"/>
+  <property name="FRE_STEM" value="fre/cefi/NWA/2025_02"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <property name="NCRC_GROUP" value="ira-cefi"/>
@@ -164,7 +164,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
 
     <component name="atmos_null" paths="mom6/src/atmos_null" requires="fms">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(NULL_TAG)"> atmos_null.git </codeBase>
+        <codeBase version="$(CPL_GIT_TAG)"> atmos_null.git </codeBase>
       </source>
       <compile>
         <cppDefs>$(F2003_FLAGS) </cppDefs>
