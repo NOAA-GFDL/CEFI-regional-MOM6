@@ -582,7 +582,7 @@ truncate -s 0 $work/INPUT/MOM_override
 cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override USE_generic_tracer = True
 #override MAX_FIELDS=500
-#override OBC_TIDE_NODAL_REF_DATE = ${fyear},7,2
+#override TIDE_NODAL_REF_DATE = ${fyear},7,2
 DT_OBC_SEG_UPDATE_OBGC = 1800
 #override CHL_FROM_FILE = False
 #override DO_GEOTHERMAL = True
