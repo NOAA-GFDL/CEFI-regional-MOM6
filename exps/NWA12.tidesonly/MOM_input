@@ -112,7 +112,7 @@ BRUSHCUTTER_MODE = True         !   [Boolean] default = False
                                 ! If true, read external OBC data on the supergrid.
 OBC_TIDE_CONSTITUENTS = "M2,S2,N2,K2,K1,O1,P1,Q1,MM,MF" !
                                 ! Names of tidal constituents being added to the open boundaries.
-OBC_TIDE_REF_DATE = 1993, 1, 1  !
+TIDE_REF_DATE = 1993, 1, 1      !
                                 ! Reference date to use for tidal calculations and equilibrium phase.
 
 ! === module MOM_verticalGrid ===
