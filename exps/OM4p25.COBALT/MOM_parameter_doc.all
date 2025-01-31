@@ -73,15 +73,26 @@ DT = 900.0                      !   [s]
                                 ! be an integer fraction of the forcing time-step (DT_FORCING in ocean-only mode
                                 ! or the coupling timestep in coupled mode.)
 DT_THERM = 7200.0               !   [s] default = 900.0
-                                ! The thermodynamic and tracer advection time step. Ideally DT_THERM should be
-                                ! an integer multiple of DT and less than the forcing or coupling time-step,
-                                ! unless THERMO_SPANS_COUPLING is true, in which case DT_THERM can be an integer
-                                ! multiple of the coupling timestep.  By default DT_THERM is set to DT.
+                                ! The thermodynamic time step. Ideally DT_THERM should be an integer multiple of
+                                ! DT and of DT_TRACER_ADVECT and less than the forcing or coupling time-step.
+                                ! However, if THERMO_SPANS_COUPLING is true, DT_THERM can be an integer multiple
+                                ! of the coupling timestep. By default DT_THERM is set to DT.
 THERMO_SPANS_COUPLING = True    !   [Boolean] default = False
-                                ! If true, the MOM will take thermodynamic and tracer timesteps that can be
-                                ! longer than the coupling timestep. The actual thermodynamic timestep that is
-                                ! used in this case is the largest integer multiple of the coupling timestep
-                                ! that is less than or equal to DT_THERM.
+                                ! If true, the MOM will take thermodynamic timesteps that can be longer than the
+                                ! coupling timestep. The actual thermodynamic timestep that is used in this case
+                                ! is the largest integer multiple of the coupling timestep that is less than or
+                                ! equal to DT_THERM.
+DT_TRACER_ADVECT = 7200.0       !   [s] default = 7200.0
+                                ! The tracer advection time step. Ideally DT_TRACER_ADVECT should be an integer
+                                ! multiple of DT, less than DT_THERM, and less than the forcing or coupling
+                                ! time-step. However, if TRADV_SPANS_COUPLING is true, DT_TRACER_ADVECT can be
+                                ! longer than the coupling timestep. By default DT_TRACER_ADVECT is set to
+                                ! DT_THERM.
+TRADV_SPANS_COUPLING = True     !   [Boolean] default = True
+                                ! If true, the MOM will take tracer advection timesteps that can be longer than
+                                ! the coupling timestep. The actual tracer advection timestep that is used in
+                                ! this case is the largest integer multiple of the coupling timestep that is
+                                ! less than or equal to DT_TRACER_ADVECT.
 HMIX_SFC_PROP = 1.0             !   [m] default = 1.0
                                 ! If BULKMIXEDLAYER is false, HMIX_SFC_PROP is the depth over which to average
                                 ! to find surface properties like SST and SSS or density (but not surface
@@ -384,12 +395,9 @@ RESTART_CHECKSUMS_REQUIRED = True !   [Boolean] default = True
                                 ! may want to avoid this comparison if for example the restarts are made from a
                                 ! run with a different mask_table than the current run, in which case the
                                 ! checksums will not match and cause crash.
-STREAMING_FILTER_M2 = False     !   [Boolean] default = False
-                                ! If true, turn on streaming band-pass filter for detecting instantaneous tidal
-                                ! signals.
-STREAMING_FILTER_K1 = False     !   [Boolean] default = False
-                                ! If true, turn on streaming band-pass filter for detecting instantaneous tidal
-                                ! signals.
+USE_FILTER = False              !   [Boolean] default = False
+                                ! If true, use streaming band-pass filters to detect the instantaneous tidal
+                                ! signals in the simulation.
 
 ! === module MOM_tracer_flow_control ===
 USE_USER_TRACER_EXAMPLE = False !   [Boolean] default = False
@@ -1817,6 +1825,8 @@ SET_DIFF_ANSWER_DATE = 99991231 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the set diffusivity
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
+                                ! Values above 20250301 also use less confusing expressions to set the
+                                ! bottom-drag generated diffusivity when USE_LOTW_BBL_DIFFUSIVITY is false.
 
 ! === module MOM_tidal_mixing ===
 ! Vertical Tidal Mixing Parameterization
@@ -2224,6 +2234,9 @@ VSTAR_SURF_FAC = 1.2            !   [nondim] default = 1.2
 EPBL_BBL_EFFIC = 0.0            !   [nondim] default = 0.0
                                 ! The efficiency of bottom boundary layer mixing via ePBL.  Setting this to a
                                 ! value that is greater than 0 to enable bottom boundary layer mixing from EPBL.
+EPBL_BBL_TIDAL_EFFIC = 0.0      !   [nondim] default = 0.0
+                                ! The efficiency of bottom boundary layer mixing via ePBL driven by the bottom
+                                ! drag dissipation of tides, as provided in fluxes%BBL_tidal_dis.
 USE_LA_LI2016 = True            !   [Boolean] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
@@ -2289,6 +2302,18 @@ PEN_SW_FLUX_ABSORB = 2.5E-11    !   [degC m s-1] default = 2.5E-11
 PEN_SW_ABSORB_MINTHICK = 1.0    !   [m] default = 1.0
                                 ! A thickness that is used to absorb the remaining penetrating shortwave heat
                                 ! flux when it drops below PEN_SW_FLUX_ABSORB.
+OPACITY_VALUES_MANIZZA = 0.0232, 0.074, 0.225, 0.037, 2.86, 0.0 !   [m-1] default = 0.0232, 0.074, 0.225, 0.037, 2.86, 0.0
+                                ! Pairs of opacity coefficients for blue, red and near-infrared radiation with
+                                ! parameterizations following the functional form from Manizza et al., GRL 2005,
+                                ! namely in the form opacity = coef_1 + coef_2 * chl**pow for each band.
+                                ! Although coefficients are set for 3 bands, more or less bands may actually be
+                                ! used, with extra bands following the same properties as band 3.
+CHOROPHYLL_POWER_MANIZZA = 0.674, 0.629, 0.0 !   [nondim] default = 0.674, 0.629, 0.0
+                                ! Powers of chlorophyll for blue, red and near-infrared radiation bands in
+                                ! expressions for opacity of the form opacity = coef_1 + coef_2 * chl**pow.
+OPACITY_BAND_WAVELENGTHS = 0.0, 550.0, 700.0, 2800.0 !   [nm] default = 0.0, 550.0, 700.0, 2800.0
+                                ! The bounding wavelengths for the various bands of shortwave radiation, with
+                                ! defaults that depend on the setting for OPACITY_SCHEME.
 OPACITY_LAND_VALUE = 10.0       !   [m-1] default = 10.0
                                 ! The value to use for opacity over land. The default is 10 m-1 - a value for
                                 ! muddy water.
