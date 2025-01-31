@@ -75,7 +75,7 @@ jobs:
         case: ["NWA12.COBALT", "NEP10.COBALT"]
     steps:
       - name: Download CEFI_MOM6_CHECK compressed artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: CEFI_MOM6_CHECK
           path: ${{ env.TEST_DIR }}
