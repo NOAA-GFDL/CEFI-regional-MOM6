@@ -412,10 +412,7 @@ TIDE_MF = True                  !   [Boolean] default = False
 TIDE_MM = True                  !   [Boolean] default = False
                                 ! If true, apply tidal momentum forcing at the MM frequency. This is only used
                                 ! if TIDES is true.
-TIDE_SAL_SCALAR_VALUE = 0.01    !   [m m-1]
-                                ! The constant of proportionality between sea surface height (really it should
-                                ! be bottom pressure) anomalies and bottom geopotential anomalies. This is only
-                                ! used if TIDES and TIDE_USE_SAL_SCALAR are true.
+SAL_SCALAR_VALUE = 0.01         !   [m m-1]
 TIDE_USE_EQ_PHASE = True        !   [Boolean] default = False
                                 ! Correct phases by calculating equilibrium phase arguments for TIDE_REF_DATE.
 
