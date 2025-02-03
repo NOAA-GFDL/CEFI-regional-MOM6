@@ -913,10 +913,7 @@ TIDE_P1 = True
 TIDE_Q1 = True
 TIDE_MM = True
 TIDE_MF = True
-TIDE_SAL_SCALAR_VALUE = 0.010   !   [m m-1]
-                                ! The constant of proportionality between sea surface height (really it should
-                                ! be bottom pressure) anomalies and bottom geopotential anomalies. This is only
-                                ! used if TIDES and TIDE_USE_SAL_SCALAR are true.
+SAL_SCALAR_VALUE = 0.010        !   [m m-1]
 TIDE_USE_EQ_PHASE = True
 
 ! === module ocean_model_init ===
