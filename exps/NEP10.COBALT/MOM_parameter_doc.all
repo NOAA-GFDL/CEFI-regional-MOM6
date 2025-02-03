@@ -1097,10 +1097,10 @@ SAL_USE_BPA = False             !   [Boolean] default = False
 SAL_SCALAR_APPROX = True        !   [Boolean] default = True
                                 ! If true, use the scalar approximation to calculate self-attraction and
                                 ! loading.
-SAL_SCALAR_VALUE = 0.01         !   [m m-1] default = 0.01
-                                ! The constant of proportionality between sea surface height (really it should
-                                ! be bottom pressure) anomalies and bottom geopotential anomalies. This is only
-                                ! used if USE_SAL_SCALAR is true or USE_PREVIOUS_TIDES is true.
+SAL_SCALAR_VALUE = 0.01         !   [m m-1] default = 0.0
+                                ! The constant of proportionality between self-attraction and loading (SAL)
+                                ! geopotential anomaly and barotropic geopotential anomaly. This is only used if
+                                ! SAL_SCALAR_APPROX is true or USE_PREVIOUS_TIDES is true.
 SAL_HARMONICS = False           !   [Boolean] default = False
                                 ! If true, use the online spherical harmonics method to calculate
                                 ! self-attraction and loading.
