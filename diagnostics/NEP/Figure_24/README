@@ -1,0 +1,31 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_24
+
+Contents:
+	
+   - Jupyter Notebook: Figure24_W_map_and_CUTI_comparisons.ipynb
+	
+	Details: This notebook generates Figure 24 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire:
+
+		- Coastal Upwelling Transport Index (CUTI): https://oceanview.pfeg.noaa.gov/products/upwelling/dnld
+			- CUTI_daily.csv 
+			
+   - NetCDF file:   ccs_grid.nc
+
+	Details: California Current System spatial subset of NEP10k domain grid for expedited calculation and data storage purposes
+
+
+   - NetCDF files:  ccs_umo_vmo_YYYY.nc where YYYY indicates the years 1993 through 2019 
+	
+	Details: Monthly mean horizontal ocean mass transports (umo, vmo) from NEP10k hindcast simulation, spatially subset to the California Current System, that were used to calculate vertical mass transport and vertical velocity. 
+		 Files consist of 12 monthly means each.
+

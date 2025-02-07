@@ -1,0 +1,42 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_17
+
+Contents:
+	
+   - Jupyter Notebook: Figure17_NEP_GLORYS_temperature_anomaly_timeseries.ipynb
+	
+	Details: This notebook generates Figure 17 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire:
+
+                - GLORYS12 temperature: https://doi.org/10.48670/moi-00021 
+			- Temperature                    (thetao)
+			- Bottom Temperature		 (bottomT) 
+
+		- NOAA NCEP Ocean Niño Indx: https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.tx
+			
+	   - Generate monthly mean surface temperature (i.e., just depth level thetao value) 1993-2019 timeseries (324 monthly mean values) NetCDF file and store in this directory with the following naming convention:
+		(NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- glorys_nep_sst_1993-2019.nc
+
+           - Generate monthly mean bottom temperature timeseries 1993-2019 (324 monthly mean values) NetCDF file and store in this directory with the following naming convention:
+                (NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+                - glorys_nep_bottomT_1993-2019.nc
+
+           - Modification: remove rows for years before 1993 and after 2019 from detrend.nino34.ascii.txt and save as csv file in this directry with the following naming convention:
+                - detrend_nino34_1993-2019_anom.csv
+
+
+   - NetCDF files: nep_sst_1993-2019_monthly_ts.nc, nep_tob_1993-2019_monthly_ts.nc
+
+	Details: Model output from NEP10k hindcast simulation. File consist of 324 monthly means of surface (tos) and bottom (tob) temperature, respectively
+

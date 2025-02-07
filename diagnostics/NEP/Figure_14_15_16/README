@@ -1,0 +1,28 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_14_15_16
+
+Contents:
+	
+   - Jupyter Notebook: Figures14-16_NEP_CODAP-NA_alk_dic_arag.ipynb
+	
+	Details: This notebook generates Figures 14, 15, and 16 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+		- ODAP-NA Total Alkalinity, DIC, and Aragonite saturation: https://www.ncei.noaa.gov/data/oceans/ncei/ocads/metadata/0270962.html
+
+			- Total Alkalinity:     	TA.nc    	(TA_an)
+			- Dissolved Inorganic Carbon:   DIC.nc   	(DIC_an)
+			- Aragonite Saturation State:	Aragonite.nc    (OmegaA_an)
+			
+   - NetCDF files: nep_talk_2004-2018_mean.nc, nep_dissic_2004-2018_mean.nc, and nep_omega_arag_2004-2018_mean.nc 
+	
+	Details: Model output from NEP10k hindcast simulation containing annual mean timeseries for 2004-2018 diagnostic variables total alkalinity (talk), dissolved inorganic carbon (dissic), and aragonite saturation state (omega_arag)
+

@@ -1,0 +1,39 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_5
+
+Contents:
+	
+   - Jupyter Notebook: Figure5_SSH_comparisons.ipynb
+	
+	Details: This notebook generates Figure 5 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+		- CMEMS Altimetry (cmems_obs-sl_glo_phy-ssh_my_allsat-l4-duacs-0.25deg_P1M-m): https://doi.org/10.48670/moi-00148
+			- Absolute Dynamic Topography      (adt)
+
+                - GLORYS12: https://doi.org/10.48670/moi-00021 
+			- Sea Surface Height Above Geoid (zos)
+
+            - Generate monthly mean climatology (1993-2019) for CMEMS adt and store/link in this directory with the following naming convention:
+                (NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- CMEMS_adt_1993-2019_clim.nc
+
+	   - Generate monthly mean climatology (1993-2019) for GLORYS12 zos and store/link in this directory with the following naming convention:
+		(NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- glorys_zos_1993-2019_clim.nc
+
+
+   - NetCDF file: nep_ssh_1993-2019_clim.nc
+	
+	Details: Model output from NEP10k hindcast simulation for monthly climatology of 1993-2019 sea surface height (ssh)
+

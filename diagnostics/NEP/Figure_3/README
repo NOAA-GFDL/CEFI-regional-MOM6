@@ -1,0 +1,41 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_3
+
+Contents:
+	
+   - Jupyter Notebook: Figure3_NEP_WOA_GLORYS_salinity_comparison.ipynb
+	
+	Details: This notebook generates Figure 3 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire:
+
+		- NCEI Northern North Pacific Regional Climatology Version 2: https://www.ncei.noaa.gov/products/northern-north-pacific-regional-climatology
+			- Salinity, Decadal means 1995-2004; 2005-2014		 (s_an)
+
+	 	- NCEI Northeast Pacific Regional Climatology: https://www.ncei.noaa.gov/products/northeast-pacific-regional-climatology
+			- Salinity, Decadeal means 1995-2004; 2005-2012                 (s_an)
+
+                - GLORYS12 Salinity: https://doi.org/10.48670/moi-00021 
+ 			- Salinity                       (so) 
+
+           - Generate via concatenation the decadal mean salinity timeseries NetCDF files for nnp and nep and store in this directory:
+
+		- nep_95B2_s00_10.nc
+		- nnp_95B4_s00_10.nc		
+
+	   - Generate annual mean salinity timeseries NetCDF files and store in this directory:
+		(NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- glorys_so_1993-2019_mean_ts.nc
+
+   - NetCDF files: nep_so_1993-2019_mean_ts.nc, nep_so_1995-2014_mean_ts.nc
+	
+	Details: Model output from NEP10k hindcast simulation. Files consist of 27 years and 20 years, respectively, of annual mean ocean salinity (so) over all depths
+

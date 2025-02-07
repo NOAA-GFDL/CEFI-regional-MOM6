@@ -1,0 +1,34 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_2
+
+Contents:
+	
+   - Jupyter Notebook: Figure2_NEP_OISST_GLORYS_comparison.ipynb 
+	
+	Details: This notebook generates Figure 2 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire:
+
+		- OISST v2.1 surface temperature: https://www.ncei.noaa.gov/products/optimum-interpolation-sst
+			- Daily sea surface temperature  (sst)
+
+                - GLORYS12 temperature: https://doi.org/10.48670/moi-00021 
+			- Temperature                    (thetao) 
+			
+	   - Generate annual mean temperature timeseries NetCDF files and store in this directory:
+		(NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- oisst_sst_1993-2019_mean_ts.nc 
+		- glorys_thetao_1993-2019_mean_ts.nc
+
+   - NetCDF file: nep_thetao_1993-2019_mean_ts.nc
+	
+	Details: Model output from NEP10k hindcast simulation. File consist of 27 years of annual mean ocean themperature (thetao) over all depths
+

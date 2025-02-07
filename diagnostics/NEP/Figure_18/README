@@ -1,0 +1,37 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_10
+
+Contents:
+	
+   - Jupyter Notebook: Figure10_NEP_vs_ESA_chl_comparisons.ipynb
+	
+	Details: This notebook generates Figure 10 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+		- ESA Ocean Colour Climate Change Initiative (Ocean_Colour_cci): Monthly Mean Global chlorophyll-a data products gridded on a geographic projection at 4km resolution, Version 6.0
+		  https://data.ceda.ac.uk/neodc/esacci/ocean_colour/data/v6.0-release/geographic/netcdf/chlor_a
+			- Chlorophyll-a concentration in seawater      (chlor_a)
+
+		- NOAA NCEP Ocean Niño Indx: https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.txt
+
+            - Generate concatenate monthly men chlorophyl a fields for time period of 1998-2019 (264 months in total) for OC-CCI chlor_a and store/link in this directory with the following naming convention:
+                (NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- ESACCI-OC-L3S-CHLOR_A-MERGED-1M_MONTHLY_4km_GEO_PML_OCx-1998-2019-fv6.0_nep.nc
+
+	    - Modification: remove rows for years before 1993 and after 2019 from detrend.nino34.ascii.txt and save as csv file in this directry with the following naming convention:
+                - detrend_nino34_1993-2019_anom.csv
+
+
+   - NetCDF file: nep_chlos_1998-2019_monthly_ts.nc
+	
+	Details: Model output from NEP10k hindcast simulation monthly mean surface chlorophyl (chlosa) for time period 1998-2019 (contains 264 months of model output) 
+

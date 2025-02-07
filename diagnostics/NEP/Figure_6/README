@@ -1,0 +1,61 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_6
+
+Contents:
+
+   - Python Script: compute_tides
+
+	Details: This script was developed by Andrew C. Ross at GFDL and uses hourly sea surface height to calculate amplitude of different tidal constituents.     
+
+        Prerequisits:
+
+           - Python packages listed in python_env.txt "shared" directory
+           - ocean_hgrid.nc file located in this directory 
+           - at least one month of hourly ssh model output (ssh_1993.nc in this directory)
+
+	Code Expecution: The call to this script for the above mentioned above was
+	
+	   python compute_tides.py ocean_hgrid.nc ssh_1993.nc NEP_tides.nc  1
+ 
+
+   - NetCDF file: ocean_hgrid.nc
+
+        Details: Model supergrid used for NEP10k hindcast simulation 
+
+
+   - NetCDF file: ssh_1993.nc
+
+        Details: Model output from NEP10k hindcast simulation - hourly sea surface height (ssh) from January 1, 1993 - April 1, 1993.
+
+
+   - NetCDF file: NEP_tides.nc
+
+        Details: Results of running the "compute_tides.py" script. Specific call used:
+                        python compute_tides.py ocean_hgrid.nc ssh_1993.nc NEP_tides.nc  1
+
+
+   - Jupyter Notebook: Figure6_NEP_tides.ipynb
+	
+	Details: This notebook was derived from code developed by Andrew C. Ross at GFDL and generates Figure 6 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+                - OSU TPXO9 Tide Models: https://www.tpxo.net/home  (/work/acr/tpxo9/h_tpxo9.v1.nc) 
+
+            - Generate monthly mean climatology (1993-2019) for CMEMS adt and store/link in this directory with the following naming convention:
+                (NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- CMEMS_adt_1993-2019_clim.nc
+
+	   - Generate monthly mean climatology (1993-2019) for GLORYS12 zos and store/link in this directory with the following naming convention:
+		(NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- glorys_zos_1993-2019_clim.nc
+

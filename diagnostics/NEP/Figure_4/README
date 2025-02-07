@@ -1,0 +1,44 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_4
+
+Contents:
+	
+   - Jupyter Notebook: Figure4_MLD_dBM_GLORYS_comparison.ipynb
+	
+	Details: This notebook generates Figure 4 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+		- de Boyer Montégut Mixed layer depth over the global ocean: https://doi.org/10.17882/98226
+			- Mixed layer depth 		 (mld_dr003)
+
+                - GLORYS12: https://doi.org/10.48670/moi-00021 
+			- Temperature			 (thetao)
+ 			- Salinity                       (so)
+			- Bathymetry 			 (deptho)
+
+
+	   - Rename de Boyer MontégutNetCDF file with the following naming convention and store/link in this directory:
+		- mld_dr003_ref5m_v2024.nc 
+
+	   - Generate monthly mean temperature and salinity NetCDF files (both variables in the same year-month file) and if using daily mean GLORYS files, and store/link in this directory with the following naming convention:
+		(NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- GLORYS_REANALYSIS_NEP_YYYY_MM.tmp.nc; where YYYY indicates the year and MM indicates the 2-didget month code
+
+	   - Generate NEP spatial subset of bathymetry file (if spatially subset temperature and salinity fields), and store/link in this directory with the following naming convention:
+		
+		- glorys_nep_mask.nc
+
+
+   - NetCDF file: nep_MLD_003_1993-2019_clim.nc
+	
+	Details: Model output from NEP10k hindcast simulation for monthly climatology of 1993-2019 mixed layer depth defined using the density threshold criterion of 0.03 kg/m3 from the potential density value at the reference depth of 5 m
+

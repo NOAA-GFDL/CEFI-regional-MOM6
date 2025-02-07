@@ -1,0 +1,34 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_10
+
+Contents:
+	
+   - Jupyter Notebook: Figure10_NEP_vs_ESA_chl_comparisons.ipynb
+	
+	Details: This notebook generates Figure 10 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+		- ESA Ocean Colour Climate Change Initiative (Ocean_Colour_cci): Monthly Mean Global chlorophyll-a data products gridded on a geographic projection at 4km resolution, Version 6.0
+		  https://data.ceda.ac.uk/neodc/esacci/ocean_colour/data/v6.0-release/geographic/netcdf/chlor_a
+			- Chlorophyll-a concentration in seawater      (chlor_a)
+
+            - Generate 3-month seasonal monthly timeseries (1998-2019; 66 months per file) for OC-CCI chlor_a and store/link in this directory with the following naming convention:
+                (NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to temporal averaging)
+
+		- ESACCI-OC-L3S-CHLOR_A-MERGED-1M_MONTHLY_4km_GEO_PML_OCx-JFM-fv6.0_nep.nc
+                - ESACCI-OC-L3S-CHLOR_A-MERGED-1M_MONTHLY_4km_GEO_PML_OCx-AMJ-fv6.0_nep.nc
+                - ESACCI-OC-L3S-CHLOR_A-MERGED-1M_MONTHLY_4km_GEO_PML_OCx-JAS-fv6.0_nep.nc
+                - ESACCI-OC-L3S-CHLOR_A-MERGED-1M_MONTHLY_4km_GEO_PML_OCx-OND-fv6.0_nep.nc
+
+   - NetCDF files: nep_chlos_1998-2019_JFM_ts.nc, nep_chlos_1998-2019_AMJ_ts.nc, nep_chlos_1998-2019_JAS_ts.nc, nep_chlos_1998-2019_OND_ts.nc
+	
+	Details: Model output from NEP10k hindcast simulation 3-month seasonal timeseries of 1998-2019 (each contains 66 months of model output) surface chlorophyl (chlos)
+

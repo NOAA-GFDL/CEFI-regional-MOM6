@@ -1,0 +1,10 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis code for "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" submission to GMD
+
+Details: This archive contains the model output files and Python Jupyter Notebooks used to generate Figures 1-25 in the primary manuscript text. 
+
+Each "Figure" .tar.gz file contains the data files needed to generate that figure. Output and codes relavant to more than one figure are found in the "shared" .tar.gz file.    
+
