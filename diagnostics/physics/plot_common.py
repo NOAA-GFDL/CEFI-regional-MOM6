@@ -1,6 +1,7 @@
 import cartopy.crs as ccrs
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter, LatitudeLocator, LongitudeLocator
 from dataclasses import dataclass
+import errno
 from getpass import getuser
 from glob import glob
 from matplotlib.colors import BoundaryNorm, ListedColormap
@@ -192,28 +193,27 @@ def open_var(pp_root, kind, var, hsmget=HSMGet()):
     if isinstance(pp_root, str):
         pp_root = Path(pp_root)
     freq = 'daily' if 'daily' in kind else 'monthly'
-    longslice = '19930101-20191231' if freq == 'daily' else '199301-201912'
-    # For now, replicate previous behavior by looking for a single file covering 1993--2019,
-    # and if not found then looking for multiple files written in either yearly or 5-yearly chunks.
-    # Later this can be replaced to more intelligently look for the right file(s). 
-    longfile = pp_root / 'pp' / kind / 'ts' / freq / '27yr' / f'{kind}.{longslice}.{var}.nc'
-    if longfile.exists():
-        tmpfile = hsmget(longfile)
-        return xarray.open_dataset(tmpfile, decode_timedelta=True)[var] # Avoid FutureWarning about decode_timedelta
-    else:
-        possible_chunks = [1, 5]
-        for chunk in possible_chunks:
-            short_dir = pp_root / 'pp' / kind / 'ts' / freq / f'{chunk}yr'
-            if short_dir.is_dir():
-                break
-        else:
-            raise Exception('Did not find directory for postprocessed files')
-        short_files = list(short_dir.glob(f'{kind}.*.{var}.nc'))
-        if len(short_files) > 0:
-            tmpfiles = hsmget(sorted(short_files))
+    if not (pp_root / 'pp' / kind / 'ts' / freq).is_dir():
+        raise FileNotFoundError(errno.ENOENT, 'Could not find post-processed directory', str(pp_root / 'pp' / kind / 'ts' / freq))
+    # Get all of the available post-processing chunk directories (assuming chunks in units of years)
+    available_chunks = list((pp_root / 'pp' / kind / 'ts' / freq).glob('*yr'))
+    if len(available_chunks) == 0:
+        raise FileNotFoundError(errno.ENOENT, 'Could not find post-processed chunk subdirectory')
+    # Sort from longest to shortest chunk
+    sorted_chunks = list(sorted(available_chunks, key=lambda x: int(x.name[0:-2]), reverse=True))
+    for chunk in sorted_chunks:
+        # Look through the available chunks and return for the 
+        # largest chunk that has file(s). 
+        matching_files = list(chunk.glob(f'{kind}.*.{var}.nc'))
+        # Treat 1 and > 1 files separately, though the > 1 case could probably handle both. 
+        if len(matching_files) > 1:
+            tmpfiles = hsmget(sorted(matching_files))
             return xarray.open_mfdataset(tmpfiles, decode_timedelta=True)[var] # Avoid FutureWarning about decode_timedelta
-        else:
-            raise Exception('Did not find postprocessed files')
+        elif len(matching_files) == 1:
+            tmpfile = hsmget(matching_files[0])
+            return xarray.open_dataset(tmpfile, decode_timedelta=True)[var] # Avoid FutureWarning about decode_timedelta
+    else:
+        raise FileNotFoundError(errno.ENOENT, 'Could not find any post-processed files. Check if frepp failed.')
 
 def save_figure(fname, label='', pdf=False, output_dir='figures'):
     if label == '':
