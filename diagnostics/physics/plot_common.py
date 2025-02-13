@@ -193,14 +193,15 @@ def open_var(pp_root, kind, var, hsmget=HSMGet()):
     if isinstance(pp_root, str):
         pp_root = Path(pp_root)
     freq = 'daily' if 'daily' in kind else 'monthly'
-    if not (pp_root / 'pp' / kind / 'ts' / freq).is_dir():
-        raise FileNotFoundError(errno.ENOENT, 'Could not find post-processed directory', str(pp_root / 'pp' / kind / 'ts' / freq))
+    pp_dir = pp_root / 'pp' / kind / 'ts' / freq
+    if not pp_dir.is_dir():
+        raise FileNotFoundError(errno.ENOENT, 'Could not find post-processed directory', str(pp_dir))
     # Get all of the available post-processing chunk directories (assuming chunks in units of years)
-    available_chunks = list((pp_root / 'pp' / kind / 'ts' / freq).glob('*yr'))
+    available_chunks = list(pp_dir.glob('*yr'))
     if len(available_chunks) == 0:
         raise FileNotFoundError(errno.ENOENT, 'Could not find post-processed chunk subdirectory')
     # Sort from longest to shortest chunk
-    sorted_chunks = list(sorted(available_chunks, key=lambda x: int(x.name[0:-2]), reverse=True))
+    sorted_chunks = sorted(available_chunks, key=lambda x: int(x.name[0:-2]), reverse=True)
     for chunk in sorted_chunks:
         # Look through the available chunks and return for the 
         # largest chunk that has file(s). 
