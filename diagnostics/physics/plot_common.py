@@ -41,7 +41,7 @@ class HSMGet():
     def __call__(self, path_or_paths):
         if which('hsmget') is None or not self._dirs_exist():
             # If hsmget or /archive, /ptmp, etc are not available, this will just return the input path(s).
-            logger.info('Not using hsmget')
+            logger.info('Not using hsmget. If running on GFDL analysis, run `module load hsm/1.3.0` to enable using hsmget. ')
             return path_or_paths
         elif isinstance(path_or_paths, Path):
             # Find the file path on archive, relative to the root part of archive.
