@@ -20,7 +20,9 @@ import xesmf
 # Configure logging for plot_common
 logger = logging.getLogger(__name__)
 
-
+# hsmget, available on GFDL PPAN, will make it faster, easier, and safer
+# to read data from /archive. 
+# To use this, run `module load hsm/1.3.0` beforehand. 
 @dataclass
 class HSMGet():
     archive: Path = Path('/') # this will duplicate paths used by frepp
