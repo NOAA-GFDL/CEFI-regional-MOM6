@@ -90,17 +90,16 @@ def plot_gulf_stream(pp_root, label):
     glorys_t200 = xarray.open_dataarray('../../data/diagnostics/glorys_T200.nc')
     
     # Get satellite points
-    #satellite_ssh_index, satellite_ssh_points = compute_gs(satellite['adt'])
-    #satellite_ssh_points.to_netcdf('../data/obs/satellite_ssh_points.nc')
-    #satellite_ssh_index.to_pickle('../data/obs/satellite_ssh_index.pkl')
-    #read pre-calculate satellite_ssh_index and points
+    # satellite = xarray.open_dataset('/work/acr/cmems/cmems_obs-sl_glo_phy-ssh_my_allsat-l4-duacs-0.125deg_P1D/monthly_averaged/obs-sl_glo_phy-ssh_my_allsat-l4-duacs-0.125deg.nc')
+    # satellite = satellite.rename({'longitude': 'lon', 'latitude': 'lat'})
+    # satellite_ssh_index, satellite_ssh_points = compute_gs(satellite['adt'])
+    # satellite_ssh_points.to_netcdf('../data/obs/satellite_ssh_points.nc')
+    # satellite_ssh_index.to_pickle('../data/obs/satellite_ssh_index.pkl')
+    # OR
+    # read pre-calculate satellite_ssh_index and points
     satellite_ssh_points = xarray.open_dataset('../../data/obs/satellite_ssh_points.nc')
     satellite_ssh_index = pd.read_pickle('../../data/obs/satellite_ssh_index.pkl')
     satellite_rolled = satellite_ssh_index.rolling(25, center=True, min_periods=25).mean().dropna()
-
-    #satellite = xarray.open_mfdataset([f'/net2/acr/altimetry/SEALEVEL_GLO_PHY_L4_MY_008_047/adt_{y}_{m:02d}.nc' for y in range(1993, 2020) for m in range(1, 13)])
-    #satellite = satellite.rename({'longitude': 'lon', 'latitude': 'lat'})
-    #satellite = satellite.resample(time='1MS').mean('time')
 
     # Get rolling averages and correlations
     model_rolled = model_ssh_index.rolling(25, center=True, min_periods=25).mean().dropna()
