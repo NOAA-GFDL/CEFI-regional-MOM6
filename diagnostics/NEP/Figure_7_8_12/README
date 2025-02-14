@@ -1,0 +1,29 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_7_8_12
+
+Contents:
+	
+   - Jupyter Notebook: Figure7_8_12_NEP_WOA_nutrient_comparisons.ipynb
+	
+	Details: This notebook generates Figures 7,8 and 12 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+		- World Ocean Atlas 2023 Annual mean, o1 degree output for Nitrate, Phosphate, and Dissolved Oxygen: https://www.ncei.noaa.gov/access/world-ocean-atlas-2023/
+
+			- Nitrate:         	woa23_all_n00_01.nc    (n_an)
+			- Phosphate:       	woa23_all_p00_01.nc    (p_an)
+			- Dissolved Oxygen:	woa23_all_o00_01.nc    (o_an)
+			
+
+   - NetCDF files: nep_no3_1993-2019_mean_ts.nc, nep_po4_1993-2019_mean_ts.nc, nep_o2_1993-2019_mean_ts.nc
+	
+	Details: Model output from NEP10k hindcast simulation containing annual mean timeseries for 1993-2019 for diagnostic variables nitrate (no3), phosphate (po4), and dissolved oxygen (o2)
+

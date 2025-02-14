@@ -1,0 +1,25 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_9
+
+Contents:
+	
+   - Jupyter Notebook: Figure9_NEP_dFe_nutrient_limitations.ipynb
+	
+	Details: This notebook generates Figure 9 in the above mentioned manuscript.  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+
+   - NetCDF file: nep_dfeos_1993-2019_mean_ts.nc
+	
+	Details: Model output from NEP10k hindcast simulation for timeseries of annual mean 1993-2019 sea surface dissolved iron (dfeos)
+
+   - NetCDF file: nep_1993-2019_nutrient_limitations_clim.nc
+
+	Details: Model output from NEP10k hindcast simulation for timeseries of monthly mean climatology (1993-2019) phytoplankton nutrient limitation terms and net primary phytoplankton carbon productions 
+		(intppdiat,intppmisc,intpppico,limnpico,limppico,limfepico,limndiat,limpdiat,limfediat,limnmisc,limpmisc,limfemisc)
