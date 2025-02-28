@@ -1,9 +1,9 @@
-"ATM", "p_surf",             "msl",    "INPUT/ERA5_msl_1995_padded.nc",           "bilinear",  1.0
-"ATM", "p_bot",              "msl",    "INPUT/ERA5_msl_1995_padded.nc",           "bilinear",  1.0
-"ATM", "t_bot",              "t2m",    "INPUT/ERA5_t2m_1995_padded.nc",           "bilinear",  1.0
-"ATM", "sphum_bot",          "sphum",  "INPUT/ERA5_sphum_1995_padded.nc",          "bilinear",  1.0
-"ATM", "u_bot",              "u10",    "INPUT/ERA5_u10_1995_padded.nc",          "bicubic",   1.0
-"ATM", "v_bot",              "v10",    "INPUT/ERA5_v10_1995_padded.nc",          "bicubic",   1.0
+"ATM", "p_surf",             "msl",    "INPUT/ERA5_msl_1993_padded.nc",           "bilinear",  1.0
+"ATM", "p_bot",              "msl",    "INPUT/ERA5_msl_1993_padded.nc",           "bilinear",  1.0
+"ATM", "t_bot",              "t2m",    "INPUT/ERA5_t2m_1993_padded.nc",           "bilinear",  1.0
+"ATM", "sphum_bot",          "sphum",  "INPUT/ERA5_sphum_1993_padded.nc",          "bilinear",  1.0
+"ATM", "u_bot",              "u10",    "INPUT/ERA5_u10_1993_padded.nc",          "bicubic",   1.0
+"ATM", "v_bot",              "v10",    "INPUT/ERA5_v10_1993_padded.nc",          "bicubic",   1.0
 "ATM", "z_bot",              "",       "",                           "bilinear", 10.0
 "ATM", "gust",               "",       "",                           "bilinear",  1.0e-4
 "ATM", "o2_flux_pcair_atm",  "",       "",                           "none",      0.214
@@ -11,14 +11,14 @@
 "ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
 "ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
 #
-"ICE", "lw_flux_dn"        , "strd",   "INPUT/ERA5_strd_1995_padded.nc",          "bilinear", 2.77778e-4
-"ICE", "sw_flux_vis_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  7.9167e-5
-"ICE", "sw_flux_vis_dif_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  7.9167e-5
-"ICE", "sw_flux_nir_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  5.9722e-5
-"ICE", "sw_flux_nir_dif_dn", "ssrd",   "INPUT/ERA5_ssrd_1995_padded.nc",          "bilinear",  5.9722e-5
-"ICE", "lprec",              "lp",     "INPUT/ERA5_lp_1995_padded.nc",            "bilinear", 0.277777778
-"ICE", "fprec",              "sf",     "INPUT/ERA5_sf_1995_padded.nc",            "bilinear", 0.277777778
-"ICE", "runoff",             "runoff", "INPUT/glofas_runoff_1995.nc",     "none",      1.0
+"ICE", "lw_flux_dn"        , "strd",   "INPUT/ERA5_strd_1993_padded.nc",          "bilinear", 2.77778e-4
+"ICE", "sw_flux_vis_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_1993_padded.nc",          "bilinear",  7.9167e-5
+"ICE", "sw_flux_vis_dif_dn", "ssrd",   "INPUT/ERA5_ssrd_1993_padded.nc",          "bilinear",  7.9167e-5
+"ICE", "sw_flux_nir_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_1993_padded.nc",          "bilinear",  5.9722e-5
+"ICE", "sw_flux_nir_dif_dn", "ssrd",   "INPUT/ERA5_ssrd_1993_padded.nc",          "bilinear",  5.9722e-5
+"ICE", "lprec",              "lp",     "INPUT/ERA5_lp_1993_padded.nc",            "bilinear", 0.277777778
+"ICE", "fprec",              "sf",     "INPUT/ERA5_sf_1993_padded.nc",            "bilinear", 0.277777778
+"ICE", "runoff",             "runoff", "INPUT/glofas_runoff_1993.nc",     "none",      1.0
 "ICE", "calving",            "",       "",                           "none",      0.0
 "ICE", "dhdt",               "",       "",                           "none",     80.0
 "ICE", "dedt",               "",       "",                           "none",      2.0e-6
