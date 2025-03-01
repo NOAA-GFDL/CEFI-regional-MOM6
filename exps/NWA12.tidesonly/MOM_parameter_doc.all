@@ -302,6 +302,9 @@ OBC_RAMP_TIMESCALE = 1.0        !   [days] default = 1.0
                                 ! If RAMP_OBCS is true, this sets the ramping timescale.
 OBC_TIDE_N_CONSTITUENTS = 10    ! default = 0
                                 ! Number of tidal constituents being added to the open boundary.
+EXTERIOR_OBC_BUG = True         !   [Boolean] default = True
+                                ! If true, recover a bug in barotropic solver and other routines when boundary
+                                ! contitions interior to the domain are used.
 OBC_SEGMENT_001 = "J=0,I=0:N,FLATHER" !
                                 ! Documentation needs to be dynamic?????
 OBC_SEGMENT_002 = "J=N,I=N:0,FLATHER" !
@@ -459,6 +462,13 @@ RESTART_CHECKSUMS_REQUIRED = True !   [Boolean] default = True
                                 ! may want to avoid this comparison if for example the restarts are made from a
                                 ! run with a different mask_table than the current run, in which case the
                                 ! checksums will not match and cause crash.
+RESTART_SYMMETRIC_CHECKSUMS = False !   [Boolean] default = False
+                                ! If true, do the restart checksums on all the edge points for a non-reentrant
+                                ! grid.  This requires that SYMMETRIC_MEMORY_ is defined at compile time.
+RESTART_UNSIGNED_ZEROS = False  !   [Boolean] default = False
+                                ! If true, convert any negative zeros that would be written to the restart file
+                                ! into ordinary unsigned zeros.  This does not change answers, but it can be
+                                ! helpful in comparing restart files after grid rotation, for example.
 USE_FILTER = False              !   [Boolean] default = False
                                 ! If true, use streaming band-pass filters to detect the instantaneous tidal
                                 ! signals in the simulation.
@@ -784,8 +794,6 @@ CHANNEL_DRAG = True             !   [Boolean] default = False
 LINEAR_DRAG = False             !   [Boolean] default = False
                                 ! If LINEAR_DRAG and BOTTOMDRAGLAW are defined the drag law is
                                 ! cdrag*DRAG_BG_VEL*u.
-PRANDTL_TURB = 1.0              !   [nondim] default = 1.0
-                                ! The turbulent Prandtl number applied to shear instability.
 DYNAMIC_VISCOUS_ML = False      !   [Boolean] default = False
                                 ! If true, use a bulk Richardson number criterion to determine the mixed layer
                                 ! thickness for viscosity.
@@ -907,6 +915,8 @@ BEGW = 0.0                      !   [nondim] default = 0.0
                                 ! which the treatment of gravity waves is forward-backward (0) or simulated
                                 ! backward Euler (1).  0 is almost always used. If SPLIT is false and USE_RK2 is
                                 ! true, BEGW can be between 0 and 0.5 to damp gravity waves.
+SET_DTBT_USE_BT_CONT = False    !   [Boolean] default = False
+                                ! If true, use BT_CONT to calculate DTBT if possible.
 SPLIT_BOTTOM_STRESS = False     !   [Boolean] default = False
                                 ! If true, provide the bottom stress calculated by the vertical viscosity to the
                                 ! barotropic solver.
@@ -1155,6 +1165,11 @@ RHO_PGF_REF = 1035.0            !   [kg m-3] default = 1035.0
                                 ! The reference density that is subtracted off when calculating pressure
                                 ! gradient forces.  Its inverse is subtracted off of specific volumes when in
                                 ! non-Boussinesq mode.  The default is RHO_0.
+RHO_PGF_REF_BUG = True          !   [Boolean] default = True
+                                ! If true, recover a bug that RHO_0 (the mean seawater density in Boussinesq
+                                ! mode) and RHO_PGF_REF (the subtracted reference density in finite volume
+                                ! pressure gradient forces) are incorrectly interchanged in several instances in
+                                ! Boussinesq mode.
 TIDES_ANSWER_DATE = 20230630    ! default = 20230630
                                 ! The vintage of self-attraction and loading (SAL) and tidal forcing
                                 ! calculations.  Setting dates before 20230701 recovers old answers (Boussinesq
@@ -1169,6 +1184,9 @@ MASS_WEIGHT_IN_PRESSURE_GRADIENT_TOP = False !   [Boolean] default = False
                                 ! If true and MASS_WEIGHT_IN_PRESSURE_GRADIENT is true, use mass weighting when
                                 ! interpolating T/S for integrals near the top of the water column in FV
                                 ! pressure gradient calculations.
+MASS_WEIGHT_IN_PGF_VANISHED_ONLY = False !   [Boolean] default = False
+                                ! If true, use mass weighting when interpolating T/S for integrals only if one
+                                ! side is vanished according to RESET_INTXPA_H_NONVANISHED.
 USE_INACCURATE_PGF_RHO_ANOM = False !   [Boolean] default = False
                                 ! If true, use a form of the PGF that uses the reference density in an
                                 ! inaccurate way. This is not recommended.
@@ -1402,6 +1420,9 @@ BT_LINEAR_WAVE_DRAG = False     !   [Boolean] default = False
                                 ! If true, apply a linear drag to the barotropic velocities, using rates set by
                                 ! lin_drag_u & _v divided by the depth of the ocean.  This was introduced to
                                 ! facilitate tide modeling.
+BT_LINEAR_FREQ_DRAG = False     !   [Boolean] default = False
+                                ! If true, apply frequency-dependent drag to the tidal velocities. The streaming
+                                ! band-pass filter must be turned on.
 CLIP_BT_VELOCITY = False        !   [Boolean] default = False
                                 ! If true, limit any velocity components that exceed CFL_TRUNCATE.  This should
                                 ! only be used as a desperate debugging measure.

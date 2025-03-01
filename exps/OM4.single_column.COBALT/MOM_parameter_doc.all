@@ -391,6 +391,13 @@ RESTART_CHECKSUMS_REQUIRED = True !   [Boolean] default = True
                                 ! may want to avoid this comparison if for example the restarts are made from a
                                 ! run with a different mask_table than the current run, in which case the
                                 ! checksums will not match and cause crash.
+RESTART_SYMMETRIC_CHECKSUMS = False !   [Boolean] default = False
+                                ! If true, do the restart checksums on all the edge points for a non-reentrant
+                                ! grid.  This requires that SYMMETRIC_MEMORY_ is defined at compile time.
+RESTART_UNSIGNED_ZEROS = False  !   [Boolean] default = False
+                                ! If true, convert any negative zeros that would be written to the restart file
+                                ! into ordinary unsigned zeros.  This does not change answers, but it can be
+                                ! helpful in comparing restart files after grid rotation, for example.
 USE_FILTER = False              !   [Boolean] default = False
                                 ! If true, use streaming band-pass filters to detect the instantaneous tidal
                                 ! signals in the simulation.
@@ -578,90 +585,6 @@ FATAL_INCONSISTENT_RESTART_TIME = False !   [Boolean] default = False
                                 ! If true and a time_in value is provided to MOM_initialize_state, verify that
                                 ! the time read from a restart file is the same as time_in, and issue a fatal
                                 ! error if it is not.  Otherwise, simply set the time to time_in if present.
-INIT_LAYERS_FROM_Z_FILE = False !   [Boolean] default = False
-                                ! If true, initialize the layer thicknesses, temperatures, and salinities from a
-                                ! Z-space file on a latitude-longitude grid.
-THICKNESS_CONFIG = "coord"      ! default = "uniform"
-                                ! A string that determines how the initial layer thicknesses are specified for a
-                                ! new run:
-                                !     file - read interface heights from the file specified
-                                !       by (THICKNESS_FILE).
-                                !     thickness_file - read thicknesses from the file specified
-                                !       by (THICKNESS_FILE).
-                                !     mass_file - read thicknesses in units of mass per unit area from the file
-                                !       specified by (THICKNESS_FILE).
-                                !     coord - determined by ALE coordinate.
-                                !     uniform - uniform thickness layers evenly distributed
-                                !       between the surface and MAXIMUM_DEPTH.
-                                !     list - read a list of positive interface depths.
-                                !     param - use thicknesses from parameter THICKNESS_INIT_VALUES.
-                                !     DOME - use a slope and channel configuration for the
-                                !       DOME sill-overflow test case.
-                                !     ISOMIP - use a configuration for the
-                                !       ISOMIP test case.
-                                !     benchmark - use the benchmark test case thicknesses.
-                                !     Neverworld - use the Neverworld test case thicknesses.
-                                !     search - search a density profile for the interface
-                                !       densities. This is not yet implemented.
-                                !     circle_obcs - the circle_obcs test case is used.
-                                !     DOME2D - 2D version of DOME initialization.
-                                !     adjustment2d - 2D lock exchange thickness ICs.
-                                !     sloshing - sloshing gravity thickness ICs.
-                                !     seamount - no motion test with seamount ICs.
-                                !     dumbbell - sloshing channel ICs.
-                                !     soliton - Equatorial Rossby soliton.
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     USER - call a user modified routine.
-TS_CONFIG = "file"              !
-                                ! A string that determines how the initial temperatures and salinities are
-                                ! specified for a new run:
-                                !     file - read velocities from the file specified
-                                !       by (TS_FILE).
-                                !     fit - find the temperatures that are consistent with
-                                !       the layer densities and salinity S_REF.
-                                !     TS_profile - use temperature and salinity profiles
-                                !       (read from TS_FILE) to set layer densities.
-                                !     benchmark - use the benchmark test case T & S.
-                                !     linear - linear in logical layer space.
-                                !     DOME2D - 2D DOME initialization.
-                                !     ISOMIP - ISOMIP initialization.
-                                !     adjustment2d - 2d lock exchange T/S ICs.
-                                !     sloshing - sloshing mode T/S ICs.
-                                !     seamount - no motion test with seamount ICs.
-                                !     dumbbell - sloshing channel ICs.
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     SCM_CVMix_tests - used in the SCM CVMix tests.
-                                !     USER - call a user modified routine.
-TS_FILE = "MOM_IC.nc"           !
-                                ! The initial condition file for temperature.
-TEMP_IC_VAR = "Temp"            ! default = "PTEMP"
-                                ! The initial condition variable for potential temperature.
-SALT_IC_VAR = "Salt"            ! default = "SALT"
-                                ! The initial condition variable for salinity.
-SALT_FILE = "MOM_IC.nc"         ! default = "MOM_IC.nc"
-                                ! The initial condition file for salinity.
-DEPRESS_INITIAL_SURFACE = False !   [Boolean] default = False
-                                ! If true,  depress the initial surface to avoid huge tsunamis when a large
-                                ! surface pressure is applied.
-TRIM_IC_FOR_P_SURF = False      !   [Boolean] default = False
-                                ! If true, cuts way the top of the column for initial conditions at the depth
-                                ! where the hydrostatic pressure matches the imposed surface pressure which is
-                                ! read from file.
-REGRID_ACCELERATE_INIT = False  !   [Boolean] default = False
-                                ! If true, runs REGRID_ACCELERATE_ITERATIONS iterations of the regridding
-                                ! algorithm to push the initial grid to be consistent with the initial
-                                ! condition. Useful only for state-based and iterative coordinates.
-VELOCITY_CONFIG = "zero"        ! default = "zero"
-                                ! A string that determines how the initial velocities are specified for a new
-                                ! run:
-                                !     file - read velocities from the file specified
-                                !       by (VELOCITY_FILE).
-                                !     zero - the fluid is initially at rest.
-                                !     uniform - the flow is uniform (determined by
-                                !       parameters INITIAL_U_CONST and INITIAL_V_CONST).
-                                !     rossby_front - a mixed layer front in thermal wind balance.
-                                !     soliton - Equatorial Rossby soliton.
-                                !     USER - call a user modified routine.
 ODA_INCUPD = False              !   [Boolean] default = False
                                 ! If true, oda incremental updates will be applied everywhere in the domain.
 SPONGE = False                  !   [Boolean] default = False
@@ -851,8 +774,6 @@ CHANNEL_DRAG = False            !   [Boolean] default = False
 LINEAR_DRAG = False             !   [Boolean] default = False
                                 ! If LINEAR_DRAG and BOTTOMDRAGLAW are defined the drag law is
                                 ! cdrag*DRAG_BG_VEL*u.
-PRANDTL_TURB = 1.25             !   [nondim] default = 1.0
-                                ! The turbulent Prandtl number applied to shear instability.
 DYNAMIC_VISCOUS_ML = False      !   [Boolean] default = False
                                 ! If true, use a bulk Richardson number criterion to determine the mixed layer
                                 ! thickness for viscosity.
@@ -971,6 +892,8 @@ BEGW = 0.0                      !   [nondim] default = 0.0
                                 ! which the treatment of gravity waves is forward-backward (0) or simulated
                                 ! backward Euler (1).  0 is almost always used. If SPLIT is false and USE_RK2 is
                                 ! true, BEGW can be between 0 and 0.5 to damp gravity waves.
+SET_DTBT_USE_BT_CONT = False    !   [Boolean] default = False
+                                ! If true, use BT_CONT to calculate DTBT if possible.
 SPLIT_BOTTOM_STRESS = False     !   [Boolean] default = False
                                 ! If true, provide the bottom stress calculated by the vertical viscosity to the
                                 ! barotropic solver.
@@ -1078,6 +1001,11 @@ RHO_PGF_REF = 1035.0            !   [kg m-3] default = 1035.0
                                 ! The reference density that is subtracted off when calculating pressure
                                 ! gradient forces.  Its inverse is subtracted off of specific volumes when in
                                 ! non-Boussinesq mode.  The default is RHO_0.
+RHO_PGF_REF_BUG = True          !   [Boolean] default = True
+                                ! If true, recover a bug that RHO_0 (the mean seawater density in Boussinesq
+                                ! mode) and RHO_PGF_REF (the subtracted reference density in finite volume
+                                ! pressure gradient forces) are incorrectly interchanged in several instances in
+                                ! Boussinesq mode.
 SSH_IN_EOS_PRESSURE_FOR_PGF = False !   [Boolean] default = False
                                 ! If true, include contributions from the sea surface height in the height-based
                                 ! pressure used in the equation of state calculations for the Boussinesq
@@ -1090,6 +1018,9 @@ MASS_WEIGHT_IN_PRESSURE_GRADIENT_TOP = False !   [Boolean] default = False
                                 ! If true and MASS_WEIGHT_IN_PRESSURE_GRADIENT is true, use mass weighting when
                                 ! interpolating T/S for integrals near the top of the water column in FV
                                 ! pressure gradient calculations.
+MASS_WEIGHT_IN_PGF_VANISHED_ONLY = False !   [Boolean] default = False
+                                ! If true, use mass weighting when interpolating T/S for integrals only if one
+                                ! side is vanished according to RESET_INTXPA_H_NONVANISHED.
 CORRECTION_INTXPA = False       !   [Boolean] default = False
                                 ! If true, use a correction for surface pressure curvature in intx_pa.
 RESET_INTXPA_INTEGRAL = False   !   [Boolean] default = False
@@ -1326,6 +1257,9 @@ BT_LINEAR_WAVE_DRAG = False     !   [Boolean] default = False
                                 ! If true, apply a linear drag to the barotropic velocities, using rates set by
                                 ! lin_drag_u & _v divided by the depth of the ocean.  This was introduced to
                                 ! facilitate tide modeling.
+BT_LINEAR_FREQ_DRAG = False     !   [Boolean] default = False
+                                ! If true, apply frequency-dependent drag to the tidal velocities. The streaming
+                                ! band-pass filter must be turned on.
 CLIP_BT_VELOCITY = False        !   [Boolean] default = False
                                 ! If true, limit any velocity components that exceed CFL_TRUNCATE.  This should
                                 ! only be used as a desperate debugging measure.
@@ -1630,6 +1564,8 @@ KAPPA_SHEAR_ELIM_MASSLESS = True !   [Boolean] default = True
 MAX_KAPPA_SHEAR_IT = 13         ! default = 13
                                 ! The maximum number of iterations that may be used to estimate the
                                 ! time-averaged diffusivity.
+PRANDTL_TURB = 1.25             !   [nondim] default = 1.0
+                                ! The turbulent Prandtl number applied to shear instability.
 KAPPA_SHEAR_MAX_KAP_SRC_CHG = 10.0 !   [nondim] default = 10.0
                                 ! The maximum permitted increase in the kappa source within an iteration
                                 ! relative to the local source; this must be greater than 1.  The lower limit
