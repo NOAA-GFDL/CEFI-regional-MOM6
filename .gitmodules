@@ -26,10 +26,6 @@
 	path = src/ice_param
 	url = https://github.com/NOAA-GFDL/ice_param.git
 	branch = 2024.02
-[submodule "src/FMS"]
-	path = src/FMS
-	url = https://github.com/NOAA-GFDL/FMS.git
-	branch = 2025.01
 [submodule "src/coupler"]
 	path = src/coupler
 	url = https://github.com/NOAA-GFDL/FMScoupler.git
@@ -42,6 +38,10 @@
 	path = src/ocean_BGC
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
 	branch = dev/cefi
+[submodule "src/FMS"]
+	path = src/FMS
+	url = https://github.com/NOAA-GFDL/FMS.git
+	branch = 2025.01.02
 [submodule "src/MOM6"]
 	path = src/MOM6
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
