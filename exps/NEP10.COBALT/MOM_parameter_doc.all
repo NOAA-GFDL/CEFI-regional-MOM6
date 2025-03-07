@@ -1291,6 +1291,9 @@ CORRECTION_INTXPA = False       !   [Boolean] default = False
 RESET_INTXPA_INTEGRAL = False   !   [Boolean] default = False
                                 ! If true, reset INTXPA to match pressures at first nonvanished cell. Includes
                                 ! pressure correction.
+RESET_INTXPA_INTEGRAL_FLATTEST = False !   [Boolean] default = False
+                                ! If true, use flattest interface as reference interface where there is no
+                                ! better choice for RESET_INTXPA_INTEGRAL. Otherwise, use surface interface.
 USE_INACCURATE_PGF_RHO_ANOM = False !   [Boolean] default = False
                                 ! If true, use a form of the PGF that uses the reference density in an
                                 ! inaccurate way. This is not recommended.
@@ -1842,6 +1845,9 @@ USE_JACKSON_PARAM = True        !   [Boolean] default = False
 VERTEX_SHEAR = False            !   [Boolean] default = False
                                 ! If true, do the calculations of the shear-driven mixing at the cell vertices
                                 ! (i.e., the vorticity points).
+VERTEX_SHEAR_THICKNESS_MEAN = False !   [Boolean] default = False
+                                ! If true, apply thickness weighting to horizontal averagings of diffusivity to
+                                ! tracer points in the kappa shear solver.
 RINO_CRIT = 0.25                !   [nondim] default = 0.25
                                 ! The critical Richardson number for shear mixing.
 SHEARMIX_RATE = 0.089           !   [nondim] default = 0.089
