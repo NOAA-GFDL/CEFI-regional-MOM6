@@ -54,7 +54,6 @@ import json
 import sys
 import logging
 import subprocess
-# import tarfile
 from pathlib import Path
 
 def setup_logging(logfile):
@@ -72,6 +71,7 @@ def load_config(json_file):
 
 def extract_variable(
     archive_dir:str,
+    vftmp_dir:str,
     output_dir:str,
     subexp_name:str,
     var:str,
@@ -108,17 +108,32 @@ def extract_variable(
         )
     else:
         for yr in range(start_year, end_year+1):
+            # process tracking in log file
+            logging.info(
+                '===== Processing year %4d ...',yr
+            )
+
             # specify tar file
             tar_path = Path(f"{archive_dir}/{yr:04d}0101.nc.tar")
             # specify specific nc file to extract in tar file
             file_to_extract = f"{yr:04d}0101.{subexp_name}.nc"
 
+            # create vftmp directory if not exist
+            if not os.path.exists(vftmp_dir):
+                os.makedirs(vftmp_dir)
+
             # create output directory if not exist
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
 
+            # getting tarball out of the tape
+            subprocess.run(
+                ["dmget", tar_path],
+                check=True
+            )
+
             # extract file from a tarball
-            output_filename = os.path.join(output_dir,file_to_extract)
+            output_filename = os.path.join(vftmp_dir,file_to_extract)
             if os.path.isfile(output_filename):
                 logging.warning(
                     'extracted tar file %s exist, skipping...',output_filename
@@ -129,13 +144,9 @@ def extract_variable(
                 )
                 # untar single file based on subexp_name
                 subprocess.run(
-                    ["tar", "-xf", tar_path, "-C", Path(output_dir), './'+file_to_extract],
+                    ["tar", "-xf", tar_path, "-C", Path(vftmp_dir), './'+file_to_extract],
                     check=True
                 )
-
-                # insecure method
-                # with tarfile.open(tar_path, "r") as tar:
-                #     tar.extract(file_to_extract,path=output_dir)
 
             # extract single variable from a netCDF file using ncks
             output_var_filename = os.path.join(output_dir,f'{subexp_name}.{yr}.{var}.nc')
@@ -204,6 +215,7 @@ if __name__ == "__main__":
         # Load config
         config = load_config(config_file)
         output_directory = config["output_directory"]
+        vftmp_directory = config["vftmp_directory"]
         archive_directory = config["archive_directory"]
         archive_subexp_name = config["archive_subexp_name"]
         variable_names = config["variable_names"]
@@ -212,8 +224,13 @@ if __name__ == "__main__":
 
         # run extract variable
         for variable in variable_names:
+            # process tracking in log file
+            logging.info(
+                '=== Processing variable %s ...',variable
+            )
             extract_variable(
                 archive_dir = archive_directory,
+                vftmp_dir = vftmp_directory,
                 output_dir = output_directory,
                 subexp_name = archive_subexp_name,
                 var = variable,
