@@ -1,0 +1,9 @@
+{
+    "output_directory": "/collab1/data_untrusted/XXXXX/output_dir",
+    "vftmp_directory": "/vftmp/XXXXX/untar_dir",
+    "archive_directory": "/archive/.../history",
+    "archive_subexp_name": "ocean_month",
+    "variable_names": ["tob", "tos"],
+    "start_year": 1993,
+    "end_year": 2024
+}
