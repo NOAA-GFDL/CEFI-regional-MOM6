@@ -4,9 +4,14 @@
 
 This directory contains scripts to run the `CEFI_NWA12_COBALT_V1` experiment in a container outside of the `FRE` workflow. Since these scripts do not benefit from the years of development that have gone into `FRE`, it lacks several features and makes several assumptions: 
 
-1.) You will have to stage all the necessary input files to the `INPUT/` directory yourself, using the same naming scheme as `CEFI_NWA12_cobalt.xml`. All input files are available on gaea, and the `run_model.sh` script will stage annual `ERA5` and `GloFAS` runoff forcings for you if you provide a path to a directory where these files are located. You will have to manually move the other files your self. If on gaea, or a system with access to gaea, you can stage the necesarray in puts with the following commands:
+1.) You will have to stage all the necessary input files to the `INPUT/` directory yourself, using the same naming scheme as `CEFI_NWA12_cobalt.xml`. All input files are available on gaea, and the `run_model.sh` script will stage annual `ERA5` and `GloFAS` runoff forcings for you if you provide a path to a directory where these files are located. You will have to manually move the other files your self. If on gaea , or a system with access to gaea, you can stage the necesarray inputs from C5 with the following commands:
 ```
-cp /gpfs/f5/cefi/scratch/Utheri.Wagura/DockerfileTest/INPUT ./INPUT
+cp /gpfs/f5/cefi/world-shared/datasets/container_input/NWA/INPUT ./INPUT
+ln -s INPUT/ocean_topog.nc INPUT/topog.nc
+```
+or from c6 using the following command
+```
+cp /gpfs/f6/ira-cefi/world-shared/datasets/container_input/NWA/INPUT ./INPUT
 ln -s INPUT/ocean_topog.nc INPUT/topog.nc
 ```
 
