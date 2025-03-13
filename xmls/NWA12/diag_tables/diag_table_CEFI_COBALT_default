@@ -127,7 +127,7 @@
 "generic_cobalt","fcadet_calc_btm",  "fcadet_calc_btm", "ocean_cobalt_btm","all","mean","none",2 # Calcite sinking flux at bottom
 "generic_cobalt","fcased_burial",    "fcased_burial",   "ocean_cobalt_btm","all","mean","none",2 # Calcite permanent burial flux
 "generic_cobalt","fcased_redis",     "fcased_redis",    "ocean_cobalt_btm","all","mean","none",2 # Calcite redissolution from sediments
-"generic_cobalt","fnfeso4red_sed",   "fnfeso4red_sed",  "ocean_cobalt_btm","all","mean","none",2 # Sediment Ndet Fe and SO4 reduction flux
+"generic_cobalt","fnso4red_sed",     "fnso4red_sed",  "ocean_cobalt_btm","all","mean","none",2 # Sediment Ndet remineralized by SO4 reduction without HS- oxidation 
 "generic_cobalt","fno3denit_sed",    "fno3denit_sed",   "ocean_cobalt_btm","all","mean","none",2 # Sediment denitrification flux
 "generic_cobalt","fnoxic_sed",       "fnoxic_sed",      "ocean_cobalt_btm","all","mean","none",2 # Sediment oxic Ndet remineralization flux
 "generic_cobalt","cased_2d",         "cased",           "ocean_cobalt_btm","all","mean","none",2 # calcium carbonate in sediment
