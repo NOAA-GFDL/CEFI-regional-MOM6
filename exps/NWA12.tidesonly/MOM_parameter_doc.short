@@ -12,10 +12,10 @@ DT = 600.0                      !   [s]
                                 ! be an integer fraction of the forcing time-step (DT_FORCING in ocean-only mode
                                 ! or the coupling timestep in coupled mode.)
 DT_THERM = 3600.0               !   [s] default = 600.0
-                                ! The thermodynamic and tracer advection time step. Ideally DT_THERM should be
-                                ! an integer multiple of DT and less than the forcing or coupling time-step,
-                                ! unless THERMO_SPANS_COUPLING is true, in which case DT_THERM can be an integer
-                                ! multiple of the coupling timestep.  By default DT_THERM is set to DT.
+                                ! The thermodynamic time step. Ideally DT_THERM should be an integer multiple of
+                                ! DT and of DT_TRACER_ADVECT and less than the forcing or coupling time-step.
+                                ! However, if THERMO_SPANS_COUPLING is true, DT_THERM can be an integer multiple
+                                ! of the coupling timestep. By default DT_THERM is set to DT.
 DTBT_RESET_PERIOD = -1.0        !   [s] default = 3600.0
                                 ! The period between recalculations of DTBT (if DTBT <= 0). If DTBT_RESET_PERIOD
                                 ! is negative, DTBT is set based only on information available at
@@ -112,8 +112,6 @@ BRUSHCUTTER_MODE = True         !   [Boolean] default = False
                                 ! If true, read external OBC data on the supergrid.
 OBC_TIDE_CONSTITUENTS = "M2,S2,N2,K2,K1,O1,P1,Q1,MM,MF" !
                                 ! Names of tidal constituents being added to the open boundaries.
-OBC_TIDE_REF_DATE = 1993, 1, 1  !
-                                ! Reference date to use for tidal calculations and equilibrium phase.
 
 ! === module MOM_verticalGrid ===
 ! Parameters providing information about the vertical grid.
@@ -203,9 +201,9 @@ BOUND_CORIOLIS = True           !   [Boolean] default = False
 
 ! === module MOM_self_attr_load ===
 SAL_SCALAR_VALUE = 0.094        !   [m m-1] default = 0.0
-                                ! The constant of proportionality between sea surface height (really it should
-                                ! be bottom pressure) anomalies and bottom geopotential anomalies. This is only
-                                ! used if USE_SAL_SCALAR is true or USE_PREVIOUS_TIDES is true.
+                                ! The constant of proportionality between self-attraction and loading (SAL)
+                                ! geopotential anomaly and barotropic geopotential anomaly. This is only used if
+                                ! SAL_SCALAR_APPROX is true or USE_PREVIOUS_TIDES is true.
 
 ! === module MOM_tidal_forcing ===
 TIDE_M2 = True                  !   [Boolean] default = False
@@ -238,6 +236,9 @@ TIDE_MF = True                  !   [Boolean] default = False
 TIDE_MM = True                  !   [Boolean] default = False
                                 ! If true, apply tidal momentum forcing at the MM frequency. This is only used
                                 ! if TIDES is true.
+TIDE_REF_DATE = 1993, 1, 1      ! default = 0, 0, 0
+                                ! Year,month,day to use as reference date for tidal forcing. If not specified,
+                                ! defaults to 0.
 
 ! === module MOM_PressureForce ===
 

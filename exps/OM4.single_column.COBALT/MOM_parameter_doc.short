@@ -215,8 +215,6 @@ DIAG_COORD_DEF_RHO2 = "FILE:diag_rho2.nc,interfaces=rho2" ! default = "WOA09"
 ! === module MOM_lateral_mixing_coeffs ===
 
 ! === module MOM_set_visc ===
-PRANDTL_TURB = 1.25             !   [nondim] default = 1.0
-                                ! The turbulent Prandtl number applied to shear instability.
 HBBL = 10.0                     !   [m]
                                 ! The thickness of a bottom boundary layer with a viscosity increased by
                                 ! KV_EXTRA_BBL if BOTTOMDRAGLAW is not defined, or the thickness over which
@@ -373,6 +371,8 @@ MAX_RINO_IT = 25                !   [nondim] default = 50
 KAPPA_BUOY_SCALE_COEF = 100.0   !   [nondim] default = 0.82
                                 ! The coefficient for the buoyancy length scale in the kappa equation.  The
                                 ! values found by Jackson et al. are in the range of 0.81-0.86.
+PRANDTL_TURB = 1.25             !   [nondim] default = 1.0
+                                ! The turbulent Prandtl number applied to shear instability.
 
 ! === module MOM_diabatic_aux ===
 ! The following parameters are used for auxiliary diabatic processes.

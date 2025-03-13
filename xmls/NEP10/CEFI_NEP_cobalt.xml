@@ -39,10 +39,10 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="RELEASE" value="2024.02"/>
 
   <!-- git tag for FMS source code -->
-  <property name="FMS_GIT_TAG" value="2024.03"/>
+  <property name="FMS_GIT_TAG" value="2025.01.02"/>
 
   <!-- git tag for coupler source code -->
-  <property name="CPL_GIT_TAG" value="2024.03"/>
+  <property name="CPL_GIT_TAG" value="2025.01"/>
 
   <!-- git tag for null (atmos_null, land_null, etc) source code -->
   <property name="NULL_TAG" value="2023.04"/>
@@ -57,7 +57,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="ICEPACK_GIT_TAG" value="Icepack1.3.3"/>
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NEP/2024_11"/>
+  <property name="FRE_STEM" value="fre/cefi/NEP/2025_02"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <!-- NCRC_GROUP will only have impact for your root dir and work dir on gaea c5/c6-->
@@ -173,7 +173,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
 
     <component name="atmos_null" paths="mom6/src/atmos_null" requires="fms">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(NULL_TAG)"> atmos_null.git </codeBase>
+        <codeBase version="$(CPL_GIT_TAG)"> atmos_null.git </codeBase>
       </source>
       <compile>
         <cppDefs>$(F2003_FLAGS) </cppDefs>
@@ -586,7 +586,7 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override DO_GEOTHERMAL = True
 #override DT = 400
 # Update the nodal modulation of the tide every year
-#override OBC_TIDE_NODAL_REF_DATE = ${fyear},7,2
+#override TIDE_NODAL_REF_DATE = ${fyear},7,2
 #override MLE%USE_BODNER23 = True
 #override MLE%CR = 0.03
 #override MLE%BLD_DECAYING_TFILTER = 8.64E+04

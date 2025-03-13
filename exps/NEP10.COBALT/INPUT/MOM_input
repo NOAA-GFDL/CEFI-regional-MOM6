@@ -205,10 +205,10 @@ OBC_TRACER_RESERVOIR_LENGTH_SCALE_IN = 9000.0 !   [m] default = 0.0
 
 OBC_TIDE_N_CONSTITUENTS = 10
 OBC_TIDE_CONSTITUENTS = "M2,S2,N2,K2,K1,O1,P1,Q1,MM,MF"
-OBC_TIDE_REF_DATE = 1993,1,1
-OBC_TIDE_ADD_EQ_PHASE = True
-OBC_TIDE_ADD_NODAL = True
-OBC_TIDE_NODAL_REF_DATE = 1993,7,2
+TIDE_REF_DATE = 1993,1,1
+TIDE_ADD_EQ_PHASE = True
+TIDE_ADD_NODAL = True
+TIDE_NODAL_REF_DATE = 1993,7,2
 TIDAL_SAL_FLATHER = True
 ! === module MOM_boundary_update ===
 
@@ -917,11 +917,7 @@ TIDE_P1 = True
 TIDE_Q1 = True
 TIDE_MM = True
 TIDE_MF = True
-TIDE_SAL_SCALAR_VALUE = 0.010   !   [m m-1]
-                                ! The constant of proportionality between sea surface height (really it should
-                                ! be bottom pressure) anomalies and bottom geopotential anomalies. This is only
-                                ! used if TIDES and TIDE_USE_SAL_SCALAR are true.
-TIDE_REF_DATE = 1993,1,1
+SAL_SCALAR_VALUE = 0.010   !   [m m-1]
 TIDE_USE_EQ_PHASE = True
 
 ! === module ocean_model_init ===

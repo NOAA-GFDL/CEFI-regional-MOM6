@@ -61,7 +61,7 @@ jobs:
       run: tar -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK
 
     - name: Upload the whole MOM6_CHECK as an artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: CEFI_MOM6_CHECK
         path: CEFI_MOM6_CHECK.tar.gz
@@ -75,7 +75,7 @@ jobs:
         case: ["NWA12.COBALT", "NEP10.COBALT"]
     steps:
       - name: Download CEFI_MOM6_CHECK compressed artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: CEFI_MOM6_CHECK
           path: ${{ env.TEST_DIR }}

@@ -14,10 +14,10 @@ DT = 400.0                      !   [s]
                                 ! be an integer fraction of the forcing time-step (DT_FORCING in ocean-only mode
                                 ! or the coupling timestep in coupled mode.)
 DT_THERM = 1200.0               !   [s] default = 400.0
-                                ! The thermodynamic and tracer advection time step. Ideally DT_THERM should be
-                                ! an integer multiple of DT and less than the forcing or coupling time-step,
-                                ! unless THERMO_SPANS_COUPLING is true, in which case DT_THERM can be an integer
-                                ! multiple of the coupling timestep.  By default DT_THERM is set to DT.
+                                ! The thermodynamic time step. Ideally DT_THERM should be an integer multiple of
+                                ! DT and of DT_TRACER_ADVECT and less than the forcing or coupling time-step.
+                                ! However, if THERMO_SPANS_COUPLING is true, DT_THERM can be an integer multiple
+                                ! of the coupling timestep. By default DT_THERM is set to DT.
 FRAZIL = True                   !   [Boolean] default = False
                                 ! If true, water freezes if it gets too cold, and the accumulated heat deficit
                                 ! is returned in the surface state.  FRAZIL is only used if
@@ -161,14 +161,6 @@ BRUSHCUTTER_MODE = True         !   [Boolean] default = False
                                 ! If true, read external OBC data on the supergrid.
 OBC_TIDE_CONSTITUENTS = "M2,S2,N2,K2,K1,O1,P1,Q1,MM,MF" !
                                 ! Names of tidal constituents being added to the open boundaries.
-OBC_TIDE_ADD_EQ_PHASE = True    !   [Boolean] default = False
-                                ! If true, add the equilibrium phase argument to the specified tidal phases.
-OBC_TIDE_ADD_NODAL = True       !   [Boolean] default = False
-                                ! If true, include 18.6 year nodal modulation in the boundary tidal forcing.
-OBC_TIDE_REF_DATE = 1993, 1, 1  !
-                                ! Reference date to use for tidal calculations and equilibrium phase.
-OBC_TIDE_NODAL_REF_DATE = 1993, 7, 2 ! default = 0, 0, 0
-                                ! Fixed reference date to use for nodal modulation of boundary tides.
 
 ! === module MOM_verticalGrid ===
 ! Parameters providing information about the vertical grid.
@@ -318,8 +310,6 @@ USE_STORED_SLOPES = True        !   [Boolean] default = False
 CHANNEL_DRAG = True             !   [Boolean] default = False
                                 ! If true, the bottom drag is exerted directly on each layer proportional to the
                                 ! fraction of the bottom it overlies.
-PRANDTL_TURB = 1.25             !   [nondim] default = 1.0
-                                ! The turbulent Prandtl number applied to shear instability.
 HBBL = 10.0                     !   [m]
                                 ! The thickness of a bottom boundary layer with a viscosity increased by
                                 ! KV_EXTRA_BBL if BOTTOMDRAGLAW is not defined, or the thickness over which
@@ -359,6 +349,10 @@ CORIOLIS_EN_DIS = True          !   [Boolean] default = False
                                 ! used.
 
 ! === module MOM_self_attr_load ===
+SAL_SCALAR_VALUE = 0.01         !   [m m-1] default = 0.0
+                                ! The constant of proportionality between self-attraction and loading (SAL)
+                                ! geopotential anomaly and barotropic geopotential anomaly. This is only used if
+                                ! SAL_SCALAR_APPROX is true or USE_PREVIOUS_TIDES is true.
 
 ! === module MOM_tidal_forcing ===
 TIDE_M2 = True                  !   [Boolean] default = False
@@ -396,6 +390,11 @@ TIDE_REF_DATE = 1993, 1, 1      ! default = 0, 0, 0
                                 ! defaults to 0.
 TIDE_USE_EQ_PHASE = True        !   [Boolean] default = False
                                 ! Correct phases by calculating equilibrium phase arguments for TIDE_REF_DATE.
+TIDE_ADD_NODAL = True           !   [Boolean] default = False
+                                ! If true, include 18.6 year nodal modulation in the astronomical tidal forcing.
+TIDE_NODAL_REF_DATE = 1993, 7, 2 ! default = 0, 0, 0
+                                ! Fixed reference date to use for nodal modulation of astronomical tidal
+                                ! forcing.
 
 ! === module MOM_PressureForce ===
 
@@ -560,6 +559,8 @@ LZ_RESCALE = 0.2                !   [nondim] default = 1.0
                                 ! A coefficient to rescale the distance to the nearest solid boundary. This
                                 ! adjustment is to account for regions where 3 dimensional turbulence prevents
                                 ! the growth of shear instabilies [nondim].
+PRANDTL_TURB = 1.25             !   [nondim] default = 1.0
+                                ! The turbulent Prandtl number applied to shear instability.
 
 ! === module MOM_diabatic_aux ===
 ! The following parameters are used for auxiliary diabatic processes.
