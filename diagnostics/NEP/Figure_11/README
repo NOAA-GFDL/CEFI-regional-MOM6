@@ -1,0 +1,30 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_11
+
+Contents:
+	
+   - Jupyter Notebook: Figure11_Mesozooplankton_COPEPOD_comparison.ipynb 
+	
+	Details: This notebook generates Figure 11 in the above mentioned manuscript and is based on analyses developed by Andrew C. Ross at GFDL  
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+
+	   - Acquire: 
+
+		- Seasonal (winter,spring,summer,fall) COPEPOD Carbon Biomass Fields: https://www.st.nmfs.noaa.gov/copepod/biomass/biomass-fields.html
+			- Zooplankton Carbon Biomass      (cmass)
+			- Files: 
+				copepod-2012__cmass-m13-qtr.csv
+				copepod-2012__cmass-m14-qtr.csv
+				copepod-2012__cmass-m15-qtr.csv
+				copepod-2012__cmass-m16-qtr.csv
+				
+   - NetCDF file: nep_mesozoo_200_1993-2019_ts.nc
+	
+	Details: Model output from NEP10k hindcast monthly timeseries of 1993-2019 (contains 324 months of model output) 200m integral of Mesozooplankton Carbon biomass  (mesozoo_200)

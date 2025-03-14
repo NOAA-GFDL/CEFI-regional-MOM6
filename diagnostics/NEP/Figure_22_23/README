@@ -1,0 +1,35 @@
+Contact: Liz Drenkard
+Email: liz.drenkard@noaa.gov
+Organization: NOAA OAR GFDL
+
+Archive Title: Model output and analysis codes for initial submission of "A regional physical-biogeochemical ocean model for marine resource applications in the Northeast Pacific (MOM6-COBALT-NEP10k v1.0)" to GMD
+Directory: Figure_22_23
+
+Contents:
+	
+   - Jupyter Notebook: Figure22_23_SSH_EOF_and_PC_timeseries_GOADI_composites.ipynb
+	
+	Details: This notebook generates Figures 22 and 23 in the above mentioned manuscript. It is based on codes developed for Hauri et al., 2021 by Remi Pages at International Arctic Research Center, University of Alaska Fairbanks 
+
+	Prerequisits:
+	   - Python packages listed in python_env.txt "shared" directory
+	   - NEP_ocean_static_nomask.nc grid file located in "shared" directory  
+	   - Acquire: 
+
+		- CMEMS Altimetry (cmems_obs-sl_glo_phy-ssh_my_allsat-l4-duacs-0.25deg_P1M-m): https://doi.org/10.48670/moi-00148
+			- Absolute Dynamic Topography      (adt)
+
+            - Generate monthly mean timeseries (1993-2019) for CMEMS adt and store/link in this directory with the following naming convention:
+                (NOTE: suggest spatialling subsetting large comparison datasets to NEP domain prior to concatenating)
+
+		- CMEMS_adt_1993-2019_ts.nc
+
+
+   - NetCDF file: nep_ssh_1993-2019_ts.nc
+
+	Details: Monthly mean timeseries for sea surface height (ssh) from NEP10k hindcast simulation spanning 1993-2019; file contains 324 monthly mean ssh values 
+
+   - NetCDF file: nep_btm_co3_ion_1993-2019_monthly_ts.nc, nep_btm_co3_sol_arag_1993-2019_monthly_ts.nc, nep_btm_o2_1993-2019_monthly_ts.nc, nep_sst_1993-2019_monthly_ts.nc, nep_tob_1993-2019_monthly_ts.nc	
+	Details: Monthly mean timeseries for bottom carbonate ion concentration (btm_co3_ion), bottom aragonite solubility (btm_co3_sol_arag), bottom oxygen concentration (o2), surface temperature (tos) and bottom temperature (tob) from NEP10k hindcast simulation spanning 1993-2019; each file contains 324 monthly mean values
+
+
