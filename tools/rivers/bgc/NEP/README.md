@@ -68,7 +68,10 @@ matlab232 -nodisplay -nosplash -nodesktop -r "run('ArcticGro_Process.m');exit;"
 estimates based on available observation, while using GlobalNEWS to fill in
 some gaps. 
 ```
-cp /archive/ynt/woa_nep5k_sst_climo.nc ./Data/
+# copying over NEP-regridded, WOA23 SST climatology.
+# This file was generated using WOA23 decadal mean sst at 1/4 degree resolution
+
+cp /archive/ynt/woa_nep10k_sst_climo.nc ./Data/
 matlab232 -nodisplay -nosplash -nodesktop -r "run('mapriv_combined_NEP10k.m');exit;"
 ```
 As was the case for globalNEWS2, I recommend running these with "inspect_map = 'y'" until
