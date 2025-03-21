@@ -62,15 +62,25 @@ jobs:
       run: |
         # Add repo to Git safe directory list to avoid "dubious ownership" error
         git config --global --add safe.directory /__w/CEFI-regional-MOM6/CEFI-regional-MOM6
-        
+
+        # Configure GitHub Actions bot credentials
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        
+
+        # Ensure you are on the PR branch
+        git fetch origin
+        git checkout ${{ github.head_ref }}
+
+        # Add and commit parameter doc changes
         git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
-        
+
         if git diff --cached --quiet; then
           echo "No parameter doc changes detected."
         else
+          # Pull the latest changes with rebase to avoid conflicts
+          git pull --rebase origin ${{ github.head_ref }}
+          
+          # Commit and push
           git commit -m "Update parameter documentation files for 1D case"
           git push origin HEAD:${{ github.head_ref }}
         fi
