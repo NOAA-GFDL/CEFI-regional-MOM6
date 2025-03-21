@@ -4,9 +4,9 @@
 #SBATCH --job-name="MOM6SIS2_container_build"
 #SBATCH --output=MOM6SIS2_container_build_o.%j
 #SBATCH --error=MOM6SIS2_container_build_e.%j
-#SBATCH --qos=normal
-#SBATCH --partition=eslogin_c6
-#SBATCH --clusters=es
+#SBATCH --qos=urgent
+#SBATCH --partition=batch
+#SBATCH --clusters=c6
 #SBATCH --account=ira-cefi
 
 #
