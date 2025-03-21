@@ -4,7 +4,7 @@
 #SBATCH --job-name="NEP10.COBALT"
 #SBATCH --output=NEP10.COBALT_o.%j
 #SBATCH --error=NEP10.COBALT_e.%j
-#SBATCH --qos=normal
+#SBATCH --qos=urgent
 #SBATCH --partition=batch
 #SBATCH --clusters=c6
 #SBATCH --account=ira-cefi

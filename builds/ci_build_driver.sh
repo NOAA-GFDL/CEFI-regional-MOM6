@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --time=360
+#SBATCH --time=120
 #SBATCH --job-name="MOM6SIS2_container_build"
 #SBATCH --output=MOM6SIS2_container_build_o.%j
 #SBATCH --error=MOM6SIS2_container_build_e.%j
 #SBATCH --qos=normal
-#SBATCH --partition=batch
-#SBATCH --clusters=c6
+#SBATCH --partition=eslogin_c6
+#SBATCH --clusters=es
 #SBATCH --account=ira-cefi
 
 #

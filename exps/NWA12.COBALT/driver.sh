@@ -4,7 +4,7 @@
 #SBATCH --job-name="NWA12.COBALT"
 #SBATCH --output=NWA12.COBALT_o.%j
 #SBATCH --error=NWA12.COBALT_e.%j
-#SBATCH --qos=normal
+#SBATCH --qos=urgent
 #SBATCH --partition=batch
 #SBATCH --clusters=c6
 #SBATCH --account=ira-cefi
