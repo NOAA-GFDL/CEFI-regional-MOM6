@@ -35,28 +35,28 @@ jobs:
         #pwd
         #img=/gpfs/f6/ira-cefi/world-shared/container/ubuntu22.04-intel-ufs-env-v1.8.0-llvm.img
         #apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
-#        jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
-#        #
-#        sleep 1
-#        while :; do
-#            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
-#            if [ -z "$job_status" ]; then
-#               echo "Job with ID $jobid is not found or completed."
-#               break
-#            else
-#               echo "Job with ID $jobid is still running."
-#               echo "Job Status: $job_status"
-#            fi
-#            sleep 60  # Adjust the sleep duration as needed
-#        done
+        jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
+        #
+        sleep 1
+        while :; do
+            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+            if [ -z "$job_status" ]; then
+               echo "Job with ID $jobid is not found or completed."
+               break
+            else
+               echo "Job with ID $jobid is still running."
+               echo "Job Status: $job_status"
+            fi
+            sleep 60  # Adjust the sleep duration as needed
+        done
         
-#        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2"
-#        if [ -f "$check_file" ]; then
-#            echo "PASSED: $check_file"
-#        else
-#            echo "FAILED: $check_file"
-#            exit 1
-#        fi 
+        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2"
+        if [ -f "$check_file" ]; then
+            echo "PASSED: $check_file"
+        else
+            echo "FAILED: $check_file"
+            exit 1
+        fi 
 
     - name: Compress CEFI_MOM6_CHECK
       run: tar --exclude='.git' -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK 
@@ -109,6 +109,35 @@ jobs:
           git config --global user.name "${{ secrets.GHA_USERNAME }}"
           git config --global user.email "${{ secrets.GHA_EMAIL }}"
 
+          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
+          #
+          sleep 1
+          while :; do
+              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+              if [ -z "$job_status" ]; then
+                 echo "Job with ID $jobid is not found or completed."
+                 break
+              else
+                 echo "Job with ID $jobid is still running."
+                 echo "Job Status: $job_status"
+              fi
+              sleep 60  # Adjust the sleep duration as needed
+          done
+          # 
+          expected_string="All restart files are identical, PASS"
+          check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
+          if [ -f "$check_file" ]; then
+             if grep -qF "$expected_string" $check_file; then
+                 echo "PASSED: ${{ matrix.case }}"
+             else
+                 echo "FAILED: ${{ matrix.case }}"
+                 exit 1
+             fi
+          else
+             echo "Can not find $check_file. STOP"
+             exit 10
+          fi
+          
           # Ensure you are on the PR branch
           git fetch origin
           git checkout ${{ github.head_ref }}
@@ -122,58 +151,6 @@ jobs:
             git commit -m "Update parameter documentation files for ${{ matrix.case }}"
             git push origin HEAD:${{ github.head_ref }}
           fi
-
-#          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
-#          #
-#          sleep 1
-#          while :; do
-#              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
-#              if [ -z "$job_status" ]; then
-#                 echo "Job with ID $jobid is not found or completed."
-#                 break
-#              else
-#                 echo "Job with ID $jobid is still running."
-#                 echo "Job Status: $job_status"
-#              fi
-#              sleep 60  # Adjust the sleep duration as needed
-#          done
-#          # 
-#          expected_string="All restart files are identical, PASS"
-#          check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
-#          if [ -f "$check_file" ]; then
-#             if grep -qF "$expected_string" $check_file; then
-#                 echo "PASSED: ${{ matrix.case }}"
-#             else
-#                 echo "FAILED: ${{ matrix.case }}"
-#                 exit 1
-#             fi
-#          else
-#             echo "Can not find $check_file. STOP"
-#             exit 10
-#          fi
-
-          # Add repo to Git safe directory list to avoid "dubious ownership" error
-#          cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }} 
-#          git config --global --add safe.directory ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
-
-#          # Configure GitHub Actions bot credentials
-#          git config --global user.name "github-actions[bot]"
-#          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-#          # Ensure you are on the PR branch
-#          git fetch origin
-#          git checkout ${{ github.head_ref }}
-
-#          # Add and commit parameter doc changes
-#          git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
-
-#          if git diff --cached --quiet; then
-#            echo "No parameter doc changes detected for ${{ matrix.case }}."
-#          else
-#            git commit -m "Update parameter documentation files for ${{ matrix.case }}"
-#            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-#            git push origin HEAD:${{ github.head_ref }}
-#          fi
 
       - name: Clean-up workspace for ${{ matrix.case }}
         run: |
