@@ -91,6 +91,7 @@ jobs:
           git config --global --add safe.directory ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
 
           # Configure GitHub Actions bot credentials
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -105,7 +106,6 @@ jobs:
             echo "No parameter doc changes detected for ${{ matrix.case }}."
           else
             git commit -m "Update parameter documentation files for ${{ matrix.case }}"
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
             git push origin HEAD:${{ github.head_ref }}
           fi
 #          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
