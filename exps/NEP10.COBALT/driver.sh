@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --nodes=5
-#SBATCH --time=120
+#SBATCH --nodes=11
+#SBATCH --time=90
 #SBATCH --job-name="NEP10.COBALT"
 #SBATCH --output=NEP10.COBALT_o.%j
 #SBATCH --error=NEP10.COBALT_e.%j
@@ -10,7 +10,7 @@
 #SBATCH --account=ira-cefi
 
 #
-ntasks1=904
+ntasks1=2036
 
 
 [[ -f input.nml ]] && rm -rf input.nml
@@ -40,7 +40,7 @@ rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs/*
 rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs/*
 rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst/*
 
-echo "run 20x56 48hrs test ..."
+echo "run 32x80 48hrs test ..."
 ln -fs input.nml_48hr input.nml
 ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs ./RESTART
 srun --mpi=pmi2 --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ./container_exec/MOM6SIS2 > out1 2>err1
@@ -48,7 +48,7 @@ mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
 
 #
-echo "run 20x56 24hrs test ..."
+echo "run 32x80 24hrs test ..."
 ln -fs input.nml_24hr input.nml
 ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs ./RESTART
 srun --mpi=pmi2 --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ./container_exec/MOM6SIS2 > out2 2>err2
@@ -62,7 +62,7 @@ ln -fs ../RESTART_24hrs/* ./
 popd
 
 #
-echo "run 20x56 24hrs rst test ..."
+echo "run 32x80 24hrs rst test ..."
 ln -fs input.nml_24hr_rst input.nml
 ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst ./RESTART
 srun --mpi=pmi2 --ntasks ${ntasks1} --cpus-per-task=1 --export=ALL ./container_exec/MOM6SIS2 > out3 2>err3
@@ -72,7 +72,7 @@ mv ocean.stats RESTART_24hrs_rst
 # Define the directories containing the files
 module load nccmp
 DIR1="./RESTART_24hrs_rst"
-DIR2="/gpfs/f6/ira-cefi/proj-shared/github/ci_data/reference/main/NEP10.COBALT/20250307" 
+DIR2="/gpfs/f6/ira-cefi/proj-shared/github/ci_data/reference/main/NEP10.COBALT/20250321" 
 
 # Define the files to compare
 FILES=("$DIR2"/MOM.res*.nc)
