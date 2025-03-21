@@ -72,9 +72,9 @@ jobs:
     needs: checkout-build
     runs-on: [self-hosted]
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       matrix:
-        case: ["NWA12.COBALT"]#, "NEP10.COBALT"]
+        case: ["NWA12.COBALT", "NEP10.COBALT"]
     steps:
       - name: Download CEFI_MOM6_CHECK compressed artifact
         uses: actions/download-artifact@v4
@@ -91,10 +91,13 @@ jobs:
           # Clone into a temporary directory
           TEMP_GIT_DIR="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/TEMP_GIT"
           git clone --branch ${{ github.head_ref }} https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git $TEMP_GIT_DIR
+
+          # Copy the .git folder to restore Git metadata
           rsync -av $TEMP_GIT_DIR/.git/ ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/.git/
+                    
+          # Clean up the temporary directory
           rm -rf $TEMP_GIT_DIR 
-          cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
-          git status 
+
           #
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
 
