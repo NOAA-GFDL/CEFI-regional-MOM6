@@ -47,6 +47,7 @@ jobs:
        /opt/bin/mppnccombine -64 -h 16384 -m -k 100 20040102.ocean_daily_subset.nc 20040102.ocean_daily_subset.nc.00*
 
     - name: Check ref
+      id: check_ref
       working-directory: ./exps/OM4.single_column.COBALT
       run: | 
        echo "new 48hrs ocean.stats: "
@@ -54,3 +55,19 @@ jobs:
        echo "baseline 48 hrs ocean.stats: "
        cat ./ref/ocean.stats
        diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different."; echo "Plz update exps/OM4.single_column.COBALT/ref/ocean.stats with the following: "; cat ./RESTART_48hrs/ocean.stats; exit 1; }
+
+    - name: Commit and push parameter doc updates
+      if: steps.check_ref.outcome == 'success' && github.event_name == 'pull_request'
+      working-directory: ./exps/OM4.single_column.COBALT
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
+        
+        if git diff --cached --quiet; then
+          echo "No parameter doc changes detected."
+        else
+          git commit -m "Update parameter documentation files for 1D case"
+          git push origin HEAD:${{ github.head_ref }}
+        fi
