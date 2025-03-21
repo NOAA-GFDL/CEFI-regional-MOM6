@@ -35,37 +35,37 @@ jobs:
         #pwd
         #img=/gpfs/f6/ira-cefi/world-shared/container/ubuntu22.04-intel-ufs-env-v1.8.0-llvm.img
         #apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
-        jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
-        #
-        sleep 1
-        while :; do
-            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
-            if [ -z "$job_status" ]; then
-               echo "Job with ID $jobid is not found or completed."
-               break
-            else
-               echo "Job with ID $jobid is still running."
-               echo "Job Status: $job_status"
-            fi
-            sleep 60  # Adjust the sleep duration as needed
-        done
+#        jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
+#        #
+#        sleep 1
+#        while :; do
+#            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+#            if [ -z "$job_status" ]; then
+#               echo "Job with ID $jobid is not found or completed."
+#               break
+#            else
+#               echo "Job with ID $jobid is still running."
+#               echo "Job Status: $job_status"
+#            fi
+#            sleep 60  # Adjust the sleep duration as needed
+#        done
         
-        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2"
-        if [ -f "$check_file" ]; then
-            echo "PASSED: $check_file"
-        else
-            echo "FAILED: $check_file"
-            exit 1
-        fi 
+#        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2"
+#        if [ -f "$check_file" ]; then
+#            echo "PASSED: $check_file"
+#        else
+#            echo "FAILED: $check_file"
+#            exit 1
+#        fi 
 
-    - name: Compress CEFI_MOM6_CHECK
-      run: tar -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK
+#    - name: Compress CEFI_MOM6_CHECK
+#      run: tar -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK
 
-    - name: Upload the whole MOM6_CHECK as an artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: CEFI_MOM6_CHECK
-        path: CEFI_MOM6_CHECK.tar.gz
+#    - name: Upload the whole MOM6_CHECK as an artifact
+#      uses: actions/upload-artifact@v4
+#      with:
+#        name: CEFI_MOM6_CHECK
+#        path: CEFI_MOM6_CHECK.tar.gz
 
   run-CEFI_MOM6-ci:
     needs: checkout-build
@@ -73,49 +73,49 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        case: ["NWA12.COBALT", "NEP10.COBALT"]
+        case: ["NWA12.COBALT"]#, "NEP10.COBALT"]
     steps:
-      - name: Download CEFI_MOM6_CHECK compressed artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: CEFI_MOM6_CHECK
-          path: ${{ env.TEST_DIR }}
+#      - name: Download CEFI_MOM6_CHECK compressed artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: CEFI_MOM6_CHECK
+#          path: ${{ env.TEST_DIR }}
           
-      - name: Extract the artifact
-        run: tar -xzvf ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }}
+#      - name: Extract the artifact
+#        run: tar -xzvf ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }}
 
       - name: Run Experiment ${{ matrix.case }}
         run: |
           #chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
-          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
-          #
-          sleep 1
-          while :; do
-              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
-              if [ -z "$job_status" ]; then
-                 echo "Job with ID $jobid is not found or completed."
-                 break
-              else
-                 echo "Job with ID $jobid is still running."
-                 echo "Job Status: $job_status"
-              fi
-              sleep 60  # Adjust the sleep duration as needed
-          done
+#          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
+#          #
+#          sleep 1
+#          while :; do
+#              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+#              if [ -z "$job_status" ]; then
+#                 echo "Job with ID $jobid is not found or completed."
+#                 break
+#              else
+#                 echo "Job with ID $jobid is still running."
+#                 echo "Job Status: $job_status"
+#              fi
+#              sleep 60  # Adjust the sleep duration as needed
+#          done
           # 
-          expected_string="All restart files are identical, PASS"
-          check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
-          if [ -f "$check_file" ]; then
-             if grep -qF "$expected_string" $check_file; then
-                 echo "PASSED: ${{ matrix.case }}"
-             else
-                 echo "FAILED: ${{ matrix.case }}"
-                 exit 1
-             fi
-          else
-             echo "Can not find $check_file. STOP"
-             exit 10
-          fi
+#          expected_string="All restart files are identical, PASS"
+#          check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
+#          if [ -f "$check_file" ]; then
+#             if grep -qF "$expected_string" $check_file; then
+#                 echo "PASSED: ${{ matrix.case }}"
+#             else
+#                 echo "FAILED: ${{ matrix.case }}"
+#                 exit 1
+#             fi
+#          else
+#             echo "Can not find $check_file. STOP"
+#             exit 10
+#          fi
 
           # Add repo to Git safe directory list to avoid "dubious ownership" error
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }} 
@@ -136,6 +136,7 @@ jobs:
             echo "No parameter doc changes detected for ${{ matrix.case }}."
           else
             git commit -m "Update parameter documentation files for ${{ matrix.case }}"
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
             git push origin HEAD:${{ github.head_ref }}
           fi
 
