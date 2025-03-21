@@ -93,12 +93,12 @@ jobs:
           # Add and commit parameter doc changes
           git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
 
-#          if git diff --cached --quiet; then
-#            echo "No parameter doc changes detected for ${{ matrix.case }}."
-#          else
-#            git commit -m "Update parameter documentation files for ${{ matrix.case }}"
-#            git push origin HEAD:${{ github.head_ref }}
-#          fi
+          if git diff --cached --quiet; then
+            echo "No parameter doc changes detected for ${{ matrix.case }}."
+          else
+            git commit -m "Update parameter documentation files for ${{ matrix.case }}"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
 
 #          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
 #          #
