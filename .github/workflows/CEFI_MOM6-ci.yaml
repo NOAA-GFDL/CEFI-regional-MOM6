@@ -91,9 +91,9 @@ jobs:
           git config --global --add safe.directory ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
 
           # Configure GitHub Actions bot credentials
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://${{ secrets.GHA_USERNAME }}:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
+          git config --global user.name "${{ secrets.GHA_USERNAME }}"
+          git config --global user.email "${{ secrets.GHA_EMAIL }}"
 
           # Ensure you are on the PR branch
           git fetch origin
