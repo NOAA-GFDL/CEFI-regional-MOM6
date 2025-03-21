@@ -58,14 +58,14 @@ jobs:
 #            exit 1
 #        fi 
 
-    - name: Compress CEFI_MOM6_CHECK
-      run: tar -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK
+#    - name: Compress CEFI_MOM6_CHECK
+#      run: tar -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK
 
-    - name: Upload the whole MOM6_CHECK as an artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: CEFI_MOM6_CHECK
-        path: CEFI_MOM6_CHECK.tar.gz
+#    - name: Upload the whole MOM6_CHECK as an artifact
+#      uses: actions/upload-artifact@v4
+#      with:
+#        name: CEFI_MOM6_CHECK
+#        path: CEFI_MOM6_CHECK.tar.gz
 
   run-CEFI_MOM6-ci:
     needs: checkout-build
@@ -75,15 +75,6 @@ jobs:
       matrix:
         case: ["NWA12.COBALT"]#, "NEP10.COBALT"]
     steps:
-      - name: Download CEFI_MOM6_CHECK compressed artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: CEFI_MOM6_CHECK
-          path: ${{ env.TEST_DIR }}
-          
-      - name: Extract the artifact
-        run: tar -xzvf ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }}
-        
       - name: Run Experiment ${{ matrix.case }}
         run: |
           #chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
@@ -91,7 +82,7 @@ jobs:
           git config --global --add safe.directory ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
 
           # Configure GitHub Actions bot credentials
-          git remote set-url origin https://${{ secrets.GHA_USERNAME }}:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git config --global user.name "${{ secrets.GHA_USERNAME }}"
           git config --global user.email "${{ secrets.GHA_EMAIL }}"
 
@@ -102,12 +93,12 @@ jobs:
           # Add and commit parameter doc changes
           git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
 
-          if git diff --cached --quiet; then
-            echo "No parameter doc changes detected for ${{ matrix.case }}."
-          else
-            git commit -m "Update parameter documentation files for ${{ matrix.case }}"
-            git push origin HEAD:${{ github.head_ref }}
-          fi
+#          if git diff --cached --quiet; then
+#            echo "No parameter doc changes detected for ${{ matrix.case }}."
+#          else
+#            git commit -m "Update parameter documentation files for ${{ matrix.case }}"
+#            git push origin HEAD:${{ github.head_ref }}
+#          fi
 
 #          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
 #          #
