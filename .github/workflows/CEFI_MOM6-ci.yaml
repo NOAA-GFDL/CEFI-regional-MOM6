@@ -184,6 +184,18 @@ jobs:
           echo "Using repository: $GITHUB_REPOSITORY"
           echo "PR Number: ${{ env.PR_NUMBER }}"
           
+      - name: Check GITHUB_TOKEN permissions
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/user          
+            
+      - name: Check PAT_TOKEN permissions
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/user            
+            
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
           TOKEN=${{ secrets.GITHUB_TOKEN }}
