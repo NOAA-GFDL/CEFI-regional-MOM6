@@ -176,6 +176,8 @@ jobs:
     needs: run-CEFI_MOM6-ci
     runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
+    permissions:
+      issues: write  # Ensure write access to issues
     steps:
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
