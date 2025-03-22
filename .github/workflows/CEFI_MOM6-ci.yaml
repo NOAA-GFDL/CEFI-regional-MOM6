@@ -6,6 +6,11 @@ on:
     branches: [ "main" ]
     types: [ labeled ]
 
+permissions:
+  contents: write           # Allow write access to the repo contents
+  pull-requests: write      # Allow modifying PR labels
+  issues: write             # Allow adding/removing issue labels
+
 #
 env:
   TEST_DIR: ${{ github.workspace }}/${{ github.run_id }}
@@ -175,23 +180,23 @@ jobs:
     steps:
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ env.PR_NUMBER }}
-          
+
         run: |
           RT_TEST_LABEL="CEFI_MOM6_RT_container"
           PASS_LABEL="pass_CEFI_MOM6_RT_container"
 
           # Remove the "CEFI_MOM6_RT_container" label
           curl -X DELETE \
-            -H "Authorization: Bearer $PAT_TOKEN" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$REPO/issues/${PR_NUMBER}/labels/$RT_TEST_LABEL" || echo "Failed to remove label or label does not exist."
+            "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/labels/$RT_TEST_LABEL" || echo "Failed to remove label or label does not exist."
 
           # Add the "pass_CEFI_MOM6_RT_container" label
           curl -X POST \
-            -H "Authorization: Bearer $PAT_TOKEN" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$REPO/issues/${PR_NUMBER}/labels" \
-            -d "{\"labels\":[\"$PASS_LABEL\"]}" || echo "Failed to add pass label"     
+            "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/labels" \
+            -d "{\"labels\":[\"$PASS_LABEL\"]}" || echo "Failed to add pass label"
