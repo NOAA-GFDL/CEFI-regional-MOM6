@@ -179,6 +179,11 @@ jobs:
     permissions:
       issues: write  # Ensure write access to issues
     steps:
+      - name: Debug GITHUB_REPOSITORY
+        run: |
+          echo "Using repository: $GITHUB_REPOSITORY"
+          echo "PR Number: ${{ env.PR_NUMBER }}"
+          
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
           TOKEN=${{ secrets.GITHUB_TOKEN }}
