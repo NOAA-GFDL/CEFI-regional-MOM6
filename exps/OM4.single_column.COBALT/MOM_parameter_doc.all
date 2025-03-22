@@ -53,11 +53,6 @@ BULKMIXEDLAYER = False          !   [Boolean] default = False
                                 ! layers.  Layers 1 through NKML+NKBL have variable densities. There must be at
                                 ! least NKML+NKBL+1 layers if BULKMIXEDLAYER is true. BULKMIXEDLAYER can not be
                                 ! used with USE_REGRIDDING. The default is influenced by ENABLE_THERMODYNAMICS.
-THICKNESSDIFFUSE = False        !   [Boolean] default = False
-                                ! If true, isopycnal surfaces are diffused with a Laplacian coefficient of KHTH.
-APPLY_INTERFACE_FILTER = False  !   [Boolean] default = False
-                                ! If true, model interface heights are subjected to a grid-scale dependent
-                                ! spatial smoothing, often with biharmonic filter.
 USE_POROUS_BARRIER = False      !   [Boolean] default = False
                                 ! If true, use porous barrier to constrain the widths and face areas at the
                                 ! edges of the grid cells.
@@ -90,6 +85,11 @@ TRADV_SPANS_COUPLING = False    !   [Boolean] default = False
                                 ! the coupling timestep. The actual tracer advection timestep that is used in
                                 ! this case is the largest integer multiple of the coupling timestep that is
                                 ! less than or equal to DT_TRACER_ADVECT.
+THICKNESSDIFFUSE = False        !   [Boolean] default = False
+                                ! If true, isopycnal surfaces are diffused with a Laplacian coefficient of KHTH.
+APPLY_INTERFACE_FILTER = False  !   [Boolean] default = False
+                                ! If true, model interface heights are subjected to a grid-scale dependent
+                                ! spatial smoothing, often with biharmonic filter.
 HMIX_SFC_PROP = 1.0             !   [m] default = 1.0
                                 ! If BULKMIXEDLAYER is false, HMIX_SFC_PROP is the depth over which to average
                                 ! to find surface properties like SST and SSS or density (but not surface
@@ -1377,9 +1377,6 @@ EVAP_CFL_LIMIT = 0.8            !   [nondim] default = 0.8
 MLD_EN_VALS = 25.0, 2500.0, 2.5E+05 !   [J/m2] default = 25.0, 2500.0, 2.5E+05
                                 ! The energy values used to compute MLDs.  If not set (or all set to 0.), the
                                 ! default will overwrite to 25., 2500., 250000.
-HREF_FOR_MLD = 10.0             !   [m] default = 0.0
-                                ! Reference depth used to calculate the potential density used to find the mixed
-                                ! layer depth based on a delta rho = 0.03 kg/m3.
 DIAG_MLD_DENSITY_DIFF = 0.03    !   [kg/m3] default = 0.1
                                 ! The density difference used to determine a diagnostic mixed layer depth,
                                 ! MLD_user, following the definition of Levitus 1982. The MLD is the depth at
