@@ -91,8 +91,9 @@ jobs:
           #chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
           # Clone into a temporary directory
           TEMP_GIT_DIR="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/TEMP_GIT"
-          git clone --branch ${{ github.head_ref }} https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git $TEMP_GIT_DIR
-
+          git clone --branch ${{ github.event.pull_request.head.ref }} \
+          https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}.git \
+          $TEMP_GIT_DIR
           # Copy the .git folder to restore Git metadata
           rsync -av $TEMP_GIT_DIR/.git/ ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/.git/
                     
