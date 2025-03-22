@@ -179,7 +179,7 @@ jobs:
     steps:
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
-          TOKEN=${{ secrets.GITHUB_TOKEN }}
+          TOKEN=${{ secrets.PAT_TOKEN }}
           RT_TEST_LABEL="CEFI_MOM6_RT_container"
           PASS_LABEL="pass_CEFI_MOM6_RT_container"
 
