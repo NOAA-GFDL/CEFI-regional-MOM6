@@ -141,6 +141,7 @@ jobs:
           # Ensure you are on the PR branch
           git fetch origin
           git checkout ${{ github.head_ref }}
+          git pull
 
           # Add and commit parameter doc changes
           git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
