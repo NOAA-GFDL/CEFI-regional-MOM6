@@ -177,21 +177,12 @@ jobs:
     runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     steps:
-      - name: Add "pass_CEFI_MOM6_RT_container" label on success
-        run: |
-          TOKEN=${{ secrets.PAT_TOKEN }}
-          RT_TEST_LABEL="CEFI_MOM6_RT_container"
-          PASS_LABEL="pass_CEFI_MOM6_RT_container"
-
-          # Remove the "CEFI_MOM6_RT_container" label
-          curl -X DELETE \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
-
-          # Add the "pass_CEFI_MOM6_RT_container" label
-          curl -X POST \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
-            -d "{\"labels\":[\"$PASS_LABEL\"]}" 
+      - name: Add success comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ✅ CI passed! 
+            Triggering label update...
+            /update-label CEFI_MOM6_RT_container pass_CEFI_MOM6_RT_container
