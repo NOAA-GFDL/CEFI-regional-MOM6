@@ -184,15 +184,13 @@ jobs:
           PASS_LABEL="pass_CEFI_MOM6_RT_container"
 
           # Remove the "CEFI_MOM6_RT_container" label
-          curl -L \ 
-            -X DELETE \
+          curl -X DELETE \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
 
           # Add the "pass_CEFI_MOM6_RT_container" label
-          curl -L \ 
-            -X POST \
+          curl -X POST \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
