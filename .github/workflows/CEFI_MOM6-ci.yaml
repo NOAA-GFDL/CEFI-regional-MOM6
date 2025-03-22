@@ -26,7 +26,8 @@ jobs:
       with:
         path: ${{ github.run_id }}/CEFI_MOM6_CHECK
         fetch-depth: 0   # Fetch full history to prevent detached HEAD issues
-        ref: ${{ github.head_ref }}  # Ensure it checks out the feature branch 
+        ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+        repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
         submodules: recursive
 
     - name: Build MOM6SIS2 using container
@@ -105,7 +106,7 @@ jobs:
           git config --global --add safe.directory ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
 
           # Configure GitHub Actions bot credentials
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}.git
           git config --global user.name "${{ secrets.GHA_USERNAME }}"
           git config --global user.email "${{ secrets.GHA_EMAIL }}"
 
@@ -140,8 +141,8 @@ jobs:
           
           # Ensure you are on the PR branch
           git fetch origin
-          git checkout ${{ github.head_ref }}
-          git pull
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }}
 
           # Add and commit parameter doc changes
           git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
@@ -150,7 +151,7 @@ jobs:
             echo "No parameter doc changes detected for ${{ matrix.case }}."
           else
             git commit -m "Update parameter documentation files for ${{ matrix.case }}"
-            git push origin HEAD:${{ github.head_ref }}
+            git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}" HEAD:${{ github.event.pull_request.head.ref }}
           fi
 
       - name: Clean-up workspace for ${{ matrix.case }}
