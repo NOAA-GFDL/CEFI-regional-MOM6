@@ -23,7 +23,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
-        ref: ${{ github.head_ref }}  # Checkout the feature branch directly
+        ref: ${{ github.event.pull_request.head.ref || github.ref_name }}  # Handle fork and same-repo branches
+        repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}  # Use forked repo if available
         submodules: recursive
 
     - name: Clean up disk space
@@ -81,8 +82,8 @@ jobs:
 
         # Ensure you are on the PR branch
         git fetch origin
-        git checkout ${{ github.head_ref }}
-        git pull
+        git checkout ${{ github.event.pull_request.head.ref }}
+        git pull origin ${{ github.event.pull_request.head.ref }}
 
         # Add and commit parameter doc changes
         git add MOM_parameter_doc.*
@@ -92,7 +93,7 @@ jobs:
         else          
           # Commit and push
           git commit -m "Update parameter documentation files for NWA12 tide case"
-          git push origin HEAD:${{ github.head_ref }}
+          git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}" HEAD:${{ github.event.pull_request.head.ref }}
         fi
 
 #    - name: Build mom6solo
