@@ -22,7 +22,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: 1
+        fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
+        ref: ${{ github.head_ref }}  # Checkout the feature branch directly
         submodules: recursive
 
     - name: Clean up disk space
@@ -49,8 +50,9 @@ jobs:
         df -h
 
     - name: running Doker
+      id: check_ref
       run: |
-        echo "Run Docker Image ..."
+        echo "Run Docker Image with tide CI test..."
         pwd
         docker run --rm \
         -v ${{ github.workspace }}:/workspace \
@@ -65,6 +67,33 @@ jobs:
         mpirun -np 4 ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6;
         cat ./ocean.stats;
         diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats"
+
+    - name: Commit and push parameter doc updates
+      if: steps.check_ref.outcome == 'success' && github.event_name == 'pull_request'
+      working-directory: ./exps/NWA12.tidesonly
+      run: |
+        # Add repo to Git safe directory list to avoid "dubious ownership" error
+        git config --global --add safe.directory /__w/CEFI-regional-MOM6/CEFI-regional-MOM6
+
+        # Configure GitHub Actions bot credentials
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+        # Ensure you are on the PR branch
+        git fetch origin
+        git checkout ${{ github.head_ref }}
+        git pull
+
+        # Add and commit parameter doc changes
+        git add MOM_parameter_doc.*
+
+        if git diff --cached --quiet; then
+          echo "No parameter doc changes detected."
+        else          
+          # Commit and push
+          git commit -m "Update parameter documentation files for NWA12 tide case"
+          git push origin HEAD:${{ github.head_ref }}
+        fi
 
 #    - name: Build mom6solo
 #      working-directory: ./builds
