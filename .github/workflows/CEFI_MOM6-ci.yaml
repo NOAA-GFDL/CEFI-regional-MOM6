@@ -177,7 +177,9 @@ jobs:
     runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     permissions:
-      issues: write  # Ensure write access to issues
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
       - name: Debug GITHUB_REPOSITORY
         run: |
