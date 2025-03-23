@@ -1,30 +1,45 @@
+name: PR Test and Label Workflow
+
 on:
-  schedule:
-    - cron: '0 0 * * 3'  # Run at midnight (00:00) every Wednesday
+  pull_request:
+    types: [labeled, unlabeled]
 
 jobs:
-  stable_release:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: self-hosted
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.PAT }}
-
-      - name: Show diff between stable/weekly_release and main
-        if: github.ref == 'refs/heads/main'
+      # Step 1: Check if the label triggering the tests is added
+      - name: Check if 'run-tests' label is added
+        if: ${{ github.event.label.name == 'bug' }}
         run: |
-          echo "Showing diff between stable/weekly_release and main"
-          git fetch origin stable/weekly_release:stable/weekly_release
-          git diff stable/weekly_release..origin/main
+          echo "Label 'bug' added. Proceeding with tests."
 
-      - name: Merge develop into main
-        if: github.ref == 'refs/heads/feature/main'
+      # Step 2: Run tests
+      - name: Run tests
         run: |
-          echo ${{ github.ref }}
-          git checkout stable/weekly_release
-          git pull origin stable/weekly_release
-          git merge origin/main --no-edit
-          git push --force origin stable/weekly_release
+          # Replace this with your test script or commands
+          pwd
+      
+      # Step 3: Check if tests passed
+      - name: Check if tests passed
+        if: ${{ success() }}
+        run: |
+          echo "Tests passed."
+
+      # Step 4: Remove 'run-tests' label and add 'passed' label
+      - name: Remove 'bug' label and add 'pass_CEFI_MOM6_RT_container' label
+        if: ${{ success() }}
+        run: |
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d '{"labels":["pass_CEFI_MOM6_RT_container"]}' \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels"
+
+      # Step 5: If tests failed, do not add 'passed' label, but remove the 'run-tests' label
+      - name: Remove 'bug' label on failure
+        if: ${{ failure() }}
+        run: |
+          curl -X DELETE \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels/bug"
