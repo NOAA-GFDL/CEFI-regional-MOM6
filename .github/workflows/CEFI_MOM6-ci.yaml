@@ -7,10 +7,21 @@ on:
     types: [ labeled ]
 
 permissions:
-  contents: write           # Allow write access to the repo contents
-  id-token: write
-  pull-requests: write      # Allow modifying PR labels
-  issues: write             # Allow adding/removing issue labels
+  Actions: write
+  Attestations: write
+  Checks: write
+  Contents: write
+  Deployments: write
+  Discussions: write
+  Issues: write
+  Metadata: read
+  Models: read
+  Packages: write
+  Pages: write
+  PullRequests: write
+  RepositoryProjects: write
+  SecurityEvents: write
+  Statuses: write
 
 #
 env:
@@ -178,10 +189,21 @@ jobs:
     runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     permissions:
-      id-token: write
-      contents: write
-      issues: write
-      pull-requests: write
+      Actions: write
+      Attestations: write
+      Checks: write
+      Contents: write
+      Deployments: write
+      Discussions: write
+      Issues: write
+      Metadata: read
+      Models: read
+      Packages: write
+      Pages: write
+      PullRequests: write
+      RepositoryProjects: write
+      SecurityEvents: write
+      Statuses: write
     steps:
       - name: Debug GITHUB_REPOSITORY
         run: |
@@ -193,20 +215,6 @@ jobs:
           curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/user          
-            
-      - name: Check PAT_TOKEN permissions
-        run: |
-          curl -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/user            
-
-      - name: Trigger label removal via dispatch
-        run: |
-          curl -X POST \
-          -H "Authorization: Bearer ${{ secrets._GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/dispatches \
-          -d '{"event_type": "remove_label", "client_payload": {"pr_number": "${{ github.event.pull_request.number }}"}}'
 
 #      - name: Add "pass_CEFI_MOM6_RT_container" label on success
 #        run: |
