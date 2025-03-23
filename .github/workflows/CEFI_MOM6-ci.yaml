@@ -29,7 +29,6 @@ env:
 #
 jobs:
   checkout-build:
-    if: ${{ github.event.label.name == 'CEFI_MOM6_RT_container' }}
     runs-on: [self-hosted]
     timeout-minutes: 600
     strategy:
