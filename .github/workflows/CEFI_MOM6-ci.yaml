@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write           # Allow write access to the repo contents
+  id-token: write
   pull-requests: write      # Allow modifying PR labels
   issues: write             # Allow adding/removing issue labels
 
@@ -177,6 +178,7 @@ jobs:
     runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     permissions:
+      id-token: write
       contents: write
       issues: write
       pull-requests: write
