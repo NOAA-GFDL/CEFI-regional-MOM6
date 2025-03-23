@@ -4,7 +4,6 @@ on:
   # Triggers this workflow on pull request event with "CEFI_MOM6_RT_container" label
   pull_request_target:
     branches: [ "main" ]
-    types: [ labeled ]
 
 permissions:
   actions: write
