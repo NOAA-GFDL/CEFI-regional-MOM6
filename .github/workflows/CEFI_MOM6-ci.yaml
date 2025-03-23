@@ -197,22 +197,30 @@ jobs:
           curl -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/user            
-            
-      - name: Add "pass_CEFI_MOM6_RT_container" label on success
+
+      - name: Trigger label removal via dispatch
         run: |
-          TOKEN=${{ secrets.PAT_TOKEN }}
-          RT_TEST_LABEL="CEFI_MOM6_RT_container"
-          PASS_LABEL="pass_CEFI_MOM6_RT_container"
-
-          # Remove the "CEFI_MOM6_RT_container" label
-          curl -X DELETE \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
-
-          # Add the "pass_CEFI_MOM6_RT_container" label
           curl -X POST \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
-            -d "{\"labels\":[\"$PASS_LABEL\"]}" 
+          -H "Authorization: Bearer ${{ secrets._GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/dispatches \
+          -d '{"event_type": "remove_label", "client_payload": {"pr_number": "${{ github.event.pull_request.number }}"}}'
+
+#      - name: Add "pass_CEFI_MOM6_RT_container" label on success
+#        run: |
+#          TOKEN=${{ secrets.PAT_TOKEN }}
+#          RT_TEST_LABEL="CEFI_MOM6_RT_container"
+#          PASS_LABEL="pass_CEFI_MOM6_RT_container"
+#
+#          # Remove the "CEFI_MOM6_RT_container" label
+#          curl -X DELETE \
+#            -H "Authorization: Bearer $TOKEN" \
+#            -H "Accept: application/vnd.github.v3+json" \
+#            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
+#
+#          # Add the "pass_CEFI_MOM6_RT_container" label
+#          curl -X POST \
+#            -H "Authorization: Bearer $TOKEN" \
+#            -H "Accept: application/vnd.github.v3+json" \
+#            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
+#            -d "{\"labels\":[\"$PASS_LABEL\"]}" 
