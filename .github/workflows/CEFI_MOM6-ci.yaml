@@ -7,21 +7,19 @@ on:
     types: [ labeled ]
 
 permissions:
-  Actions: write
-  Attestations: write
-  Checks: write
-  Contents: write
-  Deployments: write
-  Discussions: write
-  Issues: write
-  Metadata: read
-  Models: read
-  Packages: write
-  Pages: write
-  PullRequests: write
-  RepositoryProjects: write
-  SecurityEvents: write
-  Statuses: write
+  actions: write
+  attestations: write
+  checks: write
+  contents: write
+  deployments: write
+  discussions: write
+  issues: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
 
 #
 env:
@@ -189,21 +187,19 @@ jobs:
     runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     permissions:
-      Actions: write
-      Attestations: write
-      Checks: write
-      Contents: write
-      Deployments: write
-      Discussions: write
-      Issues: write
-      Metadata: read
-      Models: read
-      Packages: write
-      Pages: write
-      PullRequests: write
-      RepositoryProjects: write
-      SecurityEvents: write
-      Statuses: write
+      actions: write
+      attestations: write
+      checks: write
+      contents: write
+      deployments: write
+      discussions: write
+      issues: write
+      packages: write
+      pages: write
+      pull-requests: write
+      repository-projects: write
+      security-events: write
+      statuses: write
     steps:
       - name: Debug GITHUB_REPOSITORY
         run: |
