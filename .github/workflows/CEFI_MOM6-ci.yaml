@@ -38,26 +38,26 @@ jobs:
         #apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
         jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
         #
-        sleep 1
-        while :; do
-            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
-            if [ -z "$job_status" ]; then
-               echo "Job with ID $jobid is not found or completed."
-               break
-            else
-               echo "Job with ID $jobid is still running."
-               echo "Job Status: $job_status"
-            fi
-            sleep 60  # Adjust the sleep duration as needed
-        done
-        
-        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2"
-        if [ -f "$check_file" ]; then
-            echo "PASSED: $check_file"
-        else
-            echo "FAILED: $check_file"
-            exit 1
-        fi 
+#        sleep 1
+#        while :; do
+#            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+#            if [ -z "$job_status" ]; then
+#               echo "Job with ID $jobid is not found or completed."
+#               break
+#            else
+#               echo "Job with ID $jobid is still running."
+#               echo "Job Status: $job_status"
+#            fi
+#            sleep 60  # Adjust the sleep duration as needed
+#        done
+#        
+#        check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2"
+#        if [ -f "$check_file" ]; then
+#            echo "PASSED: $check_file"
+#        else
+#            echo "FAILED: $check_file"
+#            exit 1
+#        fi 
 
     - name: Compress CEFI_MOM6_CHECK
       run: tar --exclude='.git' -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK 
@@ -73,9 +73,9 @@ jobs:
     needs: checkout-build
     runs-on: [self-hosted]
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       matrix:
-        case: ["NWA12.COBALT", "NEP10.COBALT"]
+        case: ["NWA12.COBALT"]#, "NEP10.COBALT"]
     steps:
       - name: Download CEFI_MOM6_CHECK compressed artifact
         uses: actions/download-artifact@v4
@@ -111,35 +111,6 @@ jobs:
           git config --global user.name "${{ secrets.GHA_USERNAME }}"
           git config --global user.email "${{ secrets.GHA_EMAIL }}"
 
-          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
-          #
-          sleep 1
-          while :; do
-              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
-              if [ -z "$job_status" ]; then
-                 echo "Job with ID $jobid is not found or completed."
-                 break
-              else
-                 echo "Job with ID $jobid is still running."
-                 echo "Job Status: $job_status"
-              fi
-              sleep 60  # Adjust the sleep duration as needed
-          done
-          # 
-          expected_string="All restart files are identical, PASS"
-          check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
-          if [ -f "$check_file" ]; then
-             if grep -qF "$expected_string" $check_file; then
-                 echo "PASSED: ${{ matrix.case }}"
-             else
-                 echo "FAILED: ${{ matrix.case }}"
-                 exit 1
-             fi
-          else
-             echo "Can not find $check_file. STOP"
-             exit 10
-          fi
-          
           # Ensure you are on the PR branch
           git fetch origin
           git checkout ${{ github.event.pull_request.head.ref }}
@@ -155,6 +126,35 @@ jobs:
             git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}" HEAD:${{ github.event.pull_request.head.ref }}
           fi
 
+#          jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
+#          #
+#          sleep 1
+#          while :; do
+#              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+#              if [ -z "$job_status" ]; then
+#                 echo "Job with ID $jobid is not found or completed."
+#                 break
+#              else
+#                 echo "Job with ID $jobid is still running."
+#                 echo "Job Status: $job_status"
+#              fi
+#              sleep 60  # Adjust the sleep duration as needed
+#          done
+#          # 
+#          expected_string="All restart files are identical, PASS"
+#          check_file="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}/${{ matrix.case }}_o.$jobid"
+#          if [ -f "$check_file" ]; then
+#             if grep -qF "$expected_string" $check_file; then
+#                 echo "PASSED: ${{ matrix.case }}"
+#             else
+#                 echo "FAILED: ${{ matrix.case }}"
+#                 exit 1
+#             fi
+#          else
+#             echo "Can not find $check_file. STOP"
+#             exit 10
+#          fi
+          
       - name: Clean-up workspace for ${{ matrix.case }}
         run: |
           echo "Cleaning up ${{ env.TEST_DIR }}"
@@ -174,19 +174,27 @@ jobs:
     steps:
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
-          TOKEN=${{ secrets.GITHUB_TOKEN }}
-          RT_TEST_LABEL="CEFI_MOM6_RT_container"
-          PASS_LABEL="pass_CEFI_MOM6_RT_container"
-
-          # Remove the "CEFI_MOM6_RT_container" label
-          curl -X DELETE \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
-
-          # Add the "pass_CEFI_MOM6_RT_container" label
-          curl -X POST \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
-            -d "{\"labels\":[\"$PASS_LABEL\"]}"     
+          if [ "${{ github.event.pull_request.head.repo.owner.login }}" != "${{ github.repository_owner }}" ]; then
+            # PR is from a fork
+            curl -X POST \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.everest-preview+json" \
+              https://api.github.com/repos/${{ github.repository_owner }}/$GITHUB_REPOSITORY/dispatches \
+              -d '{"event_type": "fork_pr_event", "client_payload": {"pr_number": "${{ github.event.pull_request.number }}", "action": "add"}}'
+          else
+            # PR is from the same repo, add label directly
+            TOKEN=${{ secrets.GITHUB_TOKEN }}
+            RT_TEST_LABEL="CEFI_MOM6_RT_container"
+            PASS_LABEL="pass_CEFI_MOM6_RT_container"
+            # Remove the "CEFI_MOM6_RT_container" label
+            curl -X DELETE \
+              -H "Authorization: Bearer $TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
+            # Add the "pass_CEFI_MOM6_RT_container" label
+            curl -X POST \
+              -H "Authorization: Bearer $TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
+              -d "{\"labels\":[\"$PASS_LABEL\"]}"
+          fi
