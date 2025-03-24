@@ -2,7 +2,7 @@
 % grid. Run on matlab97 or above.
 
 clear all;
-addpath /home/cas/matlab
+addpath /home/cas/matlab_budget_codes
 nc64startup
 
 % name of netcdf file to be created
@@ -12,7 +12,7 @@ nc_file_name = 'RiverNutrients_Combined_Q100_NEP10k.nc';
 NEWS_file = 'RiverNutrients_GlobalNEWS2_plusFe_Q100_NEP10k.nc';
 
 % load in monthly world ocean T, S climatology for saturated oxygen calculation
-temp = ncread('Data/woa_sst_climo.nc','t_an');
+temp = ncread('Data/woa_nep10k_sst_climo.nc','t_an');
 woa_temp = permute(temp,[3 2 1]);
 
 % Parameters for the assignment algorithm.
