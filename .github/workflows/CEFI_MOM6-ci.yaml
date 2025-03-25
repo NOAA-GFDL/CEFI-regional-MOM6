@@ -155,33 +155,39 @@ jobs:
     runs-on: [self-hosted]
     if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
     steps:
+
+      - name: Check Token Permissions
+        run: |
+          echo "Checking token permissions..."
+          curl -s -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}
+
+      - name: Check Bot Token Permissions
+        run: |
+          echo "Checking bot token permissions..."
+          curl -s -H "Authorization: Bearer ${{ secrets.BOT_PAT }}" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}
+
+      - name: Check Github Token Permissions
+        run: |
+          echo "Checking token permissions..."
+          curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}
+
+
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
-          if [ "${{ github.event.pull_request.head.repo.owner.login }}" != "${{ github.repository_owner }}" ]; then
-            # PR is from a fork
-            echo "PR is from fork"
-            echo "https://api.github.com/repos/${{ github.repository }}/dispatches"  
-            curl -X POST \
-              -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
-              -H "Accept: application/vnd.github.everest-preview+json" \
-              https://api.github.com/repos/${{ github.repository }}/dispatches \
-              -d '{"event_type": "fork_pr_event", "client_payload": {"pr_number": "${{ github.event.pull_request.number }}", "action": "add"}}'
-          fi
-#          else
-#            # PR is from the same repo, add label directly
-#            echo "PR is from mainstream!"
-#            TOKEN=${{ secrets.GITHUB_TOKEN }}
-#            RT_TEST_LABEL="CEFI_MOM6_RT_container"
-#            PASS_LABEL="pass_CEFI_MOM6_RT_container"
-#            # Remove the "CEFI_MOM6_RT_container" label
-#            curl -X DELETE \
-#              -H "Authorization: Bearer $TOKEN" \
-#              -H "Accept: application/vnd.github.v3+json" \
-#              "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
-#            # Add the "pass_CEFI_MOM6_RT_container" label
-#            curl -X POST \
-#              -H "Authorization: Bearer $TOKEN" \
-#              -H "Accept: application/vnd.github.v3+json" \
-#              "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
-#              -d "{\"labels\":[\"$PASS_LABEL\"]}"
-#          fi
+          TOKEN=${{ secrets.GITHUB_TOKEN }}
+          RT_TEST_LABEL="CEFI_MOM6_RT_container"
+          PASS_LABEL="pass_CEFI_MOM6_RT_container"
+          # Remove the "CEFI_MOM6_RT_container" label
+#          curl -X DELETE \
+#            -H "Authorization: Bearer $TOKEN" \
+#            -H "Accept: application/vnd.github.v3+json" \
+#            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels/$RT_TEST_LABEL"
+#          # Add the "pass_CEFI_MOM6_RT_container" label
+#          curl -X POST \
+#            -H "Authorization: Bearer $TOKEN" \
+#            -H "Accept: application/vnd.github.v3+json" \
+#            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ env.PR_NUMBER }}/labels" \
+#            -d "{\"labels\":[\"$PASS_LABEL\"]}"
