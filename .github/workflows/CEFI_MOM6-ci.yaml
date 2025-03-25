@@ -176,6 +176,7 @@ jobs:
         run: |
           if [ "${{ github.event.pull_request.head.repo.owner.login }}" != "${{ github.repository_owner }}" ]; then
             # PR is from a fork
+            echo "PR is from fork"
             curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.everest-preview+json" \
@@ -183,6 +184,7 @@ jobs:
               -d '{"event_type": "fork_pr_event", "client_payload": {"pr_number": "${{ github.event.pull_request.number }}", "action": "add"}}'
           else
             # PR is from the same repo, add label directly
+            echo "PR is from mainstream!"
             TOKEN=${{ secrets.GITHUB_TOKEN }}
             RT_TEST_LABEL="CEFI_MOM6_RT_container"
             PASS_LABEL="pass_CEFI_MOM6_RT_container"
