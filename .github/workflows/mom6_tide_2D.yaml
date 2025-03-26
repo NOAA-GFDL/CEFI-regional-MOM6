@@ -40,31 +40,43 @@ jobs:
         docker system prune -af
         df -h
 
-    - name: Set up Docker
-      uses: docker/setup-buildx-action@v3
+#    - name: Set up Docker
+#      uses: docker/setup-buildx-action@v3
 
-    - name: Download Image
+#    - name: Download Image
+#      run: |
+#        echo "Pull the Image ..."
+#        docker pull noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0
+#        docker images        
+#        df -h
+
+    - name: Install Singularity
       run: |
-        echo "Pull the Image ..."
-        docker pull noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0
-        docker images        
-        df -h
+        echo "Installing Singularity..."
+        sudo apt-get update
+        sudo apt-get install -y singularity-container
+        singularity version
 
-    - name: running Doker
+    - name: Pull Singularity Image
+      run: |
+        echo "Pulling Singularity image..."
+        singularity pull cefi_mom6_intel_2024.2.1.sif library://gfdl_cefi/models/cefi_mom6_intel:2024.2.1
+        ls -lh cefi_mom6_intel_2024.2.1.sif
+        df -h        
+
+    - name: Run Singularity Container with MOM6 Tide CI Test 
       id: check_ref
       run: |
-        echo "Run Docker Image with tide CI test..."
+        echo "Run Singularity Image with tide CI test..."
         pwd
-        docker run --rm \
-        -v ${{ github.workspace }}:/workspace \
-        -w /workspace \
-        noaaepic/ubuntu22.04-intel-llvm-unified:v1.8.0 \
-        sh -c "cd builds/;
+        singularity exec --cleanenv \
+        --bind ${{ github.workspace }}:/workspace \
+        cefi_mom6_intel_2024.2.1.sif \
+        bash -c "cd /workspace/builds/;
         ./linux-build.bash -m docker -p linux-intel -t repro -f mom6solo;
         cd ../exps;
         wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_tideonly_ci_datasets.tar.gz && tar -zxvf nwa12_tideonly_ci_datasets.tar.gz;
         cd NWA12.tidesonly;
-        source /root/.bashenv
         mpirun -np 4 ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6;
         cat ./ocean.stats;
         diff -q ref/docker-linux-intel-repro/ocean.stats ./ocean.stats"
