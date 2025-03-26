@@ -1,0 +1,26 @@
+# Author: Yi-cheng.Teng
+Bootstrap: library
+From: library://gfdl_cefi/models/cefi_base_intel:2024.2.1
+
+%environment
+    export LD_LIBRARY_PATH=/opt/views/view/lib:$LD_LIBRARY_PATH
+    export LIBRARY_PATH=/opt/views/view/lib:$LIBRARY_PATH
+    export PATH=$PATH:/opt/views/view/bin
+    export LC_ALL=C # general locale setting. Likely optional
+    export MPI_DIR=/opt/intel/oneapi/mpi/2021.13
+    export SINGULARITY_MPI_DIR=$MPI_DIR
+    export SINGULARITYENV_APPEND_PATH=$MPI_DIR/bin
+    export LD_LIBRARY_PATH=$MPI_DIR/libfabric/lib:$MPI_DIR/lib/prov:$MPI_DIR/lib:/opt/intel/oneapi/mkl/2024.2/lib/intel64:/opt/intel/oneapi/compiler/2024.2/lib:/usr/lib64:$LD_LIBRARY_PATH
+    export I_MPI_DEBUG=6
+    export I_MPI_ROOT=/opt/intel/oneapi/mpi/2021.13
+    export PATH=/opt/intel/oneapi/mpi/2021.13/libfabric/bin:/opt/intel/oneapi/mpi/2021.13//bin:$PATH
+
+
+%post
+    apt-get update -y
+    apt-get install -y curl libibverbs-dev 
+    apt-get install -y autoconf libtool automake
+    cd /opt
+
+%runscript
+    exec /bin/bash

@@ -19,3 +19,11 @@ Singularity> wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_ci_datasets.tar.gz && 
 Singularity> cd OM4.single_column.COBALT
 Singularity> mpirun -np 1 --allow-run-as-root ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
 ```
+
+# Build singularity image with Intel compiler that used for gaea c6 CI
+```console
+# make sure you are on gaea c6
+git clone -b main git@github.com:NOAA-GFDL/CEFI-regional-MOM6.git --recursive
+cd CEFI-regional-MOM6/ci/singularity
+singularity build --fakeroot cefi_mom6_intel_2024.2.1.sif ./build_cefi_model_efa_base.def
+```
