@@ -33,6 +33,6 @@ export SINGULARITY_SHELL=/bin/bash
 
 #
 echo "run tidesonly test ..."
-srun --ntasks ${ntasks1} --export=ALL singularity exec -B /gpfs "${img}" ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6
+srun --ntasks ${ntasks1} --export=ALL singularity exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng "${img}" ../../builds/build/docker-linux-intel/ocean_only/repro/MOM6
 
 echo "Test ended:  " `date`
