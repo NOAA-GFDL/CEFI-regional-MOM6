@@ -10,10 +10,6 @@
 	path = src/land_null
 	url = https://github.com/NOAA-GFDL/land_null.git
 	branch = 2023.04
-[submodule "src/mkmf"]
-	path = src/mkmf
-	url = https://github.com/NOAA-GFDL/mkmf.git
-	branch = master
 [submodule "src/Icepack"]
 	path = src/Icepack
 	url = https://github.com/CICE-Consortium/Icepack.git
@@ -46,3 +42,7 @@
 	path = src/ocean_BGC
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
 	branch = dev/cefi
+[submodule "src/mkmf"]
+	path = src/mkmf
+	url = https://github.com/NOAA-GFDL/mkmf.git
+	branch = 2025.01
