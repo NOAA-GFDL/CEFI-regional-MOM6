@@ -206,8 +206,8 @@ build_mom6solo() {
         linker_options="$linker_options -stdpar"
     fi
 
-    $srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -o "-I../../shared2/$target -I../../libyaml/$target/include" -p MOM6SOLO -l "-L../../shared2/$target -lfms -L../../libyaml/$target/lib -lyaml $linker_options" -c "$compiler_options" path_names
-    make $makeflags MOM6SOLO
+    $srcdir/mkmf/bin/mkmf -t $abs_rootdir/$machine_name/$platform.mk -o "-I../../shared2/$target -I../../libyaml/$target/include" -p MOM6 -l "-L../../shared2/$target -lfms -L../../libyaml/$target/lib -lyaml $linker_options" -c "$compiler_options" path_names
+    make $makeflags MOM6
     if [ $? -ne 0 ]; then
         echo "Could not build MOM6Solo!"
         exit 1
