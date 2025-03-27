@@ -75,7 +75,7 @@ update_makeflags() {
 # Function to build libyaml
 build_libyaml() {
     echo "Building libyaml..."
-    local target_dir="build/$machine_name-$platform/libyaml/$target"
+    local target_dir="$abs_rootdir/build/$machine_name-$platform/libyaml/$target"
     
     # Clean up existing build
     [[ -d $target_dir ]] && rm -rf $target_dir
