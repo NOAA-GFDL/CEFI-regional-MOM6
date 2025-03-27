@@ -31,7 +31,7 @@ jobs:
       working-directory: ./builds
       run: |
         echo "build mom6-sis2-cobalt ..."
-        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2_yaml
+        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
 
     - name: Download 1d model dataset
       working-directory: ./exps
