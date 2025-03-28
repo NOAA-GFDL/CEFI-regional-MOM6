@@ -8,7 +8,7 @@ on:
   workflow_dispatch:    
 
 jobs:
-  build:
+  run-tide-ci:
     runs-on: ubuntu-latest
 
     container:

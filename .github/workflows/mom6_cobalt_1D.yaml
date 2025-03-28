@@ -8,7 +8,7 @@ on:
   workflow_dispatch:    
 
 jobs:
-  build:
+  run-obgc_1d-ci:
     runs-on: ubuntu-latest
 
     container:
