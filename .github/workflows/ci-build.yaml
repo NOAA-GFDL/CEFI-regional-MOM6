@@ -1,0 +1,43 @@
+name: CI Build Workflow
+
+on:
+  push:
+    branches: [ "test" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  call-reusable-workflow:
+    uses: ./.github/workflows/reusable.yaml
+    with:
+      message: "Hello from main workflow!"
+
+  # Build mom6sis2 (debug mode)
+  build_mom6sis2_debug:
+    runs-on: ubuntu-latest
+    container:
+      image: clouden90/1d_mom6_cobalt:base
+      options: --user=root
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}  # Handle fork and same-repo branches
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}  # Use forked repo if available
+          submodules: recursive
+
+
+      - name: Build mom6sis2
+        working-directory: ./builds
+        run: |
+          echo "Building mom6sis2 in debug mode..."
+          ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
+
+      - name: Upload mom6sis2 executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: mom6sis2_debug
+          path: ./builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
