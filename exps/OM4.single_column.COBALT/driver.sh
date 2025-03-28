@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-export LD_LIBRARY_PATH=../../builds/build/docker-linux-gnu/libyaml/debug/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=../../builds/build/docker-linux-gnu/libyaml/debug/lib:$LD_LIBRARY_PATH
 rm -rf RESTART*
 
 #

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-export LD_LIBRARY_PATH=../../../builds/build/docker-linux-gnu/libyaml/debug/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=../../../builds/build/docker-linux-gnu/libyaml/debug/lib:$LD_LIBRARY_PATH
 
 if [ -f ocean.stats ] ; then
     rm ocean.stats ocean.stats.nc
@@ -34,4 +34,4 @@ ln -fs 00010101.prog.nc prog.nc
 python3 rms_errors.py ../z_sub
 cat ./err.txt
 cat ./err.txt.ref
-diff -q ./err.txt ./err.txt.ref > /dev/null || { echo "Error: subset error is not identical, please check! Exiting now..."; exit 1; }
+./tolerance_check.sh

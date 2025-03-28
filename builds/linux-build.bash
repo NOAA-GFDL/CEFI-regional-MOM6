@@ -84,7 +84,7 @@ build_libyaml() {
     # Build libyaml
     pushd $srcdir/libyaml
     $srcdir/libyaml/bootstrap
-    $srcdir/libyaml/configure --prefix="$target_dir"
+    $srcdir/libyaml/configure --prefix="$target_dir" --disable-shared
     make && make install
     if [ $? -ne 0 ]; then
         echo "Could not build the libyaml library!"
