@@ -6,37 +6,37 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch: 
 
 jobs:
   run-dumbbell-ci:
     runs-on: ubuntu-latest
+
     container:
-        image: quay.io/singularity/singularity:v4.1.0
-        options: --privileged    
+        image: clouden90/1d_mom6_cobalt:base
+        options: --user=root
 
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
+    env:
+      PR_NUMBER: ${{ github.event.number }}        
+
+    steps:        
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
+        ref: ${{ github.event.pull_request.head.ref || github.ref_name }}  # Handle fork and same-repo branches
+        repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}  # Use forked repo if available
+        submodules: recursive      
           
-      - name: Build singularity Image
-        working-directory: ./ci/singularity
-        run: |
-          echo "image build ..."
-          singularity build 1d_mom6_cobalt_python.sif ./build_1d_mom6_cobalt_python.def
+    - name: Build mom6-sis2-cobalt
+      working-directory: ./builds
+      run: |
+        echo "build mom6-sis2-cobalt ..."
+        ./linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
 
-      - name: Build mom6sis2-cobalt
-        working-directory: ./builds
-        run: |
-          echo "build mom6sis2..."
-          singularity exec --bind /__w:/__w ../ci/singularity/1d_mom6_cobalt_python.sif bash linux-build.bash -m docker -p linux-gnu -t debug -f mom6sis2
-          ls -l -h build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
 
-      - name: Run dumbbell driver
-        working-directory: ./exps/dumbbell/z_sub
-        run: |
-          echo "Start dumbbell test ..."
-          pwd
-          singularity exec --bind /__w:/__w ../../../ci/singularity/1d_mom6_cobalt_python.sif ./driver.sh
+    - name: Run dumbbell driver
+      working-directory: ./exps/dumbbell/z_sub
+      run: |
+        echo "Start dumbbell test ..."
+        ./driver.sh
