@@ -46,7 +46,7 @@ jobs:
         pwd
         mpirun --allow-run-as-root -np 2 ../../builds/build/docker-linux-gnu/ocean_only/repro/MOM6;
         cat ./ocean.stats;
-        diff -q ref/docker-linux-gnu-repro/ocean.stats ./ocean.stats"
+        diff -q ref/docker-linux-gnu-repro/ocean.stats ./ocean.stats
 
     - name: Commit and push parameter doc updates
       if: steps.check_ref.outcome == 'success' && github.event_name == 'pull_request'
