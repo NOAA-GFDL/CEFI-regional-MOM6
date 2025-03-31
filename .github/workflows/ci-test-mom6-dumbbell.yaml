@@ -33,9 +33,9 @@ jobs:
       - name: Run dumbbell driver
         working-directory: ./exps/dumbbell/z_sub
         run: |
-          mkdir -p ../../builds/build/docker-linux-gnu/ocean_ice/debug
-          mv ../../temp-artifact/MOM6SIS2 ../../builds/build/docker-linux-gnu/ocean_ice/debug/
-          chmod +x ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
-          ls -l -h ../../builds/build/docker-linux-gnu/ocean_ice/debug
+          mkdir -p ../../../builds/build/docker-linux-gnu/ocean_ice/debug
+          mv ../../../temp-artifact/MOM6SIS2 ../../../builds/build/docker-linux-gnu/ocean_ice/debug/
+          chmod +x ../../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
+          ls -l -h ../../../builds/build/docker-linux-gnu/ocean_ice/debug
           echo "Start dumbbell test ..."
           ./driver.sh
