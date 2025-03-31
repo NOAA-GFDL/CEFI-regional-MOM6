@@ -1,0 +1,41 @@
+name: mom6-dumbbell Test
+
+# Controls when the workflow will run
+on:
+  workflow_call:
+
+jobs:
+  run-dumbbell-ci:
+    runs-on: ubuntu-latest
+
+    container:
+        image: clouden90/1d_mom6_cobalt:base
+        options: --user=root
+
+    env:
+      PR_NUMBER: ${{ github.event.number }}        
+
+    steps:        
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}  # Handle fork and same-repo branches
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}  # Use forked repo if available
+          submodules: recursive      
+
+      - name: Download mom6sis2_debug artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mom6sis2_debug
+          path: ./temp-artifact         
+
+      - name: Run dumbbell driver
+        working-directory: ./exps/dumbbell/z_sub
+        run: |
+          mkdir -p ../../builds/build/docker-linux-gnu/ocean_ice/debug
+          mv ../../temp-artifact/MOM6SIS2 ../../builds/build/docker-linux-gnu/ocean_ice/debug/
+          chmod +x ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
+          ls -l -h ../../builds/build/docker-linux-gnu/ocean_ice/debug
+          echo "Start dumbbell test ..."
+          ./driver.sh
