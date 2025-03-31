@@ -73,3 +73,8 @@ jobs:
         with:
           name: mom6solo_repro
           path: ./builds/build/docker-linux-gnu/ocean_only/repro/MOM6    
+          
+  # Trigger tide workflow AFTER build_mom6solo_repro completes successfully
+  run-tide-workflow:
+    needs: build_mom6solo_repro   # Ensure dependency
+    uses: ./.github/workflows/ci-test-mom6-tide.yaml
