@@ -42,8 +42,9 @@ jobs:
         working-directory: ./exps/OM4.single_column.COBALT
         run: |
           mkdir -p ../../builds/build/docker-linux-gnu/ocean_ice/debug
-          ls ../../temp-artifact
           mv ../../temp-artifact/MOM6SIS2 ../../builds/build/docker-linux-gnu/ocean_ice/debug/
+          chmod +x ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
+          ls -l -h ../../builds/build/docker-linux-gnu/ocean_ice/debug
           ./driver.sh 
 
       - name: Run mppnccombine to combine sub-region diag outputs 
