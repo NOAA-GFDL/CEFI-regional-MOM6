@@ -1,8 +1,8 @@
-name: CI Build Workflow
+name: CEFI-MOM6-CI Workflow
 
 on:
   push:
-    branches: [ "test" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
