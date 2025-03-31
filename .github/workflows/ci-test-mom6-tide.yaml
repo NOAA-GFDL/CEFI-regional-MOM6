@@ -1,0 +1,76 @@
+name: 2D mom6-tide Test
+
+on:
+  workflow_call:  
+
+jobs:
+  run-tide-ci:
+    runs-on: ubuntu-latest
+
+    container:
+      image: clouden90/1d_mom6_cobalt:base 
+      options: --user=root
+        
+    env:
+      PR_NUMBER: ${{ github.event.number }}
+
+    steps:        
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}  # Handle fork and same-repo branches
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}  # Use forked repo if available
+          submodules: recursive
+       
+      - name: Download mom6solo_repro artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mom6solo_repro
+          path: ./temp-artifact 
+
+      - name: Download nwa-tide dataset
+        working-directory: ./exps
+        run: |
+          wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_tideonly_ci_datasets.tar.gz && tar -zxvf nwa12_tideonly_ci_datasets.tar.gz
+
+      - name: Run MOM6 Tide CI Test
+        working-directory: ./exps/NWA12.tidesonly 
+        id: check_ref
+        run: |
+          mkdir -p ../../builds/build/docker-linux-gnu/ocean_only/repro
+          mv ../../temp-artifact/MOM6 ../../builds/build/docker-linux-gnu/ocean_only/repro/
+          chmod +x ../../builds/build/docker-linux-gnu/ocean_only/repro/MOM6
+          ls -l -h ../../builds/build/docker-linux-gnu/ocean_only/repro/MOM6
+          echo "Run NWA tide CI test..."
+          pwd
+          mpirun --allow-run-as-root -np 2 ../../builds/build/docker-linux-gnu/ocean_only/repro/MOM6;
+          cat ./ocean.stats;
+          diff -q ref/docker-linux-gnu-repro/ocean.stats ./ocean.stats
+
+      - name: Commit and push parameter doc updates
+        if: steps.check_ref.outcome == 'success' && github.event_name == 'pull_request'
+        working-directory: ./exps/NWA12.tidesonly
+        run: |
+          # Add repo to Git safe directory list to avoid "dubious ownership" error
+          git config --global --add safe.directory /__w/CEFI-regional-MOM6/CEFI-regional-MOM6
+
+          # Configure GitHub Actions bot credentials
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Ensure you are on the PR branch
+          git fetch origin
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }}
+
+          # Add and commit parameter doc changes
+          git add MOM_parameter_doc.*
+
+          if git diff --cached --quiet; then
+            echo "No parameter doc changes detected."
+          else          
+            # Commit and push
+            git commit -m "Update parameter documentation files for NWA12 tide case"
+            git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}" HEAD:${{ github.event.pull_request.head.ref }}
+          fi

@@ -1,4 +1,4 @@
-[![mom6_obgc_1d](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/mom6_cobalt_1D.yaml/badge.svg)](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/mom6_cobalt_1D.yaml)
+[![CEFI-MOM6-CI Workflow](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/ci-build.yaml/badge.svg?branch=main)](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/actions/workflows/ci-build.yaml)
 [![doc](https://readthedocs.org/projects/cefi-regional-mom6/badge/?version=latest)](https://cefi-regional-mom6.readthedocs.io/en/latest/?badge=latest)
       
 # CEFI-regional-MOM6

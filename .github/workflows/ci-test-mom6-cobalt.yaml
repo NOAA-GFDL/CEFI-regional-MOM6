@@ -1,0 +1,90 @@
+name: 1D mom6-cobalt Test
+
+on:
+  workflow_call:
+#    inputs:
+#      message:
+#        required: false
+#        type: string
+
+jobs:
+  run-obgc_1d-ci:
+    runs-on: ubuntu-latest
+
+    container:
+      image: clouden90/1d_mom6_cobalt:base
+      options: --user=root
+        
+    env:
+      PR_NUMBER: ${{ github.event.number }}
+
+    steps:        
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}  # Handle fork and same-repo branches
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}  # Use forked repo if available
+          submodules: recursive
+
+      - name: Download mom6sis2_debug artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mom6sis2_debug
+          path: ./temp-artifact 
+
+      - name: Download 1d model dataset
+        working-directory: ./exps
+        run: | 
+          wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
+
+      - name: Run 1D toy case and check repro across restarts
+        working-directory: ./exps/OM4.single_column.COBALT
+        run: |
+          mkdir -p ../../builds/build/docker-linux-gnu/ocean_ice/debug
+          mv ../../temp-artifact/MOM6SIS2 ../../builds/build/docker-linux-gnu/ocean_ice/debug/
+          chmod +x ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
+          ls -l -h ../../builds/build/docker-linux-gnu/ocean_ice/debug
+          ./driver.sh 
+
+      - name: Run mppnccombine to combine sub-region diag outputs 
+        working-directory: ./exps/OM4.single_column.COBALT
+        run: |
+          /opt/bin/mppnccombine -64 -h 16384 -m -k 100 20040102.ocean_daily_subset.nc 20040102.ocean_daily_subset.nc.00*
+
+      - name: Check ref
+        id: check_ref
+        working-directory: ./exps/OM4.single_column.COBALT
+        run: | 
+          echo "new 48hrs ocean.stats: "
+          cat ./RESTART_48hrs/ocean.stats
+          echo "baseline 48 hrs ocean.stats: "
+          cat ./ref/ocean.stats
+          diff -q ref/ocean.stats ./RESTART_48hrs/ocean.stats > /dev/null || { echo "Error: ocean.stats are different."; echo "Plz update exps/OM4.single_column.COBALT/ref/ocean.stats with the following: "; cat ./RESTART_48hrs/ocean.stats; exit 1; }
+
+      - name: Commit and push parameter doc updates
+        if: steps.check_ref.outcome == 'success' && github.event_name == 'pull_request'
+        working-directory: ./exps/OM4.single_column.COBALT
+        run: |
+          # Add repo to Git safe directory list to avoid "dubious ownership" error
+          git config --global --add safe.directory /__w/CEFI-regional-MOM6/CEFI-regional-MOM6
+
+          # Configure GitHub Actions bot credentials
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Ensure you are on the PR branch
+          git fetch origin
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }}
+
+          # Add and commit parameter doc changes
+          git add MOM_parameter_doc.* SIS_parameter_doc.* COBALT_parameter_doc.*
+
+          if git diff --cached --quiet; then
+            echo "No parameter doc changes detected."
+          else          
+            # Commit and push
+            git commit -m "Update parameter documentation files for 1D case"
+            git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}" HEAD:${{ github.event.pull_request.head.ref }}
+          fi
