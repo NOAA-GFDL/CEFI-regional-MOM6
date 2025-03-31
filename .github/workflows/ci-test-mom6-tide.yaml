@@ -73,4 +73,4 @@ jobs:
             # Commit and push
             git commit -m "Update parameter documentation files for NWA12 tide case"
             git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}" HEAD:${{ github.event.pull_request.head.ref }}
-        fi
+          fi
