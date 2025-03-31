@@ -31,7 +31,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mom6sis2_debug
-          path: ./builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2 
+          path: ./temp-artifact 
 
       - name: Download 1d model dataset
         working-directory: ./exps
@@ -40,7 +40,10 @@ jobs:
 
       - name: Run 1D toy case and check repro across restarts
         working-directory: ./exps/OM4.single_column.COBALT
-        run: | 
+        run: |
+          mkdir -p ../../builds/build/docker-linux-gnu/ocean_ice/debug
+          ls ../../temp-artifact
+          mv ../../temp-artifact/MOM6SIS2 ../../builds/build/docker-linux-gnu/ocean_ice/debug/
           ./driver.sh 
 
       - name: Run mppnccombine to combine sub-region diag outputs 
