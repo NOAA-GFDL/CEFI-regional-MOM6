@@ -8,11 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-reusable-workflow:
-    uses: ./.github/workflows/reusable.yaml
-    with:
-      message: "Hello from main workflow!"
-
   # Build mom6sis2 (debug mode)
   build_mom6sis2_debug:
     runs-on: ubuntu-latest
@@ -41,3 +36,8 @@ jobs:
         with:
           name: mom6sis2_debug
           path: ./builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
+
+  # Trigger 1D test workflow AFTER build_mom6sis2_debug completes successfully
+  run-1d-cobalt-workflow:
+    needs: build_mom6sis2_debug   # Ensure dependency
+    uses: ./.github/workflows/ci-test-mom6-cobalt.yaml
