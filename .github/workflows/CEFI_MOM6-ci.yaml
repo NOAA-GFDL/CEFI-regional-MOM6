@@ -1,4 +1,4 @@
-name: CEFI-MOM6-ci
+name: CEFI-MOM6-ci-c6
 
 on:
   # Triggers this workflow on pull request event with "CEFI_MOM6_RT_container" label
@@ -16,7 +16,7 @@ jobs:
   checkout-build:
     if: ${{ github.event.label.name == 'CEFI_MOM6_RT_container' }}
     runs-on: [self-hosted]
-    timeout-minutes: 600
+    timeout-minutes: 120
     strategy:
       max-parallel: 1    
 
@@ -59,58 +59,47 @@ jobs:
             exit 1
         fi 
 
-    - name: Compress CEFI_MOM6_CHECK
-      run: tar --exclude='.git' -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK 
-#      run: tar -czvf CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }} CEFI_MOM6_CHECK
-
-    - name: Upload the whole MOM6_CHECK as an artifact
+    - name: Upload MOM6SIS2 as an artifact
       uses: actions/upload-artifact@v4
       with:
-        name: CEFI_MOM6_CHECK
-        path: CEFI_MOM6_CHECK.tar.gz
+        name: MOM6SIS2 
+        path: ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2 
 
-  run-CEFI_MOM6-ci:
+  run-CEFI_MOM6-ci-c6:
     needs: checkout-build
     runs-on: [self-hosted]
     strategy:
-      max-parallel: 2
+      max-parallel: 2 
       matrix:
         case: ["NWA12.COBALT", "NEP10.COBALT"]
     steps:
-      - name: Download CEFI_MOM6_CHECK compressed artifact
+      - name: Checkout CEFI-regional-MOM6
+        uses: actions/checkout@v4
+        with:
+          path: ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          submodules: recursive
+
+      - name: Download MOM6SIS2 executable
         uses: actions/download-artifact@v4
         with:
-          name: CEFI_MOM6_CHECK
-          path: ${{ env.TEST_DIR }}
-          
-      - name: Extract the artifact
-        run: tar -xzvf ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK.tar.gz -C ${{ env.TEST_DIR }}
-        
+          name: MOM6SIS2 
+          path: ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro          
+
+      - name: Make MOM6SIS2 executable
+        run: |
+          ls -l -h ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
+          chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
+          ls -l -h ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
+
       - name: Run Experiment ${{ matrix.case }}
         run: |
           #chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
           # Clone into a temporary directory
-          TEMP_GIT_DIR="${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/TEMP_GIT"
-          git clone --branch ${{ github.event.pull_request.head.ref }} \
-          https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}.git \
-          $TEMP_GIT_DIR
-          # Copy the .git folder to restore Git metadata
-          rsync -av $TEMP_GIT_DIR/.git/ ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/.git/
-                    
-          # Clean up the temporary directory
-          rm -rf $TEMP_GIT_DIR 
-
           #
           cd ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/exps/${{ matrix.case }}
-
-          #
-          git config --global --add safe.directory ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
-
-          # Configure GitHub Actions bot credentials
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}.git
-          git config --global user.name "${{ secrets.GHA_USERNAME }}"
-          git config --global user.email "${{ secrets.GHA_EMAIL }}"
-
           jobid=$(sbatch --parsable driver.sh | awk -F';' '{print $1}' | cut -f1) 
           #
           sleep 1
@@ -139,7 +128,14 @@ jobs:
              echo "Can not find $check_file. STOP"
              exit 10
           fi
-          
+
+          #
+          git config --global --add safe.directory ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK
+
+          # Configure GitHub Actions bot credentials
+          git config --global user.name "${{ secrets.GHA_USERNAME }}"
+          git config --global user.email "${{ secrets.GHA_EMAIL }}"
+
           # Ensure you are on the PR branch
           git fetch origin
           git checkout ${{ github.event.pull_request.head.ref }}
@@ -160,17 +156,17 @@ jobs:
           echo "Cleaning up ${{ env.TEST_DIR }}"
           rm -rf ${{ env.TEST_DIR }}
           # Check if the tar.gz file exists and delete it if found
-          if [ -f "${{ github.workspace }}/CEFI_MOM6_CHECK.tar.gz" ]; then
-              echo "Found CEFI_MOM6_CHECK.tar.gz, deleting it."
-              rm "${{ github.workspace }}/CEFI_MOM6_CHECK.tar.gz"
-          else
-              echo "CEFI_MOM6_CHECK.tar.gz not found, skipping deletion."
-          fi
+#          if [ -f "${{ github.workspace }}/CEFI_MOM6_CHECK.tar.gz" ]; then
+#              echo "Found CEFI_MOM6_CHECK.tar.gz, deleting it."
+#              rm "${{ github.workspace }}/CEFI_MOM6_CHECK.tar.gz"
+#          else
+#              echo "CEFI_MOM6_CHECK.tar.gz not found, skipping deletion."
+#          fi
 
   add-pass-label:
-    needs: run-CEFI_MOM6-ci
+    needs: run-CEFI_MOM6-ci-c6
     runs-on: [self-hosted]
-    if: ${{ needs.run-CEFI_MOM6-ci.result == 'success' }}
+    if: ${{ needs.run-CEFI_MOM6-ci-c6.result == 'success' }}
     steps:
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |
