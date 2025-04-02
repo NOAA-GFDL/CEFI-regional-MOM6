@@ -1,16 +1,17 @@
-name: Deploy artifact
+name: Deploy Artifact
 
 on:
   push:
-    branches: [ deploy ]
+    branches: [deploy]
   workflow_dispatch:
 
 jobs:
-  convert:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -18,21 +19,5 @@ jobs:
       # Pull a container with Apptainer pre-installed
       - name: Convert Singularity to Docker using Apptainer container
         run: |   
-          # Create a script to run inside the container
-          cat > convert.sh << 'EOF'
-          #!/bin/bash
-          cd /workspace
-          # Download your Singularity image (replace URL with your actual source)
-          wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/container/cefi_mom6_intel_2024.2.1.sif
-    
-          # Convert to Docker and load into Docker daemon
-          singularity build --docker-daemon clouden90/CEFI-regional-MOM6_intel:latest cefi_mom6_intel_2024.2.1.sif
-          EOF
-    
-          chmod +x convert.sh 
           ls -l -h 
           pwd
-   
-          # Run conversion in a container with Apptainer pre-installed
-          docker run --privileged -v $(pwd):/workspace -v /var/run/docker.sock:/var/run/docker.sock quay.io/singularity/singularity:v3.10.0 /bin/bash -c "/workspace/convert.sh"
-          docker images
