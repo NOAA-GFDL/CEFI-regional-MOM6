@@ -34,7 +34,7 @@ jobs:
         with:
           context: .
           file: ./ci/docker/Dockerfile_intel  # Point to your Dockerfile
-          tags: clouden90/CEFI-regional-MOM6_intel:latest
+          tags: clouden90/cefi-regional-mom6_intel:latest
 
       - name: List Docker Images
         run: docker images
