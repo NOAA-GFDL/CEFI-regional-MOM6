@@ -34,6 +34,6 @@ jobs:
           pwd
    
           # Run conversion in a container with Apptainer pre-installed
-          docker run --privileged -v $(pwd):/workspace -v /var/run/docker.sock:/var/run/docker.sock -it quay.io/singularity/singularity:v3.10.0 bash -c "/workspace/convert.sh"
+          docker run --privileged -v $(pwd):/workspace -v /var/run/docker.sock:/var/run/docker.sock quay.io/singularity/singularity:v3.10.0 bash -c "/workspace/convert.sh"
           #
           docker images
