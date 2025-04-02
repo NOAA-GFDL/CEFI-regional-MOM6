@@ -17,14 +17,23 @@ jobs:
       
       # Pull a container with Apptainer pre-installed
       - name: Convert Singularity to Docker using Apptainer container
-        run: |          
+        run: |   
+          # Create a script to run inside the container
+          cat > convert.sh << 'EOF'
+          #!/bin/bash
+          cd /workspace
+          # Download your Singularity image (replace URL with your actual source)
+          wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/container/cefi_mom6_intel_2024.2.1.sif
+    
+          # Convert to Docker and load into Docker daemon
+          singularity build --docker-daemon clouden90/CEFI-regional-MOM6_intel:latest cefi_mom6_intel_2024.2.1.sif
+          EOF
+    
+          chmod +x convert.sh    
+   
           # Run conversion in a container with Apptainer pre-installed
           docker run --privileged -v $(pwd):/workspace -v /var/run/docker.sock:/var/run/docker.sock \
-            quay.io/singularity/singularity:v3.10.0 bash -c "
-              cd /workspace
-              # Download your Singularity image (replace URL with your actual source)
-              wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/container/cefi_mom6_intel_2024.2.1.sif
-              
-              # Convert to Docker and load into Docker daemon
-              singularity build --docker-daemon clouden90/CEFI-regional-MOM6_intel:latest cefi_mom6_intel_2024.2.1.sif
-            "
+            quay.io/singularity/singularity:v3.10.0 \
+            exec /bin/bash /workspace/convert.sh
+          #
+          docker images
