@@ -29,11 +29,11 @@ jobs:
           singularity build --docker-daemon clouden90/CEFI-regional-MOM6_intel:latest cefi_mom6_intel_2024.2.1.sif
           EOF
     
-          chmod +x convert.sh    
+          chmod +x convert.sh 
+          ls -l -h 
+          pwd
    
           # Run conversion in a container with Apptainer pre-installed
-          docker run --privileged -v $(pwd):/workspace -v /var/run/docker.sock:/var/run/docker.sock \
-            quay.io/singularity/singularity:v3.10.0 \
-            exec /bin/bash /workspace/convert.sh
+          docker run --privileged -v $(pwd):/workspace -v /var/run/docker.sock:/var/run/docker.sock -it quay.io/singularity/singularity:v3.10.0 bash -c "/workspace/convert.sh"
           #
           docker images
