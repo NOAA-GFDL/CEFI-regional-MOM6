@@ -51,18 +51,12 @@ jobs:
           sudo make -C builddir install
           apptainer --version
 
-      # Perform the conversion
-      - name: Convert Singularity to Docker
-        run: |
-          wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/container/cefi_mom6_intel_2024.2.1.sif
-          apptainer push cefi_mom6_intel_2024.2.1.sif docker://clouden90/cefi-mom6_base:latest
+      - name: Build Docker Image (No Push)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./ci/docker/Dockerfile_intel  # Point to your Dockerfile
+          tags: clouden90/cefi-regional-mom6_intel:latest
 
-#      - name: Build Docker Image (No Push)
-#        uses: docker/build-push-action@v5
-#        with:
-#          context: .
-#          file: ./ci/docker/Dockerfile_intel  # Point to your Dockerfile
-#          tags: clouden90/cefi-regional-mom6_intel:latest
-
-#      - name: List Docker Images
-#        run: docker images
+      - name: List Docker Images
+        run: docker images
