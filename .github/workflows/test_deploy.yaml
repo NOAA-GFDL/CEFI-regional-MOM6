@@ -29,12 +29,27 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Run Singularity in a Container
+      # Install Apptainer (formerly Singularity)
+      - name: Install Apptainer dependencies
         run: |
-          docker run --privileged -v $(pwd):/workspace \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            quay.io/singularity/singularity:v3.10.0 \
-            bash -c "singularity --version"
+          sudo apt-get update
+          sudo apt-get install -y wget curl libibverbs-dev autoconf libtool automake build-essential libseccomp-dev pkg-config squashfs-tools cryptsetup
+
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.7'
+
+      - name: Install Apptainer
+        run: |
+          export VERSION=1.4.0
+          wget https://github.com/apptainer/apptainer/releases/download/v${VERSION}/apptainer-${VERSION}.tar.gz
+          tar -xzf apptainer-${VERSION}.tar.gz
+          cd apptainer-${VERSION}
+          ./mconfig
+          make -C builddir
+          sudo make -C builddir install
+          apptainer --version
 
 #      - name: Build Docker Image (No Push)
 #        uses: docker/build-push-action@v5
