@@ -29,12 +29,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Run Singularity in a Container
+      - name: Install Singularity
         run: |
-          docker run --privileged -v $(pwd):/workspace \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            quay.io/singularity/singularity:v3.10.0 \
-            singularity --version
+          sudo apt-get update
+          sudo apt-get install -y apptainer
+          singularity --version
 
 #      - name: Build Docker Image (No Push)
 #        uses: docker/build-push-action@v5
