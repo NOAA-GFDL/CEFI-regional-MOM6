@@ -1,0 +1,39 @@
+name: Deploy artifact
+
+on:
+  push:
+    branches: [ deploy ]
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+
+      # Docker is pre-installed on GitHub Actions ubuntu-latest runners
+      - name: Verify Docker installation
+        run: docker --version
+
+      # Install Apptainer (formerly Singularity)
+      - name: Install Apptainer dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget build-essential libseccomp-dev pkg-config squashfs-tools cryptsetup
+
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Install Apptainer
+        run: |
+          export VERSION=1.4.0
+          wget https://github.com/apptainer/apptainer/releases/download/v${VERSION}/apptainer-${VERSION}.tar.gz
+          tar -xzf apptainer-${VERSION}.tar.gz
+          cd apptainer-${VERSION}
+          ./mconfig
+          make -C builddir
+          sudo make -C builddir install
+          apptainer --version
