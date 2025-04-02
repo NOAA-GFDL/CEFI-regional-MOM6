@@ -34,7 +34,7 @@ jobs:
           docker run --privileged -v $(pwd):/workspace \
             -v /var/run/docker.sock:/var/run/docker.sock \
             quay.io/singularity/singularity:v3.10.0 \
-            singularity --version
+            bash -c "singularity --version"
 
 #      - name: Build Docker Image (No Push)
 #        uses: docker/build-push-action@v5
