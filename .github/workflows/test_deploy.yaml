@@ -15,8 +15,8 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v2
       
       - name: Check workplace
         run: |   
@@ -29,11 +29,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Install Singularity
+      - name: Run Singularity in a Container
         run: |
-          sudo apt-get update
-          sudo apt-get install -y apptainer
-          singularity --version
+          docker run --privileged -v $(pwd):/workspace \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            quay.io/singularity/singularity:v3.10.0 \
+            singularity --version
 
 #      - name: Build Docker Image (No Push)
 #        uses: docker/build-push-action@v5
@@ -42,5 +43,5 @@ jobs:
 #          file: ./ci/docker/Dockerfile_intel  # Point to your Dockerfile
 #          tags: clouden90/cefi-regional-mom6_intel:latest
 
-      - name: List Docker Images
-        run: docker images
+#      - name: List Docker Images
+#        run: docker images
