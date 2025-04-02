@@ -28,3 +28,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Image (No Push)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./ci/docker/Dockerfile_intel  # Point to your Dockerfile
+          tags: clouden90/CEFI-regional-MOM6_intel:latest
+
+      - name: List Docker Images
+        run: docker images
