@@ -2,6 +2,9 @@
 FROM intel/hpckit:2024.2.1-0-devel-ubuntu22.04 as builder
 ############ Set up build environment ############
 ## Clone spack
+RUN apt-get update -y && \
+    apt-get install -y curl libibverbs-dev && \ 
+    apt-get install -y autoconf libtool automake
 RUN mkdir -p /opt && cd /opt && git clone -b v0.22.2 https://github.com/spack/spack.git
 # What we want to install and how we want to install it
 # is specified in a manifest file (spack.yaml)
