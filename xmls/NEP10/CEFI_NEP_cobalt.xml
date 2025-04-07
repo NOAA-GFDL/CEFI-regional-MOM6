@@ -4,31 +4,18 @@
 Quick start guide
 
 On GFDL Analysis:
-module load fre/bronx-22
+module load fre/bronx-21
 
 On Gaea:
 module use /ncrc/home2/fms/local/modulefiles
-module load fre/bronx-22
+module load fre/bronx-21
 
 C5:
 fremake -x CEFI_NEP_cobalt.xml -p ncrc5.intel23 -t repro MOM6_SIS2_GENERIC_4P_compile_symm
-frerun  -x CEFI_NEP_cobalt.xml -p ncrc5.intel23 -t repro CEFI_NEP_COBALT_V1
+frerun  -x CEFI_NEP_cobalt.xml -p ncrc5.intel23 -t repro NEP_COBALTv2
 
 Regression test
-frerun -x CEFI_NEP_cobalt.xml -p ncrc5.intel23 -q debug -r test -t repro CEFI_NEP_COBALT_V1
-
-C6:
-fremake -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -t repro MOM6_SIS2_GENERIC_4P_compile_symm
-frerun  -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -t repro CEFI_NEP_COBALT_V1
-
-pp (on PPAN):
-frepp -t 2019 -c ocean_cobalt_tracers_month_z -d /archive/e1n/fre/cefi/NEP/2024_08/NEP10k_082024_clean_spinup/gfdl.ncrc5-intel22-repro/history/ -x CEFI_NEP_cobalt.xml -p gfdl.ncrc6-intel23 -T repro CEFI_NEP_COBALT_V1
-
-Regression test
-frerun -x CEFI_NEP_cobalt.xml -p ncrc6.intel23 -q debug -r test -t repro CEFI_NEP_COBALT_V1
-
-To check if the restart files are identical from regression test:
-frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NEP_COBALT_V1
+frerun -x CEFI_NEP_cobalt.xml -p ncrc5.intel23 -q debug -r test -t repro NEP_COBALTv2
 
 -->
 
@@ -48,21 +35,21 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="NULL_TAG" value="2023.04"/>
 
   <!-- git tag for ocean_shared source code -->
-  <property name="OCEAN_BGC_GIT_TAG" value="dev/cefi"/>
+  <property name="OCEAN_BGC_GIT_TAG" value="main"/>
 
   <!-- Updated MOM6 source code commit to checkout -->
-  <property name="MOM6_GIT_TAG" value="main"/>
+  <property name="MOM6_GIT_TAG" value="COBALTv2"/>
 
   <!-- Updated Icepack commit to check out -->
   <property name="ICEPACK_GIT_TAG" value="Icepack1.3.3"/>
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NEP/2025_02"/>
+  <property name="FRE_STEM" value="fre/NEP/COBALTv2"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <!-- NCRC_GROUP will only have impact for your root dir and work dir on gaea c5/c6-->
   <!-- You have to either use -A or go to xml_include/xml_building_blocks/platforms.xml to change project for your project allocation-->
-  <property name="NCRC_GROUP" value="ira-cefi"/>
+  <property name="NCRC_GROUP" value="cefi"/>
   <property name="NCRC_GROUP_C5" value="cefi"/>
   <property name="GFDL_GROUP" value="cefi"/>
 
@@ -77,7 +64,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="PP_START_YEAR" value="1993"/>
 
   <!-- fre version to be used -->
-  <property name="FRE_VERSION" value="bronx-22"/>
+  <property name="FRE_VERSION" value="bronx-21"/>
 
   <!-- on/off switch for MDBI database -->
   <property name="MDBIswitch" value="off"/>
@@ -137,7 +124,10 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
               <codeBase version="$(MOM6_GIT_TAG)">CEFI-regional-MOM6.git </codeBase>
         <csh><![CDATA[
-          mv CEFI-regional-MOM6 mom6
+	  mv CEFI-regional-MOM6 mom6
+	  pushd mom6
+            cp src/MOM6/config_src/external/GFDL_ocean_BGC/MOM_generic_tracer.F90 src/ocean_BGC/generic_tracers/ 
+          popd		
         ]]></csh>
       </source>
       <compile>
@@ -191,7 +181,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
     </component>
   </experiment>
 
-  <experiment name="CEFI_NEP_COBALT_V1" inherit="MOM6_SIS2_GENERIC_4P_compile_symm">
+  <experiment name="NEP_COBALTv2" inherit="MOM6_SIS2_GENERIC_4P_compile_symm">
     <description>
       Base MOM6-NEP BGC hindcast.
       Based on NEP_cefi_bgc_burial config
@@ -232,7 +222,6 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
         do_generic_SF6=.false.
         force_update_fluxes=.true.
         as_param='W14'
-        do_vertfill_post=.true.
       </namelist>
       <namelist name="time_interp_external_nml">
         max_fields = 400
@@ -846,7 +835,7 @@ endif
         <!-- Initial conditions -->
         <dataSource site="ncrc">$(NEP_WORLD)/inits/glorys/nep_10km_init_1993-01-01_glorys.nc</dataSource>
 	<dataSource site="ncrc">$(NEP_WORLD)/inits/bgc/bgc_ics_75z.nc</dataSource>
-	<dataSource site="ncrc">$(NEP_WORLD)/spinup/NEP_COBALT_spinup_2003.nc</dataSource>
+	<dataSource site="ncrc">$(NEP_WORLD2)/spinup/NEP_COBALT_spinup_2003.nc</dataSource>
         <!-- Boundary conditions for BGC -->
         <dataSource site="ncrc">$(NEP_WORLD)/obcs/bgc/bgc_esper.nc</dataSource>
         <dataSource site="ncrc">$(NEP_WORLD)/obcs/bgc/bgc_woa.nc</dataSource>
