@@ -34,15 +34,15 @@
 	path = src/FMS
 	url = https://github.com/NOAA-GFDL/FMS.git
 	branch = 2025.01.02
-[submodule "src/MOM6"]
-	path = src/MOM6
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
-	branch = dev/cefi
-[submodule "src/ocean_BGC"]
-	path = src/ocean_BGC
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
-	branch = dev/cefi
 [submodule "src/mkmf"]
 	path = src/mkmf
 	url = https://github.com/NOAA-GFDL/mkmf.git
 	branch = 2025.01
+[submodule "src/MOM6"]
+	path = src/MOM6
+	url = https://github.com/NOAA-GFDL/MOM6.git
+	branch = dev/gfdl
+[submodule "src/ocean_BGC"]
+	path = src/ocean_BGC
+	url = https://github.com/NOAA-GFDL/ocean_BGC.git
+	branch = main
