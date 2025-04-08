@@ -2,22 +2,36 @@
 #SBATCH --partition=batch
 #SBATCH --time={{ _WALLTIME }}
 #SBATCH --ntasks={{ _NPROC }}
-#SBATCH --mail-type={{ _EMAIL_NOTIFACTION }}
+#SBATCH --mail-type={{ _EMAIL_NOTIFICATION }}
 #SBATCH --mail-user={{ _USER_EMAIL }}
 #SBATCH --output={{ _LOG_PATH }}
 #SBATCH --error={{ _LOG_PATH }}
 
 # Usage: sbatch subset_glorys.sh <YEAR> <MONTH> <DAY>
+# Updated usage if you choose to run the script with longitude conversion: sbatch subset_glorys.sh <YEAR> <MONTH> <DAY> [--convert_lon]
 
 # Load required modules
 module load cdo
-module load nco/5.0.1
+module load nco
 module load gcp
 
 # Input arguments
 year=$1
 month=$2
 day=$3
+
+# Initialize convert_lon to false
+convert_lon=false
+
+# Check remaining arguments for --convert_lon
+shift 3  # Shift past the first 3 arguments (year, month, day)
+
+for arg in "$@"; do
+    if [[ "$arg" == "--convert_lon" ]]; then
+        convert_lon=true
+        break
+    fi
+done
 
 # Configuration variables
 UDA_GLORYS_DIR={{ _UDA_GLORYS_DIR }}
@@ -76,9 +90,30 @@ process_variable() {
         if [[ -f $filename ]]; then
             echo "Processing file: $filename"
             local subset_file="$var_dir/${var}_subset.nc"
+            local tmp_file="$var_dir/${var}_tmp.nc"
+            
+            # Check if convert_lon is true
+	    if [[ "$convert_lon" == "true" ]]; then
+    		echo "Running longitude conversion with cdo sellonlatbox..."
+    
+    		# Check if cdo is available
+    		if ! command -v cdo &> /dev/null; then
+        	    echo "Error: cdo command not found."
+        	    exit 1
+    		fi
 
+    		# Run the cdo longitude conversion
+    		if ! cdo sellonlatbox,0,360,-90,90 "$filename" "$tmp_file"; then
+        	    echo "Error: cdo sellonlatbox failed for $filename"
+        	    exit 1
+    		fi
+	    else
+    		# If no conversion needed, copy the file
+    		cp "$filename" "$tmp_file"
+	    fi
+            
             # Subset and adjust the file
-            if ! ncks -d longitude,${LON_MIN},${LON_MAX} -d latitude,${LAT_MIN},${LAT_MAX} --mk_rec_dmn time "$filename" "$subset_file"; then
+            if ! ncks -d longitude,${LON_MIN},${LON_MAX} -d latitude,${LAT_MIN},${LAT_MAX} --mk_rec_dmn time "$tmp_file" "$subset_file"; then
                 echo "Error: ncks failed for $filename"
                 exit 1
             fi
