@@ -2,7 +2,7 @@
 #SBATCH --partition=batch
 #SBATCH --time={{ _WALLTIME }}
 #SBATCH --ntasks={{ _NPROC }}
-#SBATCH --mail-type={{ _EMAIL_NOTIFACTION }}
+#SBATCH --mail-type={{ _EMAIL_NOTIFICATION }}
 #SBATCH --mail-user={{ _USER_EMAIL }}
 #SBATCH --output={{ _LOG_PATH }}
 #SBATCH --error={{ _LOG_PATH }}
@@ -11,7 +11,7 @@
 
 # Load required modules
 module load cdo
-module load nco/5.0.1
+module load nco
 module load gcp
 
 # Input arguments
@@ -76,9 +76,11 @@ process_variable() {
         if [[ -f $filename ]]; then
             echo "Processing file: $filename"
             local subset_file="$var_dir/${var}_subset.nc"
-
+            local tmp_file="$var_dir/${var}_tmp.nc"
+            cdo sellonlatbox,0,360,-90,90 $filename $tmp_file
+            
             # Subset and adjust the file
-            if ! ncks -d longitude,${LON_MIN},${LON_MAX} -d latitude,${LAT_MIN},${LAT_MAX} --mk_rec_dmn time "$filename" "$subset_file"; then
+            if ! ncks -d longitude,${LON_MIN},${LON_MAX} -d latitude,${LAT_MIN},${LAT_MAX} --mk_rec_dmn time "$tmp_file" "$subset_file"; then
                 echo "Error: ncks failed for $filename"
                 exit 1
             fi
