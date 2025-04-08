@@ -90,7 +90,7 @@ log_message "Generating config.yaml..."
 cat <<EOF > config.yaml
 _WALLTIME: "1440"
 _NPROC: "1"
-_EMAIL_NOTIFACTION: "fail"
+_EMAIL_NOTIFICATION: "fail"
 _USER_EMAIL: "$USER@noaa.gov"
 _LOG_PATH: "./log/$CURRENT_DATE/%x.o%j"
 _UDA_GLORYS_DIR: "/uda/Global_Ocean_Physics_Reanalysis/global/daily"
@@ -157,7 +157,7 @@ if ! $DO_NCRCAT; then
     	    subset_args="$subset_args --convert_lon"
 	fi
         subset_job_id=$(sbatch --job-name="glorys_subset_${year}_${month}_${day}" \
-                              scripts/subset_glorys.sh $year $month $day | awk '{print $4}')
+                              scripts/subset_glorys.sh $subset_arags | awk '{print $4}')
 
         log_message "Submitting fill_nan job for $current_date..."
         fill_job_id=$(sbatch --dependency=afterok:$subset_job_id \

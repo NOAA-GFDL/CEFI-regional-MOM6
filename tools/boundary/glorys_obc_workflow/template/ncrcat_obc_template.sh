@@ -2,7 +2,7 @@
 #SBATCH --partition=batch
 #SBATCH --time={{ _WALLTIME  }}
 #SBATCH --ntasks={{ _NPROC }}
-#SBATCH --mail-type={{ _EMAIL_NOTIFACTION }}
+#SBATCH --mail-type={{ _EMAIL_NOTIFICATION }}
 #SBATCH --mail-user={{ _USER_EMAIL }}
 #SBATCH --output={{ _LOG_PATH }}
 #SBATCH --error={{ _LOG_PATH }}
