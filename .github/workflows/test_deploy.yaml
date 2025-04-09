@@ -15,48 +15,40 @@ jobs:
         with:
           submodules: recursive
 
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v2
-      
-      - name: Check workplace
-        run: |   
-          ls -l -h 
-          pwd
-
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Install Apptainer (formerly Singularity)
-      - name: Install Apptainer dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget curl libibverbs-dev autoconf libtool automake build-essential libseccomp-dev pkg-config squashfs-tools cryptsetup
+#      - name: Install Apptainer dependencies
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y wget curl libibverbs-dev autoconf libtool automake build-essential libseccomp-dev pkg-config squashfs-tools cryptsetup
 
-      - name: Install Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.22.7'
+#      - name: Install Go
+#        uses: actions/setup-go@v4
+#        with:
+#          go-version: '1.22.7'
 
-      - name: Install Apptainer
-        run: |
-          export VERSION=1.4.0
-          wget https://github.com/apptainer/apptainer/releases/download/v${VERSION}/apptainer-${VERSION}.tar.gz
-          tar -xzf apptainer-${VERSION}.tar.gz
-          cd apptainer-${VERSION}
-          ./mconfig
-          make -C builddir
-          sudo make -C builddir install
-          apptainer --version
+#      - name: Install Apptainer
+#        run: |
+#          export VERSION=1.4.0
+#          wget https://github.com/apptainer/apptainer/releases/download/v${VERSION}/apptainer-${VERSION}.tar.gz
+#          tar -xzf apptainer-${VERSION}.tar.gz
+#          cd apptainer-${VERSION}
+#          ./mconfig
+#          make -C builddir
+#          sudo make -C builddir install
+#          apptainer --version
 
-      - name: Build Docker Image (No Push)
+      - name: Build and Push Docker Image to Docker Hub
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./ci/docker/Dockerfile_intel  # Point to your Dockerfile
           tags: clouden90/cefi-regional-mom6_intel:latest
+          push: true  # This pushes the image to Docker Hub
 
       - name: List Docker Images
         run: docker images
