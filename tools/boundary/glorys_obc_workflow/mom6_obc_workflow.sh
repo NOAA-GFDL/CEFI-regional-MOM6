@@ -9,10 +9,11 @@ set -eu
 
 # Helper functions
 print_usage() {
-    echo "Usage: $0 START_DATE END_DATE [--ncrcat] [--adjust-timestamps]"
+    echo "Usage: $0 START_DATE END_DATE [--ncrcat] [--adjust-timestamps] [--convert-lon]"
     echo "  START_DATE and END_DATE must be in YYYY-MM-DD format."
     echo "  --ncrcat: Enable ncrcat step (skips subset, fill, and submit_python steps)."
     echo "  --adjust-timestamps: Adjust timestamps during ncrcat step."
+    echo "  --convert-lon: Enable longitude conversion in the subsetting step."
 }
 
 validate_date_format() {
@@ -29,6 +30,7 @@ log_message() {
 # Default options
 DO_NCRCAT=false
 ADJUST_TIMESTAMPS=false
+CONVERT_LON=false
 PYTHON_SCRIPT="../write_glorys_boundary_daily.py"
 
 # Parse arguments
@@ -44,6 +46,9 @@ while [[ $# -gt 0 ]]; do
         --adjust-timestamps)
             ADJUST_TIMESTAMPS=true
             ;;
+	--convert-lon)
+	    CONVERT_LON=true
+	    ;;
         *)
             echo "Unknown argument: $1"
             print_usage
@@ -85,7 +90,7 @@ log_message "Generating config.yaml..."
 cat <<EOF > config.yaml
 _WALLTIME: "1440"
 _NPROC: "1"
-_EMAIL_NOTIFACTION: "fail"
+_EMAIL_NOTIFICATION: "fail"
 _USER_EMAIL: "$USER@noaa.gov"
 _LOG_PATH: "./log/$CURRENT_DATE/%x.o%j"
 _UDA_GLORYS_DIR: "/uda/Global_Ocean_Physics_Reanalysis/global/daily"
@@ -147,8 +152,12 @@ if ! $DO_NCRCAT; then
         day=$(date -d "$current_date" +%d)
 
         log_message "Submitting subset job for $current_date..."
+	subset_args="$year $month $day"
+	if $CONVERT_LON; then
+    	    subset_args="$subset_args --convert_lon"
+	fi
         subset_job_id=$(sbatch --job-name="glorys_subset_${year}_${month}_${day}" \
-                              scripts/subset_glorys.sh $year $month $day | awk '{print $4}')
+                              scripts/subset_glorys.sh $subset_arags | awk '{print $4}')
 
         log_message "Submitting fill_nan job for $current_date..."
         fill_job_id=$(sbatch --dependency=afterok:$subset_job_id \
