@@ -31,8 +31,8 @@ Users can follow the following instructions to generate river runoff file
 
 4. Acquire the [Coastal freshwater discharge simulations for the Gulf of Alaska, 1931-2021 Dataset](https://doi.org/10.24431/rw1k7d3) that is documented in [Beamer et al., (2016)](https://doi.org/10.1002/2015WR018457). Note: Professor David Hill at Oregon State University is the point of contact for this dataset, thus we often refer to it as the "Hill et al" or "Hill" dataset in the naming conventions
 
-5. If simulating NEP for for 2021 and beyond, generate a climatology of the Gulf of Alaska Freshwater discharge fields using the Jupyter notebook, Make_Hill_climatology.ipynb
-6. Acquire a land/sea mask for the domain that is consistent with the "minimum depth" you will be using for your configuration (specified in MOM_input: MINIMUM_DEPTH = 5.0). We have included the static NEP10k file (NEP_ocean_static_nomask.nc) in this directory. 
+5. If simulating NEP for 2021 and beyond, generate a climatology of the Gulf of Alaska Freshwater discharge fields using the Jupyter notebook, Make_Hill_climatology.ipynb
+6. Acquire a land/sea mask for the domain that is consistent with the "minimum depth" you will be using for your configuration (specified in MOM_input: MINIMUM_DEPTH = 5.0). One can find the static NEP10k file (NEP_ocean_static_nomask.nc) on PPAN: /work/Liz.Drenkard/mom6/NEP_ocean_static_nomask.nc. 
 
 
 **Generating Runoff Files for NEP10k:** 
