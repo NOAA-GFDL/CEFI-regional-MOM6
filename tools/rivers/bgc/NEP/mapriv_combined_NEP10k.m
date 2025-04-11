@@ -1,3 +1,5 @@
+
+
 % Routine to map USGS nutrient data onto the MOM6 Northwest Atlantic (NWA) 
 % grid. Run on matlab97 or above.
 
@@ -12,7 +14,7 @@ nc_file_name = 'RiverNutrients_Combined_Q100_NEP10k.nc';
 NEWS_file = 'RiverNutrients_GlobalNEWS2_plusFe_Q100_NEP10k.nc';
 
 % load in monthly world ocean T, S climatology for saturated oxygen calculation
-temp = ncread('Data/woa_nep10k_sst_climo.nc','t_an');
+temp = ncread('Data/woa_sst_climo.nc','t_an');
 woa_temp = permute(temp,[3 2 1]);
 
 % Parameters for the assignment algorithm.
@@ -229,7 +231,7 @@ o2_monthly_all = [o2_monthly_RC4US o2_monthly_glorich o2_monthly_arcticgro];
 % lon: longitude (0-360 degrees)                                          %
 % lat: latitude                                                           %                                                                        %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load glofas_hill_runoff_monthlyclim_NEP10k_05122023.mat;
+load glofas_hill_runoff_monthlyclim_NEP10k_04072025.mat;
 
 lon_mod = lon;
 lat_mod = lat;
@@ -310,6 +312,11 @@ end
 %     monthly concentrations are assigned to those points.                %
 %  4. A simple "nearest neighbor" algorithm is used to fill in the gaps   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% EJD update to change lat lons to exact location of glofas discharge
+%values in order of station_names_reg; will use same sort_ind
+nep_10k_lats = [37.81141,40.656673,41.541397,47.065792,47.59862,48.184967,48.426746,46.207684,43.728935,42.434696,31.623999,49.090786,54.082977,60.366726,61.253666,58.860115,60.125046,69.6234,63.05893,68.900185 ];
+nep_10k_lons = [237.33804,235.62192,235.85562,235.82425,235.59627,237.14017,237.27621,235.97885,235.79852,235.5486,245.2338,236.81491,229.64133,215.03345,209.48105,201.2555,197.57983,161.5651,195.1712,223.72316 ];
+nep_10k_gloQ = [742.2,191.3,434.0,413.6,83.0,368.2,417.7,6832.8,316.2,263.8,501.8,3687.9,1791.2,2467.7,1616.3,812.2,1756.4,4096.0,7013.4,10518.2];
 
 % Sort rivers by discharge
 [Q_ann_sort,sort_ind] = sort(Q_ann_reg,'ascend');
@@ -318,6 +325,27 @@ station_names_sort = station_names_reg(sort_ind);
 lon_stations_sort = lon_stations_reg(sort_ind);
 lat_stations_sort = lat_stations_reg(sort_ind);
 Q_ann_sort = Q_ann_reg(sort_ind);
+
+strong_rivers = {'Susitna','Copper','Yukon'};
+for nstation = 1:length(station_names_sort)
+    disp(station_names_sort(nstation))
+    %disp(sort_ind(nstation)))
+    disp(nep_10k_lats(sort_ind(nstation)))
+    disp(nep_10k_lons(sort_ind(nstation)))
+    disp(nep_10k_gloQ(sort_ind(nstation)))
+    lon_stations_sort((nstation)) = nep_10k_lons(sort_ind(nstation));
+    lat_stations_sort(nstation) = nep_10k_lats(sort_ind(nstation));
+    disp(lon_stations_sort(nstation))
+    disp(lat_stations_sort(nstation))
+    disp(Q_ann_sort(nstation))
+    if ismember(station_names_sort(nstation), strong_rivers)
+        Q_ann_sort(nstation) = nep_10k_gloQ(sort_ind(nstation));
+        disp('MEEP')
+    end
+    
+end
+
+%%
 dic_ann_sort = dic_ann_reg(sort_ind);
 alk_ann_sort = alk_ann_reg(sort_ind);
 no3_ann_sort = no3_ann_reg(sort_ind);
@@ -602,10 +630,10 @@ for k=1:num_rivers
       scatter3(lon_mod_runoff_vec,lat_mod_runoff_vec,log10(Q_mod_vec),3,log10(Q_mod_vec));
       hold on
       scatter3(lon_mod_runoff_vec(dist_sort_ind(1:nrp)),lat_mod_runoff_vec(dist_sort_ind(1:nrp)), ...
-        log10(Q_mod_vec(dist_sort_ind(1:nrp))),25, ...
+        log10(Q_mod_vec(dist_sort_ind(1:nrp))),40, ...
         log10(Q_mod_vec(dist_sort_ind(1:nrp))),'filled');
       view(2);
-      plot3(lon_stations_sort(k),lat_stations_sort(k),1e5,'k.','MarkerSize',20); 
+      plot3(lon_stations_sort(k),lat_stations_sort(k),1e5,'k.','MarkerSize',10); 
       %contour(lon_mod,lat_mod,depth,[0 0],'k-');
       axis([lon_stations_sort(k)-plot_width/2 lon_stations_sort(k)+plot_width/2 ...
           lat_stations_sort(k)-plot_width/2 lat_stations_sort(k)+plot_width/2]);
@@ -1312,6 +1340,9 @@ netcdf.putAtt(ncid,varid19,'long_name','FEDET_CONC');
 varid20 = netcdf.defVar(ncid,'O2_CONC','double',[dimid2,dimid1,dimid0]);
 netcdf.putAtt(ncid,varid20,'units','mol m-3');
 netcdf.putAtt(ncid,varid20,'long_name','O2_CONC');
+varid21 = netcdf.defVar(ncid,'SI_CONC','double',[dimid2,dimid1,dimid0]);
+netcdf.putAtt(ncid,varid21,'units','mol m-3');
+netcdf.putAtt(ncid,varid21,'long_name','SI_CONC');
 netcdf.close(ncid)
 
 ncid = netcdf.open(nc_file_name,'NC_WRITE');
@@ -1339,4 +1370,5 @@ netcdf.putVar(ncid,varid17,permute(PDET_CONC,[3,2,1]));
 netcdf.putVar(ncid,varid18,permute(FED_CONC,[3,2,1]));
 netcdf.putVar(ncid,varid19,permute(FEDET_CONC,[3,2,1]));
 netcdf.putVar(ncid,varid20,permute(O2_CONC,[3,2,1]));
+netcdf.putVar(ncid,varid21,permute(SI_CONC,[3,2,1]));
 netcdf.close(ncid)
