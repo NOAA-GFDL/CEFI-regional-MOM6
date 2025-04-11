@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH --job-name=runoff_nep10k
+#SBATCH --constraint=bigmem
+#SBATCH --partition=analysis
+#SBATCH --time=01:40:00
+#SBATCH --ntasks=1
+
+# Usage: sbatch submit_python_runoff_script <PYTHON_SCRIPT> <YEAR> <OUTPUT_DIR>
+# This script is used to submit river runoff remapping (GloFAS and Hill et al. to NEP10k) scripts on GFDL PPAN
+source $MODULESHOME/init/sh
+module load miniforge
+conda activate /net3/e1n/miniconda3/envs/mom6 
+
+cd $TMPDIR
+
+python_script=$1
+year=$2
+outdir=$3
+
+echo $year
+python $python_script $year $outdir
+
+

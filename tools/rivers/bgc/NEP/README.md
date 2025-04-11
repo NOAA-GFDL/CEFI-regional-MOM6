@@ -1,6 +1,50 @@
-## Example Scripts for NEP BGC runoff generation 
+## Example Scripts for NEP river runoff and BGC generation 
 
-This folder contains example scripts for NEP BGC runoff file generation. Users can follow the following instructions to generate BGC runoff file:
+This folder contains example scripts for NEP river runoff and river BGC file generation. 
+
+### River Runoff
+Users can follow the following instructions to generate river runoff file
+
+**Preliminary:** 
+
+1. Acquire [GloFAS v4.0 from the CEMS Early Warning Data Store](https://ewds.climate.copernicus.eu/datasets/cems-glofas-historical).
+   - If using the data portal, select:
+     - **Operational:** Version 4.0
+     - **Hydrological model:** LISFLOOD
+     - **Product type:** Consolidated
+     - **Variable:** River discharge in the last 24 hours
+     - **Year/Month/Day:** Select the time frames you are interested in simulating
+     - **Geographical area:** Decide if you want the full global domain or subset to the NEP region (for faster download)
+       
+    **Note:** These files may need to be converted from Grib files, depending on how they are downloaded/acquired. Once converted, we used the naming convention: GloFAS_river_discharge_${year}_v4.0.nc
+
+2. Acquire the [GloFAS v4.0 Local Drainage Direction (LDD) file](https://confluence.ecmwf.int/download/attachments/242067380/ldd_glofas_v4_0.nc?version=1&modificationDate=1669994937993&api=v2).
+
+3. Spatially Subset the GloFAS and ldd file to the NEP region such that they are geographically consistent. This can be accomplished with the following NCO code:
+   ```
+   ncks -O -d longitude,150.0,-100.0 -d latitude,10.0,82.0 GloFAS_river_discharge_${year}_v4.0.nc glofas_v4.0_nep_subset_${year}.nc
+   ncks -O -d lon,150.0,-100.0 -d lat,10.0,82.0 ldd_glofas_v4_0.nc ldd_v4_NEP_subset.nc
+   ```
+   **Note:** the lat/lon variables use different naming conventions between the GloFAS files and the ldd file.
+   
+   **Rationale for subsetting:** Working with a regional subset of the global GloFAS files helps the river remapping codes run faster by reducing the files size that is read in. 
+
+4. Acquire the [Coastal freshwater discharge simulations for the Gulf of Alaska, 1931-2021 Dataset](https://doi.org/10.24431/rw1k7d3) that is documented in [Beamer et al., (2016)](https://doi.org/10.1002/2015WR018457). Note: Professor David Hill at Oregon State University is the point of contact for this dataset, thus we often refer to it as the "Hill et al" or "Hill" dataset in the naming conventions
+
+5. If simulating NEP for 2021 and beyond, generate a climatology of the Gulf of Alaska Freshwater discharge fields using the Jupyter notebook, Make_Hill_climatology.ipynb
+6. Acquire a land/sea mask for the domain that is consistent with the "minimum depth" you will be using for your configuration (specified in MOM_input: MINIMUM_DEPTH = 5.0). One can find the static NEP10k file (NEP_ocean_static_nomask.nc) on PPAN: /work/Liz.Drenkard/mom6/NEP_ocean_static_nomask.nc. 
+
+
+**Generating Runoff Files for NEP10k:** 
+
+1. Update files (e.g., write_ to correctly reflect the file directories and the years you intend to simulate.
+2. Run the submit_batch_runoff script
+```
+./submit_batch_runoff
+```
+
+### River BGC 
+Users can follow the following instructions to generate river BGC runoff file:
 
 1: Generate a monthly climatology of the river inputs on the model grid
 using `make_discharge_climatology.m`.  This routine creates a monthly climatology
