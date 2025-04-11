@@ -1,14 +1,15 @@
 clear all;
-addpath /home/cas/matlab
+addpath /home/cas/matlab_budget_codes/
 nc64startup;
 
 syear = 1993;
-eyear = 2019;
+eyear = 2022;
 num_years = eyear-syear+1;
-readme = '1993-2019 monthly NEP10k climatology from GLOFAS/Hill (May 12, 2023 from Liz Drenkard), kg m-2 sec-1';
+readme = '1993-2022 monthly NEP10k climatology from GLOFAS/Hill (March 7, 2025 from Liz Drenkard), kg m-2 sec-1';
 
 % get grid information
-file_name = ['/archive/cas/Regional_MOM6/NEP10k/glofas_hill_05122023/glofas_hill_dis_runoff_mac_',num2str(syear,'%4u'),'.nc']
+%file_name = ['/archive/cas/Regional_MOM6/NEP10k/glofas_hill_05122023/glofas_hill_dis_runoff_mac_',num2str(syear,'%4u'),'.nc']
+file_name = ['/archive/e1n/mom6/NEP/runoff/glofas/nep_10km/glofas_v4_hill_dis_runoff_',num2str(syear,'%4u'),'.nc']
 lon = ncread(file_name,'lon');
 lat = ncread(file_name,'lat');
 nlat = size(lat,2);
@@ -19,8 +20,9 @@ area = ncread(file_name,'area');
 runoff_mc = zeros(nlon,nlat,12);
 
 for yr = syear:eyear
-  file_name = ['/archive/cas/Regional_MOM6/NEP10k/glofas_hill_05122023/glofas_hill_dis_runoff_mac_',num2str(yr,'%4u'),'.nc']
-    
+  %file_name = ['/archive/cas/Regional_MOM6/NEP10k/glofas_hill_05122023/glofas_hill_dis_runoff_mac_',num2str(yr,'%4u'),'.nc']
+  file_name = ['/archive/e1n/mom6/NEP/runoff/glofas/nep_10km/glofas_v4_hill_dis_runoff_',num2str(yr,'%4u'),'.nc']
+  
   time = ncread(file_name,'time');
   ntime = size(time,1);
   
@@ -58,4 +60,4 @@ for m = 1:12;
     pause
 end
 
-save glofas_hill_runoff_monthlyclim_NEP10k_05122023 runoff area lat lon readme;
+save glofas_hill_runoff_monthlyclim_NEP10k_04072025 runoff area lat lon readme;

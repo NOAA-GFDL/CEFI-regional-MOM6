@@ -1,0 +1,8 @@
+#!/bin/bash
+runoff_dir=/work/Liz.Drenkard/mom6/nep_10km/setup/runoff
+for yr in {1993..2024}; do
+    echo $yr
+    sbatch -p analysis submit_python_runoff_script $runoff_dir/write_runoff_glofas_hill_dis_batch_v4.py $yr $runoff_dir/batch_submit/
+done
+
+

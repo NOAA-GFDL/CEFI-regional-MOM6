@@ -1,8 +1,9 @@
+
 % Routine to map Global NEWS nutrient data onto the MOM6 Arctic grid @ 
 
 clear all;
-addpath /home/cas/matlab
-nc64startup;
+addpath /home/cas/matlab_budget_codes
+nc64startup
 
 % name of netcdf file to be created
 nc_file_name = 'RiverNutrients_GlobalNEWS2_plusFe_Q100_NEP10k.nc';
@@ -89,7 +90,7 @@ Qnat_all = hydrology.Qnat*1e9/(86400*365);
 % found in the same directory as the data file                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NEP
-load glofas_hill_runoff_monthlyclim_NEP10k_05122023.mat;
+load glofas_hill_runoff_monthlyclim_NEP10k_04072025.mat;
 % Arctic
 %load glofas_hill_runoff_monthlyclim_arctic12k_05112023.mat;
 lon_mod = lon;
@@ -294,23 +295,6 @@ for k=1:num_rivers
         n = n+1;
         Q_sum2 = Q_sum1 + Q_mod_vec(dist_sort_ind(n));
       end
-      % I generally find that the search algorithm works best when you keep
-      % grabbing points until the total flow captured exceeds the flow in
-      % the river.  If you uncomment the the first part of the "if"
-      % statement here will pick the last below if it is closer than the
-      % first above.  However, I've found that this option sometimes fails
-      % to map important rivers.
-      %if abs(Q_sum1 - Qact_sort(k)) < abs(Q_sum2 - Qact_sort(k))
-      %  nrp = n-1;  % number of runoff points
-      %  [Q_sum1 Qact_sort(k)]  % a quick check for comparable flow
-      %  din_conc_vec(dist_sort_ind(1:nrp)) = DIN_conc_sort(k);
-      %  don_conc_vec(dist_sort_ind(1:nrp)) = DON_conc_sort(k);
-      %  dip_conc_vec(dist_sort_ind(1:nrp)) = DIP_conc_sort(k);
-      %  dop_conc_vec(dist_sort_ind(1:nrp)) = DOP_conc_sort(k);
-      %  pn_conc_vec(dist_sort_ind(1:nrp)) = PN_conc_sort(k);
-      %  pp_conc_vec(dist_sort_ind(1:nrp)) = PP_conc_sort(k);
-      %  si_conc_vec(dist_sort_ind(1:nrp)) = Si_conc_sort(k);
-      %else
         nrp = n; % number of runoff points
         [Q_sum2 Qact_sort(k)] % a quick check for comparable flow
         din_conc_vec(dist_sort_ind(1:nrp)) = DIN_conc_sort(k);
@@ -320,7 +304,6 @@ for k=1:num_rivers
         pn_conc_vec(dist_sort_ind(1:nrp)) = PN_conc_sort(k);
         pp_conc_vec(dist_sort_ind(1:nrp)) = PP_conc_sort(k);
         si_conc_vec(dist_sort_ind(1:nrp)) = Si_conc_sort(k);
-      %end
         
       if inspect_map == 'y'
         figure(1)
@@ -341,8 +324,7 @@ for k=1:num_rivers
         colorbar;
 
         % provide a few diagnostics to ensure the calculation was done
-        % correctly (remove semicolon to inspect as they are mapped in
-        % the matlab output line.  Feel free to add more here.
+        % correctly (remove semicolon to inspect as they are mapped)
         N_conc = DIN_conc_sort(k) + DON_conc_sort(k) + PN_conc_sort(k);
         P_conc = DIP_conc_sort(k) + DOP_conc_sort(k) + PP_conc_sort(k);
         Si_conc = Si_conc_sort(k);
