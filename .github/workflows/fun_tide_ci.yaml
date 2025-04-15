@@ -8,7 +8,7 @@ on:
 env:
   TEST_DIR: ${{ github.workspace }}/${{ github.run_id }}
   PR_NUMBER: ${{ github.event.number }}
-  img: /gpfs/f6/ira-cefi/world-shared/container/cefi_mom6_intel_2024.2.1.sif
+  img: /gpfs/f5/cefi/world-shared/container/cefi_mom6_intel_2024.2.1.sif
 
 #
 jobs:
