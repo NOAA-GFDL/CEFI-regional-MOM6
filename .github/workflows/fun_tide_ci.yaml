@@ -31,7 +31,29 @@ jobs:
         cd ${{ env.TEST_DIR }}/MOM6_TIDE/builds
         pwd
         echo "SIF image path: $img"
-        apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6solo        
+        #apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6solo        
+        jobid=$(sbatch --parsable ci_build_driver.sh | awk -F';' '{print $1}' | cut -f1)
+        #
+        sleep 1
+        while :; do
+            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+            if [ -z "$job_status" ]; then
+               echo "Job with ID $jobid is not found or completed."
+               break
+            else
+               echo "Job with ID $jobid is still running."
+               echo "Job Status: $job_status"
+            fi
+            sleep 60  # Adjust the sleep duration as needed
+        done
+
+        check_file="${{ env.TEST_DIR }}/MOM6_TIDE/builds/build/docker-linux-intel/ocean_only/repro/MOM6"
+        if [ -f "$check_file" ]; then
+            echo "PASSED: $check_file"
+        else
+            echo "FAILED: $check_file"
+            exit 1
+        fi
 
     - name: Clean-up workspace
       run: |
