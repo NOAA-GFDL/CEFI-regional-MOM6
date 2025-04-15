@@ -38,7 +38,7 @@ jobs:
         echo "SIF image path: $img"
         apptainer exec -B /gpfs -B /ncrc/home2/Yi-cheng.Teng:/ncrc/home2/Yi-cheng.Teng $img bash linux-build.bash -m docker -p linux-intel -t repro -f mom6solo        
 
-      - name: Clean-up workspace
-        run: |
-          echo "Cleaning up ${{ env.TEST_DIR }}"
-          rm -rf ${{ env.TEST_DIR }}        
+    - name: Clean-up workspace
+      run: |
+        echo "Cleaning up ${{ env.TEST_DIR }}"
+        rm -rf ${{ env.TEST_DIR }}        
