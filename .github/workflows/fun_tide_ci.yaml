@@ -1,0 +1,31 @@
+name: fun-tide-ci
+
+on:
+  push:
+    branches: [ "tide_ci" ]
+
+#
+env:
+  TEST_DIR: ${{ github.workspace }}/${{ github.run_id }}
+  PR_NUMBER: ${{ github.event.number }}
+
+#
+jobs:
+  checkout-build:
+    runs-on: [self-hosted, gaea-c5] 
+    timeout-minutes: 360
+
+    steps:
+    - name: Checkout CEFI-regional-MOM6
+      uses: actions/checkout@v4
+      with:
+        path: ${{ github.run_id }}/MOM6_TIDE
+        fetch-depth: 0   # Fetch full history to prevent detached HEAD issues
+        ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+        repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+        submodules: recursive
+
+    - name: Build MOM6SIS2 using container
+      run: |
+        cd ${{ env.TEST_DIR }}/MOM6_TIDE/builds
+        pwd
