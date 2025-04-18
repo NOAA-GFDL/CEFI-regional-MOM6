@@ -17,6 +17,8 @@ htotal_scale_lo = 0.01          ! default = 0.01
                                 ! scaling factor for initializing carbon chemistry solver
 htotal_scale_hi = 100.0         ! default = 100.0
                                 ! scaling factor for initializing carbon chemistry solver
+recalculate_carbon = True       !   [Boolean] default = True
+                                ! recalculate_carbon
 RHO_0 = 1035.0                  !   [kg m-3] default = 1035.0
                                 ! reference density
 a_0 = 2.00907                   !   [ml L-1] default = 2.00907
