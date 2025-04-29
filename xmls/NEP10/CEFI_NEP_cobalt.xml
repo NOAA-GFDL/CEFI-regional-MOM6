@@ -39,10 +39,10 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="RELEASE" value="2024.02"/>
 
   <!-- git tag for FMS source code -->
-  <property name="FMS_GIT_TAG" value="2025.01.02"/>
+  <property name="FMS_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for coupler source code -->
-  <property name="CPL_GIT_TAG" value="2025.01"/>
+  <property name="CPL_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for null (atmos_null, land_null, etc) source code -->
   <property name="NULL_TAG" value="2023.04"/>
