@@ -46,7 +46,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="CPL_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for shared source code -->
-  <property name="NULL_TAG" value="2023.04"/>
+  <property name="NULL_TAG" value="2025.02"/>
 
   <!-- git tag for CEFI-regional-MOM6 source code -->
   <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
@@ -157,7 +157,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
     <component name="land_null" paths="mom6/src/land_null" requires="fms">
       <description domainName="NA" communityName="NA" communityVersion="NA" communityGrid="NA"/>
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(NULL_TAG)"> land_null.git </codeBase>
+        <codeBase version="$(CPL_GIT_TAG)"> land_null.git </codeBase>
       </source>
     </component>
 
