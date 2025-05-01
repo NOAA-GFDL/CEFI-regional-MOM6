@@ -83,35 +83,6 @@ fre_properties:
     - &INTEL          "intel-classic"
 
 
-shared: 
-    directories: &shared_directories
-        history_dir:  !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, history]
-        pp_dir:       !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, pp]
-        ptmp_dir:     "/ptmp/$USER/"
-
-    postProcess:
-        settings: &shared_settings
-            history_segment: "P1Y"
-            site: "ppan"
-            pp_start: *PP_START_YEAR
-            pp_stop: *PP_END_YEAR
-            pp_chunk_a: *PP_CHUNK_A
-            pp_components: "ocean_monthly"
-            pp_chunk_b: *PP_CHUNK_B
-            pp_grid_spec: *GRID_SPEC
-        switches: &shared_switches
-            do_analysis: False
-            clean_work: True
-            do_atmos_plevel_masking: False
-            do_preanalysis: False
-            do_refinediag: False
-            do_statics: False
-            do_timeavgs: False
-
-    compile:
-        compileYaml: &compile_yaml
-        platformYaml:
-
 #################################################################################################
 # COMPILE                                                                                       #
 #################################################################################################
@@ -130,9 +101,11 @@ build:
 experiments: 
     - name: "MOM6_SIS2_GENERIC_4P_compile_symm"
       pp:
+          - "yaml_include/settings.yaml"
           - "yaml_include/MOM6_postprocess.yaml"
     - name: "CEFI_NWA12_COBALT_V1"
       pp:
+          - "yaml_include/settings.yaml"
           - "yaml_include/MOM6_postprocess.yaml"
           - "yaml_include/Cobalt_postprocess.yaml"
 

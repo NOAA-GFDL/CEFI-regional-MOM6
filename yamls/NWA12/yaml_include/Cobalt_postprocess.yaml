@@ -1,12 +1,4 @@
-directories:
-    <<: *shared_directories
-
 postprocess: 
-    settings:
-        <<: *shared_settings
-    switches: 
-        <<: *shared_switches
-
     components:
         #---- MOM6 COMPONENTS ----
         - type: "ocean_daily"
