@@ -39,13 +39,13 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="RELEASE" value="2024.02"/>
 
   <!-- git tag for FMS source code -->
-  <property name="FMS_GIT_TAG" value="2025.01.02"/>
+  <property name="FMS_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for coupler source code -->
-  <property name="CPL_GIT_TAG" value="2025.01"/>
+  <property name="CPL_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for null (atmos_null, land_null, etc) source code -->
-  <property name="NULL_TAG" value="2023.04"/>
+  <property name="NULL_TAG" value="2025.02"/>
 
   <!-- git tag for ocean_shared source code -->
   <property name="OCEAN_BGC_GIT_TAG" value="dev/cefi"/>
@@ -167,7 +167,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
     <component name="land_null" paths="mom6/src/land_null" requires="fms">
       <description domainName="NA" communityName="NA" communityVersion="NA" communityGrid="NA"/>
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(NULL_TAG)"> land_null.git </codeBase>
+        <codeBase version="$(CPL_GIT_TAG)"> land_null.git </codeBase>
       </source>
     </component>
 
