@@ -1,78 +1,114 @@
-directories:
-    <<: *shared_directories
-
 postprocess: 
-    settings:
-        <<: *shared_settings
-    switches: 
-        <<: *shared_switches
-
     components:
         #---- MOM6 COMPONENTS ----
         - type: "ocean_daily"
-          sources: "ocean_daily"
+          sources:
+              - history_file: "ocean_daily"
+          postprocess_on: True
 
         - type: "ocean_neus"
-          sources: "ocean_neus"
+          sources:
+              - history_files: "ocean_neus"
+          postprocess_on: True
 
         - type: "ocean_monthly"
-          sources: "ocean_month"
+          sources:
+              - history_files: "ocean_month"
+          postprocess_on: True
 
         - type: "ocean_monthly_z"
-          sources: "ocean_month_z"
+          sources:
+              - history_files: "ocean_month_z"
+          postprocess_on: True
 
         - type: "ocean_annual"
-          sources: "ocean_annual"
+          sources:
+              - history_files: "ocean_annual"
+          postprocess_on: True
 
         - type: "ocean_annual_z"
-          sources: "ocean_annual_z"
+          sources:
+              - history_files: "ocean_annual_z"
+          postprocess_on: True
 
         - type: "ice_daily"
-          sources: "ice_daily"
+          sources:
+              - history_files: "ice_daily"
+          postprocess_on: True
 
         - type: "ice_monthly"
-          sources: "ice_month"
+          sources:
+              - history_files: "ice_month"
+          postprocess_on: True
 
         #---- END MOM6 COMPONENTS ----
 
         - type: "ocean_cobalt_fdet_100"
-          sources: "ocean_cobalt_fdet_100"
+          sources:
+              - history_files: "ocean_cobalt_fdet_100"
+          postprocess_on: True
             
         - type: "ocean_cobalt_btm"
-          sources: "ocean_cobalt_btm"
+          sources:
+              - history_files: "ocean_cobalt_btm"
+          postprocess_on: True
         
         - type: "ocean_cobalt_daily_2D"
-          sources: "ocean_cobalt_daily_2D"
+          sources:
+              - history_files: "ocean_cobalt_daily_2D"
+          postprocess_on: True
         
         - type: "ocean_cobalt_daily_2d"
-          sources: "ocean_cobalt_daily_2d"
+          sources:
+              - history_files: "ocean_cobalt_daily_2d"
+          postprocess_on: True
         
         - type: "ocean_cobalt_omip_daily"
-          sources: "ocean_cobalt_omip_daily"
+          sources:
+              - history_files: "ocean_cobalt_omip_daily"
+          postprocess_on: True
         
         - type: "ocean_cobalt_omip_sfc"
-          sources: "ocean_cobalt_omip_sfc"
+          sources:
+              - history_files: "ocean_cobalt_omip_sfc"
+          postprocess_on: True
         
         - type: "ocean_cobalt_tracers_int"
-          sources: "ocean_cobalt_tracers_int"
+          sources:
+              - history_files: "ocean_cobalt_tracers_int"
+          postprocess_on: True
         
         - type: "ocean_cobalt_sfc"
-          sources: "ocean_cobalt_sfc"
+          sources:
+              - history_files: "ocean_cobalt_sfc"
+          postprocess_on: True
         
         - type: "ocean_cobalt_fluxes_int"
-          sources: "ocean_cobalt_fluxes_int"
+          sources:
+              - history_files: "ocean_cobalt_fluxes_int"
+          postprocess_on: True
         
         - type: "ocean_cobalt_daily"
-          sources: "ocean_cobalt_daily"
+          sources:
+              - history_files: "ocean_cobalt_daily"
+          postprocess_on: True
         
         - type: "ocean_cobalt_neus"
-          sources: "ocean_cobalt_neus"
+          sources:
+              - history_files: "ocean_cobalt_neus"
+          postprocess_on: True
         
         - type: "ocean_cobalt_tracers_month"
-          sources: "ocean_cobalt_tracers_month"
+          sources:
+              - history_files: "ocean_cobalt_tracers_month"
+          postprocess_on: True
         
         - type: "ocean_cobalt_tracers_month_z"
-          sources: "ocean_cobalt_tracers_month_z"
+          sources:
+              - history_files: "ocean_cobalt_tracers_month_z"
+          postprocess_on: True
         
         - type: "ocean_cobalt_omip_2d"
-          sources: "ocean_cobalt_omip_2d"
+          sources:
+              - history_files: "ocean_cobalt_omip_2d"
+          postprocess_on: True
