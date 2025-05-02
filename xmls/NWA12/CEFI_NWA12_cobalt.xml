@@ -838,49 +838,51 @@ endif
         <!-- Main settings -->
         <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/nwa-xml/NWA12/MOM_inputs/2025_04/MOM_input</dataSource>
         <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/NWA12/MOM_inputs/2025_04/MOM_input</dataSource>
-        <!-- Boundary conditions for BGC -->
+      </dataFile>
+      <!-- Boundary conditions for BGC -->
+      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/bgc_woa.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/esper_glorys_v20250305.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/bgc_cobalt.nc</dataSource>
-        <!-- Boundary conditions for physics -->
-        <dataFile label="input" target="INPUT/so_001.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_001_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/so_002.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_002_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/so_003.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_003_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/thetao_001.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_001_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/thetao_002.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_002_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/thetao_003.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_003_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/uv_001.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_001_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/uv_002.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_002_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/uv_003.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_003_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/zos_001.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_001_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/zos_002.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_002_${fyear}.nc</dataSource>
-        </dataFile>
-        <dataFile label="input" target="INPUT/zos_003.nc" chksum="" size="" timestamp="">
-          <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_003_${fyear}.nc</dataSource>
-        </dataFile>
-        <!--River nutrients and DIC and alkalinity -->
-        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource>
+      </dataFile>
+      <!-- Boundary conditions for physics -->
+      <dataFile label="input" target="INPUT/so_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/so_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/so_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/thetao_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/thetao_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/thetao_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/uv_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/uv_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/uv_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/zos_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/zos_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/zos_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <!-- Files for tidal boundary conditions -->
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_001.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_002.nc</dataSource>
@@ -889,7 +891,7 @@ endif
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_002.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_003.nc</dataSource>
       </dataFile>
-      <!--Other files for BGC fluxes from atmosphere -->
+      <!--Other files for BGC fluxes -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
@@ -901,6 +903,8 @@ endif
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
         <!-- CO2 is extended to 2064 using ssp245-->
         <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <!--River nutrients and DIC and alkalinity -->
+        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource>
       </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
