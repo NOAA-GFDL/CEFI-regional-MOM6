@@ -13,25 +13,25 @@ module use -a /ncrc/home2/fms/local/modulefiles
 module load fre/bronx-23
 
 Compile and build mom6-sis2-cobalt:
-fremake -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -t prod,hdf5 MOM6_SIS2_GENERIC_4P_compile_symm_yaml
+fremake -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod,hdf5 MOM6_SIS2_GENERIC_4P_compile_symm_yaml
 
 Run experiment
-frerun -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -t prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
+frerun -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
 
 Run postprocessing later on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_yaml_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
+frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_yaml_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
 
 Run analysis after the postprocessing on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_yaml_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
+frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_yaml_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
 
 Regression test for layout:
-frerun  -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_COBALT_yaml_V2
+frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_COBALT_yaml_V2
 
 Regression test for restart:
-frerun  -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_COBALT_yaml_V2
+frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_COBALT_yaml_V2
 
 To check if the restart files are identical from regression test:
-frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_yaml_V2
+frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA12_COBALT_yaml_V2
 
 -->
 
