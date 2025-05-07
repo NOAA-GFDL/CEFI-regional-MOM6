@@ -6,53 +6,53 @@ Quick start guide
 Load module:
 
 On GFDL Analysis:
-module load fre/bronx-22
+module load fre/bronx-23
 
 On Gaea:
 module use -a /ncrc/home2/fms/local/modulefiles
-module load fre/bronx-22
+module load fre/bronx-23
 
 Compile and build mom6-sis2-cobalt:
-fremake -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod MOM6_SIS2_GENERIC_4P_compile_symm_yaml
+fremake -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod,hdf5 MOM6_SIS2_GENERIC_4P_compile_symm_yaml
 
 Run experiment
-frerun -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod CEFI_NWA12_COBALT_V1
+frerun -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -t prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
 
 Run postprocessing later on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc6-intel23-prod/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod CEFI_NWA12_COBALT_V1
+frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_yaml_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
 
 Run analysis after the postprocessing on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_V1/gfdl.ncrc6-intel23-prod/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod CEFI_NWA12_COBALT_V1
+frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_yaml_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt_fms2_yaml.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_yaml_V2
 
 Regression test for layout:
-frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_COBALT_V1
+frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_COBALT_yaml_V2
 
 Regression test for restart:
-frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_COBALT_V1
+frerun  -x CEFI_NWA12_cobalt_fms2_yaml.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_COBALT_yaml_V2
 
 To check if the restart files are identical from regression test:
-frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA12_COBALT_V1
+frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA12_COBALT_yaml_V2
 
 -->
 
 <experimentSuite rtsVersion="4" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <!-- git tag for general component source code-->
-  <property name="RELEASE" value="2024.02"/>
-
   <!-- git tag for FMS source code -->
   <property name="FMS_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for shared source code -->
   <property name="CPL_GIT_TAG" value="2025.02"/>
 
-  <!-- git tag for shared source code -->
+  <!-- git tag for null model source code -->
   <property name="NULL_TAG" value="2025.02"/>
 
   <!-- git tag for CEFI-regional-MOM6 source code -->
-  <property name="MOM6_GIT_FIX" value="main"/> <!-- Trying new branch with bug fix for bgc obc index -->
+  <property name="MOM6_GIT_TAG" value="main"/>
 
-  <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NWA/2025_02_YAML"/>
+  <!-- git tag for ice_param -->
+  <property name="ICEPARAM_GIT_TAG" value="2024.02"/>
+
+  <!-- This will be included in the paths to the compiled model binary and /archive. Customize as desired.-->
+  <property name="FRE_STEM" value="fre/cefi/NWA/2025_04"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <property name="NCRC_GROUP" value="ira-cefi"/>
@@ -60,18 +60,17 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="GFDL_GROUP" value="cefi"/>
 
   <!--Production run properties. Users can modify these according to their need and/or performance analysis-->
-  <property name="PROD_SIMTIME" value="27"/>
+  <property name="PROD_SIMTIME" value="31"/>
 
   <!--Post-processing  chunk lengths -->
   <property name="CHUNK_LENGTH_A" value="5yr"/>
-  <property name="CHUNK_LENGTH_B" value="27yr"/>
-  <property name="CHUNK_LENGTH_SHORT" value="1yr"/>
+  <property name="CHUNK_LENGTH_B" value="31yr"/>
 
   <!--Start year of PP -->
   <property name="PP_START_YEAR" value="1993"/>
 
   <!-- fre version to be used -->
-  <property name="FRE_VERSION" value="bronx-22"/>
+  <property name="FRE_VERSION" value="bronx-23"/>
 
   <!-- on/off switch for MDBI database -->
   <property name="MDBIswitch" value="off"/>
@@ -99,7 +98,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <property name="AWG_INPUT_HOME_GAEA" value="../xml_include"/>
   <property name="AWG_INPUT_HOME_GFDL" value="/home/Andrew.C.Ross/git/nwa-xml/xml_include"/>
 
-  <!--The start year of forcing dataset-->
+  <!-- This automatically determines the start year of the model run, used to include the first forcing files. Do not change. -->
   <property name="append_to_setup_csh" value="set fyear=`echo $baseDate | cut -c1-4`"/>
 
   <setup>
@@ -121,7 +120,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
   <experiment name="MOM6_SIS2_GENERIC_4P_compile_symm_yaml">
     <description>
       Make the executable for ocean-ice experiments.
-      Uses FMS2
+      Uses FMS2 (for unknown reason FMS1 does not work with intel23 on C6)
     </description>
     <component name="fms" paths="FMS">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
@@ -134,7 +133,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
 
     <component name="mom6_symmetric" requires="fms" paths="mom6/src/MOM6/config_src/memory/dynamic_symmetric mom6/src/MOM6/config_src/drivers/FMS_cap mom6/src/MOM6/src/*/ mom6/src/MOM6/src/*/*/ mom6/src/MOM6/config_src/external/ODA_hooks mom6/src/MOM6/config_src/external/stochastic_physics mom6/src/MOM6/config_src/external/drifters mom6/src/MOM6/config_src/external/database_comms mom6/src/ocean_BGC/generic_tracers mom6/src/ocean_BGC/mocsy/src mom6/src/MOM6/pkg/GSW-Fortran/modules mom6/src/MOM6/pkg/GSW-Fortran/toolbox mom6/src/MOM6/config_src/infra/FMS2">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-              <codeBase version="$(MOM6_GIT_FIX)"> CEFI-regional-MOM6.git </codeBase>
+              <codeBase version="$(MOM6_GIT_TAG)"> CEFI-regional-MOM6.git </codeBase>
         <csh><![CDATA[
           mv CEFI-regional-MOM6 mom6
         ]]></csh>
@@ -147,7 +146,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
 
     <component name="sis2" paths="mom6/src/SIS2/config_src/dynamic_symmetric mom6/src/SIS2/config_src/external/Icepack_interfaces mom6/src/SIS2/src mom6/src/icebergs/src mom6/src/ice_param" requires="fms mom6_symmetric" includeDir="$root/$(LIBS_ROOT)/src/mom6/src/MOM6/src/framework" >
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(RELEASE)"> ice_param.git </codeBase>
+        <codeBase version="$(ICEPARAM_GIT_TAG)"> ice_param.git </codeBase>
       </source>
       <compile>
          <cppDefs><![CDATA[$(F2003_FLAGS) -DUSE_FMS2_IO -D_FILE_VERSION="'"`git-version-string $<`"'"]]></cppDefs>
@@ -157,13 +156,13 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
     <component name="land_null" paths="mom6/src/land_null" requires="fms">
       <description domainName="NA" communityName="NA" communityVersion="NA" communityGrid="NA"/>
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(CPL_GIT_TAG)"> land_null.git </codeBase>
+        <codeBase version="$(NULL_TAG)"> land_null.git </codeBase>
       </source>
     </component>
 
     <component name="atmos_null" paths="mom6/src/atmos_null" requires="fms">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(CPL_GIT_TAG)"> atmos_null.git </codeBase>
+        <codeBase version="$(NULL_TAG)"> atmos_null.git </codeBase>
       </source>
       <compile>
         <cppDefs>$(F2003_FLAGS) </cppDefs>
@@ -181,7 +180,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
     </component>
   </experiment>
 
-  <experiment name="CEFI_NWA12_COBALT_V1" inherit="MOM6_SIS2_GENERIC_4P_compile_symm_yaml">
+  <experiment name="CEFI_NWA12_COBALT_yaml_V2" inherit="MOM6_SIS2_GENERIC_4P_compile_symm_yaml">
     <description>
     </description>
     <input>
@@ -240,7 +239,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
         max_num_axis_sets = 600
         max_input_fields = 2000
         max_output_fields = 5000
-	mix_snapshot_average_fields=.false.
+	      mix_snapshot_average_fields=.false.
         use_modern_diag=.true.
       </namelist>
       <namelist name="xgrid_nml">
@@ -255,6 +254,14 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
       </namelist>
       <namelist name="fms_io_nml">
         fms_netcdf_restart=.true.
+        threading_read='multi'
+        max_files_r = 800
+        max_files_w = 800
+        checksum_required=.false.
+      </namelist>
+      <namelist name="fms2_io_nml"> 
+        netcdf_default_format = 'netcdf4'
+        fms_netcdf_restart=.true. 
         threading_read='multi'
         max_files_r = 800
         max_files_w = 800
@@ -303,7 +310,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
       </namelist>
 
       <!--common setup-->
-      <xi:include xpointer="xpointer(//freInclude[@name='choose_restart']/input/node())"/>
+      <xi:include xpointer="xpointer(//freInclude[@name='always_restart']/input/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='OM4_common']/input/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='nwa12_grid']/input/node())"/>
       <xi:include xpointer="xpointer(//freInclude[@name='nwa12_data']/input/node())"/>
@@ -409,7 +416,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
 
 "namelists","ocean_mod","generic_COBALT"
 enforce_src_info = f
-alk_obc_src_file_name = bgc_esper_1993_2022.nc
+alk_obc_src_file_name = esper_glorys_v20250305.nc
 alk_obc_lfac_in = 0.03
 alk_obc_lfac_out = 1.0
 cadet_arag_obc_src_file_name = bgc_cobalt.nc
@@ -418,7 +425,7 @@ cadet_ararg_obc_lfac_out = 1.0
 cadet_calc_obc_src_file_name = bgc_cobalt.nc
 cadet_calc_obc_lfac_in = 0.03
 cadet_calc_obc_lfac_out = 1.0
-dic_obc_src_file_name = bgc_esper_1993_2022.nc
+dic_obc_src_file_name = esper_glorys_v20250305.nc
 dic_obc_lfac_in = 0.03
 dic_obc_lfac_out = 1.0
 dic14_obc_src_file_name = bgc_zero.nc
@@ -568,38 +575,27 @@ $baseDate
         <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_COBALT_neus</dataSource>
         <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_MOM6_neus</dataSource>
       </dataFile>
+      <!-- This file is used for the initial conditions.
+      Here, it is a restart file written at the end of a previous model run with repeating year forcing.
+      Only a single dataSource can be specified for initCond, so if multiple files are needed
+      they must be tarred. 
+      -->
       <dataFile label="initCond" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2023_10_spinup/NWA12_COBALT_2023_10_spinup_2003.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/glorys_ic_1993-01-01.nc</dataSource>
-      </dataFile>
-      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2023_10_spinup/NWA12_COBALT_2023_10_spinup_2003.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/glorys_ic_1993-01-01.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2025_04_repeating_bugfixes/20230101.tar</dataSource>
       </dataFile>
       <csh type='always'>
         <![CDATA[
+# Make sure that MOM_override starts empty (not carried over from previous run/segment)
 truncate -s 0 $work/INPUT/MOM_override
 cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
+! Needed to enable COBALT (set false for physics only)
 #override USE_generic_tracer = True
-#override MAX_FIELDS=500
+! Set the 18.6 year nodal modulation of the tides to use 
+! the middle of the current model year.
 #override TIDE_NODAL_REF_DATE = ${fyear},7,2
+! Update the BGC tracer boundary condition data every xxxx seconds. 
 DT_OBC_SEG_UPDATE_OBGC = 1800
-#override CHL_FROM_FILE = False
-#override DO_GEOTHERMAL = True
-#override GENERIC_TRACER_IC_FILE = "NWA12_COBALT_2023_10_spinup_2003.nc"
-#override EPBL_ANSWER_DATE = 20231231
-#override MLD_ITERATION_GUESS = False
-#override REMAP_AUXILIARY_VARS = True
-#override DIABATIC_FIRST = False
-#override EQN_OF_STATE = "WRIGHT_FULL"
-#override PHA_MLD_CALC = True
-#override PHA_MLD_USE_DELTA_RHO = True
-#override PHA_MLD_HREF = 10.0
-#override PHA_MLD_DRHO = 0.03
-#override HREF_FOR_MLD = 10.0
-#override DIAG_MLD_DENSITY_DIFF = 0.03
-#override U_TRUNC_FILE = "U.velocity_truncations"
-#override V_TRUNC_FILE = "V.velocity_truncations"
+#override RESTART_CHECKSUMS_REQUIRED = False
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override
@@ -619,23 +615,28 @@ scale_burial = 1.0
 z_burial = 20.0
 z_denit = 20.0
 COBALT_INPUT_EOF
-
-#hack to test yaml diag_table, convert the diag_table to yaml format
-diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
         ]]>
       </csh>
     </input>
     <runtime>
       <production simTime="$(PROD_SIMTIME)" units="years">
         <segment simTime="12" units="months"/>
-        <resources jobWallclock="08:30:00" segRuntime="08:30:00">
+        <resources jobWallclock="07:00:00" segRuntime="07:00:00">
           <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
         </resources>
       </production>
       <regression name="test">
         <run days="2">
-          <resources jobWallclock="00:60:00">
+          <resources jobWallclock="01:00:00">
+            <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+            <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
+          </resources>
+        </run>
+      </regression>
+      <regression name="year">
+        <run months="12">
+          <resources jobWallclock="08:00:00">
             <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
             <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           </resources>
@@ -644,14 +645,6 @@ diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
       <regression name="month">
         <run months="1">
           <resources jobWallclock="01:30:00">
-            <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-            <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-          </resources>
-        </run>
-      </regression>
-      <regression name="year">
-        <run months="12">
-          <resources jobWallclock="08:30:00">
             <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
             <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           </resources>
@@ -771,6 +764,8 @@ touch $work/INPUT/MOM_override
 touch $work/INPUT/SIS_override
 touch $work/INPUT/MOM_layout
 touch $work/INPUT/SIS_layout
+touch $work/INPUT/COBALT_input
+touch $work/INPUT/COBALT_override
 
 # Record the job stdout location for later use timings database
 cat >> $HOME/frejobs_stdout <<EOF_frejobs
@@ -790,22 +785,39 @@ cat > $work/INPUT/SIS_layout << SIS_LAYOUT_EOF
 #override MASKTABLE = $ice_mask_table
 SIS_LAYOUT_EOF
 
-cat > $work/INPUT/SIS_override << SIS_OVERRIDE_EOF
-#override ICE_STATS_INTERVAL = 10.
-#override DO_ICEBERGS = False
-#override ICE_OCEAN_STRESS_STAGGER = "C"
-SIS_OVERRIDE_EOF
+truncate -s 0 $work/INPUT/COBALT_input
+cat > $work/INPUT/COBALT_input << COBALT_INPUT_EOF
+! Put the contents of your COBALT_input file here
+do_case2_mod = True		   
+z_burial = 20.0
+z_denit = 20.0
+scale_burial = 1.0   
+frac_mu_stress_Sm = 0.4
+frac_mu_stress_Md = 0.4
+frac_mu_stress_Lg = 0.4
+frac_mu_stress_Di = 0.4
+COBALT_INPUT_EOF
 
-cat > $work/INPUT/SIS_diurnal << SIS_diurnal_EOF
-SIS_diurnal_EOF
-
-# IAF cycle mechanism
-echo "Model year = $fyear"
+# When starting a new run from a repeating year restart tar file,
+# delete coupler.res so the time from the restart isn't used.
+if ($currentSeg == 1) then
+  if (-e $work/INPUT/coupler.res) then
+    rm -rf $work/INPUT/coupler.res
+    module load nco
+    foreach file ($work/INPUT/ocean_cobalt_airsea_flux.res*)
+      chmod u+w $file
+      ncatted -O -a checksum,,d,, $file
+    end
+  endif
+endif
 
 # add empty MOM_mask_table
 if ( ! -e $work/INPUT/MOM_mask_table ) then
     echo "0" > $work/INPUT/MOM_mask_table
 endif
+
+# To test yaml diag_table, convert the diag_table to yaml format
+diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
       ]]>
       </csh>
     </input>
@@ -816,10 +828,6 @@ endif
       <dataFile label="gridSpec" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NWA12_WORLD)/nwa12_grid_75z.tar</dataSource>
         <dataSource site="gfdl">/archive/acr/mom6_input/nwa12/nwa12_grid_75z.tar</dataSource>
-      </dataFile>
-      <!-- Vertical coordinates to regrid diagnostics to -->
-      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(NWA12_WORLD)/diag_dz.nc</dataSource>
       </dataFile>
       <!-- Ocean static file without mask holes -->
       <dataFile label="input" target="INPUT/ocean_static_no_mask_table.nc" chksum="" size="" timestamp="">
@@ -832,27 +840,53 @@ endif
     <input>
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <!-- Main settings -->
-        <dataSource site="ncrc">$(NWA12_WORLD)/MOM_inputs/2024_03/MOM_input</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/NWA12/MOM_inputs/2023_10/MOM_input</dataSource>
-        <!-- Boundary conditions for BGC -->
+        <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/git/CEFI-regional-MOM6/xmls/NWA12/MOM_inputs/2025_04/MOM_input</dataSource>
+        <dataSource site="gfdl">/home/Andrew.C.Ross/git/CEFI-regional-MOM6/xmls/NWA12/MOM_inputs/2025_04/MOM_input</dataSource>
+      </dataFile>
+      <!-- Boundary conditions for BGC -->
+      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/bgc_woa.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/bgc_esper_1993_2022.nc</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/esper_glorys_v20250305.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/bgc_cobalt.nc</dataSource>
-        <!-- Boundary conditions for physics -->
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/so_001.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/so_002.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/so_003.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/thetao_001.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/thetao_002.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/thetao_003.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/zos_001.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/zos_002.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/zos_003.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/uv_001.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/uv_002.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/glorys/updated_2024-01/uv_003.nc</dataSource>
-        <!--River nutrients and DIC and alkalinity -->
-        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource>
+      </dataFile>
+      <!-- Boundary conditions for physics -->
+      <dataFile label="input" target="INPUT/so_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/so_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/so_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/so_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/thetao_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/thetao_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/thetao_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/thetao_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/uv_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/uv_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/uv_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/uv_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/zos_001.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_001_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/zos_002.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_002_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/zos_003.nc" chksum="" size="" timestamp="">
+        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/zos_003_${fyear}.nc</dataSource>
+      </dataFile>
+      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <!-- Files for tidal boundary conditions -->
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_001.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tu_002.nc</dataSource>
@@ -861,7 +895,7 @@ endif
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_002.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_003.nc</dataSource>
       </dataFile>
-      <!--Other files for BGC fluxes from atmosphere -->
+      <!--Other files for BGC fluxes -->
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
@@ -871,7 +905,10 @@ endif
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
+        <!-- CO2 is extended to 2064 using ssp245-->
         <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <!--River nutrients and DIC and alkalinity -->
+        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource>
       </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
@@ -905,8 +942,8 @@ endif
   <freInclude name="SIS2_data">
     <input>
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(NWA12_WORLD)/MOM_inputs/2023_04/SIS_input</dataSource>
-        <dataSource site="gfdl">/home/Andrew.C.Ross/git/nwa-xml/NWA12/MOM_inputs/2023_04/SIS_input</dataSource>
+        <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/git/CEFI-regional-MOM6/xmls/NWA12/MOM_inputs/2025_04/SIS_input</dataSource>
+        <dataSource site="gfdl">/home/Andrew.C.Ross/git/CEFI-regional-MOM6/xmls/NWA12/MOM_inputs/2025_04/SIS_input</dataSource>
       </dataFile>
       <namelist name="SIS_input_nml">
         output_directory = './'
