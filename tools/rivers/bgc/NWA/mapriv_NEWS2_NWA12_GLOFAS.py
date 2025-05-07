@@ -223,3 +223,83 @@ for k in range(num_rivers):
         if inspect_map == "y":
             pass
             # TODO: Implement mapping!
+
+# nearest neighbor search to fill in any 0 values left for each input field
+# after the river mapping is done.
+aa = ( conc_matrix["din_conc"] == 0 )
+bb = ( conc_matrix["din_conc"] > 0 )
+
+interp = griddata(mod_runoff_matrix[bb], conc_matrix[bb].values, mod_runoff_matrix[aa], method = "nearest")
+conc_matrix[aa] = interp
+# Initialize 2D concentration arrays; these are the ones read into MOM6 to
+# specify the nutrient concentrations of river inputs.
+
+# TODO: Make this more concise / memory efficient
+din_conc = np.zeros( lon_mod.shape )
+don_conc = np.zeros( lon_mod.shape )
+dip_conc = np.zeros( lon_mod.shape )
+dop_conc = np.zeros( lon_mod.shape )
+pn_conc = np.zeros( lon_mod.shape )
+pp_conc = np.zeros( lon_mod.shape )
+si_conc = np.zeros( lon_mod.shape )
+
+# Map concentration vectors onto 2D arrays.
+aa = Q_mod_ann > 0
+din_conc[aa] = conc_matrix["din_conc"]
+don_conc[aa] = conc_matrix["don_conc"]
+pn_conc[aa] = conc_matrix["pn_conc"]
+dip_conc[aa] = conc_matrix["dip_conc"]
+dop_conc[aa] = conc_matrix["dop_conc"]
+pp_conc[aa] = conc_matrix["pp_conc"]
+si_conc[aa] = conc_matrix["si_conc"]
+
+# TODO: Do we need these vars?
+NO3_CONC = din_conc.copy()
+LDON_CONC = don_conc*frac_ldon
+SLDON_CONC = don_conc*frac_sldon
+SRDON_CONC = don_conc*frac_srdon
+PO4_CONC = dip_conc.copy()
+LDOP_CONC = dop_conc*frac_ldop
+SLDOP_CONC = dop_conc*frac_sldop
+SRDOP_CONC = dop_conc*frac_srdop
+NDET_CONC = pn_conc.copy()
+PDET_CONC = pp_conc.copy()   # The bioavailability of particulate P has already  been accounted for.
+
+SI_CONC = si_conc.copy()
+# Add iron concentrations - initialize with nitrate and then overwrite
+FED_CONC = NO3_CONC.copy()
+FEDET_CONC = NO3_CONC.copy()
+# 40 nM dissolved iron concentration from De Baar and De Jong + 30nM 
+# Colloidal and nanoparticle flux as reported in Canfield and Raiswell
+FED_CONC[FED_CONC > 0] = const_fed
+FEDET_CONC[FEDET_CONC > 0] = 0.0
+
+coords = {"time":[0],
+          "y":np.arange(1, lat_mod.shape[0]+1 ), # 1 indexed to match matlab output - not strictly necessary
+          "x":np.arange(1, lat_mod.shape[1]+1 )
+          }
+ds = xr.Dataset(coords = coords,
+                data_vars = dict(
+                    lat= ( ["y","x"], lat_mod),
+                    lon= ( ["y","x"], lon_mod),                    
+                    NO3_CONC = (["time","y","x"], np.expand_dims(NO3_CONC, axis=0) ,{"units":"mol m-3", "long_name":"DIN_CONC"} ),
+                    LDON_CONC = (["time","y","x"], np.expand_dims( LDON_CONC , axis=0) ,{"units":"mol m-3", "long_name":"0.3*DON_CONC"} ),
+                    SLDON_CONC = (["time","y","x"], np.expand_dims( SLDON_CONC , axis=0) ,{"units":"mol m-3", "long_name":"0.35*DON_CONC"} ),
+                    SRDON_CONC = (["time","y","x"], np.expand_dims( SRDON_CONC , axis=0) ,{"units":"mol m-3", "long_name":"0.35*DON_CONC"} ),
+                    NDET_CONC = (["time","y","x"], np.expand_dims( NDET_CONC , axis=0) ,{"units":"mol m-3", "long_name":"1.0*PN_CONC"} ),
+                    PO4_CONC = (["time","y","x"], np.expand_dims( PO4_CONC , axis=0) ,{"units":"mol m-3", "long_name":"PO4_CONC"} ),
+                    LDOP_CONC = (["time","y","x"], np.expand_dims( LDOP_CONC  , axis=0) ,{"units":"mol m-3", "long_name":"0.3*DOP_CONC"} ),
+                    SLDOP_CONC = (["time","y","x"], np.expand_dims( SLDOP_CONC , axis=0)  ,{"units":"mol m-3", "long_name":"0.35*DOP_CONC"} ),
+                    SRDOP_CONC = (["time","y","x"], np.expand_dims( SRDOP_CONC , axis=0)  ,{"units":"mol m-3", "long_name":"0.35*DOP_CONC"} ),
+                    PDET_CONC = (["time","y","x"], np.expand_dims( PDET_CONC , axis=0) ,{"units":"mol m-3", "long_name":"0.3*PP_CONC"} ),
+                    FED_CONC = (["time","y","x"], np.expand_dims( FED_CONC , axis=0) ,{"units":"mol m-3", "long_name":"FED_CONC"} ),
+                    FEDET_CONC = (["time","y","x"], np.expand_dims( FEDET_CONC , axis=0),{"units":"mol m-3", "long_name":"FEDET_CONC"} ),
+                    SI_CONC = (["time","y","x"], np.expand_dims( SI_CONC , axis=0) ,{"units":"mol m-3", "long_name":"si_CONC"} ),
+                )
+               )
+
+# set time attrs
+ds.time.attrs = {"calendar":"NOLEAP","calendar_type":"NOLEAP","modulo":"T","units":"days since 1900-1-1 0:00:00","time_origin":"01-JAN-1990 00:00:00"}
+
+# Write dataset
+ds.to_netcdf("RiverNutrients_GlobalNEWS2_plusFe_Q100_GLOFAS_NWA12_PYTHON.nc",unlimited_dims="time")
