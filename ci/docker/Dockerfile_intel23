@@ -1,0 +1,37 @@
+FROM ecpe4s/noaa-intel-prototype:2023.09.25 as builder
+
+# Install additional system packages (from Singularity %post section)
+#RUN apt-get update -y && \
+#    apt-get install -y curl libibverbs-dev autoconf libtool automake && \
+#    apt-get clean
+RUN echo 'APT::Sandbox::User "root";' > /etc/apt/apt.conf.d/99sandbox-disable && \
+    apt-get update -y && \
+    apt-get install -y curl libibverbs-dev autoconf libtool automake && \
+    apt-get clean
+
+# Setup spack and load necessary modules
+RUN . /spack/share/spack/setup-env.sh && \
+    spack load libyaml && \
+    spack load netcdf-fortran@4.5.4 && \
+    spack load hdf5@1.14.0
+
+# Optional: set environment variables via /etc/profile.d script
+# These will be loaded automatically when any shell starts
+RUN echo '\
+export LC_ALL=C\n\
+export MPI_DIR=/opt/intel/oneapi/mpi/2021.10.0\n\
+export I_MPI_ROOT=$MPI_DIR\n\
+export I_MPI_DEBUG=6\n\
+export PATH=$MPI_DIR/bin:$MPI_DIR/libfabric/bin:$PATH\n\
+export LD_LIBRARY_PATH=$MPI_DIR/libfabric/lib:$MPI_DIR/lib/prov:$MPI_DIR/lib:/opt/intel/oneapi/mkl/2023.2.0/lib/intel64:/opt/intel/oneapi/compiler/2023.2.0/lib:/usr/lib64:$LD_LIBRARY_PATH\n\
+. /spack/share/spack/setup-env.sh\n\
+spack load libyaml\n\
+spack load netcdf-fortran@4.5.4\n\
+spack load hdf5@1.14.0\n\
+' > /etc/profile.d/custom_env.sh
+
+# Make sure profile scripts are executable
+RUN chmod +x /etc/profile.d/custom_env.sh
+
+# Default entrypoint (similar to %runscript)
+CMD ["/bin/bash"]

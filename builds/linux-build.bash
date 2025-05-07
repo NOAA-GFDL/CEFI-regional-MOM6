@@ -54,7 +54,7 @@ source $MODULESHOME/init/bash
 source $rootdir/$machine_name/$platform.env
 
 # Default Makeflags
-makeflags="NETCDF=3"
+makeflags="NETCDF=4"
 
 # Update makeflags based on the target
 update_makeflags() {
