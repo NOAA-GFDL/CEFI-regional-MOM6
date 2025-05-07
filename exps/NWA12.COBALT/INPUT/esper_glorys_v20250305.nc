@@ -1,0 +1,1 @@
+../../datasets/nwa12_input/esper_glorys_v20250305.nc
