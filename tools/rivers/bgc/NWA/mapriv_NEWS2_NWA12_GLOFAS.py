@@ -1,6 +1,7 @@
 import pandas as pd
 from scipy.io import loadmat
 from scipy.spatial.distance import cdist
+from scipy.interpolate import griddata
 import numpy as np
 import xarray as xr
 
@@ -18,7 +19,7 @@ min_dist = 2  # minimum distance (degrees) of the closest outflow point
                  # flowing to different ocean basins.
 inspect_map = 'n' # flag enabling you to pause and inspect each river
                    # mapping as it is being done.
-                 
+
 # set the bio-availability of phosphorus and the fractionation of dissolved
 # organic PP is set to 30# based on Froelich Partitioning of detritus
 # between
@@ -29,7 +30,7 @@ frac_srdon = 0.35
 frac_ldop = 0.3
 frac_sldop = 0.35
 frac_srdop = 0.35
-# 40 nM dissolved iron concentration from De Baar and De Jong + 30nM 
+# 40 nM dissolved iron concentration from De Baar and De Jong + 30nM
 # Colloidal and nanoparticle flux as reported in Canfield and Raiswell
 const_fed = 70.0e-6
 
@@ -44,7 +45,7 @@ ocean = basin['ocean']
 land_index = (ocean == "Land")
 river_names_all = basin["basinname"]
 
-# basin area in 
+# basin area in
 area = basin["A"]
 lon_news_all = basin["mouth_lon"]
 lat_news_all = basin["mouth_lat"]
@@ -104,7 +105,7 @@ in_region &= ( (Qact_all != np.inf) & (Qact_all > Q_min) ) # There shouldn't be 
 # If you are using a high threshold, grab one smaller river to constrain
 # Carribean Islands
 if Q_min > 100 :
-    in_region[river_names_all == 'GHAASBasin1808'] = True 
+    in_region[river_names_all == 'GHAASBasin1808'] = True
 
 num_rivers = in_region.sum()
 
@@ -125,11 +126,11 @@ river_names = river_names_all[in_region]
 # Following inspection of initial mapping, add any manual edits here to   #
 # prevent anomalous extrapolations, etc.                                  #
 ###########################################################################
-    
+
 # Move the Susquehanna a bit south so that it catches the Chesapeake
 # and not the Delaware.
 
-susquehanna_index = ( river_names == 'Susquehanna' ) 
+susquehanna_index = ( river_names == 'Susquehanna' )
 lat_news[ susquehanna_index ] = 38.5
 lon_news[ susquehanna_index ] = -76.67
 
@@ -158,7 +159,7 @@ rivers_df_sort = rivers_df.sort_values(by="Qact")
 
 # Total N and P load diagnostics
 # NOTE: need to use names of vars in original csv, not names of array in matlab script
-N_load_sort = rivers_df_sort["Ld_DIN"] + rivers_df_sort["Ld_DON"] + rivers_df_sort["Ld_PN"] 
+N_load_sort = rivers_df_sort["Ld_DIN"] + rivers_df_sort["Ld_DON"] + rivers_df_sort["Ld_PN"]
 P_load_sort = rivers_df_sort["Ld_DIP"] + rivers_df_sort["Ld_DOP"] + rivers_df_sort["Ld_PP"]
 
 # Calculate concentrations
@@ -174,15 +175,15 @@ Q_mod_vec = Q_mod_ann[aa]
 Q_mod_len = len(Q_mod_vec)
 cols = ["din_conc","don_conc","pn_conc","dip_conc","dop_conc","pp_conc","si_conc"]
 # need dtype to match dtype of conc to avoid warnings down the line
-conc_matrix = pd.DataFrame(0, columns = cols, index = np.arange( Q_mod_len), dtype=conc["Ld_DIN"].dtype)  
+conc_matrix = pd.DataFrame(0, columns = cols, index = np.arange( Q_mod_len), dtype=conc["Ld_DIN"].dtype)
 
-# NOTE: Numpy stores elements in Row-Major order, while MATLAB stores them in 
+# NOTE: Numpy stores elements in Row-Major order, while MATLAB stores them in
 # Column major order. As a result, elements will NOT be in the same order!
 lon_mod_runoff_vec = lon_mod[aa]
 lat_mod_runoff_vec = lat_mod[aa]
 
 # Get pairwise distances between lat/lon news and lat/lon mod_runoff
-# Combine lat /lon runoffs 
+# Combine lat /lon runoffs
 mod_runoff_matrix = np.column_stack( (lon_mod_runoff_vec, lat_mod_runoff_vec) )
 
 # Filter out rivers lying outside of the domain
@@ -191,13 +192,13 @@ for k in range(num_rivers):
     lon_news_k = rivers_df_sort["mouth_lon"].iloc[k]
     lat_news_k = rivers_df_sort["mouth_lat"].iloc[k]
     news_points = np.column_stack( (lon_news_k, lat_news_k) )
-    
+
     # Get pairwise distance
-    distances = np.squeeze( cdist(news_points, mod_runoff_matrix) ) 
-    
+    distances = np.squeeze( cdist(news_points, mod_runoff_matrix) )
+
     # sort data
     dist_sort_ind = np.argsort(distances)
-    dist_sort = distances[ dist_sort_ind ] 
+    dist_sort = distances[ dist_sort_ind ]
 
     if dist_sort[0] < min_dist:
         Q_sum1 = 0
@@ -207,15 +208,15 @@ for k in range(num_rivers):
             Q_sum1 = Q_sum2
             Q_sum2 = Q_sum1 + Q_mod_vec[ dist_sort_ind[n] ]
             n += 1 # move to end to account for fact that python is 0 indexed
-        
+
         nrp = n # num runoff points
         if abs(Q_sum1 - Qact_sort.iloc[k]) < abs(Q_sum2 - Qact_sort.iloc[k]):
             nrp -= 1 # i.e if Q_sum1 is closer to ther Qact_sort value, choose one fewer runoff point
-        
-        # dist sort should have all the values in [1:len(conc_matrix)] so there 
+
+        # dist sort should have all the values in [1:len(conc_matrix)] so there
         # shouldn't be issues with passing dist_sort indices to conc_matrix
-        conc_matrix.loc[ dist_sort_ind[:nrp] ] = conc.iloc[k].values 
-        
+        conc_matrix.loc[ dist_sort_ind[:nrp] ] = conc.iloc[k].values
+
         if inspect_map == "y":
             pass
             # TODO: Implement mapping!
@@ -269,7 +270,7 @@ SI_CONC = si_conc.copy()
 # Add iron concentrations - initialize with nitrate and then overwrite
 FED_CONC = NO3_CONC.copy()
 FEDET_CONC = NO3_CONC.copy()
-# 40 nM dissolved iron concentration from De Baar and De Jong + 30nM 
+# 40 nM dissolved iron concentration from De Baar and De Jong + 30nM
 # Colloidal and nanoparticle flux as reported in Canfield and Raiswell
 FED_CONC[FED_CONC > 0] = const_fed
 FEDET_CONC[FEDET_CONC > 0] = 0.0
@@ -280,8 +281,8 @@ coords = {"time":[0],
           }
 ds = xr.Dataset(coords = coords,
                 data_vars = dict(
-                    lat= ( ["y","x"], lat_mod),
-                    lon= ( ["y","x"], lon_mod),                    
+                    lat= ( ["y","x"], lat_mod, {"units":"degrees north"} ),
+                    lon= ( ["y","x"], lon_mod, {"units":"degrees east"} ),
                     NO3_CONC = (["time","y","x"], np.expand_dims(NO3_CONC, axis=0) ,{"units":"mol m-3", "long_name":"DIN_CONC"} ),
                     LDON_CONC = (["time","y","x"], np.expand_dims( LDON_CONC , axis=0) ,{"units":"mol m-3", "long_name":"0.3*DON_CONC"} ),
                     SLDON_CONC = (["time","y","x"], np.expand_dims( SLDON_CONC , axis=0) ,{"units":"mol m-3", "long_name":"0.35*DON_CONC"} ),
