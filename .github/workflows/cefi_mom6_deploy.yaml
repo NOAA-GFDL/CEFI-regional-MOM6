@@ -2,7 +2,7 @@ name: Deploy Artifact
 
 on:
   push:
-    branches: [fix/deploy]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
