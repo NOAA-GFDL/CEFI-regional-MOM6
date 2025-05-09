@@ -25,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./ci/docker/Dockerfile_intel  # Point to your Dockerfile
+          file: ./ci/docker/Dockerfile_intel24  # Point to your Dockerfile
           tags: clouden90/cefi-regional-mom6_intel:latest
           push: true  # This pushes the image to Docker Hub
 
