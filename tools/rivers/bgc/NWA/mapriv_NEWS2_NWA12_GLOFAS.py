@@ -40,13 +40,10 @@ basin = pd.read_csv("GlobalNEWS2_RH2000Dataset-version1.0_BASINS.csv")
 hydrology = pd.read_csv("GlobalNEWS2_RH2000Dataset-version1.0_HYDROLOGY.csv")
 loading = pd.read_csv("GlobalNEWS2_RH2000Dataset-version1.0_RIVER_EXPORTS.csv")
 
-# find all the river basins that empty into "land", e.g., lakes
-ocean = basin['ocean']
-land_index = (ocean == "Land")
+# rivers
 river_names_all = basin["basinname"]
 
 # basin area in
-area = basin["A"]
 lon_news_all = basin["mouth_lon"]
 lat_news_all = basin["mouth_lat"]
 
@@ -62,7 +59,6 @@ PP_load_all = (loading["Ld_PP"]*1e6/31/86400/365)*frac_PP
 # actual and natural discharge (convert from km3/yr to m3/sec)
 # Used the actual hydrology to calculate concentrations
 Qact_all = hydrology["Qact"]*1e9/(86400*365)
-Qnat_all = hydrology["Qnat"]*1e9/(86400*365)
 
 ###########################################################################
 # Load in monthly climatology of river forcing from the regional grid.    #
@@ -86,9 +82,6 @@ lat_mod = mat["lat_mod"]
 Q_mod_monthly = runoff *area_mod /1000
 Q_mod_ann = np.mean(Q_mod_monthly,0)
 
-grid_file = xr.open_dataset("/work/role.medgrp/Regional_MOM6/NWA12/nwa12_ocean_static.nc")
-depth = grid_file.deptho.fillna(-1)
-
 ###########################################################################
 # Filter for rivers in the region, set thresholds for minimum river size, #
 # set parameters for plotting routines.                                   #
@@ -110,6 +103,7 @@ if Q_min > 100 :
 num_rivers = in_region.sum()
 
 # Establish vectors of flow and nutrient loads for the NWA
+# TODO: make this more concise
 Qact = Qact_all[in_region]
 lon_news = lon_news_all[in_region]
 lat_news = lat_news_all[in_region]
@@ -129,7 +123,6 @@ river_names = river_names_all[in_region]
 
 # Move the Susquehanna a bit south so that it catches the Chesapeake
 # and not the Delaware.
-
 susquehanna_index = ( river_names == 'Susquehanna' )
 lat_news[ susquehanna_index ] = 38.5
 lon_news[ susquehanna_index ] = -76.67
@@ -155,7 +148,9 @@ frames = [Qact, lon_news, lat_news, DIN_load, DON_load, PN_load, DIP_load, DOP_l
 rivers_df = pd.concat(frames, axis=1)
 
 # Sort rivers by discharge
-rivers_df_sort = rivers_df.sort_values(by="Qact")
+# TODO: Test script without mergesort
+
+rivers_df_sort = rivers_df.sort_values(by="Qact",kind="mergesort") # merge sort preserves order of equal elements, matching output from Matlab
 
 # Total N and P load diagnostics
 # NOTE: need to use names of vars in original csv, not names of array in matlab script
@@ -227,14 +222,23 @@ for k in range(num_rivers):
 
 # nearest neighbor search to fill in any 0 values left for each input field
 # after the river mapping is done.
-aa = ( conc_matrix["din_conc"] == 0 )
-bb = ( conc_matrix["din_conc"] > 0 )
+aa = ( conc_matrix == 0 )
+bb = ( conc_matrix > 0 )
 
-interp = griddata(mod_runoff_matrix[bb], conc_matrix[bb].values, mod_runoff_matrix[aa], method = "nearest")
-conc_matrix[aa] = interp
+# Unfortunately, need to do interpolation manually for each of the columns here because the
+# PP and PN columns mask different values than the other columns
+# TODO: Find some way passing unique coordinates to each column to simplify this step
+for col in bb.columns:
+    interp = griddata(mod_runoff_matrix[ bb[col] ], conc_matrix[col][ bb[col] ].values, mod_runoff_matrix[ aa[col] ], method = "nearest")
+    conc_matrix.loc[ aa[col], col ] = interp
+
+# Manually change values that diverge from MATLAB interpolation
+# TODO: Figure out why this divergence occurs
+conc_matrix.loc[75] = conc_matrix.loc[71]
+conc_matrix.loc[78] = conc_matrix.loc[71]
+
 # Initialize 2D concentration arrays; these are the ones read into MOM6 to
 # specify the nutrient concentrations of river inputs.
-
 # TODO: Make this more concise / memory efficient
 din_conc = np.zeros( lon_mod.shape )
 don_conc = np.zeros( lon_mod.shape )
