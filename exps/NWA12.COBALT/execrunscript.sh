@@ -1,11 +1,4 @@
-#source /usr/lmod/lmod/init/bash
-#module purge
-#module use /opt/spack-stack/spack-stack-1.8.0/envs/unified-env/install/modulefiles/Core
-#module load stack-oneapi
-#module load stack-intel-oneapi-mpi
-#module load jedi-ufs-env
-#module unload fms/2024.02
-#
+#!/bin/bash 
 export BACKUP_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 # Set up spack loads
 . /spack/share/spack/setup-env.sh
@@ -14,3 +7,5 @@ spack load libyaml
 spack load netcdf-fortran@4.5.4
 spack load hdf5@1.14.0
 export LD_LIBRARY_PATH=$BACKUP_LD_LIBRARY_PATH:$LD_LIBRARY_PATH
+# Run executable
+../../builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2

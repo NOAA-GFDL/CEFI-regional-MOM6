@@ -1,6 +1,6 @@
  &MOM_input_nml
          output_directory = './'
-         input_filename = 'n'
+         input_filename = 'r'
          restart_input_dir = 'INPUT/'
          restart_output_dir = 'RESTART/'
          parameter_filename = 'INPUT/MOM_input','INPUT/MOM_layout','INPUT/MOM_override'
@@ -8,26 +8,25 @@
 
  &SIS_input_nml
         output_directory = './'
-        input_filename = 'n'
+        input_filename = 'r'
         restart_input_dir = 'INPUT/'
         restart_output_dir = 'RESTART/'
         parameter_filename = 'INPUT/SIS_input','INPUT/SIS_layout','INPUT/SIS_override'
-/
-
- &cobalt_input_nml
-        parameter_filename = 'INPUT/COBALT_input',
-                             'INPUT/COBALT_override'
 /
 
  &atmos_model_nml
         layout= 1,1
 /
 
+ &cobalt_input_nml
+        parameter_filename = 'INPUT/COBALT_input','INPUT/COBALT_override'
+/
+
  &coupler_nml
         months = 0
-        days   = 0
+        days   = 2
         current_date = 1993,1,1,0,0,0
-        hours = 48
+        hours = 0
         minutes = 0
         seconds = 0
         calendar = 'gregorian'
@@ -39,7 +38,7 @@
         do_ocean = .true.
         atmos_npes = 0,
         ocean_npes = 0,
-        concurrent = .false. 
+        concurrent = .false.
         use_lag_fluxes=.false.
         atmos_nthreads = 1
         ocean_nthreads = 1
@@ -48,16 +47,17 @@
 /
 
  &diag_manager_nml
-        max_files = 600 
+        max_files = 600
         flush_nc_files=.false.
         max_axes = 600
         max_num_axis_sets = 600
-        max_input_fields = 2000 
-        max_output_fields = 5000 
+        max_input_fields = 2000
+        max_output_fields = 5000
         mix_snapshot_average_fields=.false.
 /
 
- &fms_io_nml
+ &fms2_io_nml
+        netcdf_default_format = 'netcdf4'
         fms_netcdf_restart=.true. 
         threading_read='multi'
         max_files_r = 800
@@ -65,8 +65,16 @@
         checksum_required=.false.
 /
 
+ &fms_io_nml
+        fms_netcdf_restart=.true.
+        threading_read='multi'
+        max_files_r = 800
+        max_files_w = 800
+        checksum_required=.false.
+/
+
  &fms_nml
-        clock_grain='ROUTINE' 
+        clock_grain='ROUTINE'
         clock_flags='NONE'
         domains_stack_size = 8000000
         stack_size =0
@@ -74,6 +82,7 @@
 
  &generic_COBALT_nml
         co2_calc = 'mocsy'
+        debug = .false.
         imbalance_tolerance=1.0e-9
 /
 
@@ -82,12 +91,12 @@
 /
 
  &generic_tracer_nml
-        do_generic_tracer=.true. 
-        do_generic_abiotic=.false. 
-        do_generic_CFC=.false. 
-        do_generic_COBALT=.true. 
+        do_generic_tracer=.true.
+        do_generic_abiotic=.false.
+        do_generic_CFC=.false.
+        do_generic_COBALT=.true.
         do_generic_age=.false.
-        do_generic_SF6=.false. 
+        do_generic_SF6=.false.
         force_update_fluxes=.true.
         as_param='W14'
         do_vertfill_post=.true.

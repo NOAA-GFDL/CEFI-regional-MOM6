@@ -1,0 +1,1 @@
+../../datasets/nwa12_input/seawifs-clim-1997-2010.nwa12.nc
