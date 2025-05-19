@@ -131,7 +131,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
       </compile>
     </component>
 
-    <component name="mom6_symmetric" requires="fms" paths="mom6/src/MOM6/config_src/memory/dynamic_symmetric mom6/src/MOM6/config_src/drivers/FMS_cap mom6/src/MOM6/src/*/ mom6/src/MOM6/src/*/*/ mom6/src/MOM6/config_src/external/ODA_hooks mom6/src/MOM6/config_src/external/stochastic_physics mom6/src/MOM6/config_src/external/drifters mom6/src/MOM6/config_src/external/database_comms mom6/src/ocean_BGC/generic_tracers mom6/src/ocean_BGC/mocsy/src mom6/src/MOM6/pkg/GSW-Fortran/modules mom6/src/MOM6/pkg/GSW-Fortran/toolbox mom6/src/MOM6/config_src/infra/FMS2">
+    <component name="mom6_symmetric" requires="fms" paths="mom6/src/MOM6/config_src/memory/dynamic_symmetric mom6/src/MOM6/config_src/drivers/FMS_cap mom6/src/MOM6/src/*/ mom6/src/MOM6/src/*/*/ mom6/src/MOM6/config_src/external/MARBL mom6/src/MOM6/config_src/external/ODA_hooks mom6/src/MOM6/config_src/external/stochastic_physics mom6/src/MOM6/config_src/external/drifters mom6/src/MOM6/config_src/external/database_comms mom6/src/ocean_BGC/generic_tracers mom6/src/ocean_BGC/mocsy/src mom6/src/MOM6/pkg/GSW-Fortran/modules mom6/src/MOM6/pkg/GSW-Fortran/toolbox mom6/src/MOM6/config_src/infra/FMS2">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
               <codeBase version="$(MOM6_GIT_TAG)"> CEFI-regional-MOM6.git </codeBase>
         <csh><![CDATA[
