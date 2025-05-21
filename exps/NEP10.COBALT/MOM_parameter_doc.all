@@ -166,6 +166,8 @@ WRITE_GEOM = 0                  ! default = 1
                                 ! If =0, never write the geometry and vertical grid files. If =1, write the
                                 ! geometry and vertical grid files only for a new simulation. If =2, always
                                 ! write the geometry and vertical grid files. Other values are invalid.
+GEOM_FILE = "ocean_geometry"    ! default = "ocean_geometry"
+                                ! The file into which to write the ocean geometry.
 USE_DBCLIENT = False            !   [Boolean] default = False
                                 ! If true, initialize a client to a remote database that can be used for online
                                 ! analysis and machine-learning inference.
@@ -203,6 +205,9 @@ NIHALO = 4                      ! default = 4
 NJHALO = 4                      ! default = 4
                                 ! The number of halo points on each side in the y-direction.  How this is set
                                 ! varies with the calling component and static or dynamic memory configuration.
+SAVE_UNMASKED_GEOM_FILE = False !   [Boolean] default = False
+                                ! If true and a mask table is used, create an unmasked MOM domain that is saved
+                                ! in the ocean geometry file.
 
 ! === module MOM_hor_index ===
 ! Sets the horizontal array index types.
@@ -488,6 +493,13 @@ TFREEZE_FORM = "MILLERO_78"     ! default = "LINEAR"
                                 ! TFREEZE_FORM determines which expression should be used for the freezing
                                 ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS_POLY",
                                 ! "TEOS10"
+TFREEZE_S_IS_PRACS = True       !   [Boolean] default = True
+                                ! When True, the model will check if the model internal salinity is practical
+                                ! salinity.  If the model uses absolute salinity, a conversion will be applied.
+TFREEZE_T_IS_POTT = True        !   [Boolean] default = True
+                                ! When True, the model will check if the model internal temperature is potential
+                                ! temperature.  If the model uses conservative temperature, a conversion will be
+                                ! applied.
 
 ! === module MOM_restart ===
 PARALLEL_RESTARTFILES = False   !   [Boolean] default = False
@@ -525,6 +537,8 @@ USE_RGC_TRACER = False          !   [Boolean] default = False
                                 ! If true, use the RGC_tracer tracer package.
 USE_IDEAL_AGE_TRACER = False    !   [Boolean] default = False
                                 ! If true, use the ideal_age_example tracer package.
+USE_MARBL_TRACERS = False       !   [Boolean] default = False
+                                ! If true, use the MARBL tracer package.
 USE_REGIONAL_DYES = False       !   [Boolean] default = False
                                 ! If true, use the regional_dyes tracer package.
 USE_OIL_TRACER = False          !   [Boolean] default = False
@@ -700,6 +714,10 @@ REMAP_VEL_MASK_BBL_THICK = -0.001 !   [m] default = -0.001
                                 ! A thickness of a bottom boundary layer below which velocities in thin layers
                                 ! are zeroed out after remapping, following practice with Hybgen remapping, or a
                                 ! negative value to avoid such filtering altogether.
+REMAP_VEL_CONSERVE_KE = False   !   [Boolean] default = False
+                                ! If true, a correction is applied to the baroclinic component of velocity after
+                                ! remapping so that total KE is conserved. KE may not be conserved when
+                                ! (CS%BBL_h_vel_mask > 0.0) .and. (CS%h_vel_mask > 0.0)
 
 ! === module MOM_state_initialization ===
 FATAL_INCONSISTENT_RESTART_TIME = False !   [Boolean] default = False
@@ -973,8 +991,6 @@ MEKE_GM_SRC_ALT = False         !   [Boolean] default = False
 MEKE_GEOMETRIC = False          !   [Boolean] default = False
                                 ! If true, uses the GM coefficient formulation from the GEOMETRIC framework
                                 ! (Marshall et al., 2012).
-USE_KH_IN_MEKE = False          !   [Boolean] default = False
-                                ! If true, uses the thickness diffusivity calculated here to diffuse MEKE.
 USE_GME = False                 !   [Boolean] default = False
                                 ! If true, use the GM+E backscatter scheme in association with the Gent and
                                 ! McWilliams parameterization.
@@ -1014,7 +1030,8 @@ STORE_CORIOLIS_ACCEL = True     !   [Boolean] default = True
                                 ! If true, calculate the Coriolis accelerations at the end of each timestep for
                                 ! use in the predictor step of the next split RK2 timestep.
 FPMIX = False                   !   [Boolean] default = False
-                                ! If true, apply profiles of momentum flux magnitude and  direction
+                                ! If true, add non-local momentum flux increments and diffuse down the Eulerian
+                                ! gradient.
 VISC_REM_BUG = True             !   [Boolean] default = True
                                 ! If true, visc_rem_[uv] in split mode is incorrectly calculated or accounted
                                 ! for in two places. This parameter controls the defaults of two individual
@@ -1636,7 +1653,11 @@ USE_MLD_GRID = False            !   [Boolean] default = False
 MLE_USE_PBL_MLD = True          !   [Boolean] default = False
                                 ! If true, the MLE parameterization will use the mixed-layer depth provided by
                                 ! the active PBL parameterization. If false, MLE will estimate a MLD based on a
-                                ! density difference with the surface using the parameter MLE_DENSITY_DIFF.
+                                ! density difference with the surface using the parameter MLE_DENSITY_DIFF,
+                                ! unless BODNER_DETECT_MLD is true.
+BODNER_DETECT_MLD = False       !   [Boolean] default = False
+                                ! If true, the Bodner parameterization will use the mixed-layer depth detected
+                                ! via the density difference criterion MLE_DENSITY_DIFF.
 
 ! === module MOM_diagnostics ===
 DIAG_EBT_MONO_N2_COLUMN_FRACTION = 0.0 !   [nondim] default = 0.0
@@ -2143,6 +2164,7 @@ OPACITY_SCHEME = "MANIZZA_05"   ! default = "MANIZZA_05"
                                 ! into opacities. Currently valid options include:
                                 !        MANIZZA_05 - Use Manizza et al., GRL, 2005.
                                 !        MOREL_88 - Use Morel, JGR, 1988.
+                                !        OHLMANN_03 - Use Ohlmann, J Clim, 2003. (only use if dz(1)>2.0m)
 BLUE_FRAC_SW = 0.5              !   [nondim] default = 0.5
                                 ! The fraction of the penetrating shortwave radiation that is in the blue band.
 PEN_SW_NBANDS = 3               ! default = 1
@@ -2280,9 +2302,12 @@ ENERGYSAVEDAYS_GEOMETRIC = 0.0  !   [days] default = 0.0
 
 ! === module ocean_stochastics_init ===
 DO_SPPT = False                 !   [Boolean] default = False
-                                ! If true, then stochastically perturb the thermodynamic tendemcies of T,S, amd
+                                ! If true, then stochastically perturb the thermodynamic tendencies of T,S, amd
                                 ! h.  Amplitude and correlations are controlled by the nam_stoch namelist in the
                                 ! UFS model only.
+DO_SKEB = False                 !   [Boolean] default = False
+                                ! If true, then stochastically perturb the currents using the stochastic kinetic
+                                ! energy backscatter scheme.
 PERT_EPBL = False               !   [Boolean] default = False
                                 ! If true, then stochastically perturb the kinetic energy production and
                                 ! dissipation terms.  Amplitude and correlations are controlled by the nam_stoch
