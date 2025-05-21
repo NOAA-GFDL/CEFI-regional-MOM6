@@ -569,6 +569,17 @@ ca_2_n_calc = 0.05              !   [mol cadet_calc mol org. C-1] default = 0.05
                                 ! formers
 caco3_sat_max = 10.0            !   [none] default = 10.0
                                 ! cap for positive scaling of caco3 detritus prod with saturation state
+do_ner_ca_bur = False           !   [Boolean] default = False
+                                ! logical flag to include neritic CaCO3 burial
+do_resp_ca_diss = False         !   [Boolean] default = False
+                                ! logical flag to include CaCO3 dissolution due to undersaturation around
+                                ! sinking particles
+resp_ca_2_n_arag = 0.0          !   [mol dissolved arag mol org. C-1] default = 0.0
+                                ! ratio of aragonite dissolution to organic matter remineralization
+                                ! (respiration-driven)
+resp_ca_2_n_calc = 0.0          !   [mol dissolved calc mol org. C-1] default = 0.0
+                                ! ratio of calcite dissolution to organic matter remineralization
+                                ! (respiration-driven)
 k_o2 = 8.0E-06                  !   [mol O2 kg-1] default = 8.0E-06
                                 ! O2 half-saturation for remineralization
 k_no3_denit = 1.0E-06           !   [mol NO3 kg-1] default = 1.0E-06
@@ -667,7 +678,7 @@ gamma_sldop = 0.0111111111111111 !   [day-1] default = 0.0111111111111111
                                 ! rate constant for converting semi-labile DOP to labile DOP at 0 deg. C
 doc_background = 4.0E-05        !   [moles kg-1] default = 4.0E-05
                                 ! background refractory dissolved organic carbon concentration
-gamma_nitrif = 1.3503086419753085 !   [(moles kg)-1 sec-1] default = 1.3503086419753085
+gamma_nitrif = 1.3503086419753085 !   [day-1 (mol N kg-1)-(nitrif_b-1)] default = 1.3503086419753085
                                 ! nitrification rate constant
 knh3_nitrif = 3.1E-09           !   [mol kg-1] default = 3.1E-09
                                 ! nitrification half-saturation
@@ -677,6 +688,8 @@ k_o2_nit = 3.9E-06              !   [mol O2 kg-1] default = 3.9E-06
                                 ! oxygen half-saturation constant for nitrification
 o2_min_nit = 1.0E-08            !   [mol O2 kg-1] default = 1.0E-08
                                 ! Minimum oxygen level for nitrification
+nitrif_b = 2.0                  !   [unitless] default = 2.0
+                                ! Ammonium exponent for nitrification
 gamma_nh4amx = 0.0              !   [day-1] default = 0.0
                                 ! annamox rate constant
 o2_max_amx = 4.0E-06            !   [mol O2 kg-1] default = 4.0E-06
