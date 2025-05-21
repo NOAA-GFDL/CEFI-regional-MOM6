@@ -38,11 +38,11 @@
 	path = src/land_null
 	url = https://github.com/NOAA-GFDL/land_null.git
 	branch = 2025.02
-[submodule "src/MOM6"]
-	path = src/MOM6
-	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
-	branch = dev/cefi
 [submodule "src/ocean_BGC"]
 	path = src/ocean_BGC
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
+	branch = dev/cefi
+[submodule "src/MOM6"]
+	path = src/MOM6
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MOM6.git
 	branch = dev/cefi
