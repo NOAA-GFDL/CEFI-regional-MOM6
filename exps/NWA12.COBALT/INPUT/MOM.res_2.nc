@@ -1,0 +1,1 @@
+../../datasets/nwa12_input/MOM.res_2.nc

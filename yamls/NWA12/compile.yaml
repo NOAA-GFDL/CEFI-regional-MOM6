@@ -18,6 +18,7 @@ compile:
                  mom6/src/MOM6/config_src/drivers/FMS_cap,
                  mom6/src/MOM6/src/*/,
                  mom6/src/MOM6/src/*/*/,
+                 mom6/src/MOM6/config_src/external/MARBL,
                  mom6/src/MOM6/config_src/external/ODA_hooks,
                  mom6/src/MOM6/config_src/external/stochastic_physics,
                  mom6/src/MOM6/config_src/external/drifters,

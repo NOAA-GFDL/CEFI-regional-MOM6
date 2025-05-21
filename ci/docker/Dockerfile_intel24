@@ -67,14 +67,14 @@ WORKDIR /apps/CEFI-regional-MOM6
 COPY . /apps/CEFI-regional-MOM6
 # Installation
 RUN cd /apps/CEFI-regional-MOM6/builds && \
-    ./linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
+    ./linux-build.bash -m docker -p linux-intel24 -t repro -f mom6sis2
 ############ Create the final stage of the container build ############
 FROM intel/oneapi-runtime:2024.2.1-0-devel-ubuntu22.04 as final
 ## copy libs and executable from builder
 COPY --from=builder /opt/software /opt/software
 COPY --from=builder /opt/views /opt/views
 # This will include the code and all of the build from the builder stage
-COPY --from=builder /apps/CEFI-regional-MOM6/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2 /apps/CEFI-regional-MOM6/exec/MOM6SIS2
+COPY --from=builder /apps/CEFI-regional-MOM6/builds/build/docker-linux-intel24/ocean_ice/repro/MOM6SIS2 /apps/CEFI-regional-MOM6/exec/MOM6SIS2
 ## Set up the run time environment
 ENV LD_LIBRARY_PATH /opt/views/view/lib:$LD_LIBRARY_PATH
 ENV LIBRARY_PATH /opt/views/view/lib:$LIBRARY_PATH

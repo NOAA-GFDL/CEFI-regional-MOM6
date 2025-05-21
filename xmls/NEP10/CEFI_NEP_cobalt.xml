@@ -39,13 +39,13 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="RELEASE" value="2024.02"/>
 
   <!-- git tag for FMS source code -->
-  <property name="FMS_GIT_TAG" value="2025.01.02"/>
+  <property name="FMS_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for coupler source code -->
-  <property name="CPL_GIT_TAG" value="2025.01"/>
+  <property name="CPL_GIT_TAG" value="2025.02"/>
 
   <!-- git tag for null (atmos_null, land_null, etc) source code -->
-  <property name="NULL_TAG" value="2023.04"/>
+  <property name="NULL_TAG" value="2025.02"/>
 
   <!-- git tag for ocean_shared source code -->
   <property name="OCEAN_BGC_GIT_TAG" value="dev/cefi"/>
@@ -133,7 +133,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
       </compile>
     </component>
 
-    <component name="mom6_symmetric" requires="fms" paths="mom6/src/MOM6/config_src/memory/dynamic_symmetric mom6/src/MOM6/config_src/drivers/FMS_cap mom6/src/MOM6/src/*/ mom6/src/MOM6/src/*/*/ mom6/src/MOM6/config_src/external/ODA_hooks mom6/src/MOM6/config_src/external/stochastic_physics mom6/src/MOM6/config_src/external/drifters mom6/src/MOM6/config_src/external/database_comms mom6/src/ocean_BGC/generic_tracers mom6/src/ocean_BGC/mocsy/src mom6/src/MOM6/pkg/GSW-Fortran/modules mom6/src/MOM6/pkg/GSW-Fortran/toolbox mom6/src/MOM6/config_src/infra/FMS2">
+    <component name="mom6_symmetric" requires="fms" paths="mom6/src/MOM6/config_src/memory/dynamic_symmetric mom6/src/MOM6/config_src/drivers/FMS_cap mom6/src/MOM6/src/*/ mom6/src/MOM6/src/*/*/ mom6/src/MOM6/config_src/external/MARBL mom6/src/MOM6/config_src/external/ODA_hooks mom6/src/MOM6/config_src/external/stochastic_physics mom6/src/MOM6/config_src/external/drifters mom6/src/MOM6/config_src/external/database_comms mom6/src/ocean_BGC/generic_tracers mom6/src/ocean_BGC/mocsy/src mom6/src/MOM6/pkg/GSW-Fortran/modules mom6/src/MOM6/pkg/GSW-Fortran/toolbox mom6/src/MOM6/config_src/infra/FMS2">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
               <codeBase version="$(MOM6_GIT_TAG)">CEFI-regional-MOM6.git </codeBase>
         <csh><![CDATA[
@@ -167,7 +167,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
     <component name="land_null" paths="mom6/src/land_null" requires="fms">
       <description domainName="NA" communityName="NA" communityVersion="NA" communityGrid="NA"/>
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(NULL_TAG)"> land_null.git </codeBase>
+        <codeBase version="$(CPL_GIT_TAG)"> land_null.git </codeBase>
       </source>
     </component>
 
@@ -369,23 +369,23 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
 "LND", "drag_q",             "",       "",                           "none",     0.0
 "LND", "p_surf",             "",       "",                           "none",     1.0e5
 
-"OCN", "runoff_ldon_flux_ice_ocn",  "LDON_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_sldon_flux_ice_ocn", "SLDON_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_srdon_flux_ice_ocn", "SRDON_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_pdet_flux_ice_ocn",  "PDET_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_ndet_flux_ice_ocn",  "NDET_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_ldop_flux_ice_ocn",  "LDOP_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_sldop_flux_ice_ocn", "SLDOP_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_srdop_flux_ice_ocn", "SRDOP_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_no3_flux_ice_ocn",   "NO3_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_po4_flux_ice_ocn",   "PO4_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_fed_flux_ice_ocn",   "FED_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_alk_flux_ice_ocn",   "ALK_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_dic_flux_ice_ocn",   "DIC_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_nh4_flux_ice_ocn",   "NH4_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_fedet_flux_ice_ocn", "FEDET_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc",  "none",      1.0e-3
-"OCN", "runoff_o2_flux_ice_ocn",    "O2_CONC",     "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc", "none",      1.0e-3
-"OCN", "runoff_sio4_flux_ice_ocn",  "SI_CONC",     "./INPUT/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc", "none",      1.0e-3
+"OCN", "runoff_ldon_flux_ice_ocn",  "LDON_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_sldon_flux_ice_ocn", "SLDON_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_srdon_flux_ice_ocn", "SRDON_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_pdet_flux_ice_ocn",  "PDET_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_ndet_flux_ice_ocn",  "NDET_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_ldop_flux_ice_ocn",  "LDOP_CONC",  "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_sldop_flux_ice_ocn", "SLDOP_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_srdop_flux_ice_ocn", "SRDOP_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_no3_flux_ice_ocn",   "NO3_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_po4_flux_ice_ocn",   "PO4_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_fed_flux_ice_ocn",   "FED_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_alk_flux_ice_ocn",   "ALK_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_dic_flux_ice_ocn",   "DIC_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_nh4_flux_ice_ocn",   "NH4_CONC",   "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_fedet_flux_ice_ocn", "FEDET_CONC", "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc",  "none",      1.0e-3
+"OCN", "runoff_o2_flux_ice_ocn",    "O2_CONC",     "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc", "none",      1.0e-3
+"OCN", "runoff_sio4_flux_ice_ocn",  "SI_CONC",     "./INPUT/RiverNutrients_Combined_Q100_NEP10k.nc", "none",      1.0e-3
 "OCN", "runoff_lith_flux_ice_ocn",  "",           "",                                                             "none",     13.0e-3
 #
 "OCN", "dry_dep_fed_flux_ice_ocn",  "dryfe",         "./INPUT/esm4_dryfe_climo_1993-2014.nc",                       "bilinear", -1.0
@@ -892,7 +892,7 @@ endif
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
 	<dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
-        <dataSource site="ncrc">$(NEP_WORLD)/runoff/RiverNutrients_Combined_Q100_NEP10k_plusSi.nc</dataSource>
+        <dataSource site="ncrc">$(NEP_WORLD)/runoff/RiverNutrients_Combined_Q100_NEP10k.nc</dataSource>
       </dataFile>
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NEP_WORLD)/global_input/depflux_total.mean.1860.nc</dataSource>

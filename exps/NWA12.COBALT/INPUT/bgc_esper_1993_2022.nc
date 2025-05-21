@@ -1,1 +1,0 @@
-../../datasets/nwa12_input/bgc_esper_1993_2022.nc

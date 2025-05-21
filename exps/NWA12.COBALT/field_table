@@ -19,7 +19,7 @@
 ###.................................................
 "namelists","ocean_mod","generic_COBALT"
 enforce_src_info = f
-alk_obc_src_file_name = bgc_esper_1993_2022.nc
+alk_obc_src_file_name = esper_glorys_v20250305.nc
 alk_obc_lfac_in = 0.03
 alk_obc_lfac_out = 1.0
 cadet_arag_obc_src_file_name = bgc_cobalt.nc
@@ -28,7 +28,7 @@ cadet_ararg_obc_lfac_out = 1.0
 cadet_calc_obc_src_file_name = bgc_cobalt.nc
 cadet_calc_obc_lfac_in = 0.03
 cadet_calc_obc_lfac_out = 1.0
-dic_obc_src_file_name = bgc_esper_1993_2022.nc
+dic_obc_src_file_name = esper_glorys_v20250305.nc
 dic_obc_lfac_in = 0.03
 dic_obc_lfac_out = 1.0
 dic14_obc_src_file_name = bgc_zero.nc

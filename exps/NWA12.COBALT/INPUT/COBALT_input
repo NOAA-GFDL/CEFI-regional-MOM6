@@ -1,3 +1,4 @@
+! Put the contents of your COBALT_input file here
 do_case2_mod = True
 scale_burial = 1.0
 z_burial = 20.0

@@ -1,0 +1,18 @@
+directories:
+    history_dir:  !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, history]
+    pp_dir:       !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, pp]
+    ptmp_dir:     "/ptmp/$USER/"
+
+postProcess:
+    settings:
+        history_segment: "P1Y"
+        site: "ppan"
+        pp_start: *PP_START_YEAR
+        pp_stop: *PP_END_YEAR
+        pp_chunk_a: *PP_CHUNK_A
+        pp_chunk_b: *PP_CHUNK_B
+        pp_grid_spec: *GRID_SPEC
+    switches:
+        do_analysis: False
+        clean_work: True
+        do_timeavgs: False
