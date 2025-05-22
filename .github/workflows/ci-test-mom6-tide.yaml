@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: clouden90/1d_mom6_cobalt:base 
+      image: clouden90/1d_mom6_cobalt:withdata 
       options: --user=root
         
     env:
@@ -29,10 +29,10 @@ jobs:
           name: mom6solo_repro
           path: ./temp-artifact 
 
-      - name: Download nwa-tide dataset
+      - name: Copy model dataset from Docker image
         working-directory: ./exps
         run: |
-          wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/nwa12_tideonly_ci_datasets.tar.gz && tar -zxvf nwa12_tideonly_ci_datasets.tar.gz
+          ln -fs /opt/datasets ./
 
       - name: Run MOM6 Tide CI Test
         working-directory: ./exps/NWA12.tidesonly 

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: clouden90/1d_mom6_cobalt:base
+      image: clouden90/1d_mom6_cobalt:withdata
       options: --user=root
         
     env:
@@ -33,10 +33,10 @@ jobs:
           name: mom6sis2_debug
           path: ./temp-artifact 
 
-      - name: Download 1d model dataset
+      - name: Copy model dataset from Docker image
         working-directory: ./exps
-        run: | 
-          wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
+        run: |
+          ln -fs /opt/datasets ./
 
       - name: Run 1D toy case and check repro across restarts
         working-directory: ./exps/OM4.single_column.COBALT
