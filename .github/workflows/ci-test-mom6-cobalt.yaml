@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: clouden90/1d_mom6_cobalt:base
+      image: clouden90/1d_mom6_cobalt:withdata
       options: --user=root
         
     env:
@@ -36,10 +36,7 @@ jobs:
       - name: Copy model dataset from Docker image
         working-directory: ./exps
         run: |
-          docker pull clouden90/cefi-ci-data-image:latest
-          DATA_CONTAINER_ID=$(docker create clouden90/cefi-ci-data-image:latest)
-          docker cp "$DATA_CONTAINER_ID":/data/datasets ./datasets/
-          docker rm "$DATA_CONTAINER_ID"
+          ln -fs /opt/datasets ./datasets/
 
       - name: Run 1D toy case and check repro across restarts
         working-directory: ./exps/OM4.single_column.COBALT
