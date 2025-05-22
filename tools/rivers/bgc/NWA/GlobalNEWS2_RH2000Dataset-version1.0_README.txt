@@ -1,0 +1,61 @@
+Global NEWS 2 River Nutrient Exports
+
+Global NEWS 2 model run:  "realistic hydrology" for the reference year 2000
+	Dataset version 1.0. 2011-8-1
+
+Please read the associated documentation file README_GlobalNEWS2ModeledExports_RH2000.doc
+for detailed information about this dataset and its use.
+See Mayorga et al (2010) for complete details on Global NEWS 2 and this model run; for the DSi sub-model,
+see Beusen et al (2009).
+	For questions and additional information, please contact:
+	Emilio Mayorga, Ph.D.          mayorga@apl.washington.edu
+	Applied Physics Laboratory, University of Washington, Seattle, WA  USA
+
+Data Dictionary
+
+name	    description	                     unit
+
+basins sheet
+
+basinid	        STN-30p vers. 6.01 basin identification code (unique integer ID)	                    -
+basinname	    STN-30p basin name, with some corrections applied by the Global NEWS group	            name
+A	            Basin area, based on total grid cell area in the basin, recalculated for Global NEWS 2	km2
+land_fr	        Fraction of total basin area made up of land, calculated for Global NEWS 2	            fraction
+basincellcnt	Number of 0.5 deg grid cells in the basin	                                            count
+mouth_lon	    Longitude of basin mouth cell center	                                                degrees
+mouth_lat	    Latitude of basin mouth cell center	                                                    degrees
+continent	    Continent names, with assignments as described in Mayorga et al (2010)	                name
+ocean	        Ocean drainage	                                                                        name
+sea	            Sea drainage	                                                                        name
+seabasin	    Seabasin drainage	                                                                    name
+
+hydrology sheet
+
+basinid	        STN-30p vers. 6.01 basin identification code (unique integer ID)	        -
+Precip	        Annual precipitation	                                                    mm/yr
+Rnat	        Annual "natural" runoff	                                                    mm/yr
+Qact	        Annual "actual" (anthropogenically disturbed) discharge at the basin mouth	km3/yr
+Qnat	        Annual "natural" discharge at the basin mouth	                            km3/yr
+
+river exports sheet
+
+basinid	STN-30p vers. 6.01 basin identification code (unique integer ID)	        -
+Yld_<NF>	          Modeled nutrient form yield, in element mass units (e.g., kg N/km2/yr)	kg/km2/yr
+Ld_<NF>	              Modeled nutrient form load, in element mass units (e.g., Mg N/yr)	        Mg/yr
+Yld_TSS	              Modeled TSS yield	                                                        Mg/km2/yr
+Ld_TSS	              Modeled TSS load	                                                        Mg/yr
+
+continent, ocean, sea and seabasin are based on STN-30p assignments, with some corrections or modifications 
+applied by the Global NEWS group. ocean, sea and seabasin are intended to be a hierarchical set of regions: 
+
+ocean > sea > seabasin
+
+continent:  Africa, Australia, Europe, North America, North Asia, Oceania, Oceans, South America, South Asia
+   For continents, "Oceans" represents small, remote islands; total loads from these islands are trivial at the global scale,
+   but these land cells and their continent label were present in the source basins dataset and are included for completeness.
+
+ocean:  Arctic Ocean, Atlantic Ocean, Indian Ocean, Mediterranean+Black Sea, Pacific Ocean, Land
+   "Land" is the label used for endorheic basins; there are 164 such basins.
+
+<NF>: The nutrient form (not including TSS): DIN, DIP, DON, DOP, DOC, DSi, PN, PP, POC
+
