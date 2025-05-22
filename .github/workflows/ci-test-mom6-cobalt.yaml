@@ -33,10 +33,13 @@ jobs:
           name: mom6sis2_debug
           path: ./temp-artifact 
 
-      - name: Download 1d model dataset
+      - name: Copy model dataset from Docker image
         working-directory: ./exps
-        run: | 
-          wget -q ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
+        run: |
+          docker pull clouden90/cefi-ci-data-image:latest
+          DATA_CONTAINER_ID=$(docker create clouden90/cefi-ci-data-image:latest)
+          docker cp "$DATA_CONTAINER_ID":/data/datasets ./datasets/
+          docker rm "$DATA_CONTAINER_ID"
 
       - name: Run 1D toy case and check repro across restarts
         working-directory: ./exps/OM4.single_column.COBALT
