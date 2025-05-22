@@ -6,9 +6,9 @@
 ############
 # Commands Macros
 ############
-FC = mpiifx
+FC = mpiifort
 CC = mpiicx
-LD = mpiifx
+LD = mpiifort
 
 #######################
 # Build target macros
