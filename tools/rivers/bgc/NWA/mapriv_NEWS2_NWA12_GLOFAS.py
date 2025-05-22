@@ -149,13 +149,7 @@ rivers_df = pd.concat(frames, axis=1)
 
 # Sort rivers by discharge
 # TODO: Test script without mergesort
-
 rivers_df_sort = rivers_df.sort_values(by="Qact",kind="mergesort") # merge sort preserves order of equal elements, matching output from Matlab
-
-# Total N and P load diagnostics
-# NOTE: need to use names of vars in original csv, not names of array in matlab script
-N_load_sort = rivers_df_sort["Ld_DIN"] + rivers_df_sort["Ld_DON"] + rivers_df_sort["Ld_PN"]
-P_load_sort = rivers_df_sort["Ld_DIP"] + rivers_df_sort["Ld_DOP"] + rivers_df_sort["Ld_PP"]
 
 # Calculate concentrations
 # Loads are in moles N sec-1, Q in m3 s-1; conc in moles N m-3
@@ -173,7 +167,7 @@ cols = ["din_conc","don_conc","pn_conc","dip_conc","dop_conc","pp_conc","si_conc
 conc_matrix = pd.DataFrame(0, columns = cols, index = np.arange( Q_mod_len), dtype=conc["Ld_DIN"].dtype)
 
 # NOTE: Numpy stores elements in Row-Major order, while MATLAB stores them in
-# Column major order. As a result, elements will NOT be in the same order!
+# column major order. As a result, elements will NOT be in the same order!
 lon_mod_runoff_vec = lon_mod[aa]
 lat_mod_runoff_vec = lat_mod[aa]
 
@@ -227,15 +221,14 @@ bb = ( conc_matrix > 0 )
 
 # Unfortunately, need to do interpolation manually for each of the columns here because the
 # PP and PN columns mask different values than the other columns
+# Also, must round lat/lon values to 4 decimal places, imprecision in last few values will
+# cause python to pickup different values that matlab script
 # TODO: Find some way passing unique coordinates to each column to simplify this step
+# TODO: Determine if we have a preference in values pickup up by python vs values picked up by
+# Matlab
 for col in bb.columns:
-    interp = griddata(mod_runoff_matrix[ bb[col] ], conc_matrix[col][ bb[col] ].values, mod_runoff_matrix[ aa[col] ], method = "nearest")
+    interp = griddata( np.round(mod_runoff_matrix[ bb[col] ] , 4) , conc_matrix[col][ bb[col] ].values, mod_runoff_matrix[ aa[col] ], method = "nearest")
     conc_matrix.loc[ aa[col], col ] = interp
-
-# Manually change values that diverge from MATLAB interpolation
-# TODO: Figure out why this divergence occurs
-conc_matrix.loc[75] = conc_matrix.loc[71]
-conc_matrix.loc[78] = conc_matrix.loc[71]
 
 # Initialize 2D concentration arrays; these are the ones read into MOM6 to
 # specify the nutrient concentrations of river inputs.
@@ -307,4 +300,4 @@ ds = xr.Dataset(coords = coords,
 ds.time.attrs = {"calendar":"NOLEAP","calendar_type":"NOLEAP","modulo":"T","units":"days since 1900-1-1 0:00:00","time_origin":"01-JAN-1990 00:00:00"}
 
 # Write dataset
-ds.to_netcdf("RiverNutrients_GlobalNEWS2_plusFe_Q100_GLOFAS_NWA12_PYTHON.nc",unlimited_dims="time")
+ds.to_netcdf("RiverNutrients_GlobalNEWS2_plusFe_Q100_GLOFAS_NWA12.nc",unlimited_dims="time")
