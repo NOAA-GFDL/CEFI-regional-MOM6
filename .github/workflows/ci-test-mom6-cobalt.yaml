@@ -36,7 +36,7 @@ jobs:
       - name: Copy model dataset from Docker image
         working-directory: ./exps
         run: |
-          ln -fs /opt/datasets ./datasets/
+          ln -fs /opt/datasets ./
 
       - name: Run 1D toy case and check repro across restarts
         working-directory: ./exps/OM4.single_column.COBALT

@@ -32,7 +32,7 @@ jobs:
       - name: Copy model dataset from Docker image
         working-directory: ./exps
         run: |
-          ln -fs /opt/datasets ./datasets/
+          ln -fs /opt/datasets ./
 
       - name: Run MOM6 Tide CI Test
         working-directory: ./exps/NWA12.tidesonly 
