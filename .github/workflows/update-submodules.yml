@@ -1,9 +1,9 @@
 on:
   schedule:
     - cron: '0 12 * * 3'  # Every Wednesday at 12:00 UTC
-   push: # Consider if you really need this trigger for an auto-update branch.
-     branches:
-       - auto-update
+  push:
+    branches:
+      - auto-update
   workflow_dispatch:
 
 jobs:
