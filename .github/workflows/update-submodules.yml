@@ -1,9 +1,9 @@
 on:
   schedule:
     - cron: '0 12 * * 3'  # Every Wednesday at 12:00 UTC
-  push:
-    branches:
-      - auto-update
+#  push:
+#    branches:
+#      - auto-update
   workflow_dispatch:
 
 jobs:
