@@ -1,9 +1,9 @@
 on:
   schedule:
     - cron: '0 12 * * 3'  # Every Wednesday at 12:00 UTC
-  push:
-    branches:
-      - auto-update
+  # push: # Consider if you really need this trigger for an auto-update branch.
+  #   branches:
+  #     - auto-update
   workflow_dispatch:
 
 jobs:
@@ -11,73 +11,90 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository on base branch
         uses: actions/checkout@v4
         with:
+          ref: main # Explicitly checkout your base branch (e.g., main or develop)
           submodules: recursive
-          fetch-depth: 0
+          fetch-depth: 0 # Needed for accurate submodule hash comparison
 
       - name: Set up git user
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Checkout base branch
-        run: |
-          git fetch origin main
-          git checkout main
-
       - name: Generate branch name
         id: vars
         run: |
+          # Generates a unique branch name including the date
           echo "branch_name=auto/update-submodules-$(date +%Y%m%d)" >> $GITHUB_OUTPUT
 
       - name: Check and update submodules
         id: update
         run: |
-          set -e
+          set -e # Exit immediately if a command exits with a non-zero status.
           updated=0
-          updated_submodules=""
-          branch_name="${{ steps.vars.outputs.branch_name }}"
+          updated_submodules_details="" # Variable to store details of updated submodules
 
-          git checkout -b "$branch_name"
+          # IMPORTANT: Ensure you are on the base branch (e.g., main) before modifying submodules.
+          # The initial checkout step should handle this.
+          # git checkout main # This line is usually redundant if `ref: main` is used above.
 
-          for submodule in src/MOM6 src/ocean_BGC; do
-            echo "Checking submodule: $submodule"
-            cd $submodule
+          for submodule_path in src/MOM6 src/ocean_BGC; do
+            echo "Checking submodule: $submodule_path"
+            
+            # Use pushd/popd for safer directory navigation
+            pushd "$submodule_path"
 
+            # Fetch the specific branch for the submodule
             git fetch origin dev/cefi
             current_hash=$(git rev-parse HEAD)
             latest_hash=$(git rev-parse origin/dev/cefi)
 
             if [ "$current_hash" != "$latest_hash" ]; then
-              echo "Updating $submodule from $current_hash to $latest_hash"
-              git checkout origin/dev/cefi
-              cd -
-              git add $submodule
+              echo "Updating $submodule_path from $current_hash to $latest_hash"
+              # Checkout the specific commit from the fetched branch
+              # This puts the submodule in a detached HEAD state at the desired commit
+              git checkout "$latest_hash" 
               updated=1
-              updated_submodules="$updated_submodules\n- $submodule"
+              # Add details of the update for the PR body
+              updated_submodules_details="${updated_submodules_details}\n- ${submodule_path} (updated to commit ${latest_hash})"
             else
-              echo "$submodule is already up to date."
-              cd -
+              echo "$submodule_path is already up to date."
             fi
+            
+            popd # Return to the parent repository's root directory
+            # DO NOT `git add $submodule_path` here.
+            # The `create-pull-request` action will detect changes in the submodule pointer.
           done
 
-          echo "updated=$updated" >> $GITHUB_OUTPUT
-          updated_submodules_trimmed=$(echo -e "$updated_submodules" | sed '/^\s*$/d')
-          echo "updated_submodules=$updated_submodules_trimmed" >> $GITHUB_OUTPUT
+          echo "updated=${updated}" >> $GITHUB_OUTPUT
+          
+          # Prepare the multiline string for the PR body
+          # This uses a heredoc to correctly pass multiline strings to GITHUB_OUTPUT
+          echo "updated_submodules_body<<EOF" >> $GITHUB_OUTPUT
+          echo -e "${updated_submodules_details}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        # DO NOT `git checkout -b` or `git commit` in this step.
 
       - name: Create Pull Request
         if: steps.update.outputs.updated == '1'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Auto-update submodules to latest dev/cefi
-          title: Auto-update submodules to latest dev/cefi
-          body: |
-            This PR updates the following submodules to the latest commit on `dev/cefi`:
-            ${{ steps.update.outputs.updated_submodules }}
+          commit-message: |
+            Auto-update submodules to latest dev/cefi
 
+            Updates the following submodules:
+            ${{ steps.update.outputs.updated_submodules_body }}
+          title: "Auto-update submodules to latest dev/cefi (${{ steps.vars.outputs.branch_name }})"
+          body: |
+            This PR automatically updates the specified submodules to the latest commit on their `dev/cefi` branch.
+
+            **Updated Submodules:**
+            ${{ steps.update.outputs.updated_submodules_body }}
+
+            ---
             Auto-generated by GitHub Actions.
-          branch: ${{ steps.vars.outputs.branch_name }}
-          base: main  # or 'develop', if that's your main branch
+          branch: ${{ steps.vars.outputs.branch_name }} # The action will create this branch
+          base: main  # Ensure this is your actual base branch (e.g., main, develop)
