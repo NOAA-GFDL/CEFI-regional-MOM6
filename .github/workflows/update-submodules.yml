@@ -22,6 +22,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Checkout base branch
+        run: |
+          git fetch origin main
+          git checkout main
+
       - name: Generate branch name
         id: vars
         run: |
