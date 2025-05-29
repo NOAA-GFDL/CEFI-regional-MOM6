@@ -51,6 +51,8 @@ export APPTAINER_CONTAINLIBS="/usr/lib64/libcxi.so,/usr/lib64/libcxi.so.1,/usr/l
 echo "SET APPTAINER_BIND"
 export APPTAINER_BIND="/usr/share/libdrm,/var/spool/slurmd,/opt/cray,/opt/intel,${PWD},/etc/libibverbs.d,/usr/lib64/libibverbs,/usr/lib64/libnl3-200,${HOME}"
 
+export FI_VERBS_PREFER_XRC=0
+
 #
 if $USE_PROJ_SHARED; then
   echo "clean RESTART folders ..."
