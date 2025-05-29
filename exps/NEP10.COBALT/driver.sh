@@ -9,6 +9,19 @@
 #SBATCH --clusters=c6
 #SBATCH --account=ira-cefi
 
+# Default to not using shared project folders
+USE_PROJ_SHARED=false
+
+# Parse optional argument
+for arg in "$@"; do
+  case $arg in
+    --use-proj-shared)
+      USE_PROJ_SHARED=true
+      shift
+      ;;
+  esac
+done
+
 #
 ntasks1=2036
 
@@ -40,14 +53,18 @@ echo "SET APPTAINER_BIND"
 export APPTAINER_BIND="/usr/share/libdrm,/var/spool/slurmd,/opt/cray,/opt/intel,${PWD},/etc/libibverbs.d,/usr/lib64/libibverbs,/usr/lib64/libnl3-200,${HOME}"
 
 #
-echo "clean RESTART folders ..."
-rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs/*
-rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs/*
-rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst/*
+if $USE_PROJ_SHARED; then
+  echo "clean RESTART folders ..."
+  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs/*
+  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs/*
+  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst/*
+fi
 
 echo "run 32x80 48hrs test ..."
 ln -fs input.nml_48hr input.nml
-ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs ./RESTART
+if $USE_PROJ_SHARED; then
+  ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs ./RESTART
+fi
 srun --ntasks ${ntasks1} --export=ALL apptainer exec --writable-tmpfs $img ./execrunscript.sh > out1 2>err1
 mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
@@ -55,7 +72,9 @@ mv ocean.stats RESTART_48hrs
 #
 echo "run 32x80 24hrs test ..."
 ln -fs input.nml_24hr input.nml
-ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs ./RESTART
+if $USE_PROJ_SHARED; then
+  ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs ./RESTART
+fi
 srun --ntasks ${ntasks1} --export=ALL apptainer exec --writable-tmpfs $img ./execrunscript.sh > out2 2>err2
 mv RESTART RESTART_24hrs
 mv ocean.stats RESTART_24hrs
@@ -69,7 +88,9 @@ popd
 #
 echo "run 32x80 24hrs rst test ..."
 ln -fs input.nml_24hr_rst input.nml
-ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst ./RESTART
+if $USE_PROJ_SHARED; then
+  ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst ./RESTART
+fi
 srun --ntasks ${ntasks1} --export=ALL  apptainer exec --writable-tmpfs $img ./execrunscript.sh > out3 2>err3
 mv RESTART RESTART_24hrs_rst
 mv ocean.stats RESTART_24hrs_rst
@@ -94,9 +115,11 @@ done
 echo "All restart files are identical, PASS"
 
 #
-echo "clean RESTART folders now ..."
-rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs/*
-rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs/*
-rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst/*
+if $USE_PROJ_SHARED; then
+  echo "clean RESTART folders now ..."
+  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_48hrs/*
+  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs/*
+  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NEP10/RESTART_24hrs_rst/*
+fi
 
 echo "Test ended:  " `date`
