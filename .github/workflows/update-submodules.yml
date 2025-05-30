@@ -1,10 +1,14 @@
 on:
   schedule:
     - cron: '0 12 * * 3'  # Every Wednesday at 12:00 UTC
-#  push:
-#    branches:
-#      - auto-update
+  push:
+    branches:
+      - auto-update
   workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write    
 
 jobs:
   update-submodules:
@@ -81,7 +85,7 @@ jobs:
         if: steps.update.outputs.updated == '1'
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TRIGGER_CI }}
           commit-message: |
             Auto-update submodules to latest dev/cefi
 
