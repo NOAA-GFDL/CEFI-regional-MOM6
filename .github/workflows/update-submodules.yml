@@ -103,5 +103,4 @@ jobs:
           branch: ${{ steps.vars.outputs.branch_name }} # The action will create this branch
           base: main  # Ensure this is your actual base branch (e.g., main, develop)
           reviewers: |
-            yichengt900
             clouden90          
