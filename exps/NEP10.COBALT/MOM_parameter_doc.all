@@ -331,6 +331,8 @@ OBC_TIDE_N_CONSTITUENTS = 10    ! default = 0
 EXTERIOR_OBC_BUG = True         !   [Boolean] default = True
                                 ! If true, recover a bug in barotropic solver and other routines when boundary
                                 ! contitions interior to the domain are used.
+OBC_HOR_INDEXING_BUG = True     !   [Boolean] default = True
+                                ! If true, recover set of a horizontal indexing bugs in the OBC code.
 OBC_SEGMENT_001 = "J=N,I=N:0,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
 OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
@@ -2145,6 +2147,14 @@ LT_MOD_LAC4 = 0.8               !   [nondim] default = 0.95
 LT_MOD_LAC5 = 0.8               !   [nondim] default = 0.95
                                 ! Coefficient for modification of Langmuir number due to ratio of Ekman to
                                 ! unstable Obukhov depth.
+EPBL_EQD_DIFFUSIVITY_SHAPE = False !   [nondim] default = False
+                                ! Logical flag for activating ML equation for shape function that uses forcing
+                                ! to change its structure.
+EPBL_EQD_DIFFUSIVITY_VELOCITY = False !   [nondim] default = False
+                                ! Logical flag for activating ML equation discovery for velocity scale
+EPBL_EQD_DIFFUSIVITY_VELOCITY_H = False !   [nondim] default = False
+                                ! Logical flag for activating ML equation discovery for velocity scale with h as
+                                ! input
 EPBL_OPTIONS_DIFF = 0           ! default = 0
                                 ! If positive, this is a coded integer indicating a pair of settings whose
                                 ! differences are diagnosed in a passive diagnostic mode  via extra calls to
