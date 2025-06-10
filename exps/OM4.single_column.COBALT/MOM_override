@@ -37,6 +37,7 @@
 #override DO_GEOTHERMAL = True 
 #override GEOTHERMAL_SCALE = 0.0
 #override GENERIC_TRACER_IC_FILE = "MOM_IC.nc"
+#override MAX_FIELDS = 200
 !MOM6 photo_acc MLD
 #override PHA_MLD_CALC = True
 #override PHA_MLD_USE_DELTA_RHO = True
