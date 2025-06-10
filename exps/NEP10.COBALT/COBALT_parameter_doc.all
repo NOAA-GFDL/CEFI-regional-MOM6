@@ -221,6 +221,8 @@ zeta = 0.05                     !   [none] default = 0.05
                                 ! cost of biosynthesis
 par_adj = 0.83                  !   [none] default = 0.83
                                 ! photosynthetically active fraction of shortwave radiation
+photoaclm_opt = 0               !   [none] default = 0
+                                ! Option for photoacclimation settings, 0 only averages irradiance
 gamma_irr_aclm = 1.0            !   [day-1] default = 1.0
                                 ! time scale for determining the photoacclimation irradiance
 gamma_mu_mem = 1.0              !   [day-1] default = 1.0
