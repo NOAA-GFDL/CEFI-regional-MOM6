@@ -125,6 +125,10 @@ DTFREEZE_DP = -7.75E-08         !   [degC Pa-1] default = 0.0
                                 ! When TFREEZE_FORM=LINEAR, this is the derivative of the freezing potential
                                 ! temperature with pressure.
 
+! === module MOM_restart ===
+MAX_FIELDS = 200                ! default = 100
+                                ! The maximum number of restart fields that can be used.
+
 ! === module MOM_tracer_flow_control ===
 USE_generic_tracer = True       !   [Boolean] default = False
                                 ! If true and _USE_GENERIC_TRACER is defined as a preprocessor macro, use the
@@ -488,3 +492,5 @@ USE_RIGID_SEA_ICE = True        !   [Boolean] default = False
 SEA_ICE_RIGID_MASS = 100.0      !   [kg m-2] default = 1000.0
                                 ! The mass of sea-ice per unit area at which the sea-ice starts to exhibit
                                 ! rigidity
+
+! === module MOM_restart ===
