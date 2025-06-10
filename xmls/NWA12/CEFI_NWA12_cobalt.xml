@@ -580,7 +580,7 @@ $baseDate
       they must be tarred. 
       -->
       <dataFile label="initCond" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2025_04_repeating_bugfixes/20230101.tar</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2025_04_repeating_bugfixes_pcm_mem/20230101.tar</dataSource>
       </dataFile>
       <csh type='always'>
         <![CDATA[
