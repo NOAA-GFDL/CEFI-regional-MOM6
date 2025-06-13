@@ -40,7 +40,7 @@ jobs:
         #
         sleep 1
         while :; do
-            job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+            job_status=$(squeue -M c6 -h -j "$jobid" -o "%T" 2>/dev/null)
             if [ -z "$job_status" ]; then
                echo "Job with ID $jobid is not found or completed."
                break
@@ -104,7 +104,7 @@ jobs:
           #
           sleep 1
           while :; do
-              job_status=$(squeue -h -j "$jobid" -o "%T" 2>/dev/null)
+              job_status=$(squeue -M c6 -h -j "$jobid" -o "%T" 2>/dev/null)
               if [ -z "$job_status" ]; then
                  echo "Job with ID $jobid is not found or completed."
                  break
