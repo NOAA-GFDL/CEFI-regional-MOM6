@@ -416,6 +416,10 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
 
 "namelists","ocean_mod","generic_COBALT"
 enforce_src_info = f
+pcmlim_aclm_ndi_requires_restart = f
+pcmlim_aclm_nlg_requires_restart = f
+pcmlim_aclm_nmd_requires_restart = f
+pcmlim_aclm_nsm_requires_restart = f
 alk_obc_src_file_name = esper_glorys_v20250305.nc
 alk_obc_lfac_in = 0.03
 alk_obc_lfac_out = 1.0
@@ -581,7 +585,7 @@ $baseDate
       they must be tarred. 
       -->
       <dataFile label="initCond" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2025_04_repeating_bugfixes_pcm_mem/20230101.tar</dataSource>
+        <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2025_04_repeating_bugfixes/20230101.tar</dataSource>
       </dataFile>
       <csh type='always'>
         <![CDATA[
@@ -597,6 +601,11 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 DT_OBC_SEG_UPDATE_OBGC = 1800
 #override RESTART_CHECKSUMS_REQUIRED = False
 MOM_OVERRIDE_EOF
+
+# Allow tracer to be re-initialized for the first year
+if ( $currentSeg == 1 ) then
+    echo "#override TRACERS_MAY_REINIT = True" >> $work/INPUT/MOM_override
+endif
 
 truncate -s 0 $work/INPUT/COBALT_override
 cat > $work/INPUT/COBALT_override << COBALT_OVERRIDE_EOF
