@@ -7,6 +7,10 @@ htotal_in = 1.0E-08             ! default = 1.0E-08
                                 ! htotal_in
 wsink = 100.0                   !   [m day-1] default = 100.0
                                 ! wsink
+do_fastsinking = False          !   [Boolean] default = False
+                                ! logical flag to enable fast-sinking N and P detritus from higher predators
+wsink_fast = 1000.0             !   [m day-1] default = 1000.0
+                                ! wsink_fast
 ice_restart_file = "ice_cobalt.res.nc" ! default = "ice_cobalt.res.nc"
                                 ! ice_restart_file
 ocean_restart_file = "ocean_cobalt.res.nc" ! default = "ocean_cobalt.res.nc"
@@ -588,6 +592,8 @@ remin_ramp_scale = 50.0         !   [m] default = 50.0
                                 ! depth scale from the surface over which remineralization ramps up
 gamma_ndet = 3.306878306878307E-06 !   [s-1] default = 3.306878306878307E-06
                                 ! Remineralization rate for unprotected organic matter
+gamma_ndet_fast = 3.306878306878307E-06 !   [s-1] default = 3.306878306878307E-06
+                                ! Remineralization rate for fast-sinking unprotected organic matter
 rpcaco3 = 0.0880503144654088    !   [mol N mol Ca-1] default = 0.0880503144654088
                                 ! Organic matter protection from CaCO3
 rplith = 8.176100628930818E-04  !   [mol N g lith-1] default = 8.176100628930818E-04
