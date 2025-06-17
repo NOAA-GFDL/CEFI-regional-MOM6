@@ -6,3 +6,4 @@
 ! Update the BGC tracer boundary condition data every xxxx seconds. 
 DT_OBC_SEG_UPDATE_OBGC = 1800
 #override RESTART_CHECKSUMS_REQUIRED = False
+#override TRACERS_MAY_REINIT = True
