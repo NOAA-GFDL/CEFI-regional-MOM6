@@ -25,13 +25,13 @@ if [ "$USER" = "role.medgrp" ]; then
     apptainer exec \
         -B /gpfs \
 	-B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp \
-        -B /ncrc/home1/role.medgrp:/ncrc/home1/role.medgrp \
+        -B $HOME:$HOME \
         "$img" \
         bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
 else
     apptainer exec \
         -B /gpfs \
-        -B /ncrc/home2/$USER:/ncrc/home2/$USER \
+        -B $HOME:$HOME \
         "$img" \
         bash linux-build.bash -m docker -p linux-intel -t repro -f mom6sis2
 fi
