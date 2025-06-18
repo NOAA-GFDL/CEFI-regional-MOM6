@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH --nodes=9
+#SBATCH --nodes=13
 #SBATCH --time=120
 #SBATCH --job-name="NWA12.COBALT"
 #SBATCH --output=NWA12.COBALT_o.%j
 #SBATCH --error=NWA12.COBALT_e.%j
-#SBATCH --qos=urgent
+#SBATCH --qos=normal
 #SBATCH --partition=batch
-#SBATCH --clusters=c6
-#SBATCH --account=ira-cefi
+#SBATCH --clusters=c5
+#SBATCH --account=gfdl_med
 
 # Default to not using shared project folders
 USE_PROJ_SHARED=false
@@ -35,10 +35,10 @@ module unload cray-hdf5
 #
 echo "link datasets ..."
 pushd ../
-ln -fs /gpfs/f6/ira-cefi/world-shared/datasets ./
+ln -fs /gpfs/f5/gfdl_med/world-shared/datasets ./
 popd
 
-export img="/gpfs/f6/ira-cefi/world-shared/container/gaea_intel_2023.sif"
+export img="/gpfs/f5/cefi/world-shared/container/gaea_intel_2023.sif"
 
 echo "SET MPICH_SMP_SINGLE_COPY_MODE"
 export MPICH_SMP_SINGLE_COPY_MODE="NONE"
@@ -56,9 +56,9 @@ export FI_VERBS_PREFER_XRC=0
 #
 if $USE_PROJ_SHARED; then
   echo "clean RESTART folders ..."
-  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_48hrs/*
-  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_24hrs/*
-  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_24hrs_rst/*
+  rm -rf /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_48hrs/*
+  rm -rf /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs/*
+  rm -rf /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs_rst/*
 fi
 
 echo "run 40x40 48hrs test ..."
@@ -68,7 +68,7 @@ ln -fs MOM_layout_40 MOM_layout
 ln -fs MOM_layout_40 SIS_layout
 popd
 if $USE_PROJ_SHARED; then
-  ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_48hrs ./RESTART
+  ln -fs /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_48hrs ./RESTART
 fi
 srun --ntasks ${ntasks1} --export=ALL apptainer exec --writable-tmpfs $img ./execrunscript.sh > out1 2>err1
 mv RESTART RESTART_48hrs
@@ -78,7 +78,7 @@ mv ocean.stats RESTART_48hrs
 echo "run 40x40 24hrs test ..."
 ln -fs input.nml_24hr input.nml
 if $USE_PROJ_SHARED; then
-  ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_24hrs ./RESTART
+  ln -fs /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs ./RESTART
 fi
 srun --ntasks ${ntasks1} --export=ALL apptainer exec --writable-tmpfs $img ./execrunscript.sh > out2 2>err2
 mv RESTART RESTART_24hrs
@@ -98,7 +98,7 @@ ln -fs MOM_layout_30 MOM_layout
 ln -fs MOM_layout_30 SIS_layout
 popd
 if $USE_PROJ_SHARED; then
-  ln -fs /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_24hrs_rst ./RESTART
+  ln -fs /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs_rst ./RESTART
 fi
 srun --ntasks ${ntasks2} --export=ALL apptainer exec --writable-tmpfs $img ./execrunscript.sh > out3 2>err3
 mv RESTART RESTART_24hrs_rst
@@ -108,7 +108,7 @@ mv ocean.stats RESTART_24hrs_rst
 # Define the directories containing the files
 module load nccmp
 DIR1="./RESTART_24hrs_rst"
-DIR2="/gpfs/f6/ira-cefi/proj-shared/github/ci_data/reference/main/NWA12.COBALT/20250616"
+DIR2="/gpfs/f5/gfdl_med/proj-shared/github/ci_data/reference/main/NWA12.COBALT/20250616"
 
 # Define the files to compare
 FILES=("$DIR2"/*.nc)
@@ -127,9 +127,9 @@ echo "All restart files are identical, PASS"
 #
 if $USE_PROJ_SHARED; then
   echo "clean RESTART folders now ..."
-  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_48hrs/*
-  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_24hrs/*
-  rm -rf /gpfs/f6/ira-cefi/proj-shared/github/tmp/NWA12/RESTART_24hrs_rst/*
+  rm -rf /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_48hrs/*
+  rm -rf /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs/*
+  rm -rf /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs_rst/*
 fi
 
 echo "Test ended:  " `date`
