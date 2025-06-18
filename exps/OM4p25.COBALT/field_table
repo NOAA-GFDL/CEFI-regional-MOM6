@@ -30,7 +30,23 @@
 "namelists","ocean_mod","generic_cobalt/*global*"
 /
 "namelists","ocean_mod","generic_cobalt"
-init = f
+enforce_src_info = t
+pcmlim_aclm_ndi_requires_src_info = f
+pcmlim_aclm_nlg_requires_src_info = f
+pcmlim_aclm_nmd_requires_src_info = f
+pcmlim_aclm_nsm_requires_src_info = f
+pcmlim_aclm_ndi_requires_restart = f
+pcmlim_aclm_nlg_requires_restart = f
+pcmlim_aclm_nmd_requires_restart = f
+pcmlim_aclm_nsm_requires_restart = f
+pdet_fast_requires_src_info = f
+ndet_fast_requires_src_info = f
+pdet_fast_btf_requires_src_info = f
+ndet_fast_btf_requires_src_info = f   
+pdet_fast_requires_restart = f
+ndet_fast_requires_restart = f
+pdet_fast_btf_requires_restart = f
+ndet_fast_btf_requires_restart = f
 #
 # JGJ 2015/07/28
 # field table entries for initialization of cobalt tracers
