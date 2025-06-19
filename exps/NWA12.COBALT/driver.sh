@@ -71,7 +71,7 @@ popd
 if $USE_PROJ_SHARED; then
   ln -fs /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_48hrs ./RESTART
 fi
-srun --ntasks ${ntasks1} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp  --writable-tmpfs $img ./execrunscript.sh > out1 2>err1
+srun --ntasks ${ntasks1} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp  --writable-tmpfs $img bash ./execrunscript.sh > out1 2>err1
 mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
 
@@ -81,7 +81,7 @@ ln -fs input.nml_24hr input.nml
 if $USE_PROJ_SHARED; then
   ln -fs /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs ./RESTART
 fi
-srun --ntasks ${ntasks1} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp --writable-tmpfs $img ./execrunscript.sh > out2 2>err2
+srun --ntasks ${ntasks1} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp --writable-tmpfs $img bash ./execrunscript.sh > out2 2>err2
 mv RESTART RESTART_24hrs
 mv ocean.stats RESTART_24hrs
 
@@ -101,7 +101,7 @@ popd
 if $USE_PROJ_SHARED; then
   ln -fs /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_24hrs_rst ./RESTART
 fi
-srun --ntasks ${ntasks2} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp --writable-tmpfs $img ./execrunscript.sh > out3 2>err3
+srun --ntasks ${ntasks2} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp --writable-tmpfs $img bash ./execrunscript.sh > out3 2>err3
 mv RESTART RESTART_24hrs_rst
 mv ocean.stats RESTART_24hrs_rst
 
