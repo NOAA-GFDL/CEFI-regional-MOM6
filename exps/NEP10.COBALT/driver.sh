@@ -30,7 +30,7 @@ ntasks1=2036
 
 #
 echo "Test started:  " `date`
-
+source $MODULESHOME/init/bash
 module load cray-mpich-abi
 module unload cray-hdf5
 #
