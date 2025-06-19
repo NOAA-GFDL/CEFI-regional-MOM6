@@ -1,4 +1,4 @@
-name: CEFI-MOM6-ci-c6
+name: CEFI-MOM6-ci-c5
 
 on:
   # Triggers this workflow on pull request event with "CEFI_MOM6_RT_container" label
@@ -40,7 +40,7 @@ jobs:
         #
         sleep 1
         while :; do
-            job_status=$(squeue -M c6 -h -j "$jobid" -o "%T" 2>/dev/null)
+            job_status=$(squeue -M c5 -h -j "$jobid" -o "%T" 2>/dev/null)
             if [ -z "$job_status" ]; then
                echo "Job with ID $jobid is not found or completed."
                break
@@ -65,7 +65,7 @@ jobs:
         name: MOM6SIS2 
         path: ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2 
 
-  run-CEFI_MOM6-ci-c6:
+  run-CEFI_MOM6-ci-c5:
     needs: checkout-build
     runs-on: [self-hosted]
     strategy:
@@ -89,12 +89,14 @@ jobs:
           path: ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro          
 
       - name: Make MOM6SIS2 executable
+        shell: bash
         run: |
           ls -l -h ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
           chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
           ls -l -h ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
 
       - name: Run Experiment ${{ matrix.case }}
+        shell: bash
         run: |
           #chmod +x ${{ env.TEST_DIR }}/CEFI_MOM6_CHECK/builds/build/docker-linux-intel/ocean_ice/repro/MOM6SIS2
           # Clone into a temporary directory
@@ -104,7 +106,7 @@ jobs:
           #
           sleep 1
           while :; do
-              job_status=$(squeue -M c6 -h -j "$jobid" -o "%T" 2>/dev/null)
+              job_status=$(squeue -M c5 -h -j "$jobid" -o "%T" 2>/dev/null)
               if [ -z "$job_status" ]; then
                  echo "Job with ID $jobid is not found or completed."
                  break
@@ -152,6 +154,7 @@ jobs:
           fi
 
       - name: Clean-up workspace for ${{ matrix.case }}
+        shell: bash
         run: |
           echo "Cleaning up ${{ env.TEST_DIR }}"
           rm -rf ${{ env.TEST_DIR }}
@@ -164,9 +167,9 @@ jobs:
 #          fi
 
   add-pass-label:
-    needs: run-CEFI_MOM6-ci-c6
+    needs: run-CEFI_MOM6-ci-c5
     runs-on: [self-hosted]
-    if: ${{ needs.run-CEFI_MOM6-ci-c6.result == 'success' }}
+    if: ${{ needs.run-CEFI_MOM6-ci-c5.result == 'success' }}
     steps:
       - name: Add "pass_CEFI_MOM6_RT_container" label on success
         run: |

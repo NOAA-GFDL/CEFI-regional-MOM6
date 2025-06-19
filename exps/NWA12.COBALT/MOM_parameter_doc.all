@@ -567,7 +567,7 @@ USE_NW2_TRACERS = False         !   [Boolean] default = False
                                 ! If true, use the NeverWorld2 tracers.
 
 ! === module register_MOM_generic_tracer ===
-GENERIC_TRACER_IC_FILE = "bgc_woa_esper_ics_1993_2023-04.nc" ! default = ""
+GENERIC_TRACER_IC_FILE = ""     ! default = ""
                                 ! The file in which the generic tracer initial values can be found, or an empty
                                 ! string for internal initialization.
 GENERIC_TRACER_IC_FILE_IS_Z = False !   [Boolean] default = False
