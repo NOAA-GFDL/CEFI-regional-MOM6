@@ -19,6 +19,10 @@
 ###.................................................
 "namelists","ocean_mod","generic_COBALT"
 enforce_src_info = f
+pcmlim_aclm_ndi_requires_restart = f
+pcmlim_aclm_nlg_requires_restart = f
+pcmlim_aclm_nmd_requires_restart = f
+pcmlim_aclm_nsm_requires_restart = f
 pdet_fast_requires_restart = f
 ndet_fast_requires_restart = f
 pdet_fast_btf_requires_restart = f
