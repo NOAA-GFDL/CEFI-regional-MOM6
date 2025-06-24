@@ -37,10 +37,10 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
 
 <experimentSuite rtsVersion="4" xmlns:xi="http://www.w3.org/2001/XInclude">
   <!-- git tag for FMS source code -->
-  <property name="FMS_GIT_TAG" value="2025.02"/>
+  <property name="FMS_GIT_TAG" value="2025.03"/>
 
   <!-- git tag for shared source code -->
-  <property name="CPL_GIT_TAG" value="2025.02"/>
+  <property name="CPL_GIT_TAG" value="2025.03"/>
 
   <!-- git tag for null model source code -->
   <property name="NULL_TAG" value="2025.02"/>
