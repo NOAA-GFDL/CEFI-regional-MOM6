@@ -359,7 +359,12 @@ mod_runoff_matrix = np.column_stack( (lon_mod_runoff_vec, lat_mod_runoff_vec) )
 monthly_reg_df_sorted = monthly_reg_df_sorted[mod_monthly_vecs.columns]
 
 print("Beginning assignment algorithm")
+###########################################################################
+# Loop identifies points assigned to each river                           #
+###########################################################################
+# TODO: Make this loop faster, as it currently runs slower than the MATLAB version
 for k, row in ann_reg_df_sorted.iterrows():
+    # Get distance from current point to runoff points
     news_points = np.column_stack( (row.lon, row.lat) )
     distances = np.squeeze( cdist(news_points, mod_runoff_matrix) )
 
@@ -411,13 +416,13 @@ for k, row in ann_reg_df_sorted.iterrows():
             din_mon = din_mon.fillna( din_ann_fill )
 
             # Fill NANS in O2 data with corresponding month from o2sat_woa
-            o2_fill_vals.index = din_mon.index
+            o2_fill_vals.index = din_mon.index # need this line to allign the o2 data with the monthly data
             din_mon["o2"] = din_mon["o2"].fillna(o2_fill_vals)
 
-            # Create dataset that will serve as fill values for all runoff points
+            # Create DataFrame that will serve as fill values for all runoff points
             din_fill_vals = pd.DataFrame( np.repeat(din_mon.values, nrp, axis =0), index = fill_index, columns = din_vars+["o2"])
 
-            # Create NEWS data to fill in remaining NANs in fill_values
+            # Get NEWS data to fill in remaining NANs in fill_values
             din_conc = din_fill_vals["din"]
             NEWS_data = ann_NEWS_ratios_df.loc[ dist_sort_ind[:nrp] ]
             NEWS_data_df = pd.concat([NEWS_data]*12, axis = "index")
