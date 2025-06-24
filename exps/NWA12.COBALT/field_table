@@ -19,6 +19,16 @@
 ###.................................................
 "namelists","ocean_mod","generic_COBALT"
 enforce_src_info = f
+pcmlim_aclm_ndi_requires_restart = f
+pcmlim_aclm_nlg_requires_restart = f
+pcmlim_aclm_nmd_requires_restart = f
+pcmlim_aclm_nsm_requires_restart = f
+pdet_fast_requires_restart = f
+ndet_fast_requires_restart = f
+pdet_fast_btf_requires_restart = f
+ndet_fast_btf_requires_restart = f
+pdet_fast_obc_has = false
+ndet_fast_obc_has = false
 alk_obc_src_file_name = esper_glorys_v20250305.nc
 alk_obc_lfac_in = 0.03
 alk_obc_lfac_out = 1.0

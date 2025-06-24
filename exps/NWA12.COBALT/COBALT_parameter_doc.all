@@ -7,6 +7,10 @@ htotal_in = 1.0E-08             ! default = 1.0E-08
                                 ! htotal_in
 wsink = 100.0                   !   [m day-1] default = 100.0
                                 ! wsink
+do_fastsinking = False          !   [Boolean] default = False
+                                ! logical flag to enable fast-sinking N and P detritus from higher predators
+wsink_fast = 1000.0             !   [m day-1] default = 1000.0
+                                ! wsink_fast
 ice_restart_file = "ice_cobalt.res.nc" ! default = "ice_cobalt.res.nc"
                                 ! ice_restart_file
 ocean_restart_file = "ocean_cobalt.res.nc" ! default = "ocean_cobalt.res.nc"
@@ -594,6 +598,8 @@ remin_ramp_scale = 50.0         !   [m] default = 50.0
                                 ! depth scale from the surface over which remineralization ramps up
 gamma_ndet = 3.306878306878307E-06 !   [s-1] default = 3.306878306878307E-06
                                 ! Remineralization rate for unprotected organic matter
+gamma_ndet_fast = 3.306878306878307E-06 !   [s-1] default = 3.306878306878307E-06
+                                ! Remineralization rate for fast-sinking unprotected organic matter
 rpcaco3 = 0.0880503144654088    !   [mol N mol Ca-1] default = 0.0880503144654088
                                 ! Organic matter protection from CaCO3
 rplith = 8.176100628930818E-04  !   [mol N g lith-1] default = 8.176100628930818E-04
@@ -698,6 +704,36 @@ o2_max_amx = 4.0E-06            !   [mol O2 kg-1] default = 4.0E-06
                                 ! maximum o2 concentration for anammox to occur
 k_no3_amx = 1.0E-06             !   [mol NO3 kg-1] default = 1.0E-06
                                 ! nitrate half-saturation for anammox
+do_dms_diag = False             !   [N/A] default = False
+                                ! Turn on DMS diagnostic
+dmsp_zeu_over_mld_scale = 1.5   !   [unitless] default = 1.5
+                                ! Ratio of Zeu/MLD above which weight_zeu is 1.
+dms_alpha = -1.237              !   [N/A] default = -1.237
+                                ! alpha parameter for DMS (Gali)
+dms_beta = 0.578                !   [N/A] default = 0.578
+                                ! beta parameter for DMS (Gali)
+dms_gamma = 0.018               !   [N/A] default = 0.018
+                                ! gamma parameter for DMS (Gali)
+dmsp_strat_const = 1.7          !   [N/A] default = 1.7
+                                ! const for dmsp stratified Gali (2015) parameterization
+dmsp_strat_chl = 1.14           !   [N/A] default = 1.14
+                                ! coefficient for chl in dmsp stratified Gali (2015) parameterization
+dmsp_strat_chl2 = 0.44          !   [N/A] default = 0.44
+                                ! coefficient for chl**2 in dmsp stratified Gali (2015) parameterization
+dmsp_strat_sst = 0.063          !   [N/A] default = 0.063
+                                ! coefficient for sst in dmsp stratified Gali (2015) parameterization
+dmsp_strat_sst2 = -0.0024       !   [N/A] default = -0.0024
+                                ! coefficient for sst**2 in dmsp stratified Gali (2015) parameterization
+dmsp_mix_const = 1.74           !   [N/A] default = 1.74
+                                ! const for dmsp mixed Gali (2015) parameterization
+dmsp_mix_chl = 0.81             !   [N/A] default = 0.81
+                                ! coefficient for chl in dmsp mixed Gali (2015) parameterization
+dmsp_mix_zeu_over_mld = 0.6     !   [N/A] default = 0.6
+                                ! coefficient for zeu_over_mld in dmsp mixed Gali (2015) parameterization
+dmsp_min_chl = 0.04             !   [mg/m3] default = 0.04
+                                ! minimum chlorophyll for DMSp calculation
+dmsp_max_chl = 60.0             !   [mg/m3] default = 60.0
+                                ! maximum chlorophyll for DMSp calculation
 tracer_debug = False            !   [Boolean] default = False
                                 ! flag for tracer debug operations
 min_thickness_for_imbalance = 0.001 !   [m] default = 0.001

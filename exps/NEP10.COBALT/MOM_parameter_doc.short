@@ -191,6 +191,10 @@ USE_generic_tracer = True       !   [Boolean] default = False
 GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc" ! default = ""
                                 ! The file in which the generic tracer initial values can be found, or an empty
                                 ! string for internal initialization.
+TRACERS_MAY_REINIT = True       !   [Boolean] default = False
+                                ! If true, tracers may go through the initialization code if they are not found
+                                ! in the restart files.  Otherwise it is a fatal error if tracers are not found
+                                ! in the restart files of a restarted run.
 
 ! === module MOM_boundary_update ===
 
