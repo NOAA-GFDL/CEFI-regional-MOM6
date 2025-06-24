@@ -300,4 +300,4 @@ ds = xr.Dataset(coords = coords,
 ds.time.attrs = {"calendar":"NOLEAP","calendar_type":"NOLEAP","modulo":"T","units":"days since 1900-1-1 0:00:00","time_origin":"01-JAN-1990 00:00:00"}
 
 # Write dataset
-ds.to_netcdf("RiverNutrients_GlobalNEWS2_plusFe_Q100_GLOFAS_NWA12.nc",unlimited_dims="time")
+ds.to_netcdf(nc_file_name,unlimited_dims="time")
