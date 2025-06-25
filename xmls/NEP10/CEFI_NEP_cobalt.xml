@@ -4,11 +4,11 @@
 Quick start guide
 
 On GFDL Analysis:
-module load fre/bronx-22
+module load fre/bronx-23
 
 On Gaea:
 module use /ncrc/home2/fms/local/modulefiles
-module load fre/bronx-22
+module load fre/bronx-23
 
 C5:
 fremake -x CEFI_NEP_cobalt.xml -p ncrc5.intel23 -t repro MOM6_SIS2_GENERIC_4P_compile_symm
@@ -57,7 +57,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="ICEPACK_GIT_TAG" value="Icepack1.3.3"/>
 
   <!-- customize as needed -->
-  <property name="FRE_STEM" value="fre/cefi/NEP/2025_02"/>
+  <property name="FRE_STEM" value="fre/cefi/NEP/2025_06"/>
 
   <!-- Please make sure to change your group, such as b, f, g, m, o... -->
   <!-- NCRC_GROUP will only have impact for your root dir and work dir on gaea c5/c6-->
@@ -77,7 +77,7 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
   <property name="PP_START_YEAR" value="1993"/>
 
   <!-- fre version to be used -->
-  <property name="FRE_VERSION" value="bronx-22"/>
+  <property name="FRE_VERSION" value="bronx-23"/>
 
   <!-- on/off switch for MDBI database -->
   <property name="MDBIswitch" value="off"/>
@@ -167,13 +167,13 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
     <component name="land_null" paths="mom6/src/land_null" requires="fms">
       <description domainName="NA" communityName="NA" communityVersion="NA" communityGrid="NA"/>
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(CPL_GIT_TAG)"> land_null.git </codeBase>
+        <codeBase version="$(NULL_TAG)"> land_null.git </codeBase>
       </source>
     </component>
 
     <component name="atmos_null" paths="mom6/src/atmos_null" requires="fms">
       <source versionControl="git" root="https://github.com/NOAA-GFDL">
-        <codeBase version="$(CPL_GIT_TAG)"> atmos_null.git </codeBase>
+        <codeBase version="$(NULL_TAG)"> atmos_null.git </codeBase>
       </source>
       <compile>
         <cppDefs>$(F2003_FLAGS) </cppDefs>
