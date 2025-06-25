@@ -101,7 +101,7 @@ mv ocean.stats RESTART_24hrs_rst
 # Define the directories containing the files
 module load nccmp
 DIR1="./RESTART_24hrs_rst"
-DIR2="/gpfs/f5/gfdl_med/proj-shared/github/ci_data/reference/main/NEP10.COBALT/20250616" 
+DIR2="/gpfs/f5/gfdl_med/proj-shared/github/ci_data/reference/main/NEP10.COBALT/20250625" 
 
 # Define the files to compare
 FILES=("$DIR2"/MOM.res*.nc)
