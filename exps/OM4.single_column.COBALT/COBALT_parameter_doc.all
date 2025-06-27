@@ -678,7 +678,7 @@ gamma_sldon = 0.0111111111111111 !   [day-1] default = 0.0111111111111111
                                 ! rate constant for converting semi-labile DON to labile DON at 0 deg. C
 gamma_sldop = 0.0111111111111111 !   [day-1] default = 0.0111111111111111
                                 ! rate constant for converting semi-labile DOP to labile DOP at 0 deg. C
-doc_background = 4.0E-05        !   [moles kg-1] default = 4.0E-05
+doc_background = 0.0            !   [moles kg-1] default = 0.0
                                 ! background refractory dissolved organic carbon concentration
 gamma_nitrif = 1.3503086419753085 !   [day-1 (mol N kg-1)-(nitrif_b-1)] default = 1.3503086419753085
                                 ! nitrification rate constant
