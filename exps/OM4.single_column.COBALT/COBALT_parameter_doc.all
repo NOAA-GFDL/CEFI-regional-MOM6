@@ -574,10 +574,10 @@ do_ner_ca_bur = False           !   [Boolean] default = False
 do_resp_ca_diss = False         !   [Boolean] default = False
                                 ! logical flag to include CaCO3 dissolution due to undersaturation around
                                 ! sinking particles
-resp_ca_2_n_arag = 0.0          !   [mol dissolved arag mol org. C-1] default = 0.0
+resp_ca_2_n_arag = 0.0          !   [kg (mol N)-1] default = 0.0
                                 ! ratio of aragonite dissolution to organic matter remineralization
                                 ! (respiration-driven)
-resp_ca_2_n_calc = 0.0          !   [mol dissolved calc mol org. C-1] default = 0.0
+resp_ca_2_n_calc = 0.0          !   [kg (mol N)-1] default = 0.0
                                 ! ratio of calcite dissolution to organic matter remineralization
                                 ! (respiration-driven)
 k_o2 = 8.0E-06                  !   [mol O2 kg-1] default = 8.0E-06
