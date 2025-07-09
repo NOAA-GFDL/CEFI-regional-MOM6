@@ -23,3 +23,15 @@ platforms:
      containerRun: "apptainer" 
      # NOTE: c5 and c6 make templates are currently the same. Defaulting to c6 for container runs
      mkTemplate: "/apps/mkmf/templates/hpcme-intel23.mk"
+
+   - name: hpcme.gaea.intel24
+     compiler: intel
+     RUNenv: ""
+     modelRoot: /apps
+     container: True
+     containerBuild: "podman"
+     containerRun: "apptainer"
+     containerBase: "docker-archive:/gpfs/f5/gfdl_f/world-shared/frecontainers/hpc-me_intel2024.2.tar"
+     mkTemplate: "/apps/mkmf/templates/hpcme-intel24.mk"
+     container2step: True
+     container2base: "docker-archive:/gpfs/f5/gfdl_f/world-shared/frecontainers/hpc-me_intel2024.2rte.tar"
