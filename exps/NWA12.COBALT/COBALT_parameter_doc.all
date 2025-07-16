@@ -563,6 +563,8 @@ hp_ipa_det = 0.0                !   [none] default = 0.0
                                 ! innate availability of detritus to higher predator feeding (0-1)
 hp_phi_det = 0.35               !   [none] default = 0.35
                                 ! fraction of ingestion by higher predators to detritus
+frac_fastsinking = 1.0          !   [none] default = 1.0
+                                ! Fraction of N and P detritus higher predators that is fast-sinking
 half_life_14c = 5730.0          !   [s] default = 5730.0
                                 ! half_life_14c
 lambda_14c = 1.209680943385594E-04 !   [-s] default = 1.209680943385594E-04
