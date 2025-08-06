@@ -119,6 +119,12 @@ BOUSSINESQ = False              !   [Boolean] default = True
                                 ! If true, make the Boussinesq approximation.
 NK = 1                          !   [nondim]
                                 ! The number of model layers.
+OBC_SEGMENT_001_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
+                                ! OBC segment docs
+OBC_SEGMENT_002_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
+                                ! OBC segment docs
+OBC_SEGMENT_003_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_003.nc(uamp),Uphase=file:tu_003.nc(uphase),Vamp=file:tu_003.nc(vamp),Vphase=file:tu_003.nc(vphase),SSHamp=file:tz_003.nc(zamp),SSHphase=file:tz_003.nc(zphase)" !
+                                ! OBC segment docs
 
 ! === module MOM_tracer_flow_control ===
 
@@ -147,12 +153,6 @@ GINT = 0.0164                   !   [m s-2]
                                 ! The reduced gravity across internal interfaces.
 
 ! === module MOM_state_initialization ===
-OBC_SEGMENT_001_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
-                                ! OBC segment docs
-OBC_SEGMENT_002_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
-                                ! OBC segment docs
-OBC_SEGMENT_003_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_003.nc(uamp),Uphase=file:tu_003.nc(uphase),Vamp=file:tu_003.nc(vamp),Vphase=file:tu_003.nc(vphase),SSHamp=file:tz_003.nc(zamp),SSHphase=file:tz_003.nc(zphase)" !
-                                ! OBC segment docs
 
 ! === module MOM_diag_mediator ===
 
