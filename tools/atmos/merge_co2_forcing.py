@@ -58,8 +58,8 @@ def main():
 
     # Set how the data will be written out
     encodings = {k: {'_FillValue': 1.0e20} for k in list(combined.variables.keys())}
-    encodings['time'].update({'dtype':'float64', 'calendar': 'gregorian'})
-    encodings['time_bnds'].update({'dtype':'float64', 'calendar': 'gregorian'})
+    encodings['time'].update({'dtype':'float64', 'calendar': 'gregorian', 'units': 'hours since 1915-01-01'})
+    encodings['time_bnds'].update({'dtype':'float64', 'calendar': 'gregorian', 'units': 'hours since 1915-01-01'})
     encodings['lon'].update({'dtype':'float64'})
 
     combined.to_netcdf('mole_fraction_of_co2_extended_ssp245_v2.nc', encoding=encodings, unlimited_dims='time')
