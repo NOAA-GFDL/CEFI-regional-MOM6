@@ -7,7 +7,7 @@ NOAA is embarking on an ambitious effort, the Changing Ecosystems and Fisheries 
 As described in the link above, CEFI will integrate expertise and capabilities across NOAA’s line offices to accomplish this task, establishing strong feedback loops between model development and the intended application.  The primary role of NOAA’s office of Oceanic and Atmospheric Research (OAR) in this effort is the development and delivery of a national network of ocean modeling and predictions systems for seasonal predictions (12 months), decadal predictions (10 years), and multi-decadal projections (to the end of the 21st century).  These simulations must include both physical and biogeochemical drivers of ecosystem change, must be of sufficient resolution to capture continental shelf-scale dynamics critical for fisheries and other living marine resources, and must include sufficient ensembles to quantify uncertainties. 
 
 This repository contains pre/post-processing tools and CEFI regional-MOM6 configurations for running regional-MOM6 OBGC simulations.
-Users are welcome to use the [discussions board](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/discussions) or [CEFI-support email](oar.gfdl.cefi-support@noaa.gov) to ask questions related to the model or the tools.
+Users are welcome to use the [discussions board](https://github.com/NOAA-GFDL/CEFI-regional-MOM6/discussions) or [CEFI-support email](mailto:oar.gfdl.cefi-support@noaa.gov) to ask questions related to the model or the tools.
 
 Documentation (in progress) is available [here](https://cefi-regional-mom6.readthedocs.io/en/latest/index.html)
 
