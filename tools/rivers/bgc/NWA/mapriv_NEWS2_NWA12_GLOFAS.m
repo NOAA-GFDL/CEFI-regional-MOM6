@@ -816,8 +816,8 @@ netcdf.putVar(ncid,varid0,0,1,time);
 % these.
 netcdf.putVar(ncid,varid1,1:nlat);
 netcdf.putVar(ncid,varid2,1:nlon);
-netcdf.putVar(ncid,varid3,permute(lon_mod,[2,1]));
-netcdf.putVar(ncid,varid4,permute(lat_mod,[2,1]));
+netcdf.putVar(ncid,varid3,permute(lat_mod,[2,1]));
+netcdf.putVar(ncid,varid4,permute(lon_mod,[2,1]));
 netcdf.putVar(ncid,varid5,permute(NO3_CONC,[3,2,1]));
 netcdf.putVar(ncid,varid6,permute(LDON_CONC,[3,2,1]));
 netcdf.putVar(ncid,varid7,permute(SLDON_CONC,[3,2,1]));
