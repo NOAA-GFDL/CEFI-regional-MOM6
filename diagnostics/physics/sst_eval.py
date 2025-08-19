@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
 import xarray
+import xesmf # only used to calculate cell areas
 import logging
 
 from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config, process_oisst, process_glorys
@@ -39,8 +40,11 @@ def plot_sst_eval(pp_root, config):
     logger.info("GLORYS_RG: %s",glorys_rg)
     logger.info("DELTA_GLORYS: %s",delta_glorys)
 
+    # Regrid model output to OISST, get ave oisst and corner points
     mom_rg, oisst_ave, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model_ave)
     delta_oisst = mom_rg - oisst_ave
+    # get oisst cell areas for skill annotations
+    oisst_areacello = xesmf.util.cell_area( oisst_ave.to_dataset() )
     logger.info("OISST_AVE: %s",oisst_ave)
     logger.info("DELTA_OISST: %s",delta_oisst)
 
@@ -102,7 +106,7 @@ def plot_sst_eval(pp_root, config):
     # Model - OISST
     grid[2].pcolormesh(oisst_lonc, oisst_latc, delta_oisst, transform=proj,**bias_common)
     grid[2].set_title('(c) Model - OISST')
-    annotate_skill(mom_rg, oisst_ave, grid[2], dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
+    annotate_skill(mom_rg, oisst_ave, grid[2], weights= oisst_areacello, dim=['lat', 'lon'], x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
     logger.info("Successfully plotted difference between model and oisst")
 
     # GLORYS

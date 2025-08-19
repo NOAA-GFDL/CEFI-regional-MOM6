@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
 import xarray
+import xesmf # only used to calculate cell areas
 import logging
 
 from plot_common import( autoextend_colorbar, corners, get_map_norm,
@@ -57,6 +58,8 @@ def plot_sst_trends(pp_root, label, config):
     mom_rg, oisst, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model_trend, start =  int(config['start_year']),
                                                                 end = int(config['end_year'])+1, resamp_freq = '1AS')
     logger.info("OISST: %s", oisst )
+    # get oisst cell areas for skill annotations
+    oisst_areacello = xesmf.util.cell_area( oisst.to_dataset() )
     oisst_trend = get_3d_trends(oisst)
     oisst_trend = xarray.DataArray(oisst_trend, dims=['lat','lon'], coords={'lat':oisst.lat,'lon':oisst.lon} )
     logger.info("OISST_TREND: %s",oisst_trend)
@@ -129,7 +132,7 @@ def plot_sst_trends(pp_root, label, config):
     grid[2].set_title('(c) Model - OISST')
     # NOTE: Oisst dims are [lat,lon], so dim argument is needed. Must use mom_rg though, since oisst also contains
     # an extra time dimension that changes output of xskillscore functions and leads to error when annotating plot
-    annotate_skill(mom_rg, oisst_trend, grid[2], dim= list(mom_rg.dims), x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
+    annotate_skill(mom_rg, oisst_trend, grid[2],  weights= oisst_areacello, dim= list(mom_rg.dims), x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'])
     logger.info("Successfully plotted difference between model and oisst")
 
     # GLORYS
