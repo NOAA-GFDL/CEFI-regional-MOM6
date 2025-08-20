@@ -57,9 +57,9 @@
 #
 "ATM", "o2_flux_pcair_atm",  ""     , ""               , "none", 0.214
 #
-"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
+"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
 #ocean-ice specific
 "OCN", "dry_dep_fed_flux_ice_ocn",  "FLUX",         "./INPUT/Soluble_Fe_Flux_AM4.nc",                    "bilinear", -1.0
 "OCN", "dry_dep_lith_flux_ice_ocn", "FLUX_MINERAL", "./INPUT/Mineral_Flux_AM4.nc",                       "bilinear", -1.0
