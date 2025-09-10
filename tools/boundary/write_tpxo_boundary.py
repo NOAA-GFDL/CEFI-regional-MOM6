@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-This script generated tide OBC from tpxo9 
+This script generated tide OBC from tpxo9
 How to use:
 ./write_tpxo_boundary.py --config tpxo_obc.yaml
 """
@@ -20,9 +20,9 @@ def write_tpxo(constituents, tpxo_dir, horizontal_subset):
         .isel(constituent=constituents, **horizontal_subset)
     )
     h = tpxo_h['ha'] * np.exp(-1j * np.radians(tpxo_h['hp']))
-    tpxo_h['hRe'] = np.real(h)
-    tpxo_h['hIm'] = np.imag(h)
-    tpxo_h = tpxo_h.where(tpxo_h['ha'].isel(constituent=0) > 0)
+    mask = tpxo_h['ha'].isel(constituent=0) > 0
+    tpxo_h['hRe'] = np.real(h).where(mask)
+    tpxo_h['hIm'] = np.imag(h).where(mask)
 
     tpxo_u = (
         xarray.open_dataset(path.join(tpxo_dir, 'u_tpxo9.v1.nc'))
@@ -31,9 +31,9 @@ def write_tpxo(constituents, tpxo_dir, horizontal_subset):
     )
     tpxo_u['ua'] *= 0.01  # convert to m/s
     u = tpxo_u['ua'] * np.exp(-1j * np.radians(tpxo_u['up']))
-    tpxo_u['uRe'] = np.real(u)
-    tpxo_u['uIm'] = np.imag(u)
-    tpxo_u = tpxo_u.where(tpxo_u['ua'].isel(constituent=0) > 0)
+    mask = tpxo_u['ua'].isel(constituent=0) > 0
+    tpxo_u['uRe'] = np.real(u).where(mask)
+    tpxo_u['uIm'] = np.imag(u).where(mask)
 
     tpxo_v = (
         xarray.open_dataset(path.join(tpxo_dir, 'u_tpxo9.v1.nc'))
@@ -42,9 +42,14 @@ def write_tpxo(constituents, tpxo_dir, horizontal_subset):
     )
     tpxo_v['va'] *= 0.01  # convert to m/s
     v = tpxo_v['va'] * np.exp(-1j * np.radians(tpxo_v['vp']))
-    tpxo_v['vRe'] = np.real(v)
-    tpxo_v['vIm'] = np.imag(v)
-    tpxo_v = tpxo_v.where(tpxo_v['va'].isel(constituent=0) > 0)
+    mask = tpxo_v['va'].isel(constituent=0) > 0
+    tpxo_v['vRe'] = np.real(v).where(mask)
+    tpxo_v['vIm'] = np.imag(v).where(mask)
+
+    # Confirm that an old bug in the application of the land mask has not occured.
+    for ds in [tpxo_h, tpxo_u, tpxo_v]:
+        if ds.lat.isnull().any() or ds.lon.isnull().any():
+            raise ValueError('NaNs in lat/lon coordinates')
 
     # Tidal amplitudes are currently constant over time.
     # Seem to need a time dimension to have it read by MOM.
