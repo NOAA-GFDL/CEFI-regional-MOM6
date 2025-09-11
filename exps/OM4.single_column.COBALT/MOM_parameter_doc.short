@@ -396,8 +396,8 @@ TKE_DECAY = 0.01                !   [nondim] default = 2.5
                                 ! TKE_DECAY relates the vertical rate of decay of the TKE available for
                                 ! mechanical entrainment to the natural Ekman depth.
 MSTAR = 0.0                     !   [nondim] default = 1.2
-                                ! The ratio of the friction velocity cubed to the TKE input to the mixed layer.
-                                ! This option is used if EPBL_MSTAR_SCHEME = CONSTANT.
+                                ! The ratio of the friction velocity cubed to the TKE input to the surface
+                                ! boundary layer.  This option is used if EPBL_MSTAR_SCHEME = CONSTANT.
 NSTAR = 0.06                    !   [nondim] default = 0.2
                                 ! The portion of the buoyant potential energy imparted by surface fluxes that is
                                 ! available to drive entrainment at the base of mixed layer when that energy is
