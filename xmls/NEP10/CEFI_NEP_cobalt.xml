@@ -617,6 +617,9 @@ cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 #override GENERIC_TRACER_IC_FILE = "NEP_COBALT_spinup_2003.nc"
 #override U_TRUNC_FILE = "U.velocity_truncations"
 #override V_TRUNC_FILE = "V.velocity_truncations"
+#override TIDES_ANSWER_DATE = 20230630
+#override WAVE_INTERFACE_ANSWER_DATE = 20221231 
+#override MASS_WEIGHT_IN_PRESSURE_GRADIENT_TOP = False
 MOM_OVERRIDE_EOF
 
 truncate -s 0 $work/INPUT/COBALT_override
