@@ -259,9 +259,9 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
         max_files_w = 800
         checksum_required=.false.
       </namelist>
-      <namelist name="fms2_io_nml"> 
+      <namelist name="fms2_io_nml">
         netcdf_default_format = 'netcdf4'
-        fms_netcdf_restart=.true. 
+        fms_netcdf_restart=.true.
         threading_read='multi'
         max_files_r = 800
         max_files_w = 800
@@ -326,9 +326,9 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt_fms2_yaml.xml CEFI_NWA1
 "ATM", "z_bot",              "",       "",                           "bilinear", 10.0
 "ATM", "gust",               "",       "",                           "bilinear",  1.0e-4
 "ATM", "o2_flux_pcair_atm",  "",       "",                           "none",      0.214
-"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
+"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
 #
 "ICE", "lw_flux_dn"        , "strd",   "INPUT/ERA5_strd_${fyear}_padded.nc",          "bilinear", 2.77778e-4
 "ICE", "sw_flux_vis_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_${fyear}_padded.nc",          "bilinear",  7.9167e-5
@@ -588,7 +588,7 @@ $baseDate
       <!-- This file is used for the initial conditions.
       Here, it is a restart file written at the end of a previous model run with repeating year forcing.
       Only a single dataSource can be specified for initCond, so if multiple files are needed
-      they must be tarred. 
+      they must be tarred.
       -->
       <dataFile label="initCond" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2025_04_repeating_bugfixes/20230101.tar</dataSource>
@@ -600,10 +600,10 @@ truncate -s 0 $work/INPUT/MOM_override
 cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
 ! Needed to enable COBALT (set false for physics only)
 #override USE_generic_tracer = True
-! Set the 18.6 year nodal modulation of the tides to use 
+! Set the 18.6 year nodal modulation of the tides to use
 ! the middle of the current model year.
 #override TIDE_NODAL_REF_DATE = ${fyear},7,2
-! Update the BGC tracer boundary condition data every xxxx seconds. 
+! Update the BGC tracer boundary condition data every xxxx seconds.
 DT_OBC_SEG_UPDATE_OBGC = 1800
 #override RESTART_CHECKSUMS_REQUIRED = False
 MOM_OVERRIDE_EOF
@@ -803,10 +803,10 @@ SIS_LAYOUT_EOF
 truncate -s 0 $work/INPUT/COBALT_input
 cat > $work/INPUT/COBALT_input << COBALT_INPUT_EOF
 ! Put the contents of your COBALT_input file here
-do_case2_mod = True		   
+do_case2_mod = True
 z_burial = 20.0
 z_denit = 20.0
-scale_burial = 1.0   
+scale_burial = 1.0
 frac_mu_stress_Sm = 0.4
 frac_mu_stress_Md = 0.4
 frac_mu_stress_Lg = 0.4
@@ -921,7 +921,7 @@ diag-table-to-yaml -f $work/diag_table -o $work/diag_table.yaml
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
         <!-- CO2 is extended to 2064 using ssp245-->
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245_v2.nc</dataSource>
         <!--River nutrients and DIC and alkalinity -->
         <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource>
       </dataFile>
