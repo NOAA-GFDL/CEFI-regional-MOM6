@@ -336,6 +336,10 @@ mort_Lg = 0.0                   !   [day-1] default = 0.0
                                 ! mortality (cell death) rate constant for large phytoplankton @ 0 deg. C
 mort_Md = 0.0                   !   [day-1] default = 0.0
                                 ! mortality (cell death) rate constant for medium phytoplankton @ 0 deg. C
+phi_sidiss_mort_Md = 0.0        !   [none] default = 0.0
+                                ! fraction of medium diatom silica dissolved during respiration and mortality
+phi_sidiss_mort_Lg = 0.0        !   [none] default = 0.0
+                                ! fraction of larger diatom silica dissolved during respiration and mortality
 exu_Sm = 0.13                   !   [none] default = 0.13
                                 ! fraction of small phytoplankton net primary production exuded as dissolved
                                 ! organic material
@@ -513,6 +517,12 @@ phi_sldop_mdz = 0.045           !   [none] default = 0.045
 phi_sldop_lgz = 0.0             !   [none] default = 0.0
                                 ! fraction of P ingestion by large zooplankton to semi-labile dissolved organic
                                 ! phosphorus
+phi_det_si_smz = 0.0            !   [none] default = 0.0
+                                ! fraction of silica ingestion by small zooplankton to si detritus
+phi_det_si_mdz = 0.15           !   [none] default = 0.15
+                                ! fraction of silica ingestion by medium zooplankton to si detritus
+phi_det_si_lgz = 0.3            !   [none] default = 0.3
+                                ! fraction of silica ingestion by large zooplankton to si detritus
 phi_ldon_vir = 0.625            !   [none] default = 0.625
                                 ! fraction of viral lysis of N to labile dissolved organic nitrogen
 phi_srdon_vir = 0.075           !   [none] default = 0.075
@@ -594,8 +604,6 @@ remin_ramp_scale = 50.0         !   [m] default = 50.0
                                 ! depth scale from the surface over which remineralization ramps up
 gamma_ndet = 3.306878306878307E-06 !   [s-1] default = 3.306878306878307E-06
                                 ! Remineralization rate for unprotected organic matter
-gamma_ndet_fast = 3.306878306878307E-06 !   [s-1] default = 3.306878306878307E-06
-                                ! Remineralization rate for fast-sinking unprotected organic matter
 rpcaco3 = 0.0880503144654088    !   [mol N mol Ca-1] default = 0.0880503144654088
                                 ! Organic matter protection from CaCO3
 rplith = 8.176100628930818E-04  !   [mol N g lith-1] default = 8.176100628930818E-04
