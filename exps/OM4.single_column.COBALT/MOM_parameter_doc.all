@@ -178,9 +178,6 @@ SURFACE_ANSWER_DATE = 99991231  ! default = 99991231
                                 ! The vintage of the expressions for the surface properties.  Values below
                                 ! 20190101 recover the answers from the end of 2018, while higher values use
                                 ! updated and more robust forms of the same expressions.
-USE_DIABATIC_TIME_BUG = False   !   [Boolean] default = False
-                                ! If true, uses the wrong calendar time for diabatic processes, as was done in
-                                ! MOM6 versions prior to February 2018. This is not recommended.
 SAVE_INITIAL_CONDS = False      !   [Boolean] default = False
                                 ! If true, write the initial conditions to a file given by IC_OUTPUT_FILE.
 IC_OUTPUT_FILE = "MOM_IC"       ! default = "MOM_IC"
@@ -361,7 +358,7 @@ NK = 75                         !   [nondim]
 ! === module MOM_tracer_registry ===
 
 ! === module MOM_EOS ===
-EQN_OF_STATE = "WRIGHT"         ! default = "WRIGHT"
+EQN_OF_STATE = "WRIGHT"         ! default = "WRIGHT_FULL"
                                 ! EQN_OF_STATE determines which ocean equation of state should be used.
                                 ! Currently, the valid choices are "LINEAR", "UNESCO", "JACKETT_MCD", "WRIGHT",
                                 ! "WRIGHT_REDUCED", "WRIGHT_FULL", "NEMO", "ROQUET_RHO", "ROQUET_SPV" and
@@ -514,8 +511,23 @@ ALE_COORDINATE_CONFIG = "FNC1:2,6500,6,.01" ! default = "UNIFORM"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
-                                !                by a comma or space, for sigma-2 and dz. e.g.
-                                !                HYBRID:vgrid.nc,sigma2,dz
+                                !                by a comma or space, for sigma-2 and dz.
+                                !                e.g. HYBRID:vgrid.nc,sigma2,dz
+                                !  HYBRID_3D:string - read from a file. The string specifies
+                                !                the filename and two 3D variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. The
+                                !                latter can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_3D:vgrid.nc,sigma2,dz
+                                !  HYBRID_MAP:string - read from a file. The string specifies
+                                !                the filename and three variable names, separated
+                                !                by a comma or space, for map, sigma-2 and dz.
+                                !                Map is a spatial index array with, maxval(map)=N,
+                                !                and the others are 2D arrays containing N profiles.
+                                !                Map typically contains integer values, but it can
+                                !                contain real values, I+w, which imply using
+                                !                the weighted sum of profiles I and I+1.
+                                !                Dz can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_MAP:vgrid.nc,map,sigma2,dz
 !ALE_RESOLUTION = 11*2.0, 2*2.01, 2.02, 2.03, 2.04, 2.06, 2.08, 2.12, 2.16, 2.22, 2.3, 2.4, 2.52, 2.67, 2.85, 3.08, 3.35, 3.6799999999999997, 4.08, 4.54, 5.1, 5.75, 6.51, 7.39, 8.42, 9.600000000000001, 10.96, 12.51, 14.280000000000001, 16.3, 18.580000000000002, 21.16, 24.07, 27.330000000000002, 30.990000000000002, 35.07, 39.63, 44.69, 50.32, 56.54, 63.42, 71.01, 79.37, 88.55, 98.63, 109.66, 121.72, 134.89000000000001, 149.24, 164.86, 181.84, 200.27, 220.25, 241.88, 265.27, 290.52, 317.76, 347.12, 378.71, 412.68, 449.16, 488.31, 530.27, 575.19 !   [m]
                                 ! The distribution of vertical resolution for the target
                                 ! grid used for Eulerian-like coordinates. For example,
@@ -650,8 +662,23 @@ DIAG_COORD_DEF_Z = "WOA09"      ! default = "WOA09"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
-                                !                by a comma or space, for sigma-2 and dz. e.g.
-                                !                HYBRID:vgrid.nc,sigma2,dz
+                                !                by a comma or space, for sigma-2 and dz.
+                                !                e.g. HYBRID:vgrid.nc,sigma2,dz
+                                !  HYBRID_3D:string - read from a file. The string specifies
+                                !                the filename and two 3D variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. The
+                                !                latter can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_3D:vgrid.nc,sigma2,dz
+                                !  HYBRID_MAP:string - read from a file. The string specifies
+                                !                the filename and three variable names, separated
+                                !                by a comma or space, for map, sigma-2 and dz.
+                                !                Map is a spatial index array with, maxval(map)=N,
+                                !                and the others are 2D arrays containing N profiles.
+                                !                Map typically contains integer values, but it can
+                                !                contain real values, I+w, which imply using
+                                !                the weighted sum of profiles I and I+1.
+                                !                Dz can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_MAP:vgrid.nc,map,sigma2,dz
 DIAG_COORD_INTERP_SCHEME_RHO2 = "PPM_H4" ! default = "PPM_H4"
                                 ! This sets the interpolation scheme to use to determine the new grid. These
                                 ! parameters are only relevant when REGRIDDING_COORDINATE_MODE is set to a
@@ -668,7 +695,7 @@ DIAG_COORD_INTERP_SCHEME_RHO2 = "PPM_H4" ! default = "PPM_H4"
                                 !  P3M_IH6IH5 (4th-order accurate)
                                 !  PQM_IH4IH3 (4th-order accurate)
                                 !  PQM_IH6IH5 (5th-order accurate)
-REGRIDDING_ANSWER_DATE = 20181231 ! default = 20181231
+REGRIDDING_ANSWER_DATE = 20181231 ! default = 99991231
                                 ! The vintage of the expressions and order of arithmetic to use for regridding.
                                 ! Values below 20190101 result in the use of older, less accurate expressions
                                 ! that were in use at the end of 2018.  Higher values result in the use of more
@@ -687,8 +714,23 @@ DIAG_COORD_DEF_RHO2 = "FILE:diag_rho2.nc,interfaces=rho2" ! default = "WOA09"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
-                                !                by a comma or space, for sigma-2 and dz. e.g.
-                                !                HYBRID:vgrid.nc,sigma2,dz
+                                !                by a comma or space, for sigma-2 and dz.
+                                !                e.g. HYBRID:vgrid.nc,sigma2,dz
+                                !  HYBRID_3D:string - read from a file. The string specifies
+                                !                the filename and two 3D variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. The
+                                !                latter can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_3D:vgrid.nc,sigma2,dz
+                                !  HYBRID_MAP:string - read from a file. The string specifies
+                                !                the filename and three variable names, separated
+                                !                by a comma or space, for map, sigma-2 and dz.
+                                !                Map is a spatial index array with, maxval(map)=N,
+                                !                and the others are 2D arrays containing N profiles.
+                                !                Map typically contains integer values, but it can
+                                !                contain real values, I+w, which imply using
+                                !                the weighted sum of profiles I and I+1.
+                                !                Dz can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_MAP:vgrid.nc,map,sigma2,dz
 DIAG_COORD_P_REF_RHO2 = 2.0E+07 !   [Pa] default = 2.0E+07
                                 ! The pressure that is used for calculating the diagnostic coordinate density.
                                 ! (1 Pa = 1e4 dbar, so 2e7 is commonly used.) This is only used for the RHO
@@ -918,13 +960,18 @@ SPLIT_BOTTOM_STRESS = False     !   [Boolean] default = False
 BT_USE_LAYER_FLUXES = True      !   [Boolean] default = True
                                 ! If true, use the summed layered fluxes plus an adjustment due to the change in
                                 ! the barotropic velocity in the barotropic continuity equation.
+BT_ADJ_CORR_MASS_SRC = True     !   [Boolean] default = True
+                                ! If true, recalculates the barotropic mass source after predictor step. This
+                                ! should make little difference in the deep ocean but appears to help for
+                                ! vanished layers. If false, uses the same mass source as from the predictor
+                                ! step.
 STORE_CORIOLIS_ACCEL = True     !   [Boolean] default = True
                                 ! If true, calculate the Coriolis accelerations at the end of each timestep for
                                 ! use in the predictor step of the next split RK2 timestep.
 FPMIX = False                   !   [Boolean] default = False
                                 ! If true, add non-local momentum flux increments and diffuse down the Eulerian
                                 ! gradient.
-VISC_REM_BUG = True             !   [Boolean] default = True
+VISC_REM_BUG = True             !   [Boolean] default = False
                                 ! If true, visc_rem_[uv] in split mode is incorrectly calculated or accounted
                                 ! for in two places. This parameter controls the defaults of two individual
                                 ! flags, VISC_REM_TIMESTEP_BUG in MOM_dynamics_split_RK2(b) and
@@ -994,6 +1041,9 @@ CORIOLIS_SCHEME = "SADOURNY75_ENSTRO" ! default = "SADOURNY75_ENERGY"
                                 !    ARAKAWA_LAMB81    - Arakawa & Lamb, 1981; En. + Enst.
                                 !    ARAKAWA_LAMB_BLEND - A blend of Arakawa & Lamb with
                                 !                         Arakawa & Hsu and Sadourny energy
+                                !    WENOVI5TH_PV_ENSTRO   - 5th-order WENO PV enstrophy
+                                !    WENOVI3RD_PV_ENSTRO   - 3rd-order WENO PV enstrophy
+                                !    WENOVI7TH_PV_ENSTRO  - 7th-order WENO PV enstrophy
 BOUND_CORIOLIS = True           !   [Boolean] default = False
                                 ! If true, the Coriolis terms at u-points are bounded by the four estimates of
                                 ! (f+rv)v from the four neighboring v-points, and similarly at v-points.  This
@@ -1002,7 +1052,7 @@ BOUND_CORIOLIS = True           !   [Boolean] default = False
 KE_SCHEME = "KE_ARAKAWA"        ! default = "KE_ARAKAWA"
                                 ! KE_SCHEME selects the discretization for acceleration due to the kinetic
                                 ! energy gradient. Valid values are:
-                                !    KE_ARAKAWA, KE_SIMPLE_GUDONOV, KE_GUDONOV
+                                !    KE_ARAKAWA, KE_SIMPLE_GUDONOV, KE_GUDONOV, KE_UP3
 PV_ADV_SCHEME = "PV_ADV_CENTERED" ! default = "PV_ADV_CENTERED"
                                 ! PV_ADV_SCHEME selects the discretization for PV advection. Valid values are:
                                 !    PV_ADV_CENTERED - centered (aka Sadourny, 75)
@@ -1033,7 +1083,7 @@ SSH_IN_EOS_PRESSURE_FOR_PGF = False !   [Boolean] default = False
 MASS_WEIGHT_IN_PRESSURE_GRADIENT = True !   [Boolean] default = False
                                 ! If true, use mass weighting when interpolating T/S for integrals near the
                                 ! bathymetry in FV pressure gradient calculations.
-MASS_WEIGHT_IN_PRESSURE_GRADIENT_TOP = False !   [Boolean] default = False
+MASS_WEIGHT_IN_PRESSURE_GRADIENT_TOP = False !   [Boolean] default = True
                                 ! If true and MASS_WEIGHT_IN_PRESSURE_GRADIENT is true, use mass weighting when
                                 ! interpolating T/S for integrals near the top of the water column in FV
                                 ! pressure gradient calculations.
@@ -1074,6 +1124,9 @@ USE_ZB2020 = False              !   [Boolean] default = False
                                 ! mesoscale eddies.
 
 ! === module MOM_hor_visc ===
+USE_CIRCULATION_IN_HORVISC = False !   [Boolean] default = False
+                                ! Use circulation theorem to compute vorticity in horvisc module (for ZB20 or
+                                ! Leith)
 USE_CONT_THICKNESS = False      !   [Boolean] default = False
                                 ! If true, use thickness at velocity points from continuity solver. This option
                                 ! currently only works with split mode.
@@ -1101,9 +1154,6 @@ USE_LEITHY = False              !   [Boolean] default = False
                                 ! harmonic backscatter.
 BOUND_AH = True                 !   [Boolean] default = True
                                 ! If true, the biharmonic coefficient is locally limited to be stable.
-BETTER_BOUND_AH = True          !   [Boolean] default = True
-                                ! If true, the biharmonic coefficient is locally limited to be stable with a
-                                ! better bounding than just BOUND_AH.
 RE_AH = 0.0                     !   [nondim] default = 0.0
                                 ! If nonzero, the biharmonic coefficient is scaled so that the biharmonic
                                 ! Reynolds number is equal to this.
@@ -1114,7 +1164,7 @@ USE_LAND_MASK_FOR_HVISC = True  !   [Boolean] default = True
 HORVISC_BOUND_COEF = 0.8        !   [nondim] default = 0.8
                                 ! The nondimensional coefficient of the ratio of the viscosity bounds to the
                                 ! theoretical maximum for stability without considering other terms.
-FRICTWORK_BUG = True            !   [Boolean] default = True
+FRICTWORK_BUG = True            !   [Boolean] default = False
                                 ! If true, retain an answer-changing bug in calculating the FrictWork, which
                                 ! cancels the h in thickness flux and the h at velocity point. This isnot
                                 ! recommended.
@@ -1162,10 +1212,6 @@ KV_ML_INVZ2 = 0.0               !   [m2 s-1] default = 0.0
                                 ! from the surface, to allow for finite wind stresses to be transmitted through
                                 ! infinitesimally thin surface layers.  This is an older option for numerical
                                 ! convenience without a strong physical basis, and its use is now discouraged.
-MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
-                                ! The maximum velocity allowed before the velocity components are truncated.
-CFL_BASED_TRUNCATIONS = True    !   [Boolean] default = True
-                                ! If true, base truncations on the CFL number, and not an absolute speed.
 CFL_TRUNCATE = 0.5              !   [nondim] default = 0.5
                                 ! The value of the CFL number that will cause velocity components to be
                                 ! truncated; instability can occur past 0.5.
@@ -1316,6 +1362,11 @@ DTBT = -0.9                     !   [s or nondim] default = -0.98
 BT_USE_OLD_CORIOLIS_BRACKET_BUG = True !   [Boolean] default = False
                                 ! If True, use an order of operations that is not bitwise rotationally symmetric
                                 ! in the meridional Coriolis term of the barotropic solver.
+MASK_COASTAL_PRESSURE_FORCE = False !   [Boolean] default = False
+                                ! If true, use the land masks to zero out the diagnosed barotropic pressure
+                                ! gradient accelerations at coastal or land points.  This changes diagnostics
+                                ! and improves the reproducibility of certain debugging checksums, but it does
+                                ! not alter the solutions themselves.
 
 ! === module MOM_mixed_layer_restrat ===
 MIXEDLAYER_RESTRAT = False      !   [Boolean] default = False
@@ -1396,6 +1447,9 @@ EVAP_CFL_LIMIT = 0.8            !   [nondim] default = 0.8
 MLD_EN_VALS = 25.0, 2500.0, 2.5E+05 !   [J/m2] default = 25.0, 2500.0, 2.5E+05
                                 ! The energy values used to compute MLDs.  If not set (or all set to 0.), the
                                 ! default will overwrite to 25., 2500., 250000.
+BMLD_EN_VALS = 25.0, 2500.0, 2.5E+05 !   [J/m2] default = 25.0, 2500.0, 2.5E+05
+                                ! The energy values used to compute Bottom MLDs.  If not set (or all set to 0.),
+                                ! the default will overwrite to 25., 2500., 250000.
 DIAG_MLD_DENSITY_DIFF = 0.03    !   [kg/m3] default = 0.1
                                 ! The density difference used to determine a diagnostic mixed layer depth,
                                 ! MLD_user, following the definition of Levitus 1982. The MLD is the depth at
@@ -1465,7 +1519,7 @@ LOTW_BBL_USE_OMEGA = True       !   [Boolean] default = True
                                 ! Otherwise, N is N.
 VON_KARMAN_BBL = 0.41           !   [nondim] default = 0.41
                                 ! The value the von Karman constant as used in calculating the BBL diffusivity.
-LOTW_BBL_ANSWER_DATE = 20190101 ! default = 20190101
+LOTW_BBL_ANSWER_DATE = 20190101 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the LOTW_BBL
                                 ! calculations.  Values below 20240630 recover the original answers, while
                                 ! higher values use more accurate expressions.  This only applies when
@@ -1693,8 +1747,10 @@ EPBL_MSTAR_SCHEME = "CONSTANT"  ! default = "CONSTANT"
                                 !    OM4        - Use L_Ekman/L_Obukhov in the stabilizing limit, as in OM4
                                 !    REICHL_H18 - Use the scheme documented in Reichl & Hallberg, 2018.
 MSTAR = 0.0                     !   [nondim] default = 1.2
-                                ! The ratio of the friction velocity cubed to the TKE input to the mixed layer.
-                                ! This option is used if EPBL_MSTAR_SCHEME = CONSTANT.
+                                ! The ratio of the friction velocity cubed to the TKE input to the surface
+                                ! boundary layer.  This option is used if EPBL_MSTAR_SCHEME = CONSTANT.
+EPBL_BBL_USE_MSTAR = False      !   [nondim] default = False
+                                ! A logical to use mstar in the calculation of TKE in the ePBL BBL scheme
 NSTAR = 0.06                    !   [nondim] default = 0.2
                                 ! The portion of the buoyant potential energy imparted by surface fluxes that is
                                 ! available to drive entrainment at the base of mixed layer when that energy is
@@ -1934,6 +1990,8 @@ MAX_ENERGY = 0.0                !   [m2 s-2] default = 0.0
                                 ! The maximum permitted average energy per unit mass; the model will be stopped
                                 ! if there is more energy than this.  If zero or negative, this is set to
                                 ! 10*MAXVEL^2.
+MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
+                                ! The maximum velocity allowed before the velocity components are truncated.
 ENERGYFILE = "ocean.stats"      ! default = "ocean.stats"
                                 ! The file to use to write the energies and globally summed diagnostics.
 DATE_STAMPED_STDOUT = True      !   [Boolean] default = True
@@ -2070,7 +2128,7 @@ ALLOW_FLUX_ADJUSTMENTS = False  !   [Boolean] default = False
 ! === module MOM_restart ===
 USE_WAVES = False               !   [Boolean] default = False
                                 ! If true, enables surface wave modules.
-WAVE_INTERFACE_ANSWER_DATE = 20221231 ! default = 20221231
+WAVE_INTERFACE_ANSWER_DATE = 20221231 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the surface wave
                                 ! calculations.  Values below 20230101 recover the answers from the end of 2022,
                                 ! while higher values use updated and more robust forms of the same expressions:
