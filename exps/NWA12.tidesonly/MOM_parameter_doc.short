@@ -123,6 +123,12 @@ NK = 1                          !   [nondim]
 ! === module MOM_tracer_flow_control ===
 
 ! === module MOM_boundary_update ===
+OBC_SEGMENT_001_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
+                                ! OBC segment docs
+OBC_SEGMENT_002_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
+                                ! OBC segment docs
+OBC_SEGMENT_003_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_003.nc(uamp),Uphase=file:tu_003.nc(uphase),Vamp=file:tu_003.nc(vamp),Vphase=file:tu_003.nc(vphase),SSHamp=file:tz_003.nc(zamp),SSHphase=file:tz_003.nc(zphase)" !
+                                ! OBC segment docs
 
 ! === module MOM_coord_initialization ===
 COORD_CONFIG = "gprime"         ! default = "none"
@@ -147,12 +153,6 @@ GINT = 0.0164                   !   [m s-2]
                                 ! The reduced gravity across internal interfaces.
 
 ! === module MOM_state_initialization ===
-OBC_SEGMENT_001_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
-                                ! OBC segment docs
-OBC_SEGMENT_002_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
-                                ! OBC segment docs
-OBC_SEGMENT_003_DATA = "U=value:0.0,V=value:0.0,SSH=value:0.0,Uamp=file:tu_003.nc(uamp),Uphase=file:tu_003.nc(uphase),Vamp=file:tu_003.nc(vamp),Vphase=file:tu_003.nc(vphase),SSHamp=file:tz_003.nc(zamp),SSHphase=file:tz_003.nc(zphase)" !
-                                ! OBC segment docs
 
 ! === module MOM_diag_mediator ===
 
@@ -183,6 +183,11 @@ KV = 1.0E-06                    !   [m2 s-1]
 ! === module MOM_dynamics_split_RK2 ===
 TIDES = True                    !   [Boolean] default = False
                                 ! If true, apply tidal momentum forcing.
+VISC_REM_BUG = True             !   [Boolean] default = False
+                                ! If true, visc_rem_[uv] in split mode is incorrectly calculated or accounted
+                                ! for in two places. This parameter controls the defaults of two individual
+                                ! flags, VISC_REM_TIMESTEP_BUG in MOM_dynamics_split_RK2(b) and
+                                ! VISC_REM_BT_WEIGHT_BUG in MOM_barotropic.
 
 ! === module MOM_continuity_PPM ===
 ETA_TOLERANCE = 1.0E-12         !   [m] default = 5.0E-11
@@ -243,6 +248,13 @@ TIDE_REF_DATE = 1993, 1, 1      ! default = 0, 0, 0
 ! === module MOM_PressureForce ===
 
 ! === module MOM_PressureForce_FV ===
+TIDES_ANSWER_DATE = 20230630    ! default = 99991231
+                                ! The vintage of self-attraction and loading (SAL) and tidal forcing
+                                ! calculations.  Setting dates before 20230701 recovers old answers (Boussinesq
+                                ! and non-Boussinesq modes) when SAL is part of the tidal forcing calculation.
+                                ! The answer difference is only at bit level and due to a reordered summation.
+                                ! Setting dates before 20250201 recovers answers (Boussinesq mode) that
+                                ! interface heights are modified before pressure force integrals are calculated.
 
 ! === module MOM_Zanna_Bolton ===
 
@@ -255,6 +267,10 @@ SMAGORINSKY_AH = True           !   [Boolean] default = False
                                 ! If true, use a biharmonic Smagorinsky nonlinear eddy viscosity.
 SMAG_BI_CONST = 0.06            !   [nondim] default = 0.0
                                 ! The nondimensional biharmonic Smagorinsky constant, typically 0.015 - 0.06.
+FRICTWORK_BUG = True            !   [Boolean] default = False
+                                ! If true, retain an answer-changing bug in calculating the FrictWork, which
+                                ! cancels the h in thickness flux and the h at velocity point. This isnot
+                                ! recommended.
 
 ! === module MOM_vert_friction ===
 DIRECT_STRESS = True            !   [Boolean] default = False
@@ -264,8 +280,6 @@ DIRECT_STRESS = True            !   [Boolean] default = False
 HMIX_FIXED = 20.0               !   [m]
                                 ! The prescribed depth over which the near-surface viscosity and diffusivity are
                                 ! elevated when the bulk mixed layer is not used.
-MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
-                                ! The maximum velocity allowed before the velocity components are truncated.
 
 ! === module MOM_barotropic ===
 BOUND_BT_CORRECTION = True      !   [Boolean] default = False
@@ -319,6 +333,8 @@ MAXTRUNC = 100000               !   [truncations save_interval-1] default = 0
                                 ! The run will be stopped, and the day set to a very large value if the velocity
                                 ! is truncated more than MAXTRUNC times between energy saves.  Set MAXTRUNC to 0
                                 ! to stop if there is any truncation of velocities.
+MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
+                                ! The maximum velocity allowed before the velocity components are truncated.
 DATE_STAMPED_STDOUT = False     !   [Boolean] default = True
                                 ! If true, use dates (not times) in messages to stdout
 ENERGYSAVEDAYS = 0.1            !   [days] default = 1.0
