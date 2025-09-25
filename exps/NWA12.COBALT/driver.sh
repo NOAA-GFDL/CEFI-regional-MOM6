@@ -28,9 +28,12 @@ ntasks2=900
 
 #
 echo "Test started:  " `date`
+source ~/.bashrc
+echo $TMOUT
 source $MODULESHOME/init/bash
 module load cray-mpich-abi
 module unload cray-hdf5
+module list
 
 #
 echo "link datasets ..."
