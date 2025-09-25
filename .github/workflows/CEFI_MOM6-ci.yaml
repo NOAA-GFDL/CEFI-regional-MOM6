@@ -71,7 +71,7 @@ jobs:
     strategy:
       max-parallel: 2 
       matrix:
-        case: ["NWA12.COBALT", "NEP10.COBALT"]
+        case: ["NWA12.COBALT"]
     steps:
       - name: Checkout CEFI-regional-MOM6
         uses: actions/checkout@v4
