@@ -19,6 +19,9 @@ jobs:
     timeout-minutes: 120
     strategy:
       max-parallel: 1    
+    defaults:
+      run:
+        shell: bash -l {0}   # <-- force bash login shell for all steps in this job
 
     steps:
     - name: Checkout CEFI-regional-MOM6
@@ -72,6 +75,9 @@ jobs:
       max-parallel: 2 
       matrix:
         case: ["NWA12.COBALT"]
+    defaults:
+      run:
+        shell: bash -l {0}   # force bash everywhere in this job        
     steps:
       - name: Checkout CEFI-regional-MOM6
         uses: actions/checkout@v4
