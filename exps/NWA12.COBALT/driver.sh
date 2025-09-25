@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=13
-#SBATCH --time=30
+#SBATCH --time=55
 #SBATCH --job-name="NWA12.COBALT"
 #SBATCH --output=NWA12.COBALT_o.%j
 #SBATCH --error=NWA12.COBALT_e.%j
