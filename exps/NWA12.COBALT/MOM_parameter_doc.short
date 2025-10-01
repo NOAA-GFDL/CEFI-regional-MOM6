@@ -160,11 +160,6 @@ NK = 75                         !   [nondim]
                                 ! The number of model layers.
 
 ! === module MOM_EOS ===
-EQN_OF_STATE = "WRIGHT_FULL"    ! default = "WRIGHT"
-                                ! EQN_OF_STATE determines which ocean equation of state should be used.
-                                ! Currently, the valid choices are "LINEAR", "UNESCO", "JACKETT_MCD", "WRIGHT",
-                                ! "WRIGHT_REDUCED", "WRIGHT_FULL", "NEMO", "ROQUET_RHO", "ROQUET_SPV" and
-                                ! "TEOS10".  This is only used if USE_EOS is true.
 DTFREEZE_DP = -7.75E-08         !   [degC Pa-1] default = 0.0
                                 ! When TFREEZE_FORM=LINEAR, this is the derivative of the freezing potential
                                 ! temperature with pressure.
@@ -192,6 +187,12 @@ TRACERS_MAY_REINIT = True       !   [Boolean] default = False
 ! === module MOM_boundary_update ===
 
 ! === module segment_tracer_registry_init ===
+OBC_SEGMENT_001_DATA = "U=file:uv_001.nc(u),V=file:uv_001.nc(v),SSH=file:zos_001.nc(zos),TEMP=file:thetao_001.nc(thetao),SALT=file:so_001.nc(so),Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
+                                ! OBC segment docs
+OBC_SEGMENT_002_DATA = "U=file:uv_002.nc(u),V=file:uv_002.nc(v),SSH=file:zos_002.nc(zos),TEMP=file:thetao_002.nc(thetao),SALT=file:so_002.nc(so),Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
+                                ! OBC segment docs
+OBC_SEGMENT_003_DATA = "U=file:uv_003.nc(u),V=file:uv_003.nc(v),SSH=file:zos_003.nc(zos),TEMP=file:thetao_003.nc(thetao),SALT=file:so_003.nc(so),Uamp=file:tu_003.nc(uamp),Uphase=file:tu_003.nc(uphase),Vamp=file:tu_003.nc(vamp),Vphase=file:tu_003.nc(vphase),SSHamp=file:tz_003.nc(zamp),SSHphase=file:tz_003.nc(zphase)" !
+                                ! OBC segment docs
 
 ! === module MOM_coord_initialization ===
 COORD_CONFIG = "ALE"            ! default = "none"
@@ -236,8 +237,23 @@ ALE_COORDINATE_CONFIG = "FILE:vgrid_75_2m.nc,dz" ! default = "UNIFORM"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
-                                !                by a comma or space, for sigma-2 and dz. e.g.
-                                !                HYBRID:vgrid.nc,sigma2,dz
+                                !                by a comma or space, for sigma-2 and dz.
+                                !                e.g. HYBRID:vgrid.nc,sigma2,dz
+                                !  HYBRID_3D:string - read from a file. The string specifies
+                                !                the filename and two 3D variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. The
+                                !                latter can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_3D:vgrid.nc,sigma2,dz
+                                !  HYBRID_MAP:string - read from a file. The string specifies
+                                !                the filename and three variable names, separated
+                                !                by a comma or space, for map, sigma-2 and dz.
+                                !                Map is a spatial index array with, maxval(map)=N,
+                                !                and the others are 2D arrays containing N profiles.
+                                !                Map typically contains integer values, but it can
+                                !                contain real values, I+w, which imply using
+                                !                the weighted sum of profiles I and I+1.
+                                !                Dz can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_MAP:vgrid.nc,map,sigma2,dz
 !ALE_RESOLUTION = 4*2.0, 2*2.01, 2.02, 2.03, 2.05, 2.08, 2.11, 2.15, 2.2, 2.27, 2.34, 2.44, 2.55, 2.69, 2.85, 3.04, 3.27, 3.54, 3.85, 4.22, 4.66, 5.18, 5.79, 6.52, 7.37, 8.37, 9.55, 10.94, 12.57, 14.48, 16.72, 19.33, 22.36, 25.87, 29.91, 34.53, 39.79, 45.72, 52.37, 59.76, 67.89, 76.74, 86.29, 96.47, 107.2, 118.35, 129.81, 141.42, 153.01, 164.41, 175.47, 186.01, 195.9, 205.01, 213.27, 220.6, 226.99, 232.43, 236.96, 240.63, 243.52, 245.72, 247.33, 248.45, 249.18, 249.62, 249.86, 249.96, 249.99, 2*250.0 !   [m]
                                 ! The distribution of vertical resolution for the target
                                 ! grid used for Eulerian-like coordinates. For example,
@@ -265,12 +281,6 @@ REMAPPING_USE_OM4_SUBCELLS = False !   [Boolean] default = True
                                 ! recommend setting this option to false.
 
 ! === module MOM_state_initialization ===
-OBC_SEGMENT_001_DATA = "U=file:uv_001.nc(u),V=file:uv_001.nc(v),SSH=file:zos_001.nc(zos),TEMP=file:thetao_001.nc(thetao),SALT=file:so_001.nc(so),Uamp=file:tu_001.nc(uamp),Uphase=file:tu_001.nc(uphase),Vamp=file:tu_001.nc(vamp),Vphase=file:tu_001.nc(vphase),SSHamp=file:tz_001.nc(zamp),SSHphase=file:tz_001.nc(zphase)" !
-                                ! OBC segment docs
-OBC_SEGMENT_002_DATA = "U=file:uv_002.nc(u),V=file:uv_002.nc(v),SSH=file:zos_002.nc(zos),TEMP=file:thetao_002.nc(thetao),SALT=file:so_002.nc(so),Uamp=file:tu_002.nc(uamp),Uphase=file:tu_002.nc(uphase),Vamp=file:tu_002.nc(vamp),Vphase=file:tu_002.nc(vphase),SSHamp=file:tz_002.nc(zamp),SSHphase=file:tz_002.nc(zphase)" !
-                                ! OBC segment docs
-OBC_SEGMENT_003_DATA = "U=file:uv_003.nc(u),V=file:uv_003.nc(v),SSH=file:zos_003.nc(zos),TEMP=file:thetao_003.nc(thetao),SALT=file:so_003.nc(so),Uamp=file:tu_003.nc(uamp),Uphase=file:tu_003.nc(uphase),Vamp=file:tu_003.nc(vamp),Vphase=file:tu_003.nc(vphase),SSHamp=file:tz_003.nc(zamp),SSHphase=file:tz_003.nc(zphase)" !
-                                ! OBC segment docs
 
 ! === module MOM_diag_mediator ===
 DIAG_COORD_DEF_Z = "FILE:diag_dz.nc,dz" ! default = "WOA09"
@@ -287,8 +297,23 @@ DIAG_COORD_DEF_Z = "FILE:diag_dz.nc,dz" ! default = "WOA09"
                                 !  FNC1:string - FNC1:dz_min,H_total,power,precision
                                 !  HYBRID:string - read from a file. The string specifies
                                 !                the filename and two variable names, separated
-                                !                by a comma or space, for sigma-2 and dz. e.g.
-                                !                HYBRID:vgrid.nc,sigma2,dz
+                                !                by a comma or space, for sigma-2 and dz.
+                                !                e.g. HYBRID:vgrid.nc,sigma2,dz
+                                !  HYBRID_3D:string - read from a file. The string specifies
+                                !                the filename and two 3D variable names, separated
+                                !                by a comma or space, for sigma-2 and dz. The
+                                !                latter can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_3D:vgrid.nc,sigma2,dz
+                                !  HYBRID_MAP:string - read from a file. The string specifies
+                                !                the filename and three variable names, separated
+                                !                by a comma or space, for map, sigma-2 and dz.
+                                !                Map is a spatial index array with, maxval(map)=N,
+                                !                and the others are 2D arrays containing N profiles.
+                                !                Map typically contains integer values, but it can
+                                !                contain real values, I+w, which imply using
+                                !                the weighted sum of profiles I and I+1.
+                                !                Dz can be FNC1:string which is used everywhere.
+                                !                e.g. HYBRID_MAP:vgrid.nc,map,sigma2,dz
 
 ! === module MOM_lateral_mixing_coeffs ===
 USE_VARIABLE_MIXING = True      !   [Boolean] default = False
@@ -333,11 +358,6 @@ KHTH_MAX_CFL = 0.1              !   [nondimensional] default = 0.8
 ! === module MOM_dynamics_split_RK2 ===
 TIDES = True                    !   [Boolean] default = False
                                 ! If true, apply tidal momentum forcing.
-VISC_REM_BUG = False            !   [Boolean] default = True
-                                ! If true, visc_rem_[uv] in split mode is incorrectly calculated or accounted
-                                ! for in two places. This parameter controls the defaults of two individual
-                                ! flags, VISC_REM_TIMESTEP_BUG in MOM_dynamics_split_RK2(b) and
-                                ! VISC_REM_BT_WEIGHT_BUG in MOM_barotropic.
 
 ! === module MOM_continuity_PPM ===
 ETA_TOLERANCE = 3.75E-09        !   [m] default = 3.75E-09
@@ -409,9 +429,20 @@ RHO_PGF_REF_BUG = False         !   [Boolean] default = True
                                 ! mode) and RHO_PGF_REF (the subtracted reference density in finite volume
                                 ! pressure gradient forces) are incorrectly interchanged in several instances in
                                 ! Boussinesq mode.
+TIDES_ANSWER_DATE = 20230630    ! default = 99991231
+                                ! The vintage of self-attraction and loading (SAL) and tidal forcing
+                                ! calculations.  Setting dates before 20230701 recovers old answers (Boussinesq
+                                ! and non-Boussinesq modes) when SAL is part of the tidal forcing calculation.
+                                ! The answer difference is only at bit level and due to a reordered summation.
+                                ! Setting dates before 20250201 recovers answers (Boussinesq mode) that
+                                ! interface heights are modified before pressure force integrals are calculated.
 MASS_WEIGHT_IN_PRESSURE_GRADIENT = True !   [Boolean] default = False
                                 ! If true, use mass weighting when interpolating T/S for integrals near the
                                 ! bathymetry in FV pressure gradient calculations.
+MASS_WEIGHT_IN_PRESSURE_GRADIENT_TOP = False !   [Boolean] default = True
+                                ! If true and MASS_WEIGHT_IN_PRESSURE_GRADIENT is true, use mass weighting when
+                                ! interpolating T/S for integrals near the top of the water column in FV
+                                ! pressure gradient calculations.
 
 ! === module MOM_Zanna_Bolton ===
 
@@ -424,10 +455,6 @@ SMAGORINSKY_AH = True           !   [Boolean] default = False
                                 ! If true, use a biharmonic Smagorinsky nonlinear eddy viscosity.
 SMAG_BI_CONST = 0.03            !   [nondim] default = 0.0
                                 ! The nondimensional biharmonic Smagorinsky constant, typically 0.015 - 0.06.
-FRICTWORK_BUG = False           !   [Boolean] default = True
-                                ! If true, retain an answer-changing bug in calculating the FrictWork, which
-                                ! cancels the h in thickness flux and the h at velocity point. This isnot
-                                ! recommended.
 
 ! === module MOM_vert_friction ===
 DIRECT_STRESS = True            !   [Boolean] default = False
@@ -437,8 +464,6 @@ DIRECT_STRESS = True            !   [Boolean] default = False
 HMIX_FIXED = 0.9                !   [m]
                                 ! The prescribed depth over which the near-surface viscosity and diffusivity are
                                 ! elevated when the bulk mixed layer is not used.
-MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
-                                ! The maximum velocity allowed before the velocity components are truncated.
 
 ! === module MOM_barotropic ===
 BOUND_BT_CORRECTION = True      !   [Boolean] default = False
@@ -612,10 +637,10 @@ EPBL_MSTAR_SCHEME = "REICHL_H18" ! default = "CONSTANT"
                                 !    REICHL_H18 - Use the scheme documented in Reichl & Hallberg, 2018.
 MSTAR_CAP = 10.0                !   [nondim] default = -1.0
                                 ! If this value is positive, it sets the maximum value of mstar allowed in ePBL.
-                                ! (This is not used if EPBL_MSTAR_SCHEME = CONSTANT).
+                                ! (This is not used if EPBL_mstar_scheme = CONSTANT).
 RH18_MSTAR_CN3 = -6.0           !   [nondim] default = -5.0
                                 ! MSTAR_N coefficient 3 (exponential decay coefficient). The value of -5.0 is
-                                ! given in RH18.  Increasing this increases how quickly the value of MSTAR
+                                ! given in RH18.  Increasing this increases how quickly the value of mstar
                                 ! decreases as Hf/ust increases.
 NSTAR = 0.06                    !   [nondim] default = 0.2
                                 ! The portion of the buoyant potential energy imparted by surface fluxes that is
@@ -715,6 +740,8 @@ MAXTRUNC = 1000                 !   [truncations save_interval-1] default = 0
                                 ! The run will be stopped, and the day set to a very large value if the velocity
                                 ! is truncated more than MAXTRUNC times between energy saves.  Set MAXTRUNC to 0
                                 ! to stop if there is any truncation of velocities.
+MAXVEL = 6.0                    !   [m s-1] default = 3.0E+08
+                                ! The maximum velocity allowed before the velocity components are truncated.
 
 ! === module ocean_stochastics_init ===
 
@@ -737,6 +764,14 @@ SEA_ICE_RIGID_MASS = 100.0      !   [kg m-2] default = 1000.0
                                 ! rigidity
 
 ! === module MOM_restart ===
+WAVE_INTERFACE_ANSWER_DATE = 20221231 ! default = 99991231
+                                ! The vintage of the order of arithmetic and expressions in the surface wave
+                                ! calculations.  Values below 20230101 recover the answers from the end of 2022,
+                                ! while higher values use updated and more robust forms of the same expressions:
+                                !    <  20230101 - Original answers for wave interface routines
+                                !    >= 20230101 - More robust expressions for Update_Stokes_Drift
+                                !    >= 20230102 - More robust expressions for get_StokesSL_LiFoxKemper
+                                !    >= 20230103 - More robust expressions for ust_2_u10_coare3p5
 LA_DEPTH_RATIO = 0.2            !   [nondim] default = 0.04
                                 ! The depth (normalized by BLD) to average Stokes drift over in Langmuir number
                                 ! calculation, where La = sqrt(ust/Stokes).
