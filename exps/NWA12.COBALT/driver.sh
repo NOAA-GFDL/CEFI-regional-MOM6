@@ -74,6 +74,12 @@ popd
 if $USE_PROJ_SHARED; then
   ln -fs /gpfs/f5/gfdl_med/proj-shared/github/tmp/NWA12/RESTART_48hrs ./RESTART
 fi
+
+# Print info about environment
+echo -e "\n\n WORKING WITH THE FOLLOWING ENV\n"
+env
+echo -e "\n\n ENV OVER\n"
+
 srun --ntasks ${ntasks1} --export=ALL apptainer exec -B /gpfs:/gpfs -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp  --writable-tmpfs $img bash ./execrunscript.sh > out1 2>err1
 mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
