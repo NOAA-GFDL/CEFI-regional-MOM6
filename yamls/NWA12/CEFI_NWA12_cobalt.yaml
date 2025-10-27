@@ -24,12 +24,12 @@
 # COMPILE GUIDE - CONTAINERS
 #
 # 1.) Create checkout script with the "no parallel checkouts option" - this is required for container builds
-# fre make create-checkout -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod -npc
+# fre make checkout-script -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod -npc
 # 
 # 2.) Create Makefile AND a Docker file. You can then build the container by manually running the createContainer.sh
 # script, or by OPTIONALLY including the --execute file when creating the container
-# fre make create-makefile -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod
-# fre make create-dockerfile -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod --execute
+# fre make makefile -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod
+# fre make dockerfile -y CEFI_NWA12_cobalt.yaml -p hpcme.2023 -t prod --execute
 #
 # POSTPROCESSING GUIDE
 #
