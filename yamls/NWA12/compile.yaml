@@ -36,6 +36,7 @@ compile:
        - component: sis2
          requires: [FMS, mom6]
          repo: "https://github.com/NOAA-GFDL/ice_param.git"
+         branch: *ICEPARAM_GIT_TAG
          paths: [mom6/src/SIS2/config_src/dynamic_symmetric,
                  mom6/src/SIS2/config_src/external/Icepack_interfaces,
                  mom6/src/SIS2/src,
