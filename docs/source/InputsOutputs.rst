@@ -10,14 +10,14 @@ This chapter describes the input and model configuration files needed for execut
 Input files
 =============
 
-There are four types of files needed to execute a run: 
+There are four types of files needed to execute a run:
 
    #. Static datasets (*fix* files containing climatological information)
-   #. Grid Description files      
-   #. Files that depend on time such as initial/boundary conditions 
+   #. Grid Description files
+   #. Files that depend on time such as initial/boundary conditions
    #. Model configuration files (such as namelists)
 
-.. _fix-files:   
+.. _fix-files:
 
 ------------------------------------
 Static Datasets (i.e., *fix files*)
@@ -36,17 +36,17 @@ The static input files for regional MOM6-SIS2-COBALT configurations are listed a
    * - seawifs-clim-1997-2010.nwa12.nc
      - climatological chlorophyll concentration
    * - bgc_woa.nc
-     - climatological open boundary conditions for bgc tracers such as no3, po4, sio4, and o2 (tools/boundary/write_bgc_boundary.py)  
+     - climatological open boundary conditions for bgc tracers such as no3, po4, sio4, and o2 (tools/boundary/write_bgc_boundary.py)
    * - bgc_cobalt.nc
-     - climatological open boundary conditions for bgc tracers not are not included in bgc_woa.nc or bgc_esper_1993_2022.nc (tools/boundary/write_bgc_boundary.py) 
+     - climatological open boundary conditions for bgc tracers not are not included in bgc_woa.nc or bgc_esper_1993_2022.nc (tools/boundary/write_bgc_boundary.py)
    * - tz_00*.nc
      - open boundary conditions for tidal amplitude for each tidal constituent (tools/boundary/write_tpxo_boundary.py)
    * - tu_00*.nc
-     - open boundary conditions for tidal current for each tidal constituent (tools/boundary/write_tpxo_boundary.py) 
+     - open boundary conditions for tidal current for each tidal constituent (tools/boundary/write_tpxo_boundary.py)
    * - esm4_*.nc
      - Atmospheric BGC fluxes from ESM4 simulation
 
-.. _grid-files:  
+.. _grid-files:
 
 ------------------------------------
 Grid Description files
@@ -64,7 +64,7 @@ Users are referred to this `link <https://github.com/jsimkins2/nwa25/blob/main/m
    * - Filename
      - Description
    * - ocean_hgrid.nc
-     - horizonal grid information       
+     - horizonal grid information
    * - ocean_mosaic.nc
      - specify horizonal starting and ending points index
    * - ocean_topog.nc
@@ -79,10 +79,10 @@ Users are referred to this `link <https://github.com/jsimkins2/nwa25/blob/main/m
      - specify target depth for diag outputs
    * - grid_spec.nc
      - Contains information on the mosaic grid
-   * - \*\*\*\*\_mosaic\_tile1X\*\*\*\*\_mosaic\_tile1.nc 
-     - grid files for the FMS coupler 
+   * - \*\*\*\*\_mosaic\_tile1X\*\*\*\*\_mosaic\_tile1.nc
+     - grid files for the FMS coupler
 
-.. _td-files:  
+.. _td-files:
 
 ------------------------------------
 Time-dependent files
@@ -100,20 +100,20 @@ The script used to generate this file is shown in parentheses.
    * - Filename
      - Description
    * - glorys_ic_1993-01-01.nc
-     - ocean physical initial conditions from Glorys (tools/initial/write_glorys_initial.py)   
+     - ocean physical initial conditions from Glorys (tools/initial/write_glorys_initial.py)
    * - NWA12_COBALT_2023_10_spinup_2003.nc
-     - ocean biogeochemical initial conditions (tools/initial/write_bgc_initial.py)    
-   * - so_*.nc, thetao_*.nc, zos_*.nc, uv_*.nc 
-     - Open boundary conditions for physical variables (tools/boundary/write_glorys_boundary.py)   
+     - ocean biogeochemical initial conditions (tools/initial/write_bgc_initial.py)
+   * - so_*.nc, thetao_*.nc, zos_*.nc, uv_*.nc
+     - Open boundary conditions for physical variables (tools/boundary/write_glorys_boundary.py)
    * - bgc_esper_1993_2022.nc
-     - Open boundary conditions for ALK and DIC (tools/boundary/write_bgc_boundary.py; Prerequisite: tools/boundary/esper/run_esper.sh)    
+     - Open boundary conditions for ALK and DIC (tools/boundary/write_bgc_boundary.py; Prerequisite: tools/boundary/esper/run_esper.sh)
    * - ERA5_*.nc
      - atmos forcings from ERA5 (tools/atmos)
    * - glofas_runoff_****.nc
-     - River runoff from GloFAS data (tools/rivers/write_runoff_glofas.py)    
+     - River runoff from GloFAS data (tools/rivers/write_runoff_glofas.py)
    * - RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc
-     - Biogeochemical tracer concentrations for river runoff 
-   * - mole_fraction_of_co2_extended_ssp245.nc
+     - Biogeochemical tracer concentrations for river runoff
+   * - mole_fraction_of_co2_extended_ssp245_v2.nc
      - mole fraction of carbon dioxide in atmos
 
 
@@ -138,13 +138,13 @@ The model configuration files for regional MOM6-SIS2-COBALT configurations are l
    * - MOM_input
      - This input file provides the adjustable run-time parameters for MOM6
    * - MOM_override
-     - Override MOM6 run-time parameters 
+     - Override MOM6 run-time parameters
    * - MOM_layout
      - Control MOM6 model's layout
    * - SIS_input
      - This input file provides the adjustable run-time parameters for SIS2
    * - SIS_override
-     - Override SIS2 run-time parameters 
+     - Override SIS2 run-time parameters
    * - SIS_layout
      - Control SIS2 model's layout
    * - field_table
@@ -154,7 +154,7 @@ The model configuration files for regional MOM6-SIS2-COBALT configurations are l
    * - data_table
      - An ASCII file that is used to control external data forcing fields, such as surface forcings or river runoff
 
-The best practice when configuring a new simulation or tuning parameters is to make all changes in the MOM_override or SIS_override files. Not all parameters need to be specified within MOM_input, if no value is given the default will be used. See the MOM_parameter_doc file described in the next section to find the default value of the parameter. When using the MOM_override file to set a parameter which is not defined in the MOM_input file, it can be set as ``PARAMETER = Value`` within the MOM_override file. To override a parameter that is specified within the MOM_input file, the prefix ``#override`` must be included, so an overridden value would be specified as ``#override PARAMETER = Value``. Only one parameter per line should be specified within the override file. MOM and SIS input and override files follow the same formatting guidelines. 
+The best practice when configuring a new simulation or tuning parameters is to make all changes in the MOM_override or SIS_override files. Not all parameters need to be specified within MOM_input, if no value is given the default will be used. See the MOM_parameter_doc file described in the next section to find the default value of the parameter. When using the MOM_override file to set a parameter which is not defined in the MOM_input file, it can be set as ``PARAMETER = Value`` within the MOM_override file. To override a parameter that is specified within the MOM_input file, the prefix ``#override`` must be included, so an overridden value would be specified as ``#override PARAMETER = Value``. Only one parameter per line should be specified within the override file. MOM and SIS input and override files follow the same formatting guidelines.
 
 The data_table is commonly formatted by specifying each of the fields in the order listed below, with a new line for each entry.
 
@@ -180,9 +180,9 @@ Users can also set a constant value by entering empty quotes for ``fieldname_fil
 
 =============
 Outputs
-=============    
+=============
 
-Model output is controlled via the FMS diag_manager using the ``diag_table``. 
+Model output is controlled via the FMS diag_manager using the ``diag_table``.
 
 The diag_table file has three kinds of section: Title, File and Field. The title section is mandatory and always the first. There can be multiple file and field sections typically either in pairs or grouped in to all files and all fields, but always with the file section preceding the corresponding field section.
 
@@ -210,15 +210,15 @@ File Section
 This section defines an arbitrary number of files that will be created. Each file is limited to a single rate of either sampling or time-averaging.
 
 .. code-block:: console
-   
+
    "file_name",  output_freq,  "output_freq_units",  file_format,  "time_axis_units",  "time_axis_name"
 
-These file section entries are described in :numref:`Table %s <FileDescription>`.   
+These file section entries are described in :numref:`Table %s <FileDescription>`.
 
 .. _FileDescription:
 
 .. list-table:: *Description of the variables used to define the files written to the output files.*
-   :widths: 40 50 
+   :widths: 40 50
    :header-rows: 1
 
    * - Field Entry
@@ -278,7 +278,7 @@ These field section entries are described in :numref:`Table %s <FieldDescription
      - Currently not used.  Please use the string "all".
    * - reduction_method
      - CHARACTER(len=50)
-     - "none” means sample or snapshot. “average” or “mean” performs a time-average. “min” or “max” diagnose the minium or maxium over each time period.       
+     - "none” means sample or snapshot. “average” or “mean” performs a time-average. “min” or “max” diagnose the minium or maxium over each time period.
    * - regional_section
      - CHARACTER(len=50)
      - “none” means global output. A string of six space separated numbers, “lon_min lon_max lat_min lat_max vert_min vert_max”, limits the diagnostic to a region.
@@ -286,7 +286,7 @@ These field section entries are described in :numref:`Table %s <FieldDescription
      - INTEGER
      - Fortran number KIND of the data written.  Valid values:  1=double precision, 2=float, 4=packed 16-bit integers, 8=packed 1-byte (not tested).
 
-A brief example of the diag_table is shown below. 
+A brief example of the diag_table is shown below.
 
 .. code-block:: console
 
@@ -318,7 +318,7 @@ A brief example of the diag_table is shown below.
 Parameter Files
 ---------------------------
 
-In additon to model output, MOM6 also records runtime parameters used during the model intialization. Each parameter_doc file includes different information. 
+In additon to model output, MOM6 also records runtime parameters used during the model intialization. Each parameter_doc file includes different information.
 
 .. list-table:: *Parameter Doc Files*
    :widths: 40 50
@@ -331,7 +331,7 @@ In additon to model output, MOM6 also records runtime parameters used during the
    * - MOM_parameter_doc.short
      - The values of only run-time parameters for MOM6 that differ from their defaults
    * - MOM_parameter_doc.debugging
-     - The values of only run-time parameters used for debugging MOM6 
+     - The values of only run-time parameters used for debugging MOM6
    * - MOM_parameter_doc.layout
      - The values of only run-time parameters that control MOM6 model's layout
    * - SIS_parameter_doc.all
@@ -339,10 +339,10 @@ In additon to model output, MOM6 also records runtime parameters used during the
    * - SIS_parameter_doc.short
      - The values of only run-time parameters for SIS2 that differ from their defaults
    * - SIS_parameter_doc.debugging
-     - The values of only run-time parameters used for debugging SIS2 
+     - The values of only run-time parameters used for debugging SIS2
    * - SIS_parameter_doc.layout
      - The values of only run-time parameters that control SIS2 model's layout
 
-To easily see how experiments differ, the MOM_parameter_doc files can be compared. These files include short descriptions of what parameters control, their default, and different options. 
+To easily see how experiments differ, the MOM_parameter_doc files can be compared. These files include short descriptions of what parameters control, their default, and different options.
 
 
