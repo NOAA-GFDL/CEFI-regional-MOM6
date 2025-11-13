@@ -2,13 +2,14 @@ platforms:
    - name: ncrc5.intel23
      compiler: intel
      modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
-     modules: [!join [*INTEL, /2023.2.0], fre/bronx-22, cray-hdf5, cray-netcdf]
+     modules: [!join [*INTEL, /2023.2.0], fre/2025.04, cray-hdf5, cray-netcdf, cray-libsci/24.07.0]
      mkTemplate: !join ["/ncrc/home2/fms/local/opt/fre-commands/bronx-22/site/ncrc5/", *INTEL, ".mk"]
      modelRoot: !join ["/gpfs/f5/cefi/scratch/${USER}", "/", *FRE_STEM ]
 
    - name: ncrc6.intel23
      compiler: intel
      modulesInit: [" module use -a /ncrc/home2/fms/local/modulefiles \n","source $MODULESHOME/init/sh \n"]
+     # NOTE: fre/2025.04 does not yet work on c6
      modules: [!join [*INTEL, /2023.2.0], fre/bronx-22, cray-hdf5, cray-netcdf]
      mkTemplate: !join ["/ncrc/home2/fms/local/opt/fre-commands/bronx-22/site/ncrc6/", *INTEL, ".mk"]
      modelRoot: !join ["/gpfs/f6/ira-cefi/scratch/${USER}", "/", *FRE_STEM ]

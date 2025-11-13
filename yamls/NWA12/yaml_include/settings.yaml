@@ -3,7 +3,7 @@ directories:
     pp_dir:       !join [/archive/$USER/, *FRE_STEM, /, *name, /, *platform, -, *target, /, pp]
     ptmp_dir:     "/ptmp/$USER/"
 
-postProcess:
+postprocess:
     settings:
         history_segment: "P1Y"
         site: "ppan"
