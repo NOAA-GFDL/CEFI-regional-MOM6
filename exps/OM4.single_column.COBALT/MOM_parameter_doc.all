@@ -849,6 +849,9 @@ HBBL = 10.0                     !   [m]
 CDRAG = 0.003                   !   [nondim] default = 0.003
                                 ! CDRAG is the drag coefficient relating the magnitude of the velocity field to
                                 ! the bottom stress. CDRAG is only used if BOTTOMDRAGLAW is defined.
+CDRAG_MAP = False               !   [Boolean] default = False
+                                ! If true, apply a spatially varying scaling factor to CDRAG, specified by
+                                ! CDRAG_VAR in CDRAG_FILE.
 BBL_USE_TIDAL_BG = False        !   [Boolean] default = False
                                 ! Flag to use the tidal RMS amplitude in place of constant background velocity
                                 ! for computing u* in the BBL. This flag is only used when BOTTOMDRAGLAW is true
@@ -941,6 +944,8 @@ TIDES = False                   !   [Boolean] default = False
                                 ! If true, apply tidal momentum forcing.
 CALCULATE_SAL = False           !   [Boolean] default = False
                                 ! If true, calculate self-attraction and loading.
+USE_HA = False                  !   [Boolean] default = False
+                                ! If true, perform inline harmonic analysis.
 BE = 0.6                        !   [nondim] default = 0.6
                                 ! If SPLIT is true, BE determines the relative weighting of a  2nd-order
                                 ! Runga-Kutta baroclinic time stepping scheme (0.5) and a backward Euler scheme
@@ -1021,6 +1026,9 @@ CONT_PPM_USE_VISC_REM_MAX = True !   [Boolean] default = True
 CONT_PPM_MARGINAL_FACE_AREAS = True !   [Boolean] default = True
                                 ! If true, use the marginal face areas from the continuity solver for use as the
                                 ! weights in the barotropic solver. Otherwise use the transport averaged areas.
+CONT_USE_H_MARG_MIN = False     !   [Boolean] default = False
+                                ! If true, the marginal thickness used and returned from continuity is bounded
+                                ! from below by a sub-roundoff value. Otherwise the minimum is 0.
 
 ! === module MOM_CoriolisAdv ===
 NOSLIP = False                  !   [Boolean] default = False
@@ -1111,6 +1119,7 @@ PRESSURE_RECONSTRUCTION_SCHEME = 1 ! default = 1
                                 !  0: PCM or no reconstruction.
                                 !  1: PLM reconstruction.
                                 !  2: PPM reconstruction.
+                                !  3: PLM with least squares slope.
 BOUNDARY_EXTRAPOLATION_PRESSURE = True !   [Boolean] default = True
                                 ! If true, the reconstruction of T & S for pressure in boundary cells is
                                 ! extrapolated, rather than using PCM in these cells. If true, the same order
