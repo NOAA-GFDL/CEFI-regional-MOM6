@@ -329,9 +329,9 @@ frecheck -v -r restart -p ncrc6.intel23 -t repro  -x CEFI_NEP_cobalt.xml CEFI_NE
 "ATM", "z_bot",              "",       "",                            "bilinear",  10.0
 "ATM", "gust",               "",       "",                            "bilinear",  1.0e-4
 "ATM", "o2_flux_pcair_atm",  "",       "",                            "none",      0.214
-"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
+"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
 # Scaling factors in the last column include both
 # units conversion (radiation: J m-2 -> W m-2, precipitation: m -> kg m-2 s-1 == mm s-1)
 # and division of shortwave radiation (57% visible, 43% near IR, both half direct and half diffuse).
@@ -904,7 +904,7 @@ endif
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnh3_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
         <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
-	<dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
+        <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245_v2.nc</dataSource>
         <dataSource site="ncrc">$(NEP_WORLD)/runoff/RiverNutrients_Combined_Q100_NEP10k.nc</dataSource>
       </dataFile>
       <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">

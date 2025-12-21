@@ -7,9 +7,9 @@
 "ATM", "z_bot",              "",       "",                            "bilinear",  10.0
 "ATM", "gust",               "",       "",                            "bilinear",  1.0e-4
 "ATM", "o2_flux_pcair_atm",  "",       "",                            "none",      0.214
-"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
+"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
+"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245_v2.nc", "bilinear", 1.0e-06
 # Scaling factors in the last column include both
 # units conversion (radiation: J m-2 -> W m-2, precipitation: m -> kg m-2 s-1 == mm s-1)
 # and division of shortwave radiation (57% visible, 43% near IR, both half direct and half diffuse).
