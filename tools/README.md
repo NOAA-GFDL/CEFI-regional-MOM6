@@ -2,7 +2,7 @@
 
 This folder contains tools (mainly written in Python) that can be used to generate initial conditions (ICs), boundary conditions (BCs), and other required inputs for regional MOM6 model runs.
 
-Below we provide instruction for creating a Python virtual environment on NOAA R&D HPCs, specifically configured for the Gaea system. The process outlined here can generally be applied to other clusters within NOAA RDHPCs. The guide has been provided by Yi-Cheng Teng (Contact: yi-cheng.teng@noaa.gov).
+Below we provide instruction for creating a Python virtual environment on NOAA R&D HPCs, specifically configured for the Gaea system. The process outlined here can generally be applied to other clusters within NOAA RDHPCs. If you have any questions, please contact us at oar.gfdl.cefi-support AT noaa DOT gov
 
 ## Install Conda Environment on Gaea
 
