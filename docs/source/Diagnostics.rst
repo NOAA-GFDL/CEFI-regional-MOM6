@@ -4,8 +4,8 @@
 Analysis output
 ====================================
 
-The ``CEFI-regional-MOM6/diagnostics`` folder contains python scripts that can be used to analyze modeled physical and biogeochemical results. 
-Please contact the code manager `Yi-cheng.Teng <yi-cheng.teng@noaa.gov>`_ if you have any queations.
+The ``CEFI-regional-MOM6/diagnostics`` folder contains python scripts that can be used to analyze modeled physical and biogeochemical results.
+Please contact us at `oar.gfdl.cefi-support@noaa.gov`_ if you have any queations.
 
 .. note::
 
@@ -43,7 +43,7 @@ The :numref:`Table %s <Diagsphytable>` below provides short descriptions for scr
 
    * - File Name
      - Description
-   * - sst_eval.py 
+   * - sst_eval.py
      - Compare model SST with 1993--2019 data from OISST and GLORYS
    * - sst_trends.py
      - Compare the model 2005-2019 SST trends from OISST and GLORYS
@@ -52,15 +52,15 @@ The :numref:`Table %s <Diagsphytable>` below provides short descriptions for scr
    * - ssh_eval.py
      - Compare model SSH with 1993--2019 data from GLORYS
    * - mld_eval.py
-     - Compare model MLD with climatologies from Holte et al. 2017 and de Boyer 2022     
+     - Compare model MLD with climatologies from Holte et al. 2017 and de Boyer 2022
    * - compute_tides_job.sh
      - Compare modeled tidal amplitude and phase with TPXO9 data
    * - NWA12/coldpool.py
-     - Compare bottom temperature from the model and du Pontavice et al.(2022) in the cold-pool region averaged over June-September  
+     - Compare bottom temperature from the model and du Pontavice et al.(2022) in the cold-pool region averaged over June-September
    * - NWA12/nechannel.py
      - Plot model-data comparison for Northeast Channel temperature and salinity
    * - NWA12/seaice.py
-     - Compare monthly climatology of sea ice concentration from the model and a satellite observation dataset    
+     - Compare monthly climatology of sea ice concentration from the model and a satellite observation dataset
    * - NWA12/tbot_epu.py
      - Compare annual average bottom-temperature anomalies in four different northeast US ecological production units from model,
        reanalysis, and observed data
@@ -92,8 +92,8 @@ The :numref:`Table %s <Diagsbiogeotable>` below provides short descriptions for 
      - Comparison of model seasonal mean surface phosphate and nitrate with the World Ocean Atlas data
    * - oa_metrics.py
      - Compare Mean surface alkalinity, dissolved inorganic carbon, and aragonite saturation statee between the model and the
-       observation-derived climatology   
+       observation-derived climatology
    * - zooplankton.py
      - Compare the 0-200 m average mesozooplankton biomass climatology between model and Observations from the COPEPOD dataset
    * - NWA12/hypoxic_area.py
-     - Compare monthly climatologies of hypoxic area over the LA-TX Shelf between the model and geostatistical estimates from Matli et al. (2020) 
+     - Compare monthly climatologies of hypoxic area over the LA-TX Shelf between the model and geostatistical estimates from Matli et al. (2020)

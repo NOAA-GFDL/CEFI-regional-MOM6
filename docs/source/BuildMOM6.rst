@@ -12,7 +12,7 @@ To build the MOM6-SIS2-COBALT, users will complete the following steps:
 
 .. _StackInfo:
 
-Install the Prerequisite Softwares 
+Install the Prerequisite Softwares
 ==========================================
 
 .. note::
@@ -23,7 +23,7 @@ Users on any sufficiently up-to-date machine with a UNIX-based operating system 
 
 .. code-block:: console
 
-   # Linux system such as Ubuntu 
+   # Linux system such as Ubuntu
    sudo apt update
    sudo apt install make gfortran git git-lfs tcsh netcdf-bin libnetcdf-dev libnetcdff-dev openmpi-bin libopenmpi-dev
 
@@ -40,7 +40,7 @@ Users on any sufficiently up-to-date machine with a UNIX-based operating system 
 
 For **Windows users**, we recommend installing `WSL <https://learn.microsoft.com/en-us/windows/wsl/install>`__ (Windows Subsystem for Ubuntu and Linux), and following the above steps to install the prerequisite software. Alternatively users can opt for the Docker container approach. See :ref:`Container-Based Quick Start Guide <QuickstartC>` for more details.
 
-After completing installation, continue to the :ref:`next section <DownloadMOM6>` to download the CEFI-regional-MOM6. 
+After completing installation, continue to the :ref:`next section <DownloadMOM6>` to download the CEFI-regional-MOM6.
 
 .. _DownloadMOM6:
 
@@ -50,9 +50,9 @@ The CEFI-regional-MOM6 source code is publicly available on GitHub. To download 
 
 .. code-block:: console
 
-   git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive 
+   git clone https://github.com/NOAA-GFDL/CEFI-regional-MOM6.git --recursive
 
-The cloned repository contains files and sub-directories shown in :numref:`Table %s <FilesAndSubDirs>`. 
+The cloned repository contains files and sub-directories shown in :numref:`Table %s <FilesAndSubDirs>`.
 
 .. _FilesAndSubDirs:
 
@@ -62,12 +62,12 @@ The cloned repository contains files and sub-directories shown in :numref:`Table
 
    * - File/Directory Name
      - Description
-   * - LICENSE.md 
+   * - LICENSE.md
      - A copy of the Gnu lesser general public license, version 3
    * - README.md
      - This file with basic pointers to more information
    * - src
-     - Contains the source code for MOM6-SIS2-COBALT model 
+     - Contains the source code for MOM6-SIS2-COBALT model
    * - builds
      - Contains build script to build MOM6-SIS2-COBALT
    * - diagnostics
@@ -77,14 +77,14 @@ The cloned repository contains files and sub-directories shown in :numref:`Table
    * - tools
      - Contains preprocessing scripts that can be used to generate model input files
    * - xmls
-     - Contains FRE xml files designed for running the CEFI-regional-MOM6 workflow on Gaea   
+     - Contains FRE xml files designed for running the CEFI-regional-MOM6 workflow on Gaea
    * - docs
      - Contains release notes, documentation, and User's Guide
 
 .. _BuildExecutables:
 
 Set Up the Environment and Build the Executables
-=================================================== 
+===================================================
 
 After download the source code, users can navigate to the ``builds`` directory and create a folder for your machine configurations:
 
@@ -112,19 +112,19 @@ The NAME_OF_YOUR_mk_FILE.mk file may be different depends on your system configu
    | Ubuntu (GNU)           | mkmf/templates/linux-ubuntu-trusty-gnu.mk                                       |
    +------------------------+---------------------------------------------------------------------------------+
 
-Once the two files are created, use the following command to build the model (Make sure to use correct names that are consistent with both your machine folder and your mk/env files):  
+Once the two files are created, use the following command to build the model (Make sure to use correct names that are consistent with both your machine folder and your mk/env files):
 
 .. code-block:: console
 
    cd CEFI-regional-MOM6/builds
    ./linux-build.bash -m YOUR_MACHINE_DIRECTORY -p NAME_OF_YOUR_mk_FILE -t repro -f mom6sis2
 
-If the build completes successfully, you should be able to find the executable here: ``builds/build/YOUR_MACHINE_DIRECTORY-NAME_OF_YOUR_mk_FILE/ocean_ice/repro/MOM6SIS2``  
+If the build completes successfully, you should be able to find the executable here: ``builds/build/YOUR_MACHINE_DIRECTORY-NAME_OF_YOUR_mk_FILE/ocean_ice/repro/MOM6SIS2``
 
 Run an Experiment
 =====================
 
-To test your ``MOM6SIS2``, first navigate to the ``exps`` folder: 
+To test your ``MOM6SIS2``, first navigate to the ``exps`` folder:
 
 .. code-block:: console
 
@@ -134,7 +134,7 @@ Download the model input files:
 
 .. code-block:: console
 
-   wget ftp.gfdl.noaa.gov:/pub/Yi-cheng.Teng/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
+   wget ftp://nomads.gfdl.noaa.gov/1/users/cefi/OM4.single_column.COBALT/data/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
 
 Navigate to the 1-D example:
 
@@ -142,8 +142,8 @@ Navigate to the 1-D example:
 
    cd OM4.single_column.COBALT
 
-Use the following command to run the 1-D example:    
+Use the following command to run the 1-D example:
 
 .. code-block:: console
- 
+
    mpirun -np 1 ../../builds/build/YOUR_MACHINE_DIRECTORY-NAME_OF_YOUR_mk_FILE/ocean_ice/repro/MOM6SIS2

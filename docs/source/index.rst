@@ -6,13 +6,13 @@
 ==============================================
 Welcome to CEFI-regional-MOM6's documentation!
 ==============================================
-**CEFI-regional-MOM6** contains essential tools, XML files, and source codes for collaborators of the Climate, Ecosystems, and Fisheries Initiative (CEFI) to conduct ocean physical-biogeochemical simulations for climate-scale applications, including seasonal predictions (12 months), decadal predictions (10 years), and multi-decadal projections (to the end of the 21st century). 
+**CEFI-regional-MOM6** contains essential tools, XML files, and source codes for collaborators of the Climate, Ecosystems, and Fisheries Initiative (CEFI) to conduct ocean physical-biogeochemical simulations for climate-scale applications, including seasonal predictions (12 months), decadal predictions (10 years), and multi-decadal projections (to the end of the 21st century).
 
 =============
-Code managers
+Contact Info
 =============
 
-* Yi-Cheng Teng - @yichengt900 / yi-cheng.teng@noaa.gov
+* oar.gfdl.cefi-support@noaa.gov
 
 .. toctree::
    :numbered:
