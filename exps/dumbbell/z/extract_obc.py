@@ -1,4 +1,11 @@
-#!/bin/env python
+# /// script
+# requires-python = "==3.12.*"
+# dependencies = [
+#     "netcdf4>=1.7.4",
+#     "numpy>=2.4.2"
+# ]
+# ///
+
 # Extract boundary conditions for the child domain from the output of
 # the parent domain. Run this after extract_obc.bash.
 import numpy as np
