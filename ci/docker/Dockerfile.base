@@ -19,7 +19,7 @@ RUN apt update && \
 
 # add uv for better python management,
 # including scripts using inline dependencies.
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 # Node 20 needed for some github actions.
 RUN curl -LsSf https://deb.nodesource.com/setup_20.x | bash - && \
