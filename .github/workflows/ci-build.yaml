@@ -12,8 +12,8 @@ jobs:
   build_mom6sis2_debug:
     runs-on: ubuntu-latest
     container:
-      image: clouden90/1d_mom6_cobalt:base
-      options: --user=root
+      image: ghcr.io/andrew-c-ross/1d_mom6_cobalt:base
+      options: --user=builder
 
     steps:
       - name: Checkout code
@@ -51,8 +51,8 @@ jobs:
   build_mom6solo_repro:
     runs-on: ubuntu-latest
     container:
-      image: clouden90/1d_mom6_cobalt:base
-      options: --user=root
+      image: ghcr.io/andrew-c-ross/1d_mom6_cobalt:base
+      options: --user=builder
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

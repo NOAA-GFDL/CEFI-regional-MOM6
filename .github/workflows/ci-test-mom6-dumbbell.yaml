@@ -9,26 +9,26 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-        image: clouden90/1d_mom6_cobalt:base
-        options: --user=root
+        image: ghcr.io/andrew-c-ross/1d_mom6_cobalt:base
+        options: --user=builder
 
     env:
-      PR_NUMBER: ${{ github.event.number }}        
+      PR_NUMBER: ${{ github.event.number }}
 
-    steps:        
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Ensure full history to prevent detached HEAD issues
           ref: ${{ github.event.pull_request.head.ref || github.ref_name }}  # Handle fork and same-repo branches
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}  # Use forked repo if available
-          submodules: recursive      
+          submodules: recursive
 
       - name: Download mom6sis2_debug artifact
         uses: actions/download-artifact@v4
         with:
           name: mom6sis2_debug
-          path: ./temp-artifact         
+          path: ./temp-artifact
 
       - name: Run dumbbell driver
         working-directory: ./exps/dumbbell/z_sub

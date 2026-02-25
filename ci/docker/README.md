@@ -6,7 +6,7 @@ cd CEFI-regional-MOM6/ci/docker
 docker build -t 1d_mom6_cobalt:base .
 ```
 
-# run docker container image in interactive mode 
+# run docker container image in interactive mode
 ```console
 docker run --mount "type=bind,source=/Users/$USER/work,target=/work" -it 1d_mom6_cobalt:base bash --login
 ```
@@ -19,4 +19,15 @@ cd ../exps
 wget ftp://nomads.gfdl.noaa.gov/1/users/cefi/OM4.single_column.COBALT/data/1d_ci_datasets.tar.gz && tar -zxvf 1d_ci_datasets.tar.gz && rm -rf 1d_ci_datasets.tar.gz
 cd OM4.single_column.COBALT
 mpirun -np 1 --allow-run-as-root ../../builds/build/docker-linux-gnu/ocean_ice/prod/MOM6SIS2
+```
+# Building base image for pushing to a repository
+By building both amd64 and arm64, the workflows can run on Macs as well.
+podman is used here, but docker should be interchangeable.
+```console
+podman build -t 1d_mom6_cobalt:amd64 -f Dockerfile.base --platform linux/amd64
+podman build -t 1d_mom6_cobalt:arm64 -f Dockerfile.base --platform linux/arm64
+podman manifest create 1d_mom6_cobalt:base
+podman manifest add 1d_mom6_cobalt:base 1d_mom6_cobalt:arm64
+podman manifest add 1d_mom6_cobalt:base 1d_mom6_cobalt:amd64
+podman manifest push 1d_mom6_cobalt:base ghcr.io/{USERNAME}/1d_mom6_cobalt:base
 ```

@@ -84,7 +84,7 @@ CPPDEFS += -DHAVE_SCHED_GETAFFINITY
 # Macro for Fortran preprocessor
 FPPFLAGS := $(INCLUDES)
 # Fortran Compiler flags for the NetCDF library
-FPPFLAGS += $(shell nc-config --fflags)
+FPPFLAGS += $(shell nf-config --fflags)
 
 # Base set of Fortran compiler flags
 FFLAGS := -fcray-pointer -fdefault-double-8 -fdefault-real-8 -Waliasing -ffree-line-length-none -fno-range-check
@@ -131,7 +131,7 @@ LDFLAGS_COVERAGE :=
 # Start with a blank LIBS
 LIBS =
 # NetCDF library flags
-LIBS += $(shell nc-config --flibs)
+LIBS += $(shell nf-config --flibs)
 
 # Get compile flags based on target macros.
 ifdef REPRO
