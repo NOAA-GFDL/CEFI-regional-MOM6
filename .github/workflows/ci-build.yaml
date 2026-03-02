@@ -12,7 +12,7 @@ jobs:
   build_mom6sis2_debug:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/andrew-c-ross/1d_mom6_cobalt:base
+      image: ghcr.io/noaa-gfdl/cefi-regional-mom6/1d_mom6_cobalt:base
       options: --user=builder
 
     steps:
@@ -51,7 +51,7 @@ jobs:
   build_mom6solo_repro:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/andrew-c-ross/1d_mom6_cobalt:base
+      image: ghcr.io/noaa-gfdl/cefi-regional-mom6/1d_mom6_cobalt:base
       options: --user=builder
     steps:
       - name: Checkout code

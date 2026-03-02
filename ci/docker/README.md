@@ -24,10 +24,14 @@ mpirun -np 1 --allow-run-as-root ../../builds/build/docker-linux-gnu/ocean_ice/p
 By building both amd64 and arm64, the workflows can run on Macs as well.
 podman is used here, but docker should be interchangeable.
 ```console
-podman build -t 1d_mom6_cobalt:amd64 -f Dockerfile.base --platform linux/amd64
-podman build -t 1d_mom6_cobalt:arm64 -f Dockerfile.base --platform linux/arm64
+# Create a manifest to package multiple platforms together
 podman manifest create 1d_mom6_cobalt:base
+# Build amd64
+podman build -t 1d_mom6_cobalt:amd64 -f Dockerfile.base --platform linux/amd64
 podman manifest add 1d_mom6_cobalt:base 1d_mom6_cobalt:arm64
+# Build arm64 for Macs
+podman build -t 1d_mom6_cobalt:arm64 -f Dockerfile.base --platform linux/arm64
 podman manifest add 1d_mom6_cobalt:base 1d_mom6_cobalt:amd64
-podman manifest push 1d_mom6_cobalt:base ghcr.io/{USERNAME}/1d_mom6_cobalt:base
+# Push to the cefi-regional-mom6 repository (requires permissions and an access token)
+podman manifest push 1d_mom6_cobalt:base ghcr.io/noaa-gfdl/cefi-regional-mom6/1d_mom6_cobalt:base
 ```

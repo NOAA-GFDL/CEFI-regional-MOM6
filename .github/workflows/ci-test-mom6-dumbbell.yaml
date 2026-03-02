@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-        image: ghcr.io/andrew-c-ross/1d_mom6_cobalt:base
+        image: ghcr.io/noaa-gfdl/cefi-regional-mom6/1d_mom6_cobalt:base
         options: --user=builder
 
     env:
