@@ -1,5 +1,11 @@
-#!/usr/bin/env python
-# coding: utf-8
+# /// script
+# requires-python = "==3.12.*"
+# dependencies = [
+#     "matplotlib>=3.10.8",
+#     "netcdf4>=1.7.4",
+#     "numpy>=2.4.2",
+# ]
+# ///
 
 import netCDF4 as nc
 import numpy as np

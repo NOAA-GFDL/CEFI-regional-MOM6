@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: clouden90/1d_mom6_cobalt:withdata
-      options: --user=root
-        
+      image: ghcr.io/noaa-gfdl/cefi-regional-mom6/1d_mom6_cobalt:base
+      options: --user=builder
+
     env:
       PR_NUMBER: ${{ github.event.number }}
 
-    steps:        
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -31,7 +31,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mom6sis2_debug
-          path: ./temp-artifact 
+          path: ./temp-artifact
 
       - name: Copy model dataset from Docker image
         working-directory: ./exps
@@ -45,9 +45,9 @@ jobs:
           mv ../../temp-artifact/MOM6SIS2 ../../builds/build/docker-linux-gnu/ocean_ice/debug/
           chmod +x ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2
           ls -l -h ../../builds/build/docker-linux-gnu/ocean_ice/debug
-          ./driver.sh 
+          ./driver.sh
 
-      - name: Run mppnccombine to combine sub-region diag outputs 
+      - name: Run mppnccombine to combine sub-region diag outputs
         working-directory: ./exps/OM4.single_column.COBALT
         run: |
           /opt/bin/mppnccombine -64 -h 16384 -m -k 100 20040102.ocean_daily_subset.nc 20040102.ocean_daily_subset.nc.00*
@@ -55,7 +55,7 @@ jobs:
       - name: Check ref
         id: check_ref
         working-directory: ./exps/OM4.single_column.COBALT
-        run: | 
+        run: |
           echo "new 48hrs ocean.stats: "
           cat ./RESTART_48hrs/ocean.stats
           echo "baseline 48 hrs ocean.stats: "
@@ -83,7 +83,7 @@ jobs:
 
           if git diff --cached --quiet; then
             echo "No parameter doc changes detected."
-          else          
+          else
             # Commit and push
             git commit -m "Update parameter documentation files for 1D case"
             git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}" HEAD:${{ github.event.pull_request.head.ref }}
