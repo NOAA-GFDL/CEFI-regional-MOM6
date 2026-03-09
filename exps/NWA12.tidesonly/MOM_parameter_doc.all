@@ -198,10 +198,6 @@ NJHALO = 4                      ! default = 4
 REFERENCE_HEIGHT = 0.0          !   [m] default = 0.0
                                 ! A reference value for geometric height fields, such as bathyT.
 
-! === module MOM_fixed_initialization ===
-INPUTDIR = "INPUT"              ! default = "."
-                                ! The directory in which input files are found.
-
 ! === module MOM_grid_init ===
 GRID_CONFIG = "mosaic"          !
                                 ! A character string that determines the method for defining the horizontal
@@ -416,6 +412,8 @@ OBC_PROJECTION_BUG = True       !   [Boolean] default = True
                                 ! like the potential vorticity used in the barotropic solver relies on
                                 ! bathymetry or other fields being projected outward across OBCs.  This option
                                 ! changes answers for some configurations that use OBCs.
+
+! === module MOM_fixed_initialization ===
 CHANNEL_CONFIG = "none"         ! default = "none"
                                 ! A parameter that determines which set of channels are
                                 ! restricted to specific  widths.  Options are:
@@ -578,6 +576,8 @@ LIGHTEST_DENSITY = 1035.0       !   [kg m-3] default = 1035.0
                                 ! The reference potential density used for layer 1.
 
 ! === module MOM_state_initialization ===
+INPUTDIR = "INPUT"              ! default = "."
+                                ! The directory in which input files are found.
 FATAL_INCONSISTENT_RESTART_TIME = False !   [Boolean] default = False
                                 ! If true and a time_in value is provided to MOM_initialize_state, verify that
                                 ! the time read from a restart file is the same as time_in, and issue a fatal
