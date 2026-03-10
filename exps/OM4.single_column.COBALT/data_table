@@ -6,6 +6,10 @@
  "ATM", "v_bot",              "vas",      "./INPUT/JRA_vas.nc",      "bicubic",    1.0
  "ATM", "z_bot",              "",         "",                        "bilinear",  10.0
  "ATM", "gust",               "",         "",                        "bilinear",   1.0e-4
+ "ATM", "o2_flux_pcair_atm",  "",         "",                        "none",       0.214
+ "ATM", "co2_flux_pcair_atm", "",         "",                        "none",     360.0e-06
+ "ATM", "co2_bot",            "",         "",                        "none",     360.0e-06
+ "ATM", "co2_dvmr_restore",   "",         "",                        "none",     360.0e-06
  "ICE", "lw_flux_dn",         "rlds",     "./INPUT/JRA_rlds.nc",     "bilinear",   1.0
  "ICE", "sw_flux_vis_dir_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.285
  "ICE", "sw_flux_vis_dif_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.285
@@ -13,8 +17,11 @@
  "ICE", "sw_flux_nir_dif_dn", "rsds",     "./INPUT/JRA_rsds.nc",     "bilinear",   0.215
  "ICE", "lprec",              "prra",     "./INPUT/JRA_prra.nc",     "bilinear",   1.0
  "ICE", "fprec",              "prsn",     "./INPUT/JRA_prsn.nc",     "bilinear",   1.0
- "ICE" , "runoff"        , ""      , "", "none", 0.0
  "ICE" , "calving"       , ""            , ""                             , "none"  ,  0.0
  "ICE", "dhdt",               "",         "",                        "none",      80.0
  "ICE", "dedt",               "",         "",                        "none",       2.0e-6
  "ICE", "drdt",               "",         "",                        "none",      10.0
+ "ICE" , "runoff",                   "",   "",                        "none",      1.0e-6
+ "OCN", "runoff_no3_flux_ice_ocn",   "",   "",                        "none",      1.0e-5
+ "OCN", "wet_dep_no3_flux_ice_ocn",  "",   "",                        "none",     -1.0e-13
+ "OCN", "dry_dep_no3_flux_ice_ocn",  "",   "",                        "none",     -1.0e-12
