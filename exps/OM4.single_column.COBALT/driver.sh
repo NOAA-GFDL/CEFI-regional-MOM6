@@ -35,6 +35,11 @@ mv ocean.stats* RESTART_24hrs_rst
 # Run the continuous 48 hour experiment last, because this one will save
 # extra diagnostics for the BGC budget test
 echo "run 48hrs test ..."
+# Clear out restart files from previous 24hr run
+pushd INPUT/
+rm *.res.nc
+rm coupler.res
+popd
 ln -fs input.nml_48hr input.nml
 # Append extra BGC budget diagnostics
 cat diag_table_budget >> diag_table
