@@ -13,25 +13,25 @@ module use -a /ncrc/home2/fms/local/modulefiles
 module load fre/bronx-23
 
 Compile and build mom6-sis2-cobalt:
-fremake -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -t prod,hdf5 MOM6_SIS2_GENERIC_4P_compile_symm
+fremake -x CEFI_NWA12_physics.xml -p ncrc6.intel23 -t prod,hdf5 MOM6_SIS2_GENERIC_4P_compile_symm
 
 Run experiment
-frerun -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -t prod,hdf5 CEFI_NWA12_COBALT_V2
+frerun -x CEFI_NWA12_physics.xml -p ncrc6.intel23 -t prod,hdf5 CEFI_NWA12_physics_V2
 
 Run postprocessing later on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_COBALT_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_V2
+frepp -t 1997 -c ocean_monthly -d /archive/YOUR_USER_NAME/fre/CEFI/NWA/CEFI_NWA12_physics_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_physics.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_physics_V2
 
 Run analysis after the postprocessing on GFDL Analysis:
-frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_COBALT_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_cobalt.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_COBALT_V2
+frepp -t 1997 -c ocean_monthly -o -d /archive/YOUR_USER_NAME/fre/cefi/NWA/CEFI_NWA12_physics_V2/gfdl.ncrc6-intel23-prod-hdf5/history/ -x CEFI_NWA12_physics.xml -p gfdl.ncrc6-intel23 -T prod,hdf5 CEFI_NWA12_physics_V2
 
 Regression test for layout:
-frerun  -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_COBALT_V2
+frerun  -x CEFI_NWA12_physics.xml -p ncrc6.intel23 -q debug -r layout CEFI_NWA12_physics_V2
 
 Regression test for restart:
-frerun  -x CEFI_NWA12_cobalt.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_COBALT_V2
+frerun  -x CEFI_NWA12_physics.xml -p ncrc6.intel23 -q debug -r restart CEFI_NWA12_physics_V2
 
 To check if the restart files are identical from regression test:
-frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V2
+frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_physics.xml CEFI_NWA12_physics_V2
 
 -->
 
@@ -180,7 +180,7 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
     </component>
   </experiment>
 
-  <experiment name="CEFI_NWA12_COBALT_V2" inherit="MOM6_SIS2_GENERIC_4P_compile_symm">
+  <experiment name="CEFI_NWA12_physics_V2" inherit="MOM6_SIS2_GENERIC_4P_compile_symm">
     <description>
     </description>
     <input>
@@ -207,30 +207,8 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         do_chksum = .false.
         do_endpoint_chksum = .false.
       </namelist>
-      <namelist name ="cobalt_input_nml">
-        parameter_filename = 'INPUT/COBALT_input','INPUT/COBALT_override'
-      </namelist>
-      <namelist name="generic_tracer_nml">
-        do_generic_tracer=.true.
-        do_generic_abiotic=.false.
-        do_generic_CFC=.false.
-        do_generic_COBALT=.true.
-        do_generic_age=.false.
-        do_generic_SF6=.false.
-        force_update_fluxes=.true.
-        as_param='W14'
-        do_vertfill_post=.true.
-      </namelist>
       <namelist name="time_interp_external_nml">
         max_fields = 400
-      </namelist>
-      <namelist name="generic_abiotic_nml">
-        co2_calc='mocsy'
-      </namelist>
-      <namelist name="generic_COBALT_nml">
-        co2_calc = 'mocsy'
-        debug = .false.
-        imbalance_tolerance=1.0e-9
       </namelist>
       <namelist name="diag_manager_nml">
         max_files = 600
@@ -258,9 +236,9 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
         max_files_w = 800
         checksum_required=.false.
       </namelist>
-      <namelist name="fms2_io_nml"> 
+      <namelist name="fms2_io_nml">
         netcdf_default_format = 'netcdf4'
-        fms_netcdf_restart=.true. 
+        fms_netcdf_restart=.true.
         threading_read='multi'
         max_files_r = 800
         max_files_w = 800
@@ -324,10 +302,6 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
 "ATM", "v_bot",              "v10",    "INPUT/ERA5_v10_${fyear}_padded.nc",          "bicubic",   1.0
 "ATM", "z_bot",              "",       "",                           "bilinear", 10.0
 "ATM", "gust",               "",       "",                           "bilinear",  1.0e-4
-"ATM", "o2_flux_pcair_atm",  "",       "",                           "none",      0.214
-"ATM", "co2_flux_pcair_atm", "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_bot",            "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
-"ATM", "co2_dvmr_restore",   "mole_fraction_of_carbon_dioxide_in_air", "INPUT/mole_fraction_of_co2_extended_ssp245.nc", "bilinear", 1.0e-06
 #
 "ICE", "lw_flux_dn"        , "strd",   "INPUT/ERA5_strd_${fyear}_padded.nc",          "bilinear", 2.77778e-4
 "ICE", "sw_flux_vis_dir_dn", "ssrd",   "INPUT/ERA5_ssrd_${fyear}_padded.nc",          "bilinear",  7.9167e-5
@@ -363,33 +337,6 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
 "LND", "drag_q",             "",       "",                           "none",     0.0
 "LND", "p_surf",             "",       "",                           "none",     1.0e5
 #
-"OCN", "runoff_no3_flux_ice_ocn",   "NO3_CONC",     "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_ldon_flux_ice_ocn",  "LDON_CONC",    "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_sldon_flux_ice_ocn", "SLDON_CONC",   "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_srdon_flux_ice_ocn", "SRDON_CONC",   "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_ndet_flux_ice_ocn",  "NDET_CONC",    "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_po4_flux_ice_ocn",   "PO4_CONC",     "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_ldop_flux_ice_ocn",  "LDOP_CONC",    "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_sldop_flux_ice_ocn", "SLDOP_CONC",   "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_srdop_flux_ice_ocn", "SRDOP_CONC",   "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_pdet_flux_ice_ocn",  "PDET_CONC",    "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_fed_flux_ice_ocn",   "FED_CONC",     "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_alk_flux_ice_ocn",   "ALK_CONC",     "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_dic_flux_ice_ocn",   "DIC_CONC",     "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_nh4_flux_ice_ocn",   "NH4_CONC",     "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_fedet_flux_ice_ocn", "FEDET_CONC",   "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_o2_flux_ice_ocn",    "O2_CONC",      "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_sio4_flux_ice_ocn",  "SI_CONC",      "./INPUT/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc", "none",      1.0e-3
-"OCN", "runoff_lith_flux_ice_ocn",  "",             "",                                                                          "none",     13.0e-3
-"OCN", "dry_dep_fed_flux_ice_ocn",  "dryfe",        "./INPUT/esm4_dryfe_climo_1993-2014.nc",                                 "bilinear",     -1.0
-"OCN", "wet_dep_fed_flux_ice_ocn",  "wetfe",        "./INPUT/esm4_wetfe_climo_1993-2014.nc",                                 "bilinear",     -1.0
-"OCN", "dry_dep_lith_flux_ice_ocn", "drydust",      "./INPUT/esm4_drydust_climo_1993-2014.nc",                               "bilinear",     -1.0
-"OCN", "wet_dep_lith_flux_ice_ocn", "wetdust",      "./INPUT/esm4_wetdust_climo_1993-2014.nc",                               "bilinear",     -1.0
-"OCN", "dry_dep_po4_flux_ice_ocn",  "drydust",      "./INPUT/esm4_drydust_climo_1993-2014.nc",                               "bilinear",     -4.0e-6
-"OCN", "wet_dep_no3_flux_ice_ocn",  "wetnoy",       "./INPUT/esm4_wetnoy_climo_1993-2014.nc",                                "bilinear",     -1.0
-"OCN", "dry_dep_no3_flux_ice_ocn",  "drynoy",       "./INPUT/esm4_drynoy_climo_1993-2014.nc",                                "bilinear",     -1.0
-"OCN", "wet_dep_nh4_flux_ice_ocn",  "wetnh4",       "./INPUT/esm4_wetnh4_climo_1993-2014.nc",                                "bilinear",     -1.0
-"OCN", "dry_dep_nh4_flux_ice_ocn",  "drynh4",       "./INPUT/esm4_drynh4_climo_1993-2014.nc",                                "bilinear",     -1.0
       </dataTable>
 
       <fieldTable>
@@ -412,161 +359,6 @@ frecheck -r layout -p ncrc6.intel23 -x CEFI_NWA12_cobalt.xml CEFI_NWA12_COBALT_V
           "longname",     "specific humidity"
           "units",        "kg/kg" /
 ###.................................................
-
-"namelists","ocean_mod","generic_COBALT"
-enforce_src_info = f
-pcmlim_aclm_ndi_requires_restart = f
-pcmlim_aclm_nlg_requires_restart = f
-pcmlim_aclm_nmd_requires_restart = f
-pcmlim_aclm_nsm_requires_restart = f
-pdet_fast_requires_restart = f
-ndet_fast_requires_restart = f
-pdet_fast_btf_requires_restart = f
-ndet_fast_btf_requires_restart = f
-pdet_fast_obc_has = false
-ndet_fast_obc_has = false
-alk_obc_src_file_name = esper_glorys_v20250305.nc
-alk_obc_lfac_in = 0.03
-alk_obc_lfac_out = 1.0
-cadet_arag_obc_src_file_name = bgc_cobalt.nc
-cadet_arag_obc_lfac_in = 0.03
-cadet_ararg_obc_lfac_out = 1.0
-cadet_calc_obc_src_file_name = bgc_cobalt.nc
-cadet_calc_obc_lfac_in = 0.03
-cadet_calc_obc_lfac_out = 1.0
-dic_obc_src_file_name = esper_glorys_v20250305.nc
-dic_obc_lfac_in = 0.03
-dic_obc_lfac_out = 1.0
-dic14_obc_src_file_name = bgc_zero.nc
-dic14_obc_lfac_in = 0.03
-dic14_obc_lfac_out = 1.0
-do14_obc_src_file_name = bgc_zero.nc
-do14_obc_lfac_in = 0.03
-do14_obc_lfac_out = 1.0
-do14c_obc_src_file_name = bgc_zero.nc
-do14c_obc_lfac_in = 0.03
-do14c_obc_lfac_out = 1.0
-di14c_obc_src_file_name = bgc_zero.nc
-di14c_obc_lfac_in = 0.03
-di14c_obc_lfac_out = 1.0
-fed_obc_src_file_name = bgc_cobalt.nc
-fed_obc_lfac_in = 0.03
-fed_obc_lfac_out = 1.0
-fedi_obc_src_file_name = bgc_cobalt.nc
-fedi_obc_lfac_in = 0.03
-fedi_obc_lfac_out = 1.0
-felg_obc_src_file_name = bgc_cobalt.nc
-felg_obc_lfac_in = 0.03
-felg_obc_lfac_out = 1.0
-fedet_obc_src_file_name = bgc_cobalt.nc
-fedet_obc_lfac_in = 0.03
-fedet_obc_lfac_out = 1.0
-fesm_obc_src_file_name = bgc_cobalt.nc
-fesm_obc_lfac_in = 0.03
-fesm_obc_lfac_out = 1.0
-ldon_obc_src_file_name = bgc_cobalt.nc
-ldon_obc_lfac_in = 0.03
-ldon_obc_lfac_out = 1.0
-ldop_obc_src_file_name = bgc_cobalt.nc
-ldop_obc_lfac_in = 0.03
-ldop_obc_lfac_out = 1.0
-lith_obc_src_file_name = bgc_cobalt.nc
-lith_obc_lfac_in = 0.03
-lith_obc_lfac_out = 1.0
-lithdet_obc_src_file_name = bgc_cobalt.nc
-lithdet_obc_lfac_in = 0.03
-lithdet_obc_lfac_out = 1.0
-nbact_obc_src_file_name = bgc_cobalt.nc
-nbact_obc_lfac_in = 0.03
-nbact_obc_lfac_out = 1.0
-ndet_obc_src_file_name = bgc_cobalt.nc
-ndet_obc_lfac_in = 0.03
-ndet_obc_lfac_out = 1.0
-ndi_obc_src_file_name = bgc_cobalt.nc
-ndi_obc_lfac_in = 0.03
-ndi_obc_lfac_out = 1.0
-nlg_obc_src_file_name = bgc_cobalt.nc
-nlg_obc_lfac_in = 0.03
-nlg_obc_lfac_out = 1.0
-nsm_obc_src_file_name = bgc_cobalt.nc
-nsm_obc_lfac_in = 0.03
-nsm_obc_lfac_out = 1.0
-nh3_obc_src_file_name = bgc_zero.nc
-nh3_obc_lfac_in = 0.03
-nh3_obc_lfac_out = 1.0
-nh4_obc_src_file_name = bgc_cobalt.nc
-nh4_obc_lfac_in = 0.03
-nh4_obc_lfac_out = 1.0
-no3_obc_src_file_name = bgc_woa.nc
-no3_obc_lfac_in = 0.03
-no3_obc_lfac_out = 1.0
-o2_obc_src_file_name = bgc_woa.nc
-o2_obc_lfac_in = 0.03
-o2_obc_lfac_out = 1.0
-pdet_obc_src_file_name = bgc_cobalt.nc
-pdet_obc_lfac_in = 0.03
-pdet_obc_lfac_out = 1.0
-po4_obc_src_file_name = bgc_woa.nc
-po4_obc_lfac_in = 0.03
-po4_obc_lfac_out = 1.0
-srdon_obc_src_file_name = bgc_cobalt.nc
-srdon_obc_lfac_in = 0.03
-srdon_obc_lfac_out = 1.0
-srdop_obc_src_file_name = bgc_cobalt.nc
-srdop_obc_lfac_in = 0.03
-srdop_obc_lfac_out = 1.0
-sldon_obc_src_file_name = bgc_cobalt.nc
-sldon_obc_lfac_in = 0.03
-sldon_obc_lfac_out = 1.0
-sldop_obc_src_file_name = bgc_cobalt.nc
-sldop_obc_lfac_in = 0.03
-sldop_obc_lfac_out = 1.0
-sidet_obc_src_file_name = bgc_cobalt.nc
-sidet_obc_lfac_in = 0.03
-sidet_obc_lfac_out = 1.0
-silg_obc_src_file_name = bgc_cobalt.nc
-silg_obc_lfac_in = 0.03
-silg_obc_lfac_out = 1.0
-sio4_obc_src_file_name = bgc_woa.nc
-sio4_obc_lfac_in = 0.03
-sio4_obc_lfac_out = 1.0
-nsmz_obc_src_file_name = bgc_cobalt.nc
-nsmz_obc_lfac_in = 0.03
-nsmz_obc_lfac_out = 1.0
-nmdz_obc_src_file_name = bgc_cobalt.nc
-nmdz_obc_lfac_in = 0.03
-nmdz_obc_lfac_out = 1.0
-nlgz_obc_src_file_name = bgc_cobalt.nc
-nlgz_obc_lfac_in = 0.03
-nlgz_obc_lfac_out = 1.0
-nmdp_obc_src_file_name = bgc_cobalt.nc
-nmdp_obc_lfac_in = 0.03
-nmdp_obc_lfac_out = 1.0
-femdp_obc_src_file_name = bgc_cobalt.nc
-femdp_obc_lfac_in = 0.03
-femdp_obc_lfac_out = 1.0
-femd_obc_src_file_name = bgc_cobalt.nc
-femd_obc_lfac_in = 0.03
-femd_obc_lfac_out = 1.0
-simd_obc_src_file_name = bgc_cobalt.nc
-simd_obc_lfac_in = 0.03
-simd_obc_lfac_out = 1.0
-pdi_obc_src_file_name = bgc_cobalt.nc
-pdi_obc_lfac_in = 0.03
-pdi_obc_lfac_out = 1.0
-psm_obc_src_file_name = bgc_cobalt.nc
-psm_obc_lfac_in = 0.03
-psm_obc_lfac_out = 1.0
-pmd_obc_src_file_name = bgc_cobalt.nc
-pmd_obc_lfac_in = 0.03
-pmd_obc_lfac_out = 1.0
-nmd_obc_src_file_name = bgc_cobalt.nc
-nmd_obc_lfac_in = 0.03
-nmd_obc_lfac_out = 1.0
-plg_obc_src_file_name = bgc_cobalt.nc
-plg_obc_lfac_in = 0.03
-plg_obc_lfac_out = 1.0
-/
       </fieldTable>
       <diagTable>
 $name
@@ -575,19 +367,15 @@ $baseDate
       <dataFile label="diagTable" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">./diag_tables/diag_table_CEFI_MOM6_default</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_CEFI_SIS_default</dataSource>
-        <dataSource site="ncrc">./diag_tables/diag_table_CEFI_COBALT_default</dataSource>
-        <dataSource site="ncrc">./diag_tables/diag_table_COBALT_neus</dataSource>
         <dataSource site="ncrc">./diag_tables/diag_table_MOM6_neus</dataSource>
         <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_MOM6_default</dataSource>
         <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_SIS_default</dataSource>
-        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_CEFI_COBALT_default</dataSource>
-        <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_COBALT_neus</dataSource>
         <dataSource site="gfdl">/home/ynt/git/CEFI-regional-MOM6/xmls/NWA12/diag_tables/diag_table_MOM6_neus</dataSource>
       </dataFile>
       <!-- This file is used for the initial conditions.
       Here, it is a restart file written at the end of a previous model run with repeating year forcing.
       Only a single dataSource can be specified for initCond, so if multiple files are needed
-      they must be tarred. 
+      they must be tarred.
       -->
       <dataFile label="initCond" target="INPUT/" chksum="" size="" timestamp="">
         <dataSource site="ncrc">$(NWA12_WORLD)/restarts/NWA12_COBALT_2025_04_repeating_bugfixes/20230101.tar</dataSource>
@@ -597,45 +385,24 @@ $baseDate
 # Make sure that MOM_override starts empty (not carried over from previous run/segment)
 truncate -s 0 $work/INPUT/MOM_override
 cat > $work/INPUT/MOM_override << MOM_OVERRIDE_EOF
-! Needed to enable COBALT (set false for physics only)
-#override USE_generic_tracer = True
-! Set the 18.6 year nodal modulation of the tides to use 
+! Disable COBALT (set false for physics only)
+#override USE_generic_tracer = False
+! Enable CHL from file since COBALT is off
+#override CHL_FROM_FILE = True
+#override CHL_FILE = "seawifs-clim-1997-2010.nwa12.nc"
+#override CHL_VARNAME = "chlor_a"
+! Set the 18.6 year nodal modulation of the tides to use
 ! the middle of the current model year.
 #override TIDE_NODAL_REF_DATE = ${fyear},7,2
-! Update the BGC tracer boundary condition data every xxxx seconds. 
-DT_OBC_SEG_UPDATE_OBGC = 1800
 #override RESTART_CHECKSUMS_REQUIRED = False
 MOM_OVERRIDE_EOF
-
-# Allow tracer to be re-initialized for the first year
-if ( $currentSeg == 1 ) then
-    echo "#override TRACERS_MAY_REINIT = True" >> $work/INPUT/MOM_override
-endif
-
-truncate -s 0 $work/INPUT/COBALT_override
-cat > $work/INPUT/COBALT_override << COBALT_OVERRIDE_EOF
-! Put the contents of your COBALT_override file here.
-! For parameters which are not specified in the COBALT_input file, just set the new value, ex:
-! do_case2_mod = True
-! For parameters which are specified in the COBALT_input file, specify an override, ex:
-!#override do_case2_mod = True
-COBALT_OVERRIDE_EOF
-
-truncate -s 0 $work/INPUT/COBALT_input
-cat > $work/INPUT/COBALT_input << COBALT_INPUT_EOF
-! Put the contents of your COBALT_input file here
-do_case2_mod = True
-scale_burial = 1.0
-z_burial = 20.0
-z_denit = 20.0
-COBALT_INPUT_EOF
         ]]>
       </csh>
     </input>
     <runtime>
       <production simTime="$(PROD_SIMTIME)" units="years">
         <segment simTime="12" units="months"/>
-        <resources jobWallclock="07:00:00" segRuntime="07:00:00">
+        <resources jobWallclock="05:00:00" segRuntime="05:00:00">
           <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
           <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
         </resources>
@@ -645,44 +412,6 @@ COBALT_INPUT_EOF
           <resources jobWallclock="01:00:00">
             <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
             <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-          </resources>
-        </run>
-      </regression>
-      <regression name="year">
-        <run months="12">
-          <resources jobWallclock="08:00:00">
-            <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-            <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-          </resources>
-        </run>
-      </regression>
-      <regression name="month">
-        <run months="1">
-          <resources jobWallclock="01:30:00">
-            <ice                          layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-            <ocn ranks="1646" threads="1" layout = "50,50" io_layout = "1,1" mask_table="mask_table.854.50x50"/>
-          </resources>
-        </run>
-      </regression>
-      <regression name="debugger">
-        <run days="2">
-          <resources jobWallclock="00:20:00">
-            <ice                          layout = "20,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
-            <ocn ranks="600" threads="1" layout = "20,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
-          </resources>
-        </run>
-      </regression>
-      <regression name="layout">
-        <run days="1">
-          <resources jobWallclock="01:00:00">
-            <ice                          layout = "20,20" io_layout = "1,1" mask_table="MOM_mask_table"/>
-            <ocn ranks="400" threads="1" layout = "20,20" io_layout = "1,1" mask_table="MOM_mask_table"/>
-          </resources>
-        </run>
-        <run days="1">
-          <resources jobWallclock="01:00:00">
-            <ice                          layout = "30,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
-            <ocn ranks="900" threads="1" layout = "30,30" io_layout = "1,1" mask_table="MOM_mask_table"/>
           </resources>
         </run>
       </regression>
@@ -707,7 +436,7 @@ COBALT_INPUT_EOF
          cd $work
          # Archive an assortment of model input files and model metadata
          mkdir metadata.out
-         mv MOM_parameter_doc* SIS_parameter_doc* COBALT_parameter_doc* metadata.out/
+         mv MOM_parameter_doc* SIS_parameter_doc* metadata.out/
          cp diag_table input.nml metadata.out/
          cp INPUT/*_input INPUT/*_override metadata.out/
          # Save the Git commit hash for each source code submodule
@@ -721,7 +450,6 @@ COBALT_INPUT_EOF
          cp $work/INPUT/ocean_static_no_mask_table.nc $work/ocean_static.nc
       ]]></csh>
       <xi:include xpointer="xpointer(//freInclude[@name='MOM6_postprocess']/postProcess/node())"/>
-      <xi:include xpointer="xpointer(//freInclude[@name='COBALT_postprocess']/postProcess/node())"/>
     </postProcess>
 
   </experiment>
@@ -738,10 +466,8 @@ if ( $currentSeg == 1 ) then
     set restart_flag = 'n'
     if(-e $work/INPUT/coupler.res ) then
         rm -rf $work/INPUT/coupler.res
-        rm -rf $work/INPUT/ice_cobalt.res.nc
         rm -rf $work/INPUT/ice_model.res.nc
         rm -rf $work/INPUT/MOM.res*.nc
-        rm -rf $work/INPUT/ocean_cobalt_airsea_flux.res.nc
     endif
 else
     set restart_flag = 'r'
@@ -778,8 +504,6 @@ touch $work/INPUT/MOM_override
 touch $work/INPUT/SIS_override
 touch $work/INPUT/MOM_layout
 touch $work/INPUT/SIS_layout
-touch $work/INPUT/COBALT_input
-touch $work/INPUT/COBALT_override
 
 # Record the job stdout location for later use timings database
 cat >> $HOME/frejobs_stdout <<EOF_frejobs
@@ -799,29 +523,11 @@ cat > $work/INPUT/SIS_layout << SIS_LAYOUT_EOF
 #override MASKTABLE = $ice_mask_table
 SIS_LAYOUT_EOF
 
-truncate -s 0 $work/INPUT/COBALT_input
-cat > $work/INPUT/COBALT_input << COBALT_INPUT_EOF
-! Put the contents of your COBALT_input file here
-do_case2_mod = True		   
-z_burial = 20.0
-z_denit = 20.0
-scale_burial = 1.0   
-frac_mu_stress_Sm = 0.4
-frac_mu_stress_Md = 0.4
-frac_mu_stress_Lg = 0.4
-frac_mu_stress_Di = 0.4
-COBALT_INPUT_EOF
-
 # When starting a new run from a repeating year restart tar file,
 # delete coupler.res so the time from the restart isn't used.
 if ($currentSeg == 1) then
   if (-e $work/INPUT/coupler.res) then
     rm -rf $work/INPUT/coupler.res
-    module load nco
-    foreach file ($work/INPUT/ocean_cobalt_airsea_flux.res*)
-      chmod u+w $file
-      ncatted -O -a checksum,,d,, $file
-    end
   endif
 endif
 
@@ -853,12 +559,6 @@ endif
         <!-- Main settings -->
         <dataSource site="ncrc">/ncrc/home2/Andrew.C.Ross/git/CEFI-regional-MOM6/xmls/NWA12/MOM_inputs/2025_04/MOM_input</dataSource>
         <dataSource site="gfdl">/home/Andrew.C.Ross/git/CEFI-regional-MOM6/xmls/NWA12/MOM_inputs/2025_04/MOM_input</dataSource>
-      </dataFile>
-      <!-- Boundary conditions for BGC -->
-      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/bgc_woa.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/analysis_input_data/boundary/esper_glorys_v20250305.nc</dataSource>
-        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/bgc_cobalt.nc</dataSource>
       </dataFile>
       <!-- Boundary conditions for physics -->
       <dataFile label="input" target="INPUT/so_001.nc" chksum="" size="" timestamp="">
@@ -906,21 +606,6 @@ endif
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_002.nc</dataSource>
         <dataSource site="ncrc">$(NWA12_WORLD)/tides/updated_2024-01/tz_003.nc</dataSource>
       </dataFile>
-      <!--Other files for BGC fluxes -->
-      <dataFile label="input" target="INPUT/" chksum="" size="" timestamp="">
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drydust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetdust_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_dryfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetfe_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnh4_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_drynoy_climo_1993-2014.nc</dataSource>
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/esm4_deposition/esm4_wetnoy_climo_1993-2014.nc</dataSource>
-        <!-- CO2 is extended to 2064 using ssp245-->
-        <dataSource site="ncrc">$(GLOBAL_WORLD)/co2/mole_fraction_of_co2_extended_ssp245.nc</dataSource>
-        <!--River nutrients and DIC and alkalinity -->
-        <dataSource site="ncrc">$(NWA12_WORLD)/bgc/2023-04/RiverNutrients_Integrated_NWA12_GLOFAS_RC4US1990to2022_2023_04_v2.nc</dataSource>
-      </dataFile>
       <!-- Atmos and river runoff-->
       <!-- Inclusion of ${fyear} here will cause warnings about the files not being found by frerun,
         but ${fyear} will be reliably filled in when the job is run -->
@@ -966,84 +651,6 @@ endif
     </input>
   </freInclude>
 
-  <freInclude name="COBALT_postprocess">
-    <postProcess>
-      <component type="ocean_cobalt_fdet_100" start="$(PP_START_YEAR)" source="ocean_cobalt_fdet_100">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_btm" start="$(PP_START_YEAR)" source="ocean_cobalt_btm">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_daily_2d" start="$(PP_START_YEAR)" source="ocean_cobalt_daily_2d">
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_B)" />
-      </component>
-      <component type="ocean_cobalt_omip_sfc" start="$(PP_START_YEAR)" source="ocean_cobalt_omip_sfc">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_tracers_int" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_int">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_sfc" start="$(PP_START_YEAR)" source="ocean_cobalt_sfc">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" source="ocean_cobalt_sfc">
-           <analysis switch="$(BGC_ANALYSIS_SWITCH)" cumulative="no" script="./analysis/cefi_bgc_monthly.csh"/>
-        </timeSeries>
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_fluxes_int" start="$(PP_START_YEAR)" source="ocean_cobalt_fluxes_int">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_neus"   start="$(PP_START_YEAR)" source="ocean_cobalt_neus">
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_A)" source="ocean_cobalt_neus"/>
-        <timeSeries freq="daily" chunkLength="$(CHUNK_LENGTH_B)" source="ocean_cobalt_neus"/>
-      </component>
-      <component type="ocean_cobalt_tracers_month_z" start="$(PP_START_YEAR)" source="ocean_cobalt_tracers_month_z">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-      <component type="ocean_cobalt_omip_2d" start="$(PP_START_YEAR)" source="ocean_cobalt_omip_2d">
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_A)" />
-        <timeSeries freq="monthly" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeSeries freq="annual" chunkLength="$(CHUNK_LENGTH_B)" />
-        <timeAverage source="monthly"  interval="$(CHUNK_LENGTH_B)"/>
-        <timeAverage source="annual"  interval="$(CHUNK_LENGTH_B)"/>
-      </component>
-    </postProcess>
-  </freInclude>
   <freInclude name="MOM6_postprocess">
     <postProcess>
       <!--PostProcessing component models-->
