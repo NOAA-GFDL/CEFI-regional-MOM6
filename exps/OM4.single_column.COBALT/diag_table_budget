@@ -1,0 +1,27 @@
+# Diagnostics for verifying that the generic tracer budget diagnostics close
+"ocean_cobalt_budget",          1, "days",   1, "days", "time",
+"ocean_model", "volcello",                    "volcello",                 "ocean_cobalt_budget", "all", "mean", "none", 2
+
+# For oxygen:
+"generic_cobalt", "o2_vdiffuse_impl",         "o2_vdiffuse_impl",         "ocean_cobalt_budget", "all", "mean", "none", 2
+"generic_cobalt", "jo2h",                     "jo2h",                     "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "o2_advection_xy",             "o2_advection_xy",          "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "o2h_tendency_vert_remap",     "o2h_tendency_vert_remap",  "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "o2h_tendency",                "o2h_tendency",             "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "o2_diffusion_xy",             "o2_diffusion_xy",          "ocean_cobalt_budget", "all", "mean", "none", 2
+
+# For alkalinity:
+"generic_cobalt", "alk_vdiffuse_impl",         "alk_vdiffuse_impl",         "ocean_cobalt_budget", "all", "mean", "none", 2
+"generic_cobalt", "jalkh",                     "jalkh",                     "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "alk_advection_xy",             "alk_advection_xy",          "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "alkh_tendency_vert_remap",     "alkh_tendency_vert_remap",  "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "alkh_tendency",                "alkh_tendency",             "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "alk_diffusion_xy",             "alk_diffusion_xy",          "ocean_cobalt_budget", "all", "mean", "none", 2
+
+# For nitrate:
+"generic_cobalt", "no3_vdiffuse_impl",         "no3_vdiffuse_impl",         "ocean_cobalt_budget", "all", "mean", "none", 2
+"generic_cobalt", "jno3h",                     "jno3h",                     "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "no3_advection_xy",             "no3_advection_xy",          "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "no3h_tendency_vert_remap",     "no3h_tendency_vert_remap",  "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "no3h_tendency",                "no3h_tendency",             "ocean_cobalt_budget", "all", "mean", "none", 2
+"ocean_model", "no3_diffusion_xy",             "no3_diffusion_xy",          "ocean_cobalt_budget", "all", "mean", "none", 2
