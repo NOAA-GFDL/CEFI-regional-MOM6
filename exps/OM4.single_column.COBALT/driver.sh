@@ -7,9 +7,16 @@ rm -rf RESTART*
 #
 echo "Test started:  " `date`
 
-#
+# This one will save also extra diagnostics for the BGC budget test
 echo "run 48hrs test ..."
+# Clear out restart files from previous 24hr run
+pushd INPUT/
+rm *.res.nc
+rm coupler.res
+popd
 ln -fs input.nml_48hr input.nml
+# Append extra BGC budget diagnostics
+cat diag_table_budget >> diag_table
 mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2 > out1 2>err1
 tail out1
 tail err1
@@ -19,6 +26,8 @@ mv ocean.stats* RESTART_48hrs
 #
 echo "run 24hrs test ..."
 ln -fs input.nml_24hr input.nml
+# Empty diag table except the two header lines
+truncate -s 33 diag_table
 mpirun --allow-run-as-root -np 1 ../../builds/build/docker-linux-gnu/ocean_ice/debug/MOM6SIS2 > out2 2>err2
 tail out2
 tail err2
