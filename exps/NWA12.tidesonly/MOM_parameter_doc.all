@@ -159,8 +159,6 @@ ICE_SHELF = False               !   [Boolean] default = False
                                 ! If true, enables the ice shelf model.
 USE_PARTICLES = False           !   [Boolean] default = False
                                 ! If true, use the particles package.
-USE_UH_PARTICLES = False        !   [Boolean] default = False
-                                ! If true, use the uh velocity in the particles package.
 ENSEMBLE_OCEAN = False          !   [Boolean] default = False
                                 ! If False, The model is being run in serial mode as a single realization. If
                                 ! True, The current model realization is part of a larger ensemble and at the
@@ -527,6 +525,9 @@ USE_NW2_TRACERS = False         !   [Boolean] default = False
                                 ! If true, use the NeverWorld2 tracers.
 
 ! === module MOM_boundary_update ===
+OBC_VALUE_UPDATE_BUG = True     !   [Boolean] default = True
+                                ! If true, recover a bug that OBC segment data does not update if all segments
+                                ! use 'value' and none uses 'file'.
 USE_FILE_OBC = False            !   [Boolean] default = False
                                 ! If true, use external files for the open boundary.
 USE_TIDAL_BAY_OBC = False       !   [Boolean] default = False
