@@ -159,8 +159,6 @@ ICE_SHELF = False               !   [Boolean] default = False
                                 ! If true, enables the ice shelf model.
 USE_PARTICLES = False           !   [Boolean] default = False
                                 ! If true, use the particles package.
-USE_UH_PARTICLES = False        !   [Boolean] default = False
-                                ! If true, use the uh velocity in the particles package.
 ENSEMBLE_OCEAN = False          !   [Boolean] default = False
                                 ! If False, The model is being run in serial mode as a single realization. If
                                 ! True, The current model realization is part of a larger ensemble and at the
@@ -434,6 +432,9 @@ GRID_ROTATION_ANGLE_BUGS = False !   [Boolean] default = False
                                 ! If true, use an older algorithm to calculate the sine and cosines needed
                                 ! rotate between grid-oriented directions and true north and east.  Differences
                                 ! arise at the tripolar fold.
+DT_OBC_SEG_UPDATE_OBGC = 600.0  !   [s] default = 600.0
+                                ! The time between OBC segment data updates for OBGC tracers.  This must be an
+                                ! integer multiple of DT and DT_THERM.  The default is set to DT.
 
 ! === module MOM_verticalGrid ===
 ! Parameters providing information about the vertical grid.
@@ -527,6 +528,9 @@ USE_NW2_TRACERS = False         !   [Boolean] default = False
                                 ! If true, use the NeverWorld2 tracers.
 
 ! === module MOM_boundary_update ===
+OBC_VALUE_UPDATE_BUG = True     !   [Boolean] default = True
+                                ! If true, recover a bug that OBC segment data does not update if all segments
+                                ! use 'value' and none uses 'file'.
 USE_FILE_OBC = False            !   [Boolean] default = False
                                 ! If true, use external files for the open boundary.
 USE_TIDAL_BAY_OBC = False       !   [Boolean] default = False
@@ -659,6 +663,8 @@ DIAG_REMAPPING_USE_OM4_SUBCELLS = True !   [Boolean] default = True
                                 ! false.
 USE_INDEX_DIAGNOSTIC_AXES = False !   [Boolean] default = False
                                 ! If true, use a grid index coordinate convention for diagnostic axes.
+SYMMETRIC_DOWNSAMPLE_SUMS = False !   [Boolean] default = False
+                                ! If true, use rotationally symmetric sums when downsampling diagnostics.
 DIAG_COORDS = "z Z ZSTAR"       ! default = "z Z ZSTAR"
                                 ! A list of string tuples associating diag_table modules to a coordinate
                                 ! definition used for diagnostics. Each string is of the form "MODULE_SUFFIX
