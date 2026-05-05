@@ -195,8 +195,6 @@ ICE_SHELF = False               !   [Boolean] default = False
                                 ! If true, enables the ice shelf model.
 USE_PARTICLES = False           !   [Boolean] default = False
                                 ! If true, use the particles package.
-USE_UH_PARTICLES = False        !   [Boolean] default = False
-                                ! If true, use the uh velocity in the particles package.
 ENSEMBLE_OCEAN = False          !   [Boolean] default = False
                                 ! If False, The model is being run in serial mode as a single realization. If
                                 ! True, The current model realization is part of a larger ensemble and at the
@@ -648,6 +646,8 @@ DIAG_REMAPPING_USE_OM4_SUBCELLS = True !   [Boolean] default = True
                                 ! false.
 USE_INDEX_DIAGNOSTIC_AXES = False !   [Boolean] default = False
                                 ! If true, use a grid index coordinate convention for diagnostic axes.
+SYMMETRIC_DOWNSAMPLE_SUMS = False !   [Boolean] default = False
+                                ! If true, use rotationally symmetric sums when downsampling diagnostics.
 DIAG_COORDS = "z Z ZSTAR", "rho2 RHO2 RHO" !
                                 ! A list of string tuples associating diag_table modules to a coordinate
                                 ! definition used for diagnostics. Each string is of the form
