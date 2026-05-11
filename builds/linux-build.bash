@@ -54,7 +54,7 @@ source $MODULESHOME/init/bash
 source $rootdir/$machine_name/$platform.env
 
 # Default Makeflags
-makeflags="NETCDF=4"
+makeflags="-j NETCDF=4"
 
 # Update makeflags based on the target
 update_makeflags() {
@@ -85,7 +85,7 @@ build_libyaml() {
     pushd $srcdir/libyaml
     $srcdir/libyaml/bootstrap
     $srcdir/libyaml/configure --prefix="$target_dir" --disable-shared
-    make && make install
+    make -j && make install
     if [ $? -ne 0 ]; then
         echo "Could not build the libyaml library!"
         exit 1
