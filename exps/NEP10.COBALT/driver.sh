@@ -39,6 +39,20 @@ pushd ../
 ln -fs /gpfs/f5/gfdl_med/world-shared/datasets ./
 popd
 
+# UMW 05/27/2026 NOTE: For some reason, symlinking the atmosphere forcing
+# files to INPUT causes extremely slow file reads in the atmos loop, causing
+# the total runtime to ballon up to 1700 seconds. For now, copy files to
+# INPUT dir to speed up testing
+echo "Copying atmosphere forcing to INPUT dir"
+pushd INPUT
+for f in ERA5_* ; do
+    echo "Copying ${f}"
+    # readlink gets the full path to the symlinked data,
+    # cp --remove-destination removes the symlink + copies over the actual data
+    cp --remove-destination "$(readlink ${f})" ${f}
+done
+popd
+
 export img="/gpfs/f5/cefi/world-shared/container/gaea_intel_2023.2.0.sif"
 
 echo "SET MPICH_SMP_SINGLE_COPY_MODE"

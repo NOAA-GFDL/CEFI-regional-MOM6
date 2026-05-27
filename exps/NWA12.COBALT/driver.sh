@@ -38,6 +38,22 @@ pushd ../
 ln -fs /gpfs/f5/gfdl_med/world-shared/datasets ./
 popd
 
+# UMW 05/27/2026 NOTE: For some reason, symlinking the atmosphere forcing
+# files to INPUT causes slow file reads in the atmos loop. This was a
+# bigger issue in the NEP than the NWA ( with symlinks, NWA runtime was ~800s)
+# but copying this logic here anyways
+# TODO: Ideally, we should copy over the restart files too to speed up
+# initialization, but holding off on that for now given how large they are.
+echo "Copying atmosphere forcing to INPUT dir"
+pushd INPUT
+for f in ERA5_* ; do
+    echo "Copying ${f}"
+    # readlink gets the full path to the symlinked data,
+    # cp --remove-destination removes the symlink + copies over the actual data
+    cp --remove-destination "$(readlink ${f})" ${f}
+done
+popd
+
 export img="/gpfs/f5/cefi/world-shared/container/gaea_intel_2023.2.0.sif"
 
 echo "SET MPICH_SMP_SINGLE_COPY_MODE"
