@@ -46,10 +46,14 @@ popd
 echo "Copying atmosphere forcing to INPUT dir"
 pushd INPUT
 for f in ERA5_* ; do
-    echo "Copying ${f}"
-    # readlink gets the full path to the symlinked data,
-    # cp --remove-destination removes the symlink + copies over the actual data
-    cp --remove-destination "$(readlink ${f})" ${f}
+    if [ -L ${f} ] ; then
+        echo "Copying ${f}"
+        # readlink gets the full path to the symlinked data,
+        # cp --remove-destination removes the symlink + copies over the actual data
+        cp --remove-destination "$(readlink ${f})" ${f}
+    else
+        echo "${f} is already copied over, skipping copy"
+    fi
 done
 popd
 
