@@ -29,6 +29,7 @@ VERBOSITY = 2                   ! default = 2
                                 ! Integer controlling level of messaging
                                 !   0 = Only FATAL messages
                                 !   2 = Only FATAL, WARNING, NOTE [default]
+                                !   6 = Above plus call tree messages
                                 !   9 = All)
 DO_UNIT_TESTS = False           !   [Boolean] default = False
                                 ! If True, exercises unit tests at model start up.
@@ -80,6 +81,8 @@ DEBUG_CONSERVATION = False      !   [Boolean] default = False
 
 ! === module MOM_kappa_shear ===
 ! Parameterization of shear-driven turbulence following Jackson, Hallberg and Legg, JPO 2008
+CHECK_SALT_BRINE_PLUME = False  !   [Boolean] default = False
+                                ! If true, check for conservation in the brine plume scheme.
 WRITE_TRACER_MIN_MAX = False    !   [Boolean] default = False
                                 ! If true, write the maximum and minimum values of temperature, salinity and
                                 ! some tracer concentrations to stdout when the energy files are written.
