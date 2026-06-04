@@ -45,8 +45,14 @@ def plot_hypoxic_area(pp_root, label, use_daily):
         (mom_grid.geolat <= 29.717) &
         (mom_grid.deptho <= 100)
     )
-    hypoxic_area = (o2.where((mask) & (o2 < 2)) * mom_grid.areacello).sum(['yh', 'xh']).load()
-    hypoxic_area /= (1000**2) # m2 -> km2
+    hypoxic_area = (
+        mom_grid
+        .areacello
+        .where(np.logical_and(mask, o2 < 2))
+        .sum(['yh', 'xh'])
+        .compute()
+        / (1000**2) # m2 -> km2
+    )
 
     if use_daily:
         hypoxic_area = hypoxic_area.resample(time='1MS').mean('time')
