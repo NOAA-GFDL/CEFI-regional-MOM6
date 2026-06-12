@@ -72,15 +72,15 @@ jobs:
           ncwa -a xh,yh o2_col_budget.nc -O o2_col_budget.nc
           # Check residual for surface layer
           ncks -d zl,0 o2_col_budget.nc o2_sfc_budget.nc
-          resid=$( ncap2 -s 'result = o2h_tendency -
+          resid=$( ncap2 -O -s 'result = o2h_tendency -
               (o2_advection_xy + o2h_tendency_vert_remap + o2_vdiffuse_impl + o2_diffusion_xy + jo2h);
-              print(result)' o2_sfc_budget.nc |  awk -F'=' '{print $2}')
+              print(result)' o2_sfc_budget.nc ncap2_tmp.nc |  awk -F'=' '{print $2}')
           python3 check_residual.py $resid
           # Check residual for column total
           ncwa -y ttl -a zl o2_col_budget.nc o2_tot_budget.nc
-          resid=$( ncap2 -s 'result = o2h_tendency -
+          resid=$( ncap2 -O -s 'result = o2h_tendency -
               (o2_advection_xy + o2h_tendency_vert_remap + o2_vdiffuse_impl + o2_diffusion_xy + jo2h);
-              print(result)' o2_tot_budget.nc |  awk -F'=' '{print $2}')
+              print(result)' o2_tot_budget.nc ncap2_tmp.nc |  awk -F'=' '{print $2}')
           python3 check_residual.py $resid
 
       - name: Check alkalinity budget closure
@@ -93,15 +93,15 @@ jobs:
           ncwa -a xh,yh alk_col_budget.nc -O alk_col_budget.nc
           # Check residual for surface layer
           ncks -d zl,0 alk_col_budget.nc alk_sfc_budget.nc
-          resid=$( ncap2 -s 'result = alkh_tendency -
+          resid=$( ncap2 -O -s 'result = alkh_tendency -
               (alk_advection_xy + alkh_tendency_vert_remap + alk_vdiffuse_impl + alk_diffusion_xy + jalkh);
-              print(result)' alk_sfc_budget.nc |  awk -F'=' '{print $2}')
+              print(result)' alk_sfc_budget.nc ncap2_tmp.nc |  awk -F'=' '{print $2}')
           python3 check_residual.py $resid
           # Check residual for column total
           ncwa -y ttl -a zl alk_col_budget.nc alk_tot_budget.nc
-          resid=$( ncap2 -s 'result = alkh_tendency -
+          resid=$( ncap2 -O -s 'result = alkh_tendency -
               (alk_advection_xy + alkh_tendency_vert_remap + alk_vdiffuse_impl + alk_diffusion_xy + jalkh);
-              print(result)' alk_tot_budget.nc |  awk -F'=' '{print $2}')
+              print(result)' alk_tot_budget.nc ncap2_tmp.nc |  awk -F'=' '{print $2}')
           python3 check_residual.py $resid
 
       - name: Check nitrate budget closure
@@ -114,15 +114,15 @@ jobs:
           ncwa -a xh,yh no3_col_budget.nc -O no3_col_budget.nc
           # Check residual for surface layer
           ncks -d zl,0 no3_col_budget.nc no3_sfc_budget.nc
-          resid=$( ncap2 -s 'result = no3h_tendency -
+          resid=$( ncap2 -O -s 'result = no3h_tendency -
               (no3_advection_xy + no3h_tendency_vert_remap + no3_vdiffuse_impl + no3_diffusion_xy + jno3h);
-              print(result)' no3_sfc_budget.nc |  awk -F'=' '{print $2}')
+              print(result)' no3_sfc_budget.nc ncap2_tmp.nc |  awk -F'=' '{print $2}')
           python3 check_residual.py $resid
           # Check residual for column total
           ncwa -y ttl -a zl no3_col_budget.nc no3_tot_budget.nc
-          resid=$( ncap2 -s 'result = no3h_tendency -
+          resid=$( ncap2 -O -s 'result = no3h_tendency -
               (no3_advection_xy + no3h_tendency_vert_remap + no3_vdiffuse_impl + no3_diffusion_xy + jno3h);
-              print(result)' no3_tot_budget.nc |  awk -F'=' '{print $2}')
+              print(result)' no3_tot_budget.nc ncap2_tmp.nc |  awk -F'=' '{print $2}')
           python3 check_residual.py $resid
 
       - name: Commit and push parameter doc updates
