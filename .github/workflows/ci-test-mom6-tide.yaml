@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/noaa-gfdl/cefi-regional-mom6/1d_mom6_cobalt:base
+      image: ghcr.io/noaa-gfdl/cefi-regional-mom6/1d_mom6_cobalt:2024_04
       options: --user=builder
 
     env:
