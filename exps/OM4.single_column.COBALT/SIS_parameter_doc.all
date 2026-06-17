@@ -90,6 +90,8 @@ REDO_FAST_ICE_UPDATE = False    !   [Boolean] default = False
                                 ! ice state.
 READ_HLIM_VALS = False          !   [Boolean] default = False
                                 ! If true, read the lower limits on the ice thicknesscategories.
+ALLOW_CARBON_FLUX_EXCHANGE = False !   [Boolean] default = False
+                                ! If true, allow carbon flux exchange between ice, ocean, and atmosphere.
 NCAT_ICE = 5                    !   [nondim] default = 5
                                 ! The number of sea ice thickness categories.
 NK_ICE = 4                      !   [nondim] default = 4
@@ -222,6 +224,15 @@ GRID_ROTATION_ANGLE_BUGS = False !   [Boolean] default = False
 
 ! === module MOM_hor_index ===
 ! Sets the horizontal array index types.
+
+! === module SIS_diag_mediator ===
+USE_INDEX_DIAGNOSTIC_AXES = False !   [Boolean] default = False
+                                ! If true, use a grid index coordinate convention for diagnostic axes.
+DIAG_MISVAL = 1.0E+20           !   [various] default = 1.0E+20
+                                ! Set the default missing value to use for diagnostics.
+DIAG_AS_CHKSUM = False          !   [Boolean] default = False
+                                ! Instead of writing diagnostics to the diag manager, write a text file
+                                ! containing the checksum (bitcount) of the array.
 SIS_AVAILABLE_DIAGS_FILE = "SIS.available_diags" ! default = "SIS.available_diags"
                                 ! A file into which to write a list of all available sea ice diagnostics that
                                 ! can be included in a diag_table.
@@ -256,13 +267,15 @@ SUBLIMATION_BUG = False         !   [Boolean] default = False
 ! === module SIS_tracer_flow_control ===
 USE_ICE_AGE_TRACER = False      !   [Boolean] default = False
                                 ! If true, use the concentration based age tracer package.
+
+! === module SIS_diag_mediator ===
 SIS_FAST_AVAILABLE_DIAGS_FILE = "SIS_fast.available_diags" ! default = "SIS_fast.available_diags"
                                 ! A file into which to write a list of all available sea ice diagnostics that
                                 ! can be included in a diag_table.
 
 ! === module SIS_slow_thermo ===
 ! This module calculates the slow evolution of the ice mass, heat, and salt budgets.
-ICE_BULK_SALINITY = 4.0         !   [g/kg] default = 4.0
+ICE_BULK_SALINITY = 4.0         !   [g kg-1] default = 4.0
                                 ! The fixed bulk salinity of sea ice.
 ICE_RELATIVE_SALINITY = 0.0     !   [nondim] default = 0.0
                                 ! The initial salinity of sea ice as a fraction of the salinity of the seawater
