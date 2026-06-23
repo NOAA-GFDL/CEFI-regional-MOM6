@@ -1,10 +1,11 @@
 name: CEFI-MOM6-ci-c5
 
-on:
+#on:
   # Triggers this workflow on pull request event with "CEFI_MOM6_RT_container" label
-  pull_request:
-    branches: [ "main" ]
-    types: [ labeled ]
+  # UMW 06/22/2026 Update - move testing to gitlab, pause this for now
+  #pull_request:
+    #branches: [ "main" ]
+    #types: [ labeled ]
 
 #
 env:
