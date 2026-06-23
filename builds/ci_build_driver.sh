@@ -9,8 +9,30 @@
 #SBATCH --clusters=c5
 #SBATCH --account=gfdl_med
 
+# 1. Set the default state (Clean by default)
+CLEAN_UP=true
+
+# 2. Parse the options
+# 'n' stands for 'no-clean'. Note: getopts handles single-letter flags best.
+while getopts "n" opt; do
+  case $opt in
+    n)
+      CLEAN_UP=false
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
 #
-[ -d "build" ] && rm -rf build
+if [ "$CLEAN_UP" = true ]; then
+    echo "Cleaning up build directory..."
+    [ -d "build" ] && rm -rf build
+else
+    echo "Skipping cleanup (--no-clean active)."
+fi
 
 #
 echo "Build MOM6SIS2-COBALT using container started:  " `date`
