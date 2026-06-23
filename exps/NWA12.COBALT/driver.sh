@@ -127,23 +127,29 @@ mv ocean.stats RESTART_24hrs_rst
 
 
 # Define the directories containing the files
-module load nccmp
 DIR1="./RESTART_24hrs_rst"
 DIR2="/gpfs/f5/gfdl_med/proj-shared/github/ci_data/reference/main/NWA12.COBALT/20260407"
 
-# Define the files to compare
-FILES=("$DIR2"/*.nc)
+# Check if gnu parallel is available
+if command -v parallel >/dev/null 2>&1 ; then
+    CMD="parallel"
+# Othwerise, use predownloaded executable
+else
+    if [ -x "/gpfs/f5/gfdl_med/world-shared/gnu_parallel/parallel" ]; then
+      CMD="/gpfs/f5/gfdl_med/world-shared/gnu_parallel/parallel"
+    elif [ -x "/gpfs/f6/ira-cefi/world-shared/gnu_parallel/parallel" ]; then
+      CMD="/gpfs/f6/ira-cefi/world-shared/gnu_parallel/parallel"
+    else
+      echo "Error: gnu parallel is not available, skipping Restart reproducibility test"
+      exit 1
+    fi
+fi
 
-# Iterate over the files
-for FILE in "${FILES[@]}"; do
-    filename=$(basename "$FILE")	
-    # Compare the files using nccmp
-    echo "compare ${filename}"
-    nccmp -dfqS "${DIR1}/${filename}" "${DIR2}/${filename}" > /dev/null || { echo "Error: ${filename} is not identical, please check! Exiting now..."; exit 1; }
-done
-
-#
-echo "All restart files are identical, PASS"
+# Compare restarts in parallel
+module load nccmp
+find ${DIR1} -type f -name "*.nc" -printf "%P\n" | \
+${CMD} --halt now,fail=1 "nccmp -dfs -c 10 ${DIR1}/{} ${DIR2}/{}" \
+&& echo  "All restart files are identical, PASS"
 
 #
 if $USE_PROJ_SHARED; then
