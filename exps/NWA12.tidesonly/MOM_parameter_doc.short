@@ -19,8 +19,9 @@ DT_THERM = 3600.0               !   [s] default = 600.0
 DTBT_RESET_PERIOD = -1.0        !   [s] default = 3600.0
                                 ! The period between recalculations of DTBT (if DTBT <= 0). If DTBT_RESET_PERIOD
                                 ! is negative, DTBT is set based only on information available at
-                                ! initialization.  If 0, DTBT will be set every dynamics time step. The default
-                                ! is set by DT_THERM.  This is only used if SPLIT is true.
+                                ! initialization.  If 0, DTBT will be set every dynamics time step. Values
+                                ! between 0 and DT are treated as 0.  The default is set by DT_THERM. This is
+                                ! only used if SPLIT is true.
 CHECK_BAD_SURFACE_VALS = True   !   [Boolean] default = False
                                 ! If true, check the surface state for ridiculous values.
 BAD_VAL_SSH_MAX = 50.0          !   [m] default = 20.0
