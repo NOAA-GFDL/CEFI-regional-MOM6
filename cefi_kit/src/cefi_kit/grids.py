@@ -10,7 +10,7 @@ def center_to_outer(center, left=None, right=None):
     Given an array of center coordinates, find the edge coordinates,
     including extrapolation for far left and right edge.
     """
-    if hasattr(center,'values'): # handle xarray dataarays and similar objects
+    if hasattr(center, 'values'):  # handle xarray dataarays and similar objects
         edges = 0.5 * (center.values[0:-1] + center.values[1:])
     else:
         edges = 0.5 * (center[0:-1] + center[1:])
@@ -35,7 +35,9 @@ def corners(lon, lat):
 
 
 def mom_center_area(supergrid_area):
-    return (supergrid_area[::2, ::2] + supergrid_area[1::2, 1::2]) + (supergrid_area[1::2, ::2] + supergrid_area[::2, 1::2])
+    return (supergrid_area[::2, ::2] + supergrid_area[1::2, 1::2]) + (
+        supergrid_area[1::2, ::2] + supergrid_area[::2, 1::2]
+    )
 
 
 def hgrid_to_xesmf(hgrid):
@@ -70,7 +72,9 @@ def reuse_regrid(*args, **kwargs):
 
     if reuse_weights:
         if path.isfile(filename):
-            return xesmf.Regridder(*args, reuse_weights=True, filename=filename, **kwargs)
+            return xesmf.Regridder(
+                *args, reuse_weights=True, filename=filename, **kwargs
+            )
         else:
             regrid = xesmf.Regridder(*args, **kwargs)
             regrid.to_netcdf(filename)
