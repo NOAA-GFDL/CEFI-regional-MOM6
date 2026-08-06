@@ -34,6 +34,10 @@ def corners(lon, lat):
     return lonc, latc
 
 
+def mom_center_area(supergrid_area):
+    return (supergrid_area[::2, ::2] + supergrid_area[1::2, 1::2]) + (supergrid_area[1::2, ::2] + supergrid_area[::2, 1::2])
+
+
 def vgrid_to_interfaces(vgrid, max_depth=6500.0):
     if isinstance(vgrid, xarray.DataArray):
         vgrid = vgrid.data

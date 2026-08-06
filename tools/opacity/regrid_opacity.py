@@ -2,7 +2,8 @@ import numpy as np
 import xarray
 import xesmf
 
-import sys
+from cefi_kit.grids import mom_center_area
+
 from HCtFlood import kara as flood
 
 hgrid = xarray.open_dataset('../../datasets/grid/ocean_hgrid.nc')
@@ -15,7 +16,7 @@ mom_grid = {
 }
 
 # From Alistair
-mom_area = (hgrid.area[::2, ::2] + hgrid.area[1::2, 1::2]) + (hgrid.area[1::2, ::2] + hgrid.area[::2, 1::2])
+mom_area = mom_center_area(hgrid.area)
 
 # https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/ocn/mom/tx0.25v1/
 seawifs = xarray.open_dataset(
@@ -48,8 +49,8 @@ all_vars = list(ds.data_vars.keys()) + list(ds.coords.keys())
 encodings = {v: {'_FillValue': None} for v in all_vars}
 
 ds.to_netcdf(
-    './seawifs-clim-1997-2010.nwa12.nc', 
-    encoding=encodings, 
+    './seawifs-clim-1997-2010.nwa12.nc',
+    encoding=encodings,
     format='NETCDF3_64BIT',
     unlimited_dims='time'
 )
