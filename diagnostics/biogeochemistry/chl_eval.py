@@ -8,7 +8,6 @@ import cartopy.crs as ccrs
 from cartopy.mpl.geoaxes import GeoAxes
 import colorcet
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
 import xarray
@@ -23,7 +22,10 @@ import sys
 # Get the directory of the current script
 script_dir = os.path.dirname(os.getcwd())
 sys.path.append(os.path.join(script_dir, 'physics'))
-from plot_common import add_ticks, autoextend_colorbar, corners, annotate_skill, open_var, save_figure, load_config
+
+from cefi_kit.io import load_config, open_var
+from cefi_kit.plots import annotate_skill, autoextend_colorbar, save_figure
+from plot_common import corners
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -81,7 +83,7 @@ def plot_chl(pp_root, label, config, dev):
     label_ticks = config['chl_ticks_labels']
     fig = plt.figure(figsize=(8, 10))
     nrows, ncols = 4, 3
-    grid = AxesGrid(fig, 111, 
+    grid = AxesGrid(fig, 111,
         nrows_ncols=(nrows, ncols),
         axes_class = (GeoAxes, dict( projection = p)),
         axes_pad=0.33,
@@ -102,7 +104,7 @@ def plot_chl(pp_root, label, config, dev):
 
     common['transform'] = proj
     delta_common['transform'] = proj
-    
+
     # Set args to annotate skill
     skill_args = dict( x0=config['text_x'], y0=config['text_y'], xint=config['text_xint'], plot_lat=config['plot_lat'] )
 

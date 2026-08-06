@@ -4,38 +4,25 @@ Sample usage:
 """
 import cartopy.crs as ccrs
 from cartopy.mpl.geoaxes import GeoAxes
-from matplotlib.colors import BoundaryNorm, ListedColormap
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
 import xarray
 import xesmf
 
+from cefi_kit.plots import get_map_norm
 from compute_tides import open_grid_file
 
 PC = ccrs.PlateCarree()
 
-def get_map_norm(cmap, levels, no_offset=True):
-    """
-    Get a discrete colormap and normalization for plotting with matplotlib.
-    Set no_offset=False to obtain a colormap that is similar to what xarray.plot() yields.
-    """
-    nlev = len(levels)
-    cmap = plt.cm.get_cmap(cmap, nlev-int(no_offset))
-    colors = list(cmap(np.arange(nlev)))
-    cmap = ListedColormap(colors, "")
-    norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
-    return cmap, norm
-
-
 # Periods of each harmonic constituent in hours.
 # (for converting phase from degrees to hours)
 periods = {
-    'M2': 12.42, 
-    'S2': 12, 
+    'M2': 12.42,
+    'S2': 12,
     'N2': 12.66,
     'K2': 11.97,
-    'K1': 23.93, 
+    'K1': 23.93,
     'O1': 25.82,
     'P1': 24.07,
     'Q1': 26.87,
@@ -105,10 +92,10 @@ def plot_tides(constit, amp_levels, delta_levels):
 
     # Plot phase lines every hour, except for long period tides
     if periods[constit] > 48:
-        phase_levels = np.arange(0, periods[constit], 24) 
+        phase_levels = np.arange(0, periods[constit], 24)
     else:
-        phase_levels = np.arange(0, periods[constit], 1) 
-    
+        phase_levels = np.arange(0, periods[constit], 1)
+
     # Set up color maps and common plot arguments
     phase_colors = plt.get_cmap(phase_colormap)(np.linspace(0, 1, len(phase_levels)))
     cmap, norm = get_map_norm(amp_colormap, levels=amp_levels)
@@ -116,7 +103,7 @@ def plot_tides(constit, amp_levels, delta_levels):
     common = dict(cmap=cmap, norm=norm, transform=PC)
 
     fig = plt.figure(figsize=(12, 8))
-    grid = AxesGrid(fig, 111, 
+    grid = AxesGrid(fig, 111,
         axes_class=(GeoAxes, dict(projection=plot_proj)),
         nrows_ncols=(1, 3),
         axes_pad=0.3,
@@ -124,7 +111,7 @@ def plot_tides(constit, amp_levels, delta_levels):
         cbar_mode='edge',
         cbar_pad=0.2,
         cbar_size='15%',
-        label_mode=''
+        label_mode='keep'
     )
     # Panel 0: regional model tides
     p = grid[0].pcolormesh(model.geolon_c[::sub, ::sub], model.geolat_c[::sub, ::sub], model.A.sel(constit=constit)*100, **common)

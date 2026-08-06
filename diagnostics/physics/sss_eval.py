@@ -11,12 +11,13 @@ from cartopy.mpl.geoaxes import GeoAxes
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
-import os
 import xarray
 import xesmf
 import logging
 
-from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config, process_glorys, combine_regional_climatologies, center_to_outer
+from cefi_kit.io import open_var, load_config
+from cefi_kit.plots import annotate_skill, autoextend_colorbar, get_map_norm
+from plot_common import process_glorys, combine_regional_climatologies, center_to_outer
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
@@ -36,7 +37,7 @@ def plot_sss_eval(pp_root,config):
     # Convert to a common grid to merge the datasets together.
     # concat each dataset onto a new dimension,
     # then average over the dimension.
-    # with no overlap, only one region has data at any point, 
+    # with no overlap, only one region has data at any point,
     # so mean ignores the nans from other regions and selects the available data.
     regional_grid = {
         'lat': np.arange( np.floor( config['lat']['south'] * 10) / 10 - 0.05, np.ceil( config['lat']['north'] * 10 ) / 10 + 0.1 , 0.1),
@@ -69,7 +70,7 @@ def plot_sss_eval(pp_root,config):
         cbar_mode='edge',
         cbar_pad=0.2,
         cbar_size='15%',
-        label_mode=''
+        label_mode='keep'
     )
 
     # Discrete levels for SSS plots
@@ -96,7 +97,7 @@ def plot_sss_eval(pp_root,config):
     else:
         proj = ccrs.PlateCarree()
 
-    # Model 
+    # Model
     p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ave, transform=proj, **common)
     grid[0].set_title('(a) Model')
     cbar0 = autoextend_colorbar(grid.cbar_axes[0], p0)
@@ -136,7 +137,7 @@ def plot_sss_eval(pp_root,config):
         ax.set_yticklabels([])
         for s in ax.spines.values():
             s.set_visible(False)
-        
+
     plt.savefig('figures/sss_eval.png', dpi=300, bbox_inches='tight')
 
 
