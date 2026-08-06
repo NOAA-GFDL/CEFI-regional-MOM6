@@ -3,27 +3,23 @@
 This script generated T,S, ssh, u, v OBC from Glorys
 Have to make sure nan values in Glorys have been filled by non-nan values
 Also this script require nco tools (optional) if you want to concatenat
-multiple years results. 
+multiple years results.
 Run on analysis, with module load nco/5.0.1
 How to use:
-./write_glorys_boundary.py --config glorys_obc.yaml 
+./write_glorys_boundary.py --config glorys_obc.yaml
 """
 from subprocess import run
 from os import path
 import xarray
-import yaml
-from boundary import Segment
 import argparse
 import os
+
+from cefi_kit.boundary import Segment
+from cefi_kit.io import load_config
 
 # xarray gives a lot of unnecessary warnings
 import warnings
 warnings.filterwarnings('ignore')
-
-def load_config(config_file):
-    with open(config_file, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
 
 def write_year(year, glorys_dir, segments, variables, is_first_year=False, is_last_year=False):
     glorys = (
@@ -41,10 +37,10 @@ def write_year(year, glorys_dir, segments, variables, is_first_year=False, is_la
 
     for seg in segments:
         for var in variables:
-            if var == 'uv': 
+            if var == 'uv':
                 print(f'{seg.border} {var}')
                 seg.regrid_velocity(glorys['uo'], glorys['vo'], suffix=year, flood=False)
-            elif var == 'thetao' or var == 'so': 
+            elif var == 'thetao' or var == 'so':
                 print(f'{seg.border} {var}')
                 seg.regrid_tracer(glorys[var], suffix=year, flood=False)
             elif var == 'zos':
