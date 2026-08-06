@@ -4,12 +4,12 @@ How to use
 ./write_nudging_data.py --config_file config.yaml
 """
 
-import numpy as np
 import os
 import pandas as pd
 import xarray
-import xesmf
 
+from cefi_kit.grids import reuse_regrid
+from cefi_kit.io import load_config
 
 VARIABLES = ['thetao', 'so']
 
@@ -31,32 +31,13 @@ def add_bounds(ds):
     return bounded
 
 
-def reuse_regrid(*args, **kwargs):
-    filename = kwargs.pop('filename', None)
-    reuse_weights = kwargs.pop('reuse_weights', False)
-
-    if reuse_weights:
-        if filename.is_file():
-            return xesmf.Regridder(*args, reuse_weights=True, filename=filename, **kwargs)
-        else:
-            regrid = xesmf.Regridder(*args, **kwargs)
-            regrid.to_netcdf(filename)
-            return regrid
-    else:
-        regrid = xesmf.Regridder(*args, **kwargs)
-        return regrid
-
-
-
 if __name__ == '__main__':
     import argparse
     from pathlib import Path
-    from yaml import safe_load
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config')
     args = parser.parse_args()
-    with open(args.config, 'r') as file: 
-        config = safe_load(file)
+    config = load_config(args.config)
     static = xarray.open_dataset(config['filesystem']['ocean_static'])
     target_grid = static[['geolat', 'geolon']].rename({'geolat': 'lat', 'geolon': 'lon'})
     nudging_data = config['filesystem']['monthly_data_nudging']
@@ -76,9 +57,9 @@ if __name__ == '__main__':
         if regridder is None:
             print('  Setting up regridder')
             regridder = reuse_regrid(
-                glorys, target_grid, 
-                filename=Path(os.environ['TMPDIR']) / 'regrid_nudging.nc', 
-                method='nearest_s2d', 
+                glorys, target_grid,
+                filename=Path(os.environ['TMPDIR']) / 'regrid_nudging.nc',
+                method='nearest_s2d',
                 reuse_weights=True,
                 periodic=False
             )
@@ -87,7 +68,7 @@ if __name__ == '__main__':
             regridder(filled)
             .drop(['lon', 'lat'], errors='ignore')
             .compute()
-        ) 
+        )
         print('  Setting time bounds and coordinates')
         bounded = add_bounds(interped)
         # Add coordinate information
@@ -111,4 +92,4 @@ if __name__ == '__main__':
             encoding=encodings,
             unlimited_dims='time'
         )
-        glorys.close() 
+        glorys.close()

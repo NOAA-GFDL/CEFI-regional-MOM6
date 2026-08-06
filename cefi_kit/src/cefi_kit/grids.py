@@ -1,5 +1,8 @@
+from os import path
+
 import numpy as np
 import xarray
+import xesmf
 
 
 def center_to_outer(center, left=None, right=None):
@@ -46,3 +49,19 @@ def vgrid_to_layers(vgrid, max_depth=6500.0):
     z = (ints + np.roll(ints, shift=1)) / 2
     layers = z[1:]
     return layers
+
+
+def reuse_regrid(*args, **kwargs):
+    filename = kwargs.pop('filename', None)
+    reuse_weights = kwargs.pop('reuse_weights', False)
+
+    if reuse_weights:
+        if path.isfile(filename):
+            return xesmf.Regridder(*args, reuse_weights=True, filename=filename, **kwargs)
+        else:
+            regrid = xesmf.Regridder(*args, **kwargs)
+            regrid.to_netcdf(filename)
+            return regrid
+    else:
+        regrid = xesmf.Regridder(*args, **kwargs)
+        return regrid
