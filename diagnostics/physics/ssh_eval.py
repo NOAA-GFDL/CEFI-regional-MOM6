@@ -15,7 +15,9 @@ import xesmf
 import numpy as np
 import logging
 
-from plot_common import autoextend_colorbar, corners, get_map_norm, open_var, add_ticks, annotate_skill, save_figure, load_config
+from cefi_kit.io import load_config, open_var
+from cefi_kit.plots import add_ticks, annotate_skill, autoextend_colorbar, get_map_norm, save_figure
+from plot_common import corners
 
 # Configure logging for ssh_eval
 logger = logging.getLogger(__name__)
@@ -28,7 +30,7 @@ def plot_ssh_eval(pp_root, config, label):
     except:
         print('Using zos')
         model_ssh = open_var(pp_root, 'ocean_monthly', 'zos')
-        
+
     model_grid = xarray.open_dataset( config['model_grid'] )
     model_ssh_ave = model_ssh.mean('time')
     logger.info("MODEL_GRID: %s",model_grid)

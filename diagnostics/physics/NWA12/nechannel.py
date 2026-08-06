@@ -1,7 +1,7 @@
 """
 Plot model-data comparison for Northeast Channel temperature and salinity
 How to use:
-python nechannel.py /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod/ 
+python nechannel.py /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod/
 """
 
 import datetime as dt
@@ -13,13 +13,9 @@ import numpy as np
 import pandas as pd
 from scipy.io import loadmat
 import xarray
-import os
-import sys
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../'))
-from plot_common import open_var, save_figure
+from cefi_kit.io import open_var
+from cefi_kit.plots import save_figure
 
 
 
@@ -64,7 +60,7 @@ def load_casts():
     in HDF format.
     """
     casts = []
-    for year in range(1977, 2021): 
+    for year in range(1977, 2021):
         print(year)
         # Try using loadmat. If it's a newer version, use h5py instead.
         try:
@@ -80,15 +76,15 @@ def load_casts():
             yr = np.squeeze(ds[f'casts_{year}']['yr'][:])
             yd = np.squeeze(ds[f'casts_{year}']['yd'][:])
             for i in range(ncast):
-                i_lat = float(ds[lat[i]][:])
-                i_lon = float(ds[lon[i]][:])
+                i_lat = float(ds[lat[i]][:].squeeze())
+                i_lon = float(ds[lon[i]][:].squeeze())
                 i_p = ds[p[i]][:].squeeze()
                 if i_lat >= 42.2 and i_lat <= 42.6 and i_lon <= 66.8 and i_lon >= 66 and i_p.max() >= 200:
                     if np.logical_and(i_p >= 130, i_p <= 150).any() and np.logical_and(i_p >= 200, i_p <= 220).any():
                         i_s = ds[s[i]][:].squeeze()
                         i_t = ds[t[i]][:].squeeze()
-                        i_yr = int(ds[yr[i]][:])
-                        i_yd = int(ds[yd[i]][:])
+                        i_yr = int(ds[yr[i]][:].squeeze())
+                        i_yd = int(ds[yd[i]][:].squeeze())
                         save = np.interp(np.arange(150, 201), i_p, i_s).mean()
                         sa = gsw.conversions.SA_from_SP(i_s, i_p, i_lon*-1, i_lat)
                         theta = gsw.conversions.pt_from_t(sa, i_t, i_p, 0)
@@ -109,12 +105,13 @@ def load_casts():
                         casts.append(res)
 
     casts = pd.concat(casts, axis=1).T.set_index('date').dropna()
+    casts.index = pd.to_datetime(casts.index)
     return casts
 
 
 def plot_nechannel(pp_root, label):
     grid = xarray.open_dataset('../../data/geography/ocean_static.nc')
-    model = xarray.merge([open_var(pp_root, 'ocean_monthly_z', v) for v in ['thetao', 'so']])   
+    model = xarray.merge([open_var(pp_root, 'ocean_monthly_z', v) for v in ['thetao', 'so']])
     if '01_l' in model.coords:
         model = model.rename({'01_l': 'z_l'})
 
@@ -131,13 +128,13 @@ def plot_nechannel(pp_root, label):
         .load()
         .drop('z_l', errors='ignore')
     )
-    model_annual = model_means.resample(time='1AS').mean('time')
+    model_annual = model_means.resample(time='1YS').mean('time')
     model_masses = percent_masses(model_annual['thetao'], model_annual['so'])
 
     glorys_means = xarray.open_dataset('../../data/diagnostics/monthly_nechannel_glorys.nc')
-    glorys_annual = glorys_means.resample(time='1AS').mean('time')
+    glorys_annual = glorys_means.resample(time='1YS').mean('time')
     glorys_masses = percent_masses(glorys_annual['thetao'], glorys_annual['so'])
-    
+
     bias = model_means.mean('time') - glorys_means.mean('time')
 
     mooring = (
@@ -146,12 +143,12 @@ def plot_nechannel(pp_root, label):
         .resample(time='1MS')
         .mean('time')
     )
-    mooring_annual = mooring.resample(time='1AS').mean('time')
+    mooring_annual = mooring.resample(time='1YS').mean('time')
     mooring_masses = percent_masses(mooring_annual['temperature'], mooring_annual['salinity'])
 
     casts = load_casts()
     monthly_casts = casts.resample('1MS').mean()
-    yearly_casts = monthly_casts.resample('1AS').mean()
+    yearly_casts = monthly_casts.resample('1YS').mean()
     matlab_masses = to_yearly_series(percent_masses(yearly_casts.temperature, yearly_casts.salinity))
 
     # Assemble dataframes for easier plotting

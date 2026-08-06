@@ -4,11 +4,9 @@ How to use:
 python chl_eval_regional.py -p /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod -c ../config.yaml
 """
 import cartopy.crs as ccrs
-from cartopy.mpl.geoaxes import GeoAxes
 import colorcet
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
 import xarray
 import xesmf
@@ -21,7 +19,9 @@ import sys
 # Add physics/plot_common to path in order to access tools located there
 diag_dir = Path.cwd().parent.parent
 sys.path.append( str( diag_dir.joinpath('physics') ) )
-from plot_common import add_ticks, autoextend_colorbar, corners, annotate_skill, open_var, save_figure, load_config
+from cefi_kit.io import open_var, load_config
+from cefi_kit.plots import add_ticks, annotate_skill, save_figure
+from plot_common import  corners
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ def plot_chl_regional(pp_root, label, config, dev):
     logger.info("MODEL_GRID: %s",model_grid)
     logger.info("MODEL_CLIMO: %s",model_climo)
     logger.info("Successfully opened model grid and calculated climotology")
-    
+
     # Load pre-computed climatology, also using 1997-09-01 to 2019-11-30
     satellite = xarray.open_dataset( config['chl_satellite'] ).chlor_a
     # Flip to right side up.
@@ -53,7 +53,7 @@ def plot_chl_regional(pp_root, label, config, dev):
     log_sat = np.log10(satellite)
     logger.info("SATELITE: %s",satellite)
     logger.info("Successfully opened model grid and calculated climotology")
-    
+
     sat_lonc, sat_latc = corners(log_sat.lon, log_sat.lat)
     sat_grid = {'lon': log_sat.lon, 'lat': log_sat.lat, 'lon_b': sat_lonc, 'lat_b': sat_latc}
     target_grid = {'lon': model_grid.geolon, 'lat': model_grid.geolat, 'lon_b': model_grid.geolon_c, 'lat_b': model_grid.geolat_c}
@@ -65,7 +65,7 @@ def plot_chl_regional(pp_root, label, config, dev):
     logger.info("Successfully regridded satellite data")
 
     PC = ccrs.PlateCarree()
-        
+
     # Regional zooms
     common = dict(cmap=colorcet.cm.CET_L16, norm=colors.LogNorm(vmin=0.125, vmax=8) )
     f, axs = plt.subplots(4, 4, subplot_kw = dict(projection = PC), figsize=(10, 10))
@@ -86,10 +86,10 @@ def plot_chl_regional(pp_root, label, config, dev):
         sub = (model_grid.geolon >= -80) & (model_grid.geolon <= -53) & (model_grid.geolat >= 33) & (model_grid.geolat <= 53)
         # n\(xh=slice(-80, -53), yh=slice(33, 53))
         annotate_skill(
-            log_model.sel(season=s).where(sub), 
-            sat_rg.sel(season=s).where(sub), 
-            axs[1, i], dim=['yh', 'xh'], 
-            weights=model_grid.areacello.where(sub).fillna(0), 
+            log_model.sel(season=s).where(sub),
+            sat_rg.sel(season=s).where(sub),
+            axs[1, i], dim=['yh', 'xh'],
+            weights=model_grid.areacello.where(sub).fillna(0),
             fontsize=8,
             x0=-79.5,
             y0=51.4,
@@ -104,10 +104,10 @@ def plot_chl_regional(pp_root, label, config, dev):
         axs[3, i].add_patch(patches.Rectangle((-98.9, 30.7), 18, 3.4, alpha=0.4, facecolor='white', edgecolor='k', lw=1))
         sub = (model_grid.geolon >= -99) & (model_grid.geolon <= -79) & (model_grid.geolat >= 18) & (model_grid.geolat <= 34.1)
         annotate_skill(
-            log_model.sel(season=s).where(sub), 
-            sat_rg.sel(season=s).where(sub), 
-            axs[3, i], dim=['yh', 'xh'], 
-            weights=model_grid.areacello.where(sub).fillna(0), 
+            log_model.sel(season=s).where(sub),
+            sat_rg.sel(season=s).where(sub),
+            axs[3, i], dim=['yh', 'xh'],
+            weights=model_grid.areacello.where(sub).fillna(0),
             fontsize=8,
             x0=-98.5,
             y0=32.5,
@@ -123,7 +123,7 @@ def plot_chl_regional(pp_root, label, config, dev):
         if (i + 1) % ncol  == 0:
             yl = 1
         add_ticks(ax, xticks=np.arange(-100, -31, 5), yticks=np.arange(0, 61, 5), xlabelinterval=xl, ylabelinterval=yl, fontsize=7)
-        
+
     for ax in axs.flat[0:8]:
         ax.set_extent([-80, -53, 33, 53])
         ax.set_facecolor('#bbbbbb')

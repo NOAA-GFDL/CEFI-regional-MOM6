@@ -1,5 +1,5 @@
 """
-Compare the model 2005-019 sea surface temperature trends from OISST and GLORYS. 
+Compare the model 2005-019 sea surface temperature trends from OISST and GLORYS.
 How to use:
 python sst_trends.py -p /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod -c config.yaml
 """
@@ -13,9 +13,9 @@ import xarray
 import xesmf # only used to calculate cell areas
 import logging
 
-from plot_common import( autoextend_colorbar, corners, get_map_norm,
-                         annotate_skill, open_var, save_figure, load_config,
-                         process_glorys, process_oisst)
+from cefi_kit.io import open_var, load_config
+from cefi_kit.plots import annotate_skill, autoextend_colorbar, get_map_norm, save_figure
+from plot_common import process_glorys, process_oisst
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ def plot_sst_trends(pp_root, label, config):
     model = (
         open_var(pp_root, 'ocean_monthly', 'tos')
         .sel(time=slice(config['start_year'], config['end_year']))
-        .resample(time='1AS')
+        .resample(time='1YS')
         .mean('time')
         .load()
     )
@@ -56,7 +56,7 @@ def plot_sst_trends(pp_root, label, config):
 
     # Process OISST and get trend
     mom_rg, oisst, oisst_lonc, oisst_latc = process_oisst(config, target_grid, model_trend, start =  int(config['start_year']),
-                                                                end = int(config['end_year'])+1, resamp_freq = '1AS')
+                                                                end = int(config['end_year'])+1, resamp_freq = '1YS')
     logger.info("OISST: %s", oisst )
     # get oisst cell areas for skill annotations
     oisst_areacello = xesmf.util.cell_area( oisst.to_dataset() )
@@ -72,7 +72,7 @@ def plot_sst_trends(pp_root, label, config):
     # NOTE: Glorys_ave is glorys_trends because we call get_3d_trends on it.
     glorys_rg, glorys_trend, glorys_lonc, glorys_latc = process_glorys(config, target_grid, 'thetao',
                                                                       sel_time = slice(config['start_year'], config['end_year']),
-                                                                      resamp_freq = '1AS', preprocess_regrid = get_3d_trends)
+                                                                      resamp_freq = '1YS', preprocess_regrid = get_3d_trends)
     logger.info("GLORYS_TREND: %s",glorys_trend)
 
     glorys_rg = xarray.DataArray(glorys_rg, dims=['yh', 'xh'], coords={'yh': model.yh, 'xh': model.xh})
@@ -88,7 +88,7 @@ def plot_sst_trends(pp_root, label, config):
         p = ccrs.PlateCarree()
 
     fig = plt.figure(figsize=(10, 14))
-    grid = AxesGrid(fig, 111, 
+    grid = AxesGrid(fig, 111,
         nrows_ncols=(2, 3),
         axes_class = (GeoAxes, dict(projection=p)),
         axes_pad=0.3,

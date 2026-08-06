@@ -1,68 +1,12 @@
-import cartopy.crs as ccrs
-from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter, LatitudeLocator, LongitudeLocator
-from dataclasses import dataclass
-import errno
-from getpass import getuser
 from glob import glob
-from matplotlib.colors import BoundaryNorm, ListedColormap
-import matplotlib.pyplot as plt
 import numpy as np
 import os
-from pathlib import Path
-import re
-from subprocess import run, DEVNULL
-from shutil import which
 import xarray
-import xskillscore
 import logging
-import yaml
 import xesmf
 
 # Configure logging for plot_common
 logger = logging.getLogger(__name__)
-
-# hsmget, available on GFDL PPAN, will make it faster, easier, and safer
-# to read data from /archive. 
-# To use this, run `module load hsm/1.3.0` beforehand. 
-@dataclass
-class HSMGet():
-    archive: Path = Path('/') # this will duplicate paths used by frepp
-    ptmp: Path = Path('/ptmp') / getuser()
-    tmp: Path = Path(os.environ.get('TMPDIR', ptmp))
-
-    def _run(self, cmd, stdout=DEVNULL, stderr=DEVNULL):
-        # This will escape things like (1) in the file name 
-        # so that it can be run as a shell command. 
-        esc = re.sub(r'([\(\)])', r'\\\1', cmd)
-        return run(esc, shell=True, check=True, stdout=stdout, stderr=stderr)
-    
-    def _dirs_exist(self):
-        return self.archive.is_dir() and self.ptmp.is_dir() and self.tmp.is_dir()
-
-    def __call__(self, path_or_paths):
-        if which('hsmget') is None or not self._dirs_exist():
-            # If hsmget or /archive, /ptmp, etc are not available, this will just return the input path(s).
-            logger.info('Not using hsmget. If running on GFDL analysis, run `module load hsm/1.3.0` to enable using hsmget. ')
-            return path_or_paths
-        elif isinstance(path_or_paths, Path):
-            # Find the file path on archive, relative to the root part of archive.
-            # (This is how hsmget will want it).
-            relative = path_or_paths.relative_to(self.archive)
-            # hsmget will do the dmget first and this is fine since it's one file
-            cmd = f'hsmget -q -a {self.archive} -w {self.tmp} -p {self.ptmp} {relative}'
-            self._run(cmd)
-            return (self.tmp / relative)
-        elif iter(path_or_paths):
-            # dmget all files with one dmget command.
-            p_str = ' '.join([p.as_posix() for p in path_or_paths])
-            self._run(f'dmget {p_str}')
-            relative = [p.relative_to(self.archive) for p in path_or_paths]
-            rel_str = ' '.join(map(str, relative))
-            cmd = f'hsmget -q -a {self.archive} -w {self.tmp} -p {self.ptmp} {rel_str}'
-            self._run(cmd)
-            return [self.tmp / r for r in relative]
-        else:
-            raise Exception('Need a Path or iterable of Paths to get')
 
 
 def center_to_outer(center, left=None, right=None):
@@ -84,7 +28,7 @@ def center_to_outer(center, left=None, right=None):
 
 def corners(lon, lat):
     """
-    Given 1D lon and lat, return 1D lon and lat corners 
+    Given 1D lon and lat, return 1D lon and lat corners
     for use in pcolormesh or xesmf conservative
     """
     lonc = center_to_outer(lon)
@@ -93,149 +37,6 @@ def corners(lon, lat):
     assert len(latc) == len(lat) + 1
     return lonc, latc
 
-
-def get_map_norm(cmap, levels, no_offset=True):
-    """
-    Get a discrete colormap and normalization for plotting with matplotlib.
-    Set no_offset=False to obtain a colormap that is similar to what xarray.plot() yields.
-    """
-    nlev = len(levels)
-    cmap = plt.cm.get_cmap(cmap, nlev-int(no_offset))
-    colors = list(cmap(np.arange(nlev)))
-    cmap = ListedColormap(colors, "")
-    norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
-    return cmap, norm
-
-def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False, **kwargs):
-    """
-    Annotate an axis with model vs obs skill metrics
-    """
-    bias = xskillscore.me(model, obs, dim=dim, skipna=True, weights=weights)
-    rmse = xskillscore.rmse(model, obs, dim=dim, skipna=True, weights=weights)
-    corr = xskillscore.pearson_r(model, obs, dim=dim, skipna=True, weights=weights)
-    medae = xskillscore.median_absolute_error(model, obs, dim=dim, skipna=True)
-
-    ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
-
-    # Set plot_lat=True in order to plot skill along a line of latitude. Otherwise, plot along longitude
-    if plot_lat:
-        ax.text(x0-xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
-        if cols == 1:
-            ax.text(x0-xint*2, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0-xint*3, y0, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
-        elif cols == 2:
-            ax.text(x0, y0+yint, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0-xint, y0+yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
-        else:
-            raise ValueError(f'Unsupported number of columns: {cols}')
-
-    else:
-        ax.text(x0, y0-yint, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
-        if cols == 1:
-            ax.text(x0, y0-yint*2, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0, y0-yint*3, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
-        elif cols == 2:
-            ax.text(x0+xint, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0+xint, y0-yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
-        else:
-            raise ValueError(f'Unsupported number of columns: {cols}')
-
-def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
-    """
-    Add a colorbar, setting the extend metric based on 
-    whether the plot data exceeds the plot limits.
-    Pulls the data from the passed plot unless plot_array is passed.
-    """
-    norm_min = plot.norm.vmin
-    norm_max = plot.norm.vmax
-    
-    if plot_array is None:
-        plot_array = plot.get_array()
-        
-    actual_min = plot_array.min()
-    actual_max = plot_array.max()
-    
-    if actual_min < norm_min and actual_max > norm_max:
-        extend = 'both'
-    elif actual_min < norm_min:
-        extend = 'min'
-    elif actual_max > norm_max:
-        extend = 'max'
-    else:
-        extend = 'neither'
-    return ax.colorbar(plot, extend=extend, **kwargs)
-
-def add_ticks(ax, xticks=np.arange(-100, -31, 1), yticks=np.arange(2, 61, 1), xlabelinterval=2, ylabelinterval=2, fontsize=10, projection = ccrs.PlateCarree(), **kwargs):
-    """
-    Add lat and lon ticks and labels to a plot axis.
-    By default, tick at 1 degree intervals for x and y, and label every other tick.
-    Additional kwargs are passed to LongitudeFormatter and LatitudeFormatter.
-    """
-    ax.yaxis.tick_right()
-    ax.set_xticks(xticks, crs = projection)
-    if xlabelinterval == 0:
-        plt.setp(ax.get_xticklabels(), visible=False)
-    else:
-        plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval != 0], visible=False, fontsize=fontsize)
-        plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval == 0], fontsize=fontsize)
-    ax.set_yticks(yticks, crs = projection)
-    if ylabelinterval == 0:
-        plt.setp(ax.get_yticklabels(), visible=False)
-    else:
-        plt.setp([l for i, l in enumerate(ax.get_yticklabels()) if i % ylabelinterval != 0], visible=False)
-        plt.setp([l for i, l in enumerate(ax.get_yticklabels()) if i % ylabelinterval == 0], fontsize=fontsize)
-    lon_formatter = LongitudeFormatter(direction_label=False, **kwargs)
-    lat_formatter = LatitudeFormatter(direction_label=False, **kwargs)
-    ax.xaxis.set_major_formatter(lon_formatter)
-    ax.yaxis.set_major_formatter(lat_formatter)
-
-def open_var(pp_root, kind, var, hsmget=HSMGet()):
-    if isinstance(pp_root, str):
-        pp_root = Path(pp_root)
-    freq = 'daily' if 'daily' in kind else 'monthly'
-    pp_dir = pp_root / 'pp' / kind / 'ts' / freq
-    if not pp_dir.is_dir():
-        raise FileNotFoundError(errno.ENOENT, 'Could not find post-processed directory', str(pp_dir))
-    # Get all of the available post-processing chunk directories (assuming chunks in units of years)
-    available_chunks = list(pp_dir.glob('*yr'))
-    if len(available_chunks) == 0:
-        raise FileNotFoundError(errno.ENOENT, 'Could not find post-processed chunk subdirectory')
-    # Sort from longest to shortest chunk
-    sorted_chunks = sorted(available_chunks, key=lambda x: int(x.name[0:-2]), reverse=True)
-    for chunk in sorted_chunks:
-        # Look through the available chunks and return for the 
-        # largest chunk that has file(s). 
-        matching_files = list(chunk.glob(f'{kind}.*.{var}.nc'))
-        # Treat 1 and > 1 files separately, though the > 1 case could probably handle both. 
-        if len(matching_files) > 1:
-            tmpfiles = hsmget(sorted(matching_files))
-            return xarray.open_mfdataset(tmpfiles, decode_timedelta=True)[var] # Avoid FutureWarning about decode_timedelta
-        elif len(matching_files) == 1:
-            tmpfile = hsmget(matching_files[0])
-            return xarray.open_dataset(tmpfile, decode_timedelta=True)[var] # Avoid FutureWarning about decode_timedelta
-    else:
-        raise FileNotFoundError(errno.ENOENT, 'Could not find any post-processed files. Check if frepp failed.')
-
-def save_figure(fname, label='', pdf=False, output_dir='figures'):
-    if label == '':
-        plt.savefig(os.path.join(output_dir, f'{fname}.png'), dpi=200, bbox_inches='tight')
-        if pdf:
-            plt.savefig(os.path.join(output_dir, f'{fname}.pdf'), bbox_inches='tight')
-    else:
-        plt.savefig(os.path.join(output_dir, f'{fname}_{label}.png'), dpi=200, bbox_inches='tight')
-        if pdf:
-            plt.savefig(os.path.join(output_dir, f'{fname}_{label}.pdf'), bbox_inches='tight')
-
-def load_config(config_path: str):
-    """Load the configuration file."""
-    try:
-        with open(config_path, 'r') as f:
-            config = yaml.safe_load(f)
-            logger.info(f"Loaded configuration from {config_path}")
-            return config
-    except Exception as e:
-        logger.error(f"Error loading configuration from {config_path}: {e}")
-        raise
 
 def process_oisst(config, target_grid, model_ave, start=1993, end = 2020, resamp_freq = None):
     """Open and regrid OISST dataset, return relevant vars from dataset."""
