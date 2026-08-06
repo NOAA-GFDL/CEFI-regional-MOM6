@@ -10,21 +10,17 @@ import xarray
 import xesmf
 import matplotlib.gridspec as gridspec
 import cartopy.crs as ccrs
-import cmcrameri.cm as cmc
 
 PC = ccrs.PlateCarree()
 
-import os
-import sys
+from cefi_kit.io import open_var
+from cefi_kit.plots import add_ticks, annotate_skill, autoextend_colorbar, get_map_norm, save_figure
+from plot_common import corners
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../'))
-from plot_common import add_ticks, annotate_skill, autoextend_colorbar, corners, get_map_norm, open_var, save_figure
 
 def plot_coldpool(pp_root, label):
     model = open_var(pp_root, 'ocean_monthly', 'tob')
-    model_grid = xarray.open_dataset('../../data/geography/ocean_static.nc')    
+    model_grid = xarray.open_dataset('../../data/geography/ocean_static.nc')
     hubert = xarray.open_dataarray('/net2/acr/hubert_bottom_temp/daily_bottom_temp_neus_1959_2019.nc')
     mom_to_hubert = xesmf.Regridder(
         model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'}),
@@ -44,7 +40,7 @@ def plot_coldpool(pp_root, label):
     hubert_climo = hubert_ave.mean('year')
 
     # Create mask where long-term average and coordinates meet criteria
-    hubert_mask = ((hubert_climo < 10) & (interpolated_depth < 200) & (interpolated_depth > 20) & (hubert_climo.lat >= 38) & (hubert_climo.lat <= 41.5) & 
+    hubert_mask = ((hubert_climo < 10) & (interpolated_depth < 200) & (interpolated_depth > 20) & (hubert_climo.lat >= 38) & (hubert_climo.lat <= 41.5) &
     (hubert_climo.lon > -75) & (hubert_climo.lon < -68.5) & (hubert_climo > 6))
     # Slice off the NE corner
     hubert_mask = hubert_mask.where((hubert_mask.lat <= 41) | (hubert_mask.lon < -70)).fillna(0)
@@ -52,12 +48,12 @@ def plot_coldpool(pp_root, label):
     # Use a climatology that matches the model time period
     hubert_matching_climo = hubert_ave.sel(year=slice(ymin, ymax)).mean('year')
     hubert_cpi = (hubert_ave - hubert_matching_climo).where(hubert_mask).mean(['lat', 'lon'])
-    
+
     # Interpolate model bottom temperature to Hubert's grid
     tbot_rg = mom_to_hubert(model)
 
     # Model June-Sep average for each year
-    ave = tbot_rg.sel(time=np.logical_and(tbot_rg['time.month'] >= 6, tbot_rg['time.month'] <= 9)).resample(time='1AS').mean('time')
+    ave = tbot_rg.sel(time=np.logical_and(tbot_rg['time.month'] >= 6, tbot_rg['time.month'] <= 9)).resample(time='1YS').mean('time')
 
     # Long-term June-Sep average
     ltm = ave.mean('time')
@@ -71,10 +67,10 @@ def plot_coldpool(pp_root, label):
 
     fig = plt.figure(figsize=(10, 8), tight_layout=True)
     gs = gridspec.GridSpec(2, 3, hspace=.2)
-    
+
     lonc, latc = corners(ltm.lon, ltm.lat)
     levels = np.arange(4, 26.1, 2)
-    cmap, norm = get_map_norm('cmc.roma_r', levels, no_offset=True)
+    cmap, norm = get_map_norm('coolwarm', levels, no_offset=True)
     common = dict(cmap=cmap, norm=norm)
     bias_levels = np.arange(-4, 4.1, 1)
     bias_cmap, bias_norm = get_map_norm('coolwarm', bias_levels, no_offset=True)
@@ -100,10 +96,10 @@ def plot_coldpool(pp_root, label):
     ax.set_extent([-76, -68, 35, 42])
     ax.set_title('(c) Model - du Pontavice')
     annotate_skill(
-        ltm.where(hubert_matching_climo.notnull()), 
-        hubert_matching_climo, 
-        ax, 
-        dim=['lat', 'lon'], 
+        ltm.where(hubert_matching_climo.notnull()),
+        hubert_matching_climo,
+        ax,
+        dim=['lat', 'lon'],
         fontsize=8,
         x0=-72,
         y0=37,

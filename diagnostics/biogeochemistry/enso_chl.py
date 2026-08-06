@@ -1,5 +1,5 @@
 """
-Compare Winter and spring surface chlorophyll a anomalies during El Niño years 
+Compare Winter and spring surface chlorophyll a anomalies during El Niño years
 How to use:
 python enso_chl.py /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod
 """
@@ -24,7 +24,9 @@ import sys
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(script_dir, '../physics'))
-from plot_common import add_ticks, corners, open_var, save_figure
+from cefi_kit.io import open_var
+from cefi_kit.plots import add_ticks, save_figure
+from plot_common import corners
 
 
 def get_score(m, o, weight, metric=xskillscore.spearman_r):
@@ -38,7 +40,7 @@ def get_score(m, o, weight, metric=xskillscore.spearman_r):
 def plot_enso_chl(pp_root, label):
     model_grid = xarray.open_dataset('../data/geography/ocean_static.nc')
     model = open_var(pp_root, 'ocean_cobalt_omip_sfc', 'chlos') * 1e6 # mg/m3
-    model_seasonal = model.sel(time=slice('1997-09-01', '2019-11-30')).resample(time='1Q-NOV').mean('time')
+    model_seasonal = model.sel(time=slice('1997-09-01', '2019-11-30')).resample(time='QE-NOV').mean('time')
     model_anom = model_seasonal.groupby('time.month') - model_seasonal.groupby('time.month').mean('time')
 
     # https://www.cpc.ncep.noaa.gov/data/indices/
@@ -48,8 +50,8 @@ def plot_enso_chl(pp_root, label):
     pos_years = []
     neg_years = []
     for y in range(1997, 2019):
-        winter = oni.loc[((oni.YR==y) & (oni.SEAS=='NDJ')), :]
-        spring = oni.loc[(oni.YR==(y+1)) & (oni.SEAS=='MAM'), :]
+        winter = oni.loc[((oni.YR==y) & (oni.SEAS=='NDJ')), :].iloc[0]
+        spring = oni.loc[(oni.YR==(y+1)) & (oni.SEAS=='MAM'), :].iloc[0]
         if float(winter.ANOM) > 0.5:
             if float(spring.ANOM) > 0:
                 pos_years.append(y+1)
@@ -67,7 +69,7 @@ def plot_enso_chl(pp_root, label):
 
     satellite = xarray.open_mfdataset('/work/acr/occci-v6.0/monthly/*.nc').chlor_a
     satellite = satellite.sel(time=slice('1997-09-01', '2019-11-30'))
-    satellite_seasonal = satellite.resample(time='1Q-NOV').mean('time')
+    satellite_seasonal = satellite.resample(time='QE-NOV').mean('time')
     satellite_anom = satellite_seasonal.groupby('time.month') - satellite_seasonal.groupby('time.month').mean('time')
     sat_winter_pos = satellite_anom.sel(time=((satellite_anom['time.month']==2) & (satellite_anom['time.year'].isin(pos_years))))
     sat_winter_neg = satellite_anom.sel(time=((satellite_anom['time.month']==2) & (satellite_anom['time.year'].isin(neg_years))))
@@ -82,7 +84,7 @@ def plot_enso_chl(pp_root, label):
     sat_lonc, sat_latc = corners(satellite.lon, satellite.lat)
 
     satellite_grid = {
-        'lon': satellite.lon, 
+        'lon': satellite.lon,
         'lat': satellite.lat,
         'lon_b': sat_lonc,
         'lat_b': sat_latc
@@ -105,7 +107,7 @@ def plot_enso_chl(pp_root, label):
 
     fig = plt.figure(figsize=(8, 10))
     nrows, ncols = 4, 2
-    grid = AxesGrid(fig, 111, 
+    grid = AxesGrid(fig, 111,
         nrows_ncols=(nrows, ncols),
         axes_class = (GeoAxes, dict(projection=PC)),
         axes_pad=0.33,
@@ -113,7 +115,7 @@ def plot_enso_chl(pp_root, label):
         cbar_mode='single',
         cbar_pad=0.3,
         cbar_size='10%',
-        label_mode=''
+        label_mode='keep'
     )
 
     p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_winter_pos.mean('time'), **common)
@@ -167,7 +169,7 @@ def plot_enso_chl(pp_root, label):
         ax.set_facecolor('#bbbbbb')
         for s in ax.spines.values():
             s.set_visible(False)
-    
+
     save_figure('enso_chl_log', label=label)
 
 
