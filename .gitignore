@@ -5,3 +5,12 @@ html
 
 # Ignore pycache
 **__pycache__
+
+# Ignore figures and data
+*.png
+*.pdf
+*.nc
+*.pkl
+
+# Ignore logs
+*.log
