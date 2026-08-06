@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-This script generate BGC  OBC 
+This script generate BGC  OBC
 Run on analysis, with module load nco/5.0.1
 How to use:
 ./write_bgc_boundary.py --config bgc_obc.yaml
@@ -14,13 +14,9 @@ from os import path
 from shutil import copyfile
 from subprocess import run
 import xarray
-import yaml
-from boundary import flood_missing, Segment
 
-def read_config(config_file):
-    with open(config_file, 'r') as stream:
-        config = yaml.safe_load(stream)
-    return config
+from cefi_kit.boundary import flood_missing, Segment
+from cefi_kit.io import load_config
 
 def write_bgc(segments, time0, woa_file, esper_file, cobalt_file):
     woa_climo = xarray.open_dataset(woa_file)
@@ -31,7 +27,7 @@ def write_bgc(segments, time0, woa_file, esper_file, cobalt_file):
         .rename({'Alk': 'alk', 'DIC': 'dic'})
         * 1e-6  # micromoles -> moles
     )
-    
+
     # Times are defined in the middle of the year.
     # Insert a data point for the initialization time
     # at the beginning using the first middle of the year data point.
@@ -50,37 +46,37 @@ def write_bgc(segments, time0, woa_file, esper_file, cobalt_file):
         # 'dic',
     #     'dic14',
     #     'do14',
-    #     'do14c', 
+    #     'do14c',
     #     'di14c',
-        'fed', 
+        'fed',
         'fedi',
         'felg',
         'fedet',
         'fesm',
         'ldon',
-        'ldop', 
-        'lith', 
-        'lithdet', 
-        'nbact', 
-        'ndet', 
-        'ndi', 
-        'nlg', 
-        'nsm', 
-    #     'nh3', 
-        'nh4', 
-        # 'no3', 
-        # 'o2', 
-        'pdet', 
-        # 'po4', 
-        'srdon', 
-        'srdop', 
-        'sldon', 
-        'sldop', 
-        'sidet', 
-        'silg', 
-        # 'sio4', 
-        'nsmz', 
-        'nmdz', 
+        'ldop',
+        'lith',
+        'lithdet',
+        'nbact',
+        'ndet',
+        'ndi',
+        'nlg',
+        'nsm',
+    #     'nh3',
+        'nh4',
+        # 'no3',
+        # 'o2',
+        'pdet',
+        # 'po4',
+        'srdon',
+        'srdop',
+        'sldon',
+        'sldop',
+        'sidet',
+        'silg',
+        # 'sio4',
+        'nsmz',
+        'nmdz',
         'nlgz'
     ]
     cobalt = (
@@ -95,7 +91,7 @@ def write_bgc(segments, time0, woa_file, esper_file, cobalt_file):
         flood_missing(cobalt[v], xdim='xt_ocean', ydim='yt_ocean', zdim='z') for v in cobalt.data_vars
     ))
     # Need to load or else xesmf will fail when trying to recognize coordinates.
-    cobalt_flooded = cobalt_flooded.load()    
+    cobalt_flooded = cobalt_flooded.load()
     cobalt_flooded = cobalt_flooded.assign_coords(lat=cobalt['lat'], lon=cobalt['lon'])
 
     # For 4P, create medium properties from large
@@ -122,7 +118,7 @@ def write_bgc(segments, time0, woa_file, esper_file, cobalt_file):
         woa_seg['time'].attrs['modulo'] = ' '
         woa_seg['time'].attrs['cartesian_axis'] = 'T'
         seg.to_netcdf(woa_seg, 'bgc_woa')
-        
+
         # ESPER
         # No flooding due to size
         esper_seg = xarray.merge((seg.regrid_tracer(esper[v], regrid_suffix='esper', flood=False, periodic=False, **common_kws) for v in esper))
@@ -131,7 +127,7 @@ def write_bgc(segments, time0, woa_file, esper_file, cobalt_file):
             esper_seg[v] = np.clip(esper_seg[v], 0.0, None)
         esper_seg = seg.add_coords(esper_seg)
         seg.to_netcdf(esper_seg, 'bgc_esper')
-        
+
         # COBALT
         cobalt_seg = xarray.merge(
             (seg.regrid_tracer(cobalt_flooded[v], regrid_suffix='cobalt', flood=False, periodic=True, **common_kws) for v in cobalt_flooded)
@@ -141,7 +137,7 @@ def write_bgc(segments, time0, woa_file, esper_file, cobalt_file):
             cobalt_seg[v] = np.clip(cobalt_seg[v], 0.0, None)
         cobalt_seg = seg.add_coords(cobalt_seg)
         seg.to_netcdf(cobalt_seg, 'bgc_cobalt')
-        
+
 
 def merge_segment_files(output_dir, source):
     """Merge separate segment files into one file per source of BGC data.
@@ -168,7 +164,7 @@ def main():
     parser.add_argument('--config', dest='config_file', default='bgc_obc.yaml', help='Path to the YAML configuration file')
     args = parser.parse_args()
 
-    config = read_config(args.config_file)
+    config = load_config(args.config_file)
 
     output_dir = config['output_dir']
     grid_file = config['grid_file']
@@ -187,16 +183,16 @@ def main():
         segments.append(segment)
 
     time0 = dt.datetime.strptime(str(config['time0']), '%Y-%m-%d')
-    last_time = dt.datetime.strptime(str(config['last_time']), '%Y-%m-%d')   
- 
-    # WOA for no3, o2, po4, sio4
-    woa_file = config['woa_file'] 
+    last_time = dt.datetime.strptime(str(config['last_time']), '%Y-%m-%d')
 
-    # ESPER for dic and alk 
-    esper_file = config['esper_file'] 
+    # WOA for no3, o2, po4, sio4
+    woa_file = config['woa_file']
+
+    # ESPER for dic and alk
+    esper_file = config['esper_file']
 
     # COBALT climatology for remaining variables
-    cobalt_file = config['cobalt_file'] 
+    cobalt_file = config['cobalt_file']
 
     write_bgc(segments, time0, woa_file, esper_file, cobalt_file)
 
