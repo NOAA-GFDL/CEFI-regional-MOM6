@@ -1,21 +1,18 @@
 #!/usr/bin/env python3
 """
-This script generated runoff from GloFAS data 
+This script generated runoff from GloFAS data
 How to use:
-./write_runoff_glofas.py --config runoff_glofas.yaml 
+./write_runoff_glofas.py --config runoff_glofas.yaml
 """
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
 import os
-import yaml
 import argparse
 import xarray
-import xesmf
 
-def read_config(config_file):
-    with open(config_file, 'r') as stream:
-        config = yaml.safe_load(stream)
-    return config
+from cefi_kit.io import load_config
+from cefi_kit.grids import reuse_regrid
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Generate runoff file from GloFAS data.')
@@ -41,28 +38,12 @@ def get_coast_mask(mask):
     return cst_mask
 
 
-def reuse_regrid(*args, **kwargs):
-    filename = kwargs.pop('filename', None)
-    reuse_weights = kwargs.pop('reuse_weights', False)
-
-    if reuse_weights:
-        if os.path.isfile(filename):
-            return xesmf.Regridder(*args, reuse_weights=True, filename=filename, **kwargs)
-        else:   
-            regrid = xesmf.Regridder(*args, **kwargs)
-            regrid.to_netcdf(filename)
-            return regrid
-    else:
-        regrid = xesmf.Regridder(*args, **kwargs)
-        return regrid
-
-
 def expand_mask_true(mask, window):
     """Given a 2D bool mask, expand the true values of the
     mask so that at a given point, the mask becomes true
     if any point within a window x window box
     is true.
-    Note, points near the edges of the mask, where the 
+    Note, points near the edges of the mask, where the
     box would expand beyond the mask, are always set to false.
 
     Args:
@@ -81,14 +62,14 @@ def expand_mask_true(mask, window):
 def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     glofas_latb = np.arange(glofas['lat'][0]+.05, glofas['lat'][-1]-.051, -.1)
     glofas_lonb = np.arange(glofas['lon'][0]-.05, glofas['lon'][-1]+.051, .1)
-    
+
     lon = hgrid.x[1::2, 1::2]
     lonb = hgrid.x[::2, ::2]
     lat = hgrid.y[1::2, 1::2]
     latb = hgrid.y[::2, ::2]
     # From Alistair
     area = (hgrid.area[::2, ::2] + hgrid.area[1::2, 1::2]) + (hgrid.area[1::2, ::2] + hgrid.area[::2, 1::2])
-    
+
     # Convert m3/s to kg/m2/s
     # Borrowed from https://xgcm.readthedocs.io/en/latest/xgcm-examples/05_autogenerate.html
     distance_1deg_equator = 111000.0
@@ -97,7 +78,7 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     dy = ((glofas.lon * 0) + 1) * dlat * distance_1deg_equator
     glofas_area = dx * dy
     glofas_kg = glofas * 1000.0 / glofas_area
-    
+
     # Conservatively interpolate runoff onto MOM grid
     glofas_to_mom_con = reuse_regrid(
         {'lon': glofas.lon, 'lat': glofas.lat, 'lon_b': glofas_lonb, 'lat_b': glofas_latb},
@@ -109,10 +90,10 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     )
     # Interpolate only from GloFAS points that are river end points.
     glofas_regridded = glofas_to_mom_con(glofas_kg.where(glofas_mask > 0).fillna(0.0))
-    
+
     glofas_regridded = glofas_regridded.rename({'nyp': 'ny', 'nxp': 'nx'}).values
 
-    # For NWA12 only: remove runoff from west coast of Guatemala 
+    # For NWA12 only: remove runoff from west coast of Guatemala
     # and El Salvador that actually drains into the Pacific.
     glofas_regridded[:, 0:190, 0:10] = 0.0
     glofas_regridded[:, 0:150, 0:100] = 0.0
@@ -129,13 +110,13 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
 
     # For NWA12 only: remove runoff from Hudson Bay
     glofas_regridded[:, 700:, 150:300] = 0.0
-    
+
     # For NWA12 only: Mississippi River adjustment.
     # Adjust to be approximately the same as the USGS station at Belle Chasse, LA
     # and relocate closer to the end of the delta.
-    ms_total_kg = glofas_regridded[:, 317:320, 106:108] 
+    ms_total_kg = glofas_regridded[:, 317:320, 106:108]
     # Convert to m3/s
-    ms_total_cms = (ms_total_kg * np.broadcast_to(area[317:320, 106:108], ms_total_kg.shape)).sum(axis=(1, 2)) / 1000.0 
+    ms_total_cms = (ms_total_kg * np.broadcast_to(area[317:320, 106:108], ms_total_kg.shape)).sum(axis=(1, 2)) / 1000.0
     ms_corrected = 0.5192110112243014 * ms_total_cms + 3084.5571334312735
     glofas_regridded[:, 317:320, 106:108] = 0.0
     new_ms_coords = [(314, 108), (315, 107), (317, 112)]
@@ -161,7 +142,7 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     )
     coast_id = mom_id[flat_mask]
     nearest_coast = coast_to_mom(coast_id)
-    
+
     # For NWA12 only: the Susquehanna gets mapped to the Delaware
     # because NWA12 only has the lower half of the Chesapeake.
     # Move the nearest grid point for the Susquehanna Region
@@ -169,7 +150,7 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     # see notebooks/check_glofas_susq.ipynb
     target = nearest_coast[455, 271]
     nearest_coast[460:480, 265:278] = target
-    
+
     nearest_coast = nearest_coast.ravel()
 
     # Raw runoff on MOM grid, reshaped to 2D (time, grid_id)
@@ -202,10 +183,10 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     encodings = {v: {'_FillValue': None} for v in all_vars}
 
     # Make sure time has the right units and datatype
-    # otherwise it will become an int and MOM will fail. 
+    # otherwise it will become an int and MOM will fail.
     encodings['time'].update({
         'units': 'days since 1950-01-01',
-        'dtype': 'float', 
+        'dtype': 'float',
         'calendar': 'gregorian'
     })
 
@@ -231,10 +212,10 @@ if __name__ == '__main__':
 
     args = parse_arguments()
     config_file = args.config
-    config = read_config(config_file)
+    config = load_config(config_file)
 
     ocean_mask = xarray.open_dataset(config['grid_mask_file'])
-    hgrid = xarray.open_dataset(config['hgrid_file']) 
+    hgrid = xarray.open_dataset(config['hgrid_file'])
 
     mom_coast_mask = get_coast_mask(ocean_mask['mask'])
 
@@ -265,9 +246,9 @@ if __name__ == '__main__':
     else:
         raise Exception('Did not converge')
 
-    # Note; converting from dataarray to numpy, because the 
-    # glofas ldd coordinates are float32 and the 
-    # glofas runoff coordinates are float64 
+    # Note; converting from dataarray to numpy, because the
+    # glofas ldd coordinates are float32 and the
+    # glofas runoff coordinates are float64
     glofas_coast_mask = adjacent.values
 
     if not os.path.exists(config['output_dir']):
