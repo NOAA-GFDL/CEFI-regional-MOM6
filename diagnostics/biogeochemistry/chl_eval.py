@@ -16,16 +16,9 @@ import matplotlib.colors as colors
 from string import ascii_lowercase
 import logging
 
-import os
-import sys
-
-# Get the directory of the current script
-script_dir = os.path.dirname(os.getcwd())
-sys.path.append(os.path.join(script_dir, 'physics'))
-
 from cefi_kit.io import load_config, open_var
 from cefi_kit.plots import annotate_skill, autoextend_colorbar, save_figure
-from plot_common import corners
+from cefi_kit.grids import corners
 
 # Configure logging
 logger = logging.getLogger(__name__)
