@@ -18,15 +18,9 @@ import xskillscore
 
 PC = ccrs.PlateCarree()
 
-import os
-import sys
-
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../physics'))
 from cefi_kit.io import open_var
 from cefi_kit.plots import add_ticks, save_figure
-from plot_common import corners
+from cefi_kit.grids import corners
 
 
 def get_score(m, o, weight, metric=xskillscore.spearman_r):

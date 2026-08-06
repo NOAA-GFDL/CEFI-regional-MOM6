@@ -15,7 +15,7 @@ PC = ccrs.PlateCarree()
 
 from cefi_kit.io import open_var
 from cefi_kit.plots import add_ticks, annotate_skill, autoextend_colorbar, get_map_norm, save_figure
-from plot_common import corners
+from cefi_kit.grids import corners
 
 
 def plot_coldpool(pp_root, label):

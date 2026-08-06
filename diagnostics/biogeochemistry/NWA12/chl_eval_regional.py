@@ -13,15 +13,10 @@ import xesmf
 import matplotlib.colors as colors
 from string import ascii_lowercase
 import logging
-from pathlib import Path
-import sys
 
-# Add physics/plot_common to path in order to access tools located there
-diag_dir = Path.cwd().parent.parent
-sys.path.append( str( diag_dir.joinpath('physics') ) )
+from cefi_kit.grids import corners
 from cefi_kit.io import open_var, load_config
 from cefi_kit.plots import add_ticks, annotate_skill, save_figure
-from plot_common import  corners
 
 # Configure logging
 logger = logging.getLogger(__name__)

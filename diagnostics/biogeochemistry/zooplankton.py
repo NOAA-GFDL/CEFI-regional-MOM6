@@ -12,15 +12,9 @@ import pandas as pd
 from string import ascii_lowercase
 import xarray
 
-import os
-import sys
-
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../physics'))
 from cefi_kit.io import open_var
 from cefi_kit.plots import add_ticks
-from plot_common import corners
+from cefi_kit.grids import corners
 
 PC = ccrs.PlateCarree()
 
