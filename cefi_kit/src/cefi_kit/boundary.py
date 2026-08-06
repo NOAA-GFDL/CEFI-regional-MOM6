@@ -1,11 +1,8 @@
 import numpy as np
 from os import path
-#import warnings
 import xarray as xarray
-import xesmf
 
-# ignore pandas FutureWarnings raised multiple times by xarray
-#warnings.simplefilter(action='ignore', category=FutureWarning)
+from cefi_kit.grids import reuse_regrid
 
 
 def check_angle_range(angle):
@@ -21,9 +18,9 @@ def rotate_uv(uearth, vearth, angle_earth_to_model_rad):
     and true north direction (vearth), and the angle in radians in the standard
     (counterclockwise) direction from the true east/north
     direction to the model east/north direction.
-    For example, if the model east was aligned with the 
-    true northeast, the angle would be +pi/4 (45 deg). 
-    This function does a counterclockwise rotation of the 
+    For example, if the model east was aligned with the
+    true northeast, the angle would be +pi/4 (45 deg).
+    This function does a counterclockwise rotation of the
     coordinates, which is equivalent to a clockwise
     rotation of the vector.
     See https://mathworld.wolfram.com/RotationMatrix.html for a refresher
@@ -44,14 +41,14 @@ def rotate_uv(uearth, vearth, angle_earth_to_model_rad):
 
 def fill_missing(arr, xdim='locations', zdim='z', fill='b'):
     """Fill missing data along the boundaries.
-    Extrapolates horizontally first, then vertically. 
-   
+    Extrapolates horizontally first, then vertically.
+
     Args:
         arr: xarray DataArray or Dataset to be fillled.
-        xdim: horizontal dimension of the dataset. 
+        xdim: horizontal dimension of the dataset.
         zdim: vertical dimension of the dataset.
         fill (str, optional): Method to use for filling data horizontally (b for bfill or f for ffill).
-    
+
     Returns:
         Filled DataArray or Dataset.
     """
@@ -65,10 +62,10 @@ def fill_missing(arr, xdim='locations', zdim='z', fill='b'):
 
 
 def flood_missing(arr, **kwargs):
-    """Flood missing data (over land) using HCtFlood. 
-    Had some trouble installing HCtFlood on analysis, so it is 
-    imported by adding it to the path. 
-    Import is done inside this function so that 
+    """Flood missing data (over land) using HCtFlood.
+    Had some trouble installing HCtFlood on analysis, so it is
+    imported by adding it to the path.
+    Import is done inside this function so that
     everything else still works if HCtFlood is unavailable.
 
     Args:
@@ -84,12 +81,12 @@ def flood_missing(arr, **kwargs):
     from HCtFlood import kara as hct
     flooded = hct.flood_kara(arr, **kwargs)
 
-    # Check for 2D or 3D case. 
+    # Check for 2D or 3D case.
     # Assume that 3D case is a function of time and space, not depth and space,
-    # unless zdim was included in keyword arguments. 
-    # Harder to assume that if zdim was not passed but the flooded 
+    # unless zdim was included in keyword arguments.
+    # Harder to assume that if zdim was not passed but the flooded
     # data has a z dimension longer than 1, so warn.
-    # If it is a function of time and space, drop the 
+    # If it is a function of time and space, drop the
     # depth dimension added by flood_kara.
     if arr.ndim <= 3 and 'zdim' not in kwargs:
         if 'z' in arr.dims and len(arr.z) > 1:
@@ -112,11 +109,11 @@ def find_datavar(ds):
             plus one and only one other variable of interest.
 
     Raises:
-        Exception: if there are multiple potential variables of interest 
+        Exception: if there are multiple potential variables of interest
             (more than one variable not named lat or lon).
 
     Returns:
-        xarray.DataArray: DataArray of variable of interest from Dataset. 
+        xarray.DataArray: DataArray of variable of interest from Dataset.
     """
     names = [x for x in ds if x not in ['lon', 'lat']]
     if len(names) > 1:
@@ -248,10 +245,10 @@ def z_to_dz(ds, max_depth=6500.):
 
     Args:
         ds: xarray.DataArray or xarray.Dataset containing variables 'time', 'z', and 'locations'.
-        max_depth: Depth of model bottom. Thickness of bottom layer will be stretched to reach this depth. 
+        max_depth: Depth of model bottom. Thickness of bottom layer will be stretched to reach this depth.
 
-    Returns: 
-        xarray.DataArray: 3D <time, z, locations> array of thicknesses. 
+    Returns:
+        xarray.DataArray: 3D <time, z, locations> array of thicknesses.
     """
     zi = 0.5 * (np.roll(ds['z'], shift=-1) + ds['z'])
     zi[-1] = max_depth
@@ -260,7 +257,7 @@ def z_to_dz(ds, max_depth=6500.):
     #nt, nz, nx = [v for k, v in ds.dims.items()]
     nt = len(ds['time'])
     nz = len(ds['z'])
-    nx = len(ds['locations']) 
+    nx = len(ds['locations'])
     dz = np.tile(dz.data[np.newaxis, :, np.newaxis], (nt, 1, nx))
     da_dz = xarray.DataArray(
         dz,
@@ -275,27 +272,13 @@ def z_to_dz(ds, max_depth=6500.):
     return da_dz
 
 
-def reuse_regrid(*args, **kwargs):
-    filename = kwargs.pop('filename', None)
-    reuse_weights = kwargs.pop('reuse_weights', False)
-
-    if reuse_weights:
-        if path.isfile(filename):
-            return xesmf.Regridder(*args, reuse_weights=True, filename=filename, **kwargs)
-        else:
-            regrid = xesmf.Regridder(*args, **kwargs)
-            regrid.to_netcdf(filename)
-            return regrid
-    else:
-        regrid = xesmf.Regridder(*args, **kwargs)
-        return regrid
 
 class Segment():
     """One segment of a MOM6 open boundary.
 
     Note that MOM6 supports segments of any length,
-    but here it is assumed that the segment spans an 
-    entire north, south, east, or west border. 
+    but here it is assumed that the segment spans an
+    entire north, south, east, or west border.
 
     Attributes:
         num (int): segment identification number following MOM6 order (1-4).
@@ -304,7 +287,7 @@ class Segment():
         in_degrees: (bool): is angle_dx in hgrid in units of degrees (True) or radians (False)?
         segstr (str): string identifying the segment, used in variable and file names.
         output_dir (str): location to write data for the segment, and location to store xesmf weight files.
-        regrid_dir (str): location to save xesmf Regridders. Defaults to output_dir. 
+        regrid_dir (str): location to save xesmf Regridders. Defaults to output_dir.
         coords (xarray.Dataset): segment coordinates derived from hgrid (lon, lat, angle relative to true north).
         nx (int): Number of data points in the x direction.
         ny (int): Number of data points in the y direction.
@@ -313,7 +296,7 @@ class Segment():
     def __init__(self, num, border, hgrid, in_degrees=False, output_dir='.', regrid_dir=None):
         self.num = num
         self.border = border
-        # Need to make a copy of hgrid so that the original is not modified multiple times 
+        # Need to make a copy of hgrid so that the original is not modified multiple times
         # when creating multiple segments
         self.hgrid = hgrid.copy(deep=True)
         # Check if the angle_dx variable in ocean_hgrid has a 'units' attribute
@@ -329,7 +312,7 @@ class Segment():
         if regrid_dir is None:
             self.regrid_dir = self.output_dir
         else:
-            self.regrid_dir = regrid_dir            
+            self.regrid_dir = regrid_dir
 
     @property
     def coords(self):
@@ -365,7 +348,7 @@ class Segment():
             return len(self.coords['lon'])
         elif self.border in ['west', 'east']:
             return 1
-    
+
     @property
     def ny(self):
         """Number of data points in the y-direction"""
@@ -373,13 +356,13 @@ class Segment():
             return 1
         elif self.border in ['west', 'east']:
             return len(self.coords['lat'])
-    
+
     def to_netcdf(self, ds, varnames, suffix=None, additional_encoding=None):
         """Write data for the segment to file.
 
         Args:
             ds (xarray.Dataset): Segment dataset.
-            varnames (str): Name to give the file (e.g. 'temp', 'salt'). 
+            varnames (str): Name to give the file (e.g. 'temp', 'salt').
             suffix (str, optional): Optional suffix to append to the filename (before .nc). Defaults to None.
         """
         for v in ds:
@@ -404,7 +387,7 @@ class Segment():
             ds.time.encoding['_FillValue'] = 1.0e20
         # if additional_encoding is not None:
         #     encoding.update(additional_encoding)
-        
+
         ds.to_netcdf(
             path.join(self.output_dir, fname),
             format='NETCDF3_64BIT',
@@ -442,7 +425,7 @@ class Segment():
             ds (xarray.Dataset): Dataset that might contain 'lon', 'lat', 'z', and/or 'locations'.
 
         Returns:
-            xarray.Dataset: Dataset with dimensions renamed to include the segment identifier and to 
+            xarray.Dataset: Dataset with dimensions renamed to include the segment identifier and to
                 match MOM6 expectations.
         """
         ds = ds.rename({
@@ -457,7 +440,7 @@ class Segment():
             return ds.rename({'locations': f'nx_{self.segstr}'})
         elif self.border in ['west', 'east']:
             return ds.rename({'locations': f'ny_{self.segstr}'})
-        
+
     def zeros(self, time, nz=0):
         """Create an appropriately shaped DataArray of zeros.
         Useful for things where the boundary is set to a constant.
@@ -467,7 +450,7 @@ class Segment():
             nz (int, optional): Length of the vertical dimension to give the array, if greater than 0. Defaults to 0.
 
         Returns:
-            xarray.DataArray: Array of zeros. 
+            xarray.DataArray: Array of zeros.
         """
         nt = len(time)
         if nz > 0:
@@ -482,7 +465,7 @@ class Segment():
                 coords=[time, np.arange(self.ny), np.arange(self.nx)],
                 dims=['time', f'ny_{self.segstr}', f'nx_{self.segstr}']
             )
-    
+
     def add_coords(self, ds):
         """Add segment lat and lon coordinates to a dataset."""
         if self.border in ['south', 'north']:
@@ -492,11 +475,11 @@ class Segment():
             ds[f'lon_{self.segstr}'] = ((f'ny_{self.segstr}', ), self.coords['lon'].data)
             ds[f'lat_{self.segstr}'] = ((f'ny_{self.segstr}', ), self.coords['lat'].data)
         return ds
-    
+
     def regrid_velocity(
-                self, usource, vsource, 
-                method='nearest_s2d', periodic=False, write=True, 
-                flood=False, fill='b', xdim='lon', ydim='lat', zdim='z', rotate=True, 
+                self, usource, vsource,
+                method='nearest_s2d', periodic=False, write=True,
+                flood=False, fill='b', xdim='lon', ydim='lat', zdim='z', rotate=True,
                 time_attrs=None, time_encoding=None, **kwargs):
         """Interpolate velocity onto segment and (optionally) write to file.
 
@@ -616,14 +599,14 @@ class Segment():
 
         if write:
             self.to_netcdf(ds_uv, 'uv', **kwargs)
-        
+
         return ds_uv
 
     def regrid_tracer(
-            self, tsource, 
-            method='nearest_s2d', periodic=False, write=True, 
+            self, tsource,
+            method='nearest_s2d', periodic=False, write=True,
             flood=False, fill='b', xdim='lon', ydim='lat', zdim='z',
-            regrid_suffix='t', source_var=None, 
+            regrid_suffix='t', source_var=None,
             time_attrs=None, time_encoding=None, **kwargs):
         """Regrid a tracer onto segment and (optionally) write to file.
 
@@ -637,7 +620,7 @@ class Segment():
             xdim (str, optional): Name of the horizontal x dimension, needed if flooding. Defaults to 'lon'.
             ydim (str, optional): Name of the horizontal y dimension, needed if flooding. Defaults to 'lat'.
             zdim (str, optional): Name of the vertical dimension, needed if flooding. Defaults to 'z'.
-            regrid_suffix (str, optional): Suffix to add to xesmf weight file name. Useful when regridding multiple tracers from different datasets. 
+            regrid_suffix (str, optional): Suffix to add to xesmf weight file name. Useful when regridding multiple tracers from different datasets.
                 Defaults to 't'.
             source_var (str, optional): If tsource is a dataset, this is the variable to regrid.
             **kwargs: additional keyword arguments passed to Segment.to_netcdf().
@@ -690,7 +673,7 @@ class Segment():
 
         tdest['lon'] = (('locations', ), self.coords['lon'].data)
         tdest['lat'] = (('locations', ), self.coords['lat'].data)
-        
+
         tdest = self.rename_dims(tdest)
         tdest = tdest.rename({name: f'{name}_{self.segstr}'})
 
@@ -699,18 +682,18 @@ class Segment():
             tdest['time'].attrs = time_attrs
         if time_encoding:
             tdest['time'].encoding = time_encoding
-        
+
         if write:
             self.to_netcdf(tdest, name, **kwargs)
-        
+
         return tdest
 
     def regrid_tidal_elevation(
-                self, resource, imsource, time, 
-                method='nearest_s2d', periodic=False, write=True, 
+                self, resource, imsource, time,
+                method='nearest_s2d', periodic=False, write=True,
                 flood=False, xdim='nx', ydim='ny', **kwargs):
         """Regrid tidal elevation onto segment and (optionally) write to file.
-        It is assumed that real (resource) and imaginary (imsource) components of the 
+        It is assumed that real (resource) and imaginary (imsource) components of the
         constituents have the same coordinates.
 
         Args:
@@ -731,7 +714,7 @@ class Segment():
         if flood:
             rename = find_datavar(resource)
             imname = find_datavar(imsource)
-            # Don't want to do this lazily, but there is a weird dimension mismatch error 
+            # Don't want to do this lazily, but there is a weird dimension mismatch error
             # when using .compute() or .load(), so use .values.
             # Also, use "constituent" as the time dimension.
             resource[rename] = (resource[rename].dims, flood_missing(resource[rename], xdim=xdim, ydim=ydim, tdim='constituent').values)
@@ -784,16 +767,16 @@ class Segment():
 
         if write:
             self.to_netcdf(ds_ap, 'tz', **kwargs)
-            
+
         return ds_ap
 
     def regrid_tidal_velocity(
-            self, uresource, uimsource, vresource, vimsource, time, 
-            method='nearest_s2d', periodic=False, write=True, 
+            self, uresource, uimsource, vresource, vimsource, time,
+            method='nearest_s2d', periodic=False, write=True,
             flood=False, xdim='nx', ydim='ny', **kwargs):
         """Regrid tidal velocity onto segment and (optionally) write to file.
-        It is assumed that real and imaginary components of the 
-        individual u or v velocities have the same coordinates, 
+        It is assumed that real and imaginary components of the
+        individual u or v velocities have the same coordinates,
         but the u and v components may have separate coordinates
         [although currently they must have the same names if flooding].
 
@@ -821,12 +804,12 @@ class Segment():
 
         if flood:
             print('Flooding')
-            # Don't want to do this lazily, but there is a weird dimension mismatch error 
+            # Don't want to do this lazily, but there is a weird dimension mismatch error
             # when using .compute() or .load(), so use .values.
             # Use "constituent" as the time dimension.
             uresource[urename] = (uresource[urename].dims, flood_missing(uresource[urename], xdim=xdim, ydim=ydim, tdim='constituent').values)
             uimsource[uimname] = (uimsource[uimname].dims, flood_missing(uimsource[uimname], xdim=xdim, ydim=ydim, tdim='constituent').values)
-            #TODO: BUG: should be vresource and vimsource 
+            #TODO: BUG: should be vresource and vimsource
             vresource[vrename] = (vresource[vrename].dims, flood_missing(vresource[vrename], xdim=xdim, ydim=ydim, tdim='constituent').values)
             vimsource[vimname] = (vimsource[vimname].dims, flood_missing(vimsource[vimname], xdim=xdim, ydim=ydim, tdim='constituent').values)
 
@@ -865,7 +848,7 @@ class Segment():
         uimdest = uimdest.rename({xname: 'locations'})
         vredest = vredest.rename({xname: 'locations'})
         vimdest = vimdest.rename({xname: 'locations'})
-        
+
         print('Refilling missing data')
         # Fill missing data.
         # Need to do this first because complex would get converted to real
@@ -883,7 +866,7 @@ class Segment():
         # rotate ellipse from earth-relative to model-relative,
         # and convert ellipse back to amplitude and phase.
         # There is probably a complicated trig identity for this? But
-        # this works too. 
+        # this works too.
         if self.border in ['south', 'north']:
             angle = self.coords['angle'].rename({'nxp': 'locations'})
         elif self.border in ['west', 'east']:
@@ -922,5 +905,5 @@ class Segment():
         if write:
             print('Writing')
             self.to_netcdf(ds_ap, 'tu', **kwargs)
-            
+
         return ds_ap
