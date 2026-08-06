@@ -1,15 +1,18 @@
 import numpy as np
-import pandas as pd 
+import pandas as pd
 import xesmf
 import xarray
 import sys
 import copy
 import warnings
+
+from cefi_kit.grid import mom_center_area
+
 warnings.filterwarnings("ignore")
 
 def update_stencil_sum(ocean_mask):
-    
-    # Make 3x3 stensil 
+
+    # Make 3x3 stensil
     sten_nlat = 3
     sten_nlon = 3
 
@@ -18,55 +21,55 @@ def update_stencil_sum(ocean_mask):
         ilat_last = -(2-nlat)
         if ilat_last == 0:
             ilat_last = None
-        
+
         for nlon in range(sten_nlon):
             ilon_last = -(2-nlon)
             if ilon_last == 0:
                 ilon_last = None
-       
+
             glofas_stensil_sum[1:-1,1:-1] += ocean_mask[nlat:ilat_last,nlon:ilon_last]
-        
-    return glofas_stensil_sum 
+
+    return glofas_stensil_sum
 
 def get_glofas_pour_points():
     ldd_modified = copy.deepcopy(ldd)
-    # GloFAS VERSION 3: editing pour points along map seam in Russia at date line. 
+    # GloFAS VERSION 3: editing pour points along map seam in Russia at date line.
     # Not sure if these are the best points to change or what happens with this runoff
     #ldd_modified[168,299:301]=1
     #ldd_modified[132,299]=1
-   
+
     # GloFAS VERSION 4: editing pour points along map seam in Russia Chukotka Region at date line.
     lat_idx = np.where(np.round(glofas_lat,3) == 68.875)[0][0]
     lon_idx = np.where(np.round(glofas_lon,3) == 180.025)[0][0]
     ldd_modified[lat_idx,lon_idx]=1 # change from 5 to stop advancing halo point
-    
+
     # GloFAS VERSION 4: editing pour points to connect Columbia River to the ocean
     lat_idx = np.where(np.round(glofas_lat,3) == 46.175)[0][0]
     lon_idx = np.where(np.round(glofas_lon,3) == 236.275)[0][0]
-    ldd_modified[lat_idx,lon_idx]=5 # change to 5 to advance halo point    
+    ldd_modified[lat_idx,lon_idx]=5 # change to 5 to advance halo point
     lat_idx = np.where(np.round(glofas_lat,3) == 46.225)[0][0]
     lon_idx = np.where(np.round(glofas_lon,3) == 236.475)[0][0]
-    ldd_modified[lat_idx,lon_idx]=5 # change to 5 to advance halo point   
-    
+    ldd_modified[lat_idx,lon_idx]=5 # change to 5 to advance halo point
+
     glofas_ocean_mask = np.isnan(ldd)
 
     # initialize the while loop
     n_updates = 1
 
-    # continue 
+    # continue
     while n_updates>0:
         n_updates = 0
-        ocean_stencil_sum = update_stencil_sum(glofas_ocean_mask)    
+        ocean_stencil_sum = update_stencil_sum(glofas_ocean_mask)
         for jj in range(len(glofas_lat)):
             for ii in range(len(glofas_lon)):
-            
+
                 if (ldd_modified[jj,ii]==5) and (glofas_ocean_mask[jj,ii]==0) and (ocean_stencil_sum[jj,ii]>0):
                     # update ocean mask so counted in next calculation of the stencil sum
                     glofas_ocean_mask[jj,ii] = 1
                     n_updates+=1
-                
+
     pour_points = (ldd_modified==5)*(ocean_stencil_sum>0)
-    
+
     return pour_points
 
 def get_mom_mask_for_glofas():
@@ -78,16 +81,15 @@ def get_mom_mask_for_glofas():
         periodic=True,
         reuse_weights=False)
     mom_mask_for_glofas = mom_to_glofas(np.ones((ocn_mask.shape)))
-    
+
     mom_mask_for_glofas[mom_mask_for_glofas<.5]=0
     mom_mask_for_glofas[mom_mask_for_glofas>.5]=1
-    
+
     return mom_mask_for_glofas.astype(bool)
 
 
 def write_runoff(glofas, hgrid, coast_mask, out_file):
-    # From Alistair
-    area = (hgrid.area[::2, ::2] + hgrid.area[1::2, 1::2]) + (hgrid.area[1::2, ::2] + hgrid.area[::2, 1::2])
+    area = mom_center_area(hgrid.area)
 
     pour_points = get_glofas_pour_points()
     glofas_mom_pour_points = pour_points*get_mom_mask_for_glofas()
@@ -120,7 +122,7 @@ def write_runoff(glofas, hgrid, coast_mask, out_file):
        reuse_weights=False)
 
     nearest_glo_coast = glo_coast_to_mom(coast_id).ravel()
-    
+
     tmp_glo_values = glofas.values
 
     # discharge on GloFAS grid, reshaped to 2D (time, grid_id)
@@ -131,7 +133,7 @@ def write_runoff(glofas, hgrid, coast_mask, out_file):
 
     # Loop over each GloFAS pour point and add it to the nearest coastal cell
     for mom_i, glo_i in zip(nearest_glo_coast,pour_id):
-        mom_glo_filled[:, mom_i] += raw[:, glo_i] 
+        mom_glo_filled[:, mom_i] += raw[:, glo_i]
 
     # Hill et al product only extends to mid 2021 so only including through 2020
     if yr < 2021:
@@ -140,7 +142,7 @@ def write_runoff(glofas, hgrid, coast_mask, out_file):
                                  method='nearest_s2d',
                                  locstream_in=True,
                                  locstream_out=True,
-                                 reuse_weights=False) 
+                                 reuse_weights=False)
        nearest_hill_coast = hill_coast_to_mom(coast_id).ravel()
        # Loop over each GloFAS pour point and add it to the nearest coastal cell
        mom_hill_filled = np.zeros(([raw.shape[0],np.prod(ocn_mask.shape)]))
@@ -168,10 +170,10 @@ def write_runoff(glofas, hgrid, coast_mask, out_file):
     encodings = {v: {'_FillValue': None} for v in all_vars}
 
     # Make sure time has the right units and datatype
-    # otherwise it will become an int and MOM will fail. 
+    # otherwise it will become an int and MOM will fail.
     encodings['time'].update({
         'units': 'days since 1950-01-01',
-        'dtype': float, 
+        'dtype': float,
         'calendar': 'gregorian'
     })
 
@@ -196,31 +198,31 @@ def write_runoff(glofas, hgrid, coast_mask, out_file):
 if __name__ == '__main__':
     # Determine coastal points in NEP domain
     ocn_mask = xarray.open_dataset('/work/Liz.Drenkard/mom6/NEP_ocean_static_nomask.nc').wet.values.astype(bool)
-    
+
     stencil_sum = 0 * ocn_mask
-    
+
     # sum ocean mask values to the:     north          south                 east                   west
     stencil_sum[1:-1,1:-1] = ~ocn_mask[2:,1:-1] + ~ocn_mask[:-2,1:-1] + ~ocn_mask[1:-1,:-2] + ~ocn_mask[1:-1,2:]
     ## Domain Edges
-    ### North     
+    ### North
     stencil_sum[-1,1:-1]   =                      ~ocn_mask[-2,1:-1]  + ~ocn_mask[-1,:-2]   + ~ocn_mask[-1,2:]
     ### South
     stencil_sum[0,1:-1]    = ~ocn_mask[1,1:-1]  +                       ~ocn_mask[0,:-2]    + ~ocn_mask[0,2:]
-    ### East                          
-    stencil_sum[1:-1,-1]   = ~ocn_mask[2:,-1]   + ~ocn_mask[:-2,-1]   +                       ~ocn_mask[1:-1,-2]    
-    ### West                          
+    ### East
+    stencil_sum[1:-1,-1]   = ~ocn_mask[2:,-1]   + ~ocn_mask[:-2,-1]   +                       ~ocn_mask[1:-1,-2]
+    ### West
     stencil_sum[1:-1,0]    = ~ocn_mask[2:,0]    + ~ocn_mask[:-2,0]    + ~ocn_mask[1:-1,1]
 
     ## Domain Corners
     ## Northwest
     stencil_sum[-1,0]      =                      ~ocn_mask[-2,0]     + ~ocn_mask[-1,2]
-    ## Northeast               
+    ## Northeast
     stencil_sum[-1,-1]     =                      ~ocn_mask[-2,-1]    +                       ~ocn_mask[-1,-2]
-    ## Southeast               
+    ## Southeast
     stencil_sum[0,-1]      = ~ocn_mask[1,-1]    +                                             ~ocn_mask[0,-2]
     ## Southwest
     stencil_sum[0,0]       = ~ocn_mask[1,0]     +                       ~ocn_mask[0,1]
-    
+
     coast = (ocn_mask)*(stencil_sum)
 
     # Load regional ocean hgrid
@@ -228,11 +230,11 @@ if __name__ == '__main__':
     lon = hgrid.x[1::2, 1::2].values
     lonb = hgrid.x[::2, ::2].values
     lat = hgrid.y[1::2, 1::2].values
-    latb = hgrid.y[::2, ::2].values 
-     
+    latb = hgrid.y[::2, ::2].values
+
     # Load GloFAS local drain direction map
     ldd = xarray.open_dataset('/work/Liz.Drenkard/mom6/nep_10km/setup/runoff/ncks_glofas/ldd_v4.0_NEP_subset.nc').ldd.values
-    
+
     # GloFAS Version 3.1: Mackenzie river patch
     #ldd[132,743:746]=5
 
@@ -246,20 +248,20 @@ if __name__ == '__main__':
          .rename({'latitude': 'lat', 'longitude': 'lon'})
 	 .sel(time=slice(f'{yr-1}-12-31 12:00:00', f'{yr+1}-01-01 12:00:00'))
          .dis24)
-     
-    glofas_lat = glofas['lat'].values 
+
+    glofas_lat = glofas['lat'].values
     glofas_lon = glofas['lon'].values
     glofas_lon[glofas_lon<0]=glofas_lon[glofas_lon<0]+360
-    deg_incr = abs(np.unique(np.diff(glofas_lat))[0]) 
-    # updated icrement for  version 4.0 of GloFAS, assumes constant diff for both lats & lons : 
+    deg_incr = abs(np.unique(np.diff(glofas_lat))[0])
+    # updated icrement for  version 4.0 of GloFAS, assumes constant diff for both lats & lons :
     glofas_latb = np.arange(glofas_lat[0] + deg_incr/2., glofas_lat[-1]-deg_incr, -deg_incr)
-    glofas_lonb = np.arange(glofas_lon[0] - deg_incr/2., glofas_lon[-1]+deg_incr, deg_incr) 
-    glo_lons,glo_lats = np.meshgrid(glofas_lon,glofas_lat) 
-    
-    #print(glofas_lonb.shape,glofas_lon.shape,glofas_latb.shape,glofas_lat.shape) 
-    
+    glofas_lonb = np.arange(glofas_lon[0] - deg_incr/2., glofas_lon[-1]+deg_incr, deg_incr)
+    glo_lons,glo_lats = np.meshgrid(glofas_lon,glofas_lat)
+
+    #print(glofas_lonb.shape,glofas_lon.shape,glofas_latb.shape,glofas_lat.shape)
+
     # UNCOMMENT FOR HILL DATA
-    if yr < 2021: 
+    if yr < 2021:
         hill_files = [f'/work/Liz.Drenkard/external_data/goa_freshwater_discharge/goa_dischargex_0901{y}_0831{y+1}.nc' for y in [yr-1, yr]]
         hill = xarray.open_mfdataset(hill_files,combine='nested',concat_dim='time')
         hill['time'] = pd.to_datetime([(str(hill.year.values[nt])+'-'+str(hill.month.values[nt]).zfill(2)+'-'+str(hill.day.values[nt]).zfill(2)) for nt in range(len(hill.day))])
@@ -286,7 +288,7 @@ if __name__ == '__main__':
         # updating the years and days for respective years
         middle_year_start = np.argmax(years)
         years[:middle_year_start] = yr-1
-        middle_year_seam_start = np.argmin(years) + int(yr%4==0) # leap year condition on the end 
+        middle_year_seam_start = np.argmin(years) + int(yr%4==0) # leap year condition on the end
 
         # leap year condition for updating days, months
         if yr%4 == 0:
@@ -296,7 +298,7 @@ if __name__ == '__main__':
             days = np.append(np.append(days[:leap_day_28+1],29),days[leap_day_28+1:-1])
             # add "2" day after Feb 28 (shifts months by 1 day); drop last day in file
             months = np.append(np.append(months[:leap_day_28+1],2),months[leap_day_28+1:-1])
-            
+
         years[middle_year_start:middle_year_seam_start] = yr
         middle_year_end = np.argmax(years==1993) + int(yr%4==0) # leap year condition on the end
         years[middle_year_seam_start:middle_year_end] = yr
@@ -304,14 +306,14 @@ if __name__ == '__main__':
 
         hill['time'] = pd.to_datetime([(str(years[nt])+'-'+str(months[nt]).zfill(2)+'-'+str(days[nt]).zfill(2)) for nt in range(len(hill.day))])
 
-    hdis = hill.sel(time=slice(f'{yr-1}-12-31 12:00:00', f'{yr+1}-01-01 12:00:00')).q   
+    hdis = hill.sel(time=slice(f'{yr-1}-12-31 12:00:00', f'{yr+1}-01-01 12:00:00')).q
     hill_lat = hill.lat.values
     hill_lon = hill.lon.values
     hill_lon[hill_lon<0]=hill_lon[hill_lon<0]+360
-        
+
     #
     outdir = sys.argv[2]
-    out_file = outdir + 'glofas_v4_hill_dis_runoff_' +str(yr) + '.nc' 
+    out_file = outdir + 'glofas_v4_hill_dis_runoff_' +str(yr) + '.nc'
     print('Calling Write command')
     write_runoff(glofas, hgrid, coast, out_file)
 
