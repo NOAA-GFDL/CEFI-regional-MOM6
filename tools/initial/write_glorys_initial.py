@@ -4,27 +4,17 @@ script for preparing model IC (ssh,T,S,u,v) from Glorys data
 How to use
 ./write_glorys_initial.py --config_file glorys_ic.yaml
 """
-import sys
 import os
 import argparse
-import yaml
 
-import numpy as np
 import xarray
 import xesmf
 
 from HCtFlood import kara as flood
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-
-#
-#sys.path.append(os.path.join(script_dir, './depths'))
-from depths import vgrid_to_interfaces, vgrid_to_layers
-
-#
-sys.path.append(os.path.join(script_dir, '../boundary'))
-from boundary import rotate_uv
+from cefi_kit.boundary import rotate_uv
+from cefi_kit.grids import vgrid_to_layers
+from cefi_kit.io import load_config
 
 
 def write_initial(config):
@@ -46,8 +36,8 @@ def write_initial(config):
     ztarget = xarray.DataArray(
         z,
         name='zl',
-        dims=['zl'], 
-        coords={'zl': z}, 
+        dims=['zl'],
+        coords={'zl': z},
     )
     glorys = (
         xarray.open_dataset(glorys_file)
@@ -56,12 +46,12 @@ def write_initial(config):
     )
     # Round time down to midnight
     glorys['time'] = (('time', ), glorys['time'].dt.floor('1d').data)
-   
+
     # Interpolate GLORYS vertically onto target grid.
     # Depths below bottom of GLORYS are filled by extrapolating the deepest available value.
     revert = glorys.interp(depth=ztarget, kwargs={'fill_value': 'extrapolate'}).ffill('zl', limit=None)
 
-    # Flood temperature and salinity over land. 
+    # Flood temperature and salinity over land.
     flooded = xarray.merge((
         flood.flood_kara(revert[v], zdim='zl') for v in [temp_var, sal_var, u_var, v_var]
     ))
@@ -69,7 +59,7 @@ def write_initial(config):
     # flood zos separately to avoid the extra z=0 added by flood_kara.
     flooded[ssh_var] = flood.flood_kara(revert[ssh_var]).isel(z=0).drop('z')
 
-    # Horizontally interpolate the vertically interpolated and flooded data onto the MOM grid. 
+    # Horizontally interpolate the vertically interpolated and flooded data onto the MOM grid.
     target_grid = xarray.open_dataset(grid_file)
     target_t = (
         target_grid
@@ -83,7 +73,7 @@ def write_initial(config):
         [['x', 'y']]
         .rename({'y': 'lat', 'x': 'lon'})
     )
-    
+
     regrid_kws = dict(method='nearest_s2d', reuse_weights=reuse_weights, periodic=False)
 
     glorys_to_t = xesmf.Regridder(glorys, target_t, filename='regrid_glorys_tracers.nc', **regrid_kws)
@@ -98,7 +88,7 @@ def write_initial(config):
     uo.name = 'uo'
     vo = vrot.isel(nxp=slice(1, None, 2), nyp=slice(0, None, 2)).rename({'nxp': 'xh', 'nyp': 'yq'})
     vo.name = 'vo'
-    
+
     interped = (
         xarray.merge((interped_t, uo, vo))
         .transpose('time', 'zl', 'yh', 'yq', 'xh', 'xq')
@@ -126,10 +116,10 @@ def write_initial(config):
 
     # Extract the directory from the output_file pat
     output_folder = os.path.dirname(output_file)
-    
+
     # Check if the output folder exists, and if not, create it
     if not os.path.exists(output_folder):
-        os.makedirs(output_folder)   
+        os.makedirs(output_folder)
 
     # output results
     interped.to_netcdf(
@@ -150,8 +140,7 @@ def main():
     if not args.config_file:
         parser.error('Please provide the path to the YAML config file.')
 
-    with open(args.config_file, 'r') as yaml_file:
-        config = yaml.safe_load(yaml_file)
+    config = load_config(args.config_file)
 
     if not all(key in config for key in ['glorys_file', 'vgrid_file', 'grid_file', 'output_file']):
         parser.error('Please provide all required parameters in the YAML config file.')
