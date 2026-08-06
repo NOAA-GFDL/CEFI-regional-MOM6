@@ -15,9 +15,10 @@ import xarray
 import xesmf
 import logging
 
+from cefi_kit.grids import center_to_outer
 from cefi_kit.io import open_var, load_config
 from cefi_kit.plots import annotate_skill, autoextend_colorbar, get_map_norm
-from plot_common import process_glorys, combine_regional_climatologies, center_to_outer
+from plot_common import process_glorys, combine_regional_climatologies
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
@@ -104,7 +105,7 @@ def plot_sss_eval(pp_root,config):
     cbar0.ax.set_xlabel('Mean SSS')
 
     # Regional climatologies
-    grid[1].pcolormesh(center_to_outer(regional_grid['lon']), center_to_outer(regional_grid['lat']), combined, transform=proj, **common)
+    grid[1].pcolormes(regional_grid['lon']), center_to_outer(regional_grid['lat']), combined, transform=proj, **common)
     grid[1].set_title('(b) Regional climatologies')
 
     # Model - regional
