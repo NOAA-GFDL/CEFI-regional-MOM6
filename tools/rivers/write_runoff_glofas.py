@@ -11,7 +11,7 @@ import argparse
 import xarray
 
 from cefi_kit.io import load_config
-from cefi_kit.grids import reuse_regrid
+from cefi_kit.grids import mom_center_area, reuse_regrid
 
 
 def parse_arguments():
@@ -67,8 +67,7 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     lonb = hgrid.x[::2, ::2]
     lat = hgrid.y[1::2, 1::2]
     latb = hgrid.y[::2, ::2]
-    # From Alistair
-    area = (hgrid.area[::2, ::2] + hgrid.area[1::2, 1::2]) + (hgrid.area[1::2, ::2] + hgrid.area[::2, 1::2])
+    area = mom_center_area(hgrid.area)
 
     # Convert m3/s to kg/m2/s
     # Borrowed from https://xgcm.readthedocs.io/en/latest/xgcm-examples/05_autogenerate.html
