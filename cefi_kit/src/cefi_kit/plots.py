@@ -1,28 +1,51 @@
 import os
+
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
-from matplotlib.colors import BoundaryNorm, ListedColormap
 import numpy as np
 import xskillscore
-from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter, LatitudeLocator, LongitudeLocator
+from cartopy.mpl.ticker import (
+    LatitudeFormatter,
+    LongitudeFormatter,
+)
+from matplotlib.colors import BoundaryNorm, ListedColormap
+
+_PC = ccrs.PlateCarree()
 
 
 def get_map_norm(cmap, levels, no_offset=True):
     """
     Get a discrete colormap and normalization for plotting with matplotlib.
-    Set no_offset=False to obtain a colormap that is similar to what xarray.plot() yields.
+    Set no_offset=False for a colormap similar to what xarray.plot() uses.
     """
     nlev = len(levels)
-    cmap = plt.cm.get_cmap(cmap, nlev-int(no_offset))
+    cmap = plt.cm.get_cmap(cmap, nlev - int(no_offset))
     colors = list(cmap(np.arange(nlev)))
-    cmap = ListedColormap(colors, "")
+    cmap = ListedColormap(colors, '')
     norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
     return cmap, norm
 
-def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xint=4, weights=None, cols=1, proj = ccrs.PlateCarree(), plot_lat=False, **kwargs):
+
+def annotate_skill(
+    model,
+    obs,
+    ax,
+    dim=None,
+    x0=-98.5,
+    y0=54,
+    yint=4,
+    xint=4,
+    weights=None,
+    cols=1,
+    proj=_PC,
+    plot_lat=False,
+    **kwargs,
+):
     """
     Annotate an axis with model vs obs skill metrics
     """
+    if dim is None:
+        dim = ['yh', 'xh']
     bias = xskillscore.me(model, obs, dim=dim, skipna=True, weights=weights)
     rmse = xskillscore.rmse(model, obs, dim=dim, skipna=True, weights=weights)
     corr = xskillscore.pearson_r(model, obs, dim=dim, skipna=True, weights=weights)
@@ -30,28 +53,62 @@ def annotate_skill(model, obs, ax, dim=['yh', 'xh'], x0=-98.5, y0=54, yint=4, xi
 
     ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
 
-    # Set plot_lat=True in order to plot skill along a line of latitude. Otherwise, plot along longitude
+    # Set plot_lat=True in order to plot skill along a line of latitude.
+    # Otherwise, plot along longitude
     if plot_lat:
-        ax.text(x0-xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
+        ax.text(x0 - xint, y0, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
         if cols == 1:
-            ax.text(x0-xint*2, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0-xint*3, y0, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+            ax.text(
+                x0 - xint * 2,
+                y0,
+                f'MedAE: {float(medae):2.2f}',
+                transform=proj,
+                **kwargs,
+            )
+            ax.text(
+                x0 - xint * 3, y0, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs
+            )
         elif cols == 2:
-            ax.text(x0, y0+yint, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0-xint, y0+yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+            ax.text(
+                x0, y0 + yint, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs
+            )
+            ax.text(
+                x0 - xint,
+                y0 + yint,
+                f'Corr: {float(corr):2.2f}',
+                transform=proj,
+                **kwargs,
+            )
         else:
             raise ValueError(f'Unsupported number of columns: {cols}')
 
     else:
-        ax.text(x0, y0-yint, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
+        ax.text(x0, y0 - yint, f'RMSE: {float(rmse):2.2f}', transform=proj, **kwargs)
         if cols == 1:
-            ax.text(x0, y0-yint*2, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0, y0-yint*3, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+            ax.text(
+                x0,
+                y0 - yint * 2,
+                f'MedAE: {float(medae):2.2f}',
+                transform=proj,
+                **kwargs,
+            )
+            ax.text(
+                x0, y0 - yint * 3, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs
+            )
         elif cols == 2:
-            ax.text(x0+xint, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs)
-            ax.text(x0+xint, y0-yint, f'Corr: {float(corr):2.2f}', transform=proj, **kwargs)
+            ax.text(
+                x0 + xint, y0, f'MedAE: {float(medae):2.2f}', transform=proj, **kwargs
+            )
+            ax.text(
+                x0 + xint,
+                y0 - yint,
+                f'Corr: {float(corr):2.2f}',
+                transform=proj,
+                **kwargs,
+            )
         else:
             raise ValueError(f'Unsupported number of columns: {cols}')
+
 
 def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
     """
@@ -79,25 +136,47 @@ def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
     return ax.colorbar(plot, extend=extend, **kwargs)
 
 
-def add_ticks(ax, xticks=np.arange(-100, -31, 1), yticks=np.arange(2, 61, 1), xlabelinterval=2, ylabelinterval=2, fontsize=10, projection = ccrs.PlateCarree(), **kwargs):
+def add_ticks(
+    ax,
+    xticks=np.arange(-100, -31, 1),  # noqa: B008
+    yticks=np.arange(2, 61, 1),  # noqa: B008
+    xlabelinterval=2,
+    ylabelinterval=2,
+    fontsize=10,
+    projection=_PC,
+    **kwargs,
+):
     """
     Add lat and lon ticks and labels to a plot axis.
     By default, tick at 1 degree intervals for x and y, and label every other tick.
     Additional kwargs are passed to LongitudeFormatter and LatitudeFormatter.
     """
     ax.yaxis.tick_right()
-    ax.set_xticks(xticks, crs = projection)
+    ax.set_xticks(xticks, crs=projection)
     if xlabelinterval == 0:
         plt.setp(ax.get_xticklabels(), visible=False)
     else:
-        plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval != 0], visible=False, fontsize=fontsize)
-        plt.setp([l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval == 0], fontsize=fontsize)
-    ax.set_yticks(yticks, crs = projection)
+        plt.setp(
+            [l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval != 0],
+            visible=False,
+            fontsize=fontsize,
+        )
+        plt.setp(
+            [l for i, l in enumerate(ax.get_xticklabels()) if i % xlabelinterval == 0],
+            fontsize=fontsize,
+        )
+    ax.set_yticks(yticks, crs=projection)
     if ylabelinterval == 0:
         plt.setp(ax.get_yticklabels(), visible=False)
     else:
-        plt.setp([l for i, l in enumerate(ax.get_yticklabels()) if i % ylabelinterval != 0], visible=False)
-        plt.setp([l for i, l in enumerate(ax.get_yticklabels()) if i % ylabelinterval == 0], fontsize=fontsize)
+        plt.setp(
+            [l for i, l in enumerate(ax.get_yticklabels()) if i % ylabelinterval != 0],
+            visible=False,
+        )
+        plt.setp(
+            [l for i, l in enumerate(ax.get_yticklabels()) if i % ylabelinterval == 0],
+            fontsize=fontsize,
+        )
     lon_formatter = LongitudeFormatter(direction_label=False, **kwargs)
     lat_formatter = LatitudeFormatter(direction_label=False, **kwargs)
     ax.xaxis.set_major_formatter(lon_formatter)
@@ -106,10 +185,18 @@ def add_ticks(ax, xticks=np.arange(-100, -31, 1), yticks=np.arange(2, 61, 1), xl
 
 def save_figure(fname, label='', pdf=False, output_dir='figures'):
     if label == '':
-        plt.savefig(os.path.join(output_dir, f'{fname}.png'), dpi=200, bbox_inches='tight')
+        plt.savefig(
+            os.path.join(output_dir, f'{fname}.png'), dpi=200, bbox_inches='tight'
+        )
         if pdf:
             plt.savefig(os.path.join(output_dir, f'{fname}.pdf'), bbox_inches='tight')
     else:
-        plt.savefig(os.path.join(output_dir, f'{fname}_{label}.png'), dpi=200, bbox_inches='tight')
+        plt.savefig(
+            os.path.join(output_dir, f'{fname}_{label}.png'),
+            dpi=200,
+            bbox_inches='tight',
+        )
         if pdf:
-            plt.savefig(os.path.join(output_dir, f'{fname}_{label}.pdf'), bbox_inches='tight')
+            plt.savefig(
+                os.path.join(output_dir, f'{fname}_{label}.pdf'), bbox_inches='tight'
+            )
