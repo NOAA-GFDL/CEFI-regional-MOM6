@@ -1,55 +1,73 @@
 import os
+from collections.abc import Callable
+from typing import Any
 
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
+import xarray
 import xskillscore
 from cartopy.mpl.ticker import (
     LatitudeFormatter,
     LongitudeFormatter,
 )
+from matplotlib.axes import Axes
+from matplotlib.cm import ScalarMappable
+from matplotlib.colorbar import Colorbar
 from matplotlib.colors import BoundaryNorm, ListedColormap
+
+from .types import ArrayLike, ColorbarCapable
 
 _PC = ccrs.PlateCarree()
 
 
-def get_map_norm(cmap, levels, no_offset=True):
+def get_map_norm(
+    cmap_name: str, levels: ArrayLike, no_offset: bool = True
+) -> tuple[ListedColormap, BoundaryNorm]:
     """
     Get a discrete colormap and normalization for plotting with matplotlib.
     Set no_offset=False for a colormap similar to what xarray.plot() uses.
     """
-    nlev = len(levels)
-    cmap = plt.cm.get_cmap(cmap, nlev - int(no_offset))
+    nlev = len(np.asarray(levels))
+    cmap = plt.cm.get_cmap(cmap_name, nlev - int(no_offset))
     colors = list(cmap(np.arange(nlev)))
-    cmap = ListedColormap(colors, '')
+    colormap = ListedColormap(colors, '')
     norm = BoundaryNorm(levels, ncolors=nlev, clip=False)
-    return cmap, norm
+    return colormap, norm
+
+
+def _scalar_result(fun: Callable[..., Any], *args, **kwargs) -> float:
+    res = np.asarray(fun(*args, **kwargs))
+    if res.size != 1:
+        raise ValueError('Expected a scalar value')
+    return float(res.item())
 
 
 def annotate_skill(
-    model,
-    obs,
-    ax,
-    dim=None,
-    x0=-98.5,
-    y0=54,
-    yint=4,
-    xint=4,
-    weights=None,
-    cols=1,
-    proj=_PC,
-    plot_lat=False,
+    model: xarray.DataArray,
+    obs: xarray.DataArray,
+    ax: Axes,
+    dim: list[str] | None = None,
+    x0: float = -98.5,
+    y0: float = 54,
+    yint: float = 4,
+    xint: float = 4,
+    weights: xarray.DataArray | None = None,
+    cols: int = 1,
+    proj: ccrs.CRS = _PC,
+    plot_lat: bool = False,
     **kwargs,
-):
+) -> None:
     """
     Annotate an axis with model vs obs skill metrics
     """
     if dim is None:
         dim = ['yh', 'xh']
-    bias = xskillscore.me(model, obs, dim=dim, skipna=True, weights=weights)
-    rmse = xskillscore.rmse(model, obs, dim=dim, skipna=True, weights=weights)
-    corr = xskillscore.pearson_r(model, obs, dim=dim, skipna=True, weights=weights)
-    medae = xskillscore.median_absolute_error(model, obs, dim=dim, skipna=True)
+    kws = {'dim': dim, 'skipna': True}
+    bias = _scalar_result(xskillscore.me, model, obs, **kws, weights=weights)
+    rmse = _scalar_result(xskillscore.rmse, model, obs, **kws, weights=weights)
+    corr = _scalar_result(xskillscore.pearson_r, model, obs, **kws, weights=weights)
+    medae = _scalar_result(xskillscore.median_absolute_error, model, obs, **kws)
 
     ax.text(x0, y0, f'Bias: {float(bias):2.2f}', transform=proj, **kwargs)
 
@@ -110,17 +128,24 @@ def annotate_skill(
             raise ValueError(f'Unsupported number of columns: {cols}')
 
 
-def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
+def autoextend_colorbar(
+    ax: ColorbarCapable,
+    plot: ScalarMappable,
+    plot_data: ArrayLike | None = None,
+    **kwargs,
+) -> Colorbar:
     """
     Add a colorbar, setting the extend metric based on
     whether the plot data exceeds the plot limits.
-    Pulls the data from the passed plot unless plot_array is passed.
+    Pulls the data from the passed plot unless plot_data is passed.
     """
     norm_min = plot.norm.vmin
     norm_max = plot.norm.vmax
 
-    if plot_array is None:
-        plot_array = plot.get_array()
+    if plot_data is None:
+        plot_array = np.asarray(plot.get_array())
+    else:
+        plot_array = np.asarray(plot_data)
 
     actual_min = plot_array.min()
     actual_max = plot_array.max()
@@ -137,15 +162,15 @@ def autoextend_colorbar(ax, plot, plot_array=None, **kwargs):
 
 
 def add_ticks(
-    ax,
-    xticks=np.arange(-100, -31, 1),  # noqa: B008
-    yticks=np.arange(2, 61, 1),  # noqa: B008
-    xlabelinterval=2,
-    ylabelinterval=2,
-    fontsize=10,
-    projection=_PC,
+    ax: Axes,
+    xticks: ArrayLike = np.arange(-100, -31, 1),  # noqa: B008
+    yticks: ArrayLike = np.arange(2, 61, 1),  # noqa: B008
+    xlabelinterval: int = 2,
+    ylabelinterval: int = 2,
+    fontsize: int | float = 10,
+    projection: ccrs.CRS = _PC,
     **kwargs,
-):
+) -> None:
     """
     Add lat and lon ticks and labels to a plot axis.
     By default, tick at 1 degree intervals for x and y, and label every other tick.
@@ -183,7 +208,9 @@ def add_ticks(
     ax.yaxis.set_major_formatter(lat_formatter)
 
 
-def save_figure(fname, label='', pdf=False, output_dir='figures'):
+def save_figure(
+    fname: str, label: str = '', pdf: bool = False, output_dir: str = 'figures'
+) -> None:
     if label == '':
         plt.savefig(
             os.path.join(output_dir, f'{fname}.png'), dpi=200, bbox_inches='tight'

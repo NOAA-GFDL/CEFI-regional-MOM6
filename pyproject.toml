@@ -39,6 +39,7 @@ automation = [
 ]
 dev = [
     "ruff>=0.16.1",
+    "ty>=0.0.69",
 ]
 
 [build-system]
@@ -82,3 +83,6 @@ known-first-party = ["cefi_kit"]
 quote-style = "single"
 indent-style = "space"
 line-ending = "auto"
+
+[tool.ty.environment]
+root = ["./cefi_kit"]
