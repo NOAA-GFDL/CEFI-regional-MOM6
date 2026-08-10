@@ -2,14 +2,19 @@ import errno
 import logging
 import os
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass
+from functools import singledispatchmethod
 from getpass import getuser
 from pathlib import Path
 from shutil import which
-from subprocess import DEVNULL, run
+from subprocess import DEVNULL, CompletedProcess, run
+from typing import Any
 
 import xarray
 import yaml
+
+from .types import PathLike
 
 logger = logging.getLogger(__name__)
 
@@ -23,53 +28,92 @@ class HSMGet:
     ptmp: Path = Path('/ptmp') / getuser()
     tmp: Path = Path(os.environ.get('TMPDIR', ptmp))
 
-    def _run(self, cmd, stdout=DEVNULL, stderr=DEVNULL):
+    @property
+    def _hsmget_str(self) -> str | None:
+        res = which('hsmget')
+        if res is None:
+            possible_hsmget = Path('/home/fms/local/opt/hsm/1.3.0/bin/hsmget')
+            if possible_hsmget.exists():
+                # This seems to be the only way to get the module to stick
+                res = f'module load hsm/1.3.0 && {possible_hsmget}'
+            else:
+                logger.info(
+                    'Not using hsmget. If running on GFDL analysis, run '
+                    '`module load hsm/1.3.0` to enable using hsmget. '
+                )
+        if res is not None and not self._dirs_exist():
+            logger.warning(
+                'hsmget was found but archive, ptmp, and/or tmp were not. '
+                'Check your paths. Not using hsmget.'
+            )
+            res = None
+        return res
+
+    def _dirs_exist(self) -> bool:
+        return self.archive.is_dir() and self.ptmp.is_dir() and self.tmp.is_dir()
+
+    def _run(
+        self, cmd: str, stdout: int = DEVNULL, stderr: int = DEVNULL
+    ) -> CompletedProcess:
         # This will escape things like (1) in the file name
         # so that it can be run as a shell command.
         esc = re.sub(r'([\(\)])', r'\\\1', cmd)
         return run(esc, shell=True, check=True, stdout=stdout, stderr=stderr)
 
-    def _dirs_exist(self):
-        return self.archive.is_dir() and self.ptmp.is_dir() and self.tmp.is_dir()
+    @singledispatchmethod
+    def __call__(self, path_or_paths: Any, **kwargs: Any) -> Any:
+        raise TypeError(
+            'Unsupported type for path to hsmget. Expected str, Path, or list[Path]'
+        )
 
-    def __call__(self, path_or_paths):
-        if which('hsmget') is None or not self._dirs_exist():
-            # If hsmget or /archive, /ptmp, etc are not available,
-            # this will just return the input path(s).
-            logger.info(
-                'Not using hsmget. If running on GFDL analysis, run '
-                '`module load hsm/1.3.0` to enable using hsmget. '
-            )
-            return path_or_paths
-        elif isinstance(path_or_paths, Path):
-            # Find the file path on archive, relative to the root part of archive.
-            # (This is how hsmget will want it).
-            relative = path_or_paths.relative_to(self.archive)
-            # hsmget will do the dmget first and this is fine since it's one file
-            cmd = f'hsmget -q -a {self.archive} -w {self.tmp} -p {self.ptmp} {relative}'
-            self._run(cmd)
-            return self.tmp / relative
-        elif iter(path_or_paths):
-            # dmget all files with one dmget command.
-            p_str = ' '.join([p.as_posix() for p in path_or_paths])
-            self._run(f'dmget {p_str}')
-            relative = [p.relative_to(self.archive) for p in path_or_paths]
-            rel_str = ' '.join(map(str, relative))
-            cmd = f'hsmget -q -a {self.archive} -w {self.tmp} -p {self.ptmp} {rel_str}'
-            self._run(cmd)
-            return [self.tmp / r for r in relative]
-        else:
-            raise Exception('Need a Path or iterable of Paths to get')
+    @__call__.register
+    def _call_str(self, path: str, **kwargs: Any) -> Path:
+        cast_path = Path(path)
+        return self.__call__(cast_path, **kwargs)
+
+    @__call__.register
+    def _call_path(self, path: Path, **kwargs: Any) -> Path:
+        if self._hsmget_str is None:
+            return path
+        relative = path.relative_to(self.archive)
+        # hsmget will do the dmget first and this is fine since it's one file
+        cmd = (
+            f'{self._hsmget_str} -q -a {self.archive} -w {self.tmp} -p {self.ptmp} '
+            f'{relative}'
+        )
+        self._run(cmd, **kwargs)
+        return self.tmp / relative
+
+    @__call__.register(list)
+    def _call_path_list(self, paths: list[Path], **kwargs: Any) -> list[Path]:
+        if self._hsmget_str is None:
+            return paths
+        # dmget all files with one dmget command.
+        p_str = ' '.join([p.as_posix() for p in paths])
+        self._run(f'dmget {p_str}')
+        relative = [p.relative_to(self.archive) for p in paths]
+        rel_str = ' '.join(map(str, relative))
+        cmd = (
+            f'{self._hsmget_str} -q -a {self.archive} -w {self.tmp} -p {self.ptmp} '
+            f'{rel_str}'
+        )
+        self._run(cmd, **kwargs)
+        return [self.tmp / r for r in relative]
+
+    @__call__.register(Iterable)
+    def _call_path_iterable(self, paths: Iterable[Path], **kwargs: Any) -> list[Path]:
+        cast_paths = list(paths)
+        return self.__call__(cast_paths, **kwargs)
 
 
 _hsmget = HSMGet()
 
 
-def open_var(pp_root, kind, var, hsmget=_hsmget):
-    if isinstance(pp_root, str):
-        pp_root = Path(pp_root)
+def open_var(
+    pp_root: PathLike | str, kind: str, var: str, hsmget: HSMGet = _hsmget
+) -> xarray.DataArray:
     freq = 'daily' if 'daily' in kind else 'monthly'
-    pp_dir = pp_root / 'pp' / kind / 'ts' / freq
+    pp_dir = Path(pp_root) / 'pp' / kind / 'ts' / freq
     if not pp_dir.is_dir():
         raise FileNotFoundError(
             errno.ENOENT, 'Could not find post-processed directory', str(pp_dir)
@@ -107,7 +151,7 @@ def open_var(pp_root, kind, var, hsmget=_hsmget):
     )
 
 
-def load_config(config_path: str):
+def load_config(config_path: PathLike) -> Any:
     """Load the configuration file."""
     try:
         with open(config_path) as f:

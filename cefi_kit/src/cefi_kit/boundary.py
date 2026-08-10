@@ -1,14 +1,16 @@
 from os import path
+from typing import Any, Literal, overload
 
 import numpy as np
 import xarray
 
-from cefi_kit.grids import reuse_regrid
+from .grids import reuse_regrid
+from .types import ArrayLike, PathLike
 
 
-def check_angle_range(angle):
-    amax = float(angle.max())
-    amin = float(angle.min())
+def check_angle_range(angle: ArrayLike) -> None:
+    amax = float(np.asarray(angle).max())
+    amin = float(np.asarray(angle).min())
     if amax > (2 * np.pi) or amin < (-2 * np.pi):
         raise ValueError(
             f'Grid angle ranges from [{amin}, {amax}]. Expected from [-2pi, 2pi]. '
@@ -16,7 +18,9 @@ def check_angle_range(angle):
         )
 
 
-def rotate_uv(uearth, vearth, angle_earth_to_model_rad):
+def rotate_uv[T: (np.typing.NDArray, xarray.DataArray)](
+    uearth: T, vearth: T, angle_earth_to_model_rad: T
+) -> tuple[T, T]:
     """Rotate velocities from earth-relative to model-relative.
     Inputs should be velocity component in true east direction (uearth)
     and true north direction (vearth), and the angle in radians in the standard
@@ -49,7 +53,30 @@ def rotate_uv(uearth, vearth, angle_earth_to_model_rad):
     return urot, vrot
 
 
-def fill_missing(arr, xdim='locations', zdim='z', fill='b'):
+@overload
+def fill_missing(
+    arr: xarray.Dataset,
+    xdim: str = 'locations',
+    zdim: str | None = 'z',
+    fill: Literal['b', 'f'] = 'b',
+) -> xarray.Dataset: ...
+
+
+@overload
+def fill_missing(
+    arr: xarray.DataArray,
+    xdim: str = 'locations',
+    zdim: str | None = 'z',
+    fill: Literal['b', 'f'] = 'b',
+) -> xarray.DataArray: ...
+
+
+def fill_missing(
+    arr: xarray.Dataset | xarray.DataArray,
+    xdim: str = 'locations',
+    zdim: str | None = 'z',
+    fill: Literal['b', 'f'] = 'b',
+) -> xarray.Dataset | xarray.DataArray:
     """Fill missing data along the boundaries.
     Extrapolates horizontally first, then vertically.
 
@@ -72,13 +99,13 @@ def fill_missing(arr, xdim='locations', zdim='z', fill='b'):
     return filled
 
 
-def flood_missing(arr, **kwargs):
+def flood_missing(arr: xarray.DataArray, **kwargs) -> xarray.DataArray:
     """Flood missing data (over land) using HCtFlood.
     Import is done inside this function so that
     everything else still works if HCtFlood is unavailable.
 
     Args:
-        arr (xarray.DataArray): Array to be flooded.
+        arr: Array to be flooded.
         **kwargs: Additional keyword arguments passed to flooding function.
 
     Returns:
@@ -111,14 +138,14 @@ def flood_missing(arr, **kwargs):
     return flooded
 
 
-def find_datavar(ds):
+def find_datavar(ds: xarray.Dataset) -> Any:
     """
     Given an xarray Dataset containing one data variable of interest
     and possibly extra variables for lat and lon,
     return just the name of the variable of interest.
 
     Args:
-        ds (xarray.Dataset): Dataset potentially containing variables 'lat' and 'lon',
+        ds: Dataset potentially containing variables 'lat' and 'lon',
             plus one and only one other variable of interest.
 
     Raises:
@@ -126,7 +153,7 @@ def find_datavar(ds):
             (more than one variable not named lat or lon).
 
     Returns:
-        xarray.DataArray: DataArray of variable of interest from Dataset.
+        DataArray of variable of interest from Dataset.
     """
     names = [x for x in ds if x not in ['lon', 'lat']]
     if len(names) > 1:
@@ -134,7 +161,7 @@ def find_datavar(ds):
     return names[0]
 
 
-def ap2ep(uc, vc):
+def ap2ep[T: (np.typing.NDArray, xarray.DataArray)](uc: T, vc: T) -> tuple[T, T, T, T]:
     """Convert complex tidal u and v to tidal ellipse.
     Adapted from ap2ep.m for matlab
     Original copyright notice:
@@ -190,7 +217,9 @@ def ap2ep(uc, vc):
     return sema, ecc, inc, pha
 
 
-def ep2ap(sema, ecc, inc, pha):
+def ep2ap[T: (np.typing.NDArray, xarray.DataArray)](
+    sema: T, ecc: T, inc: T, pha: T
+) -> tuple[T, T, T, T]:
     """Convert tidal ellipse to real u and v amplitude and phase.
     Adapted from ep2ap.m for matlab.
     Original copyright notice:
@@ -251,7 +280,7 @@ def ep2ap(sema, ecc, inc, pha):
     return ua, va, up, vp
 
 
-def z_to_dz(ds, max_depth=6500.0):
+def z_to_dz(ds: xarray.Dataset, max_depth: float = 6500.0) -> xarray.DataArray:
     """Given depths of layer centers, get layer thicknesses.
     This works for output after regridding to a model boundary using xesmf.
     Derived from https://github.com/ESMG/regionalMOM6_notebooks/blob/master/creating_obc_input_files/panArctic_OBC_from_global_MOM6.ipynb
@@ -314,8 +343,14 @@ class Segment:
     """
 
     def __init__(
-        self, num, border, hgrid, in_degrees=False, output_dir='.', regrid_dir=None
-    ):
+        self,
+        num: int,
+        border: Literal['north', 'south', 'east', 'west'],
+        hgrid: xarray.Dataset,
+        in_degrees: bool = False,
+        output_dir: PathLike | str = '.',
+        regrid_dir: PathLike | str | None = None,
+    ) -> None:
         self.num = num
         self.border = border
         # Need to make a copy of hgrid so that the original is not modified multiple
@@ -338,64 +373,72 @@ class Segment:
             self.regrid_dir = regrid_dir
 
     @property
-    def coords(self):
-        if self.border == 'south':
-            return xarray.Dataset(
-                {
-                    'lon': self.hgrid['x'].isel(nyp=0),
-                    'lat': self.hgrid['y'].isel(nyp=0),
-                    'angle': self.hgrid['angle_dx'].isel(nyp=0),
-                }
-            )
-        elif self.border == 'north':
-            return xarray.Dataset(
-                {
-                    'lon': self.hgrid['x'].isel(nyp=-1),
-                    'lat': self.hgrid['y'].isel(nyp=-1),
-                    'angle': self.hgrid['angle_dx'].isel(nyp=-1),
-                }
-            )
-        elif self.border == 'west':
-            return xarray.Dataset(
-                {
-                    'lon': self.hgrid['x'].isel(nxp=0),
-                    'lat': self.hgrid['y'].isel(nxp=0),
-                    'angle': self.hgrid['angle_dx'].isel(nxp=0),
-                }
-            )
-        elif self.border == 'east':
-            return xarray.Dataset(
-                {
-                    'lon': self.hgrid['x'].isel(nxp=-1),
-                    'lat': self.hgrid['y'].isel(nxp=-1),
-                    'angle': self.hgrid['angle_dx'].isel(nxp=-1),
-                }
-            )
+    def coords(self) -> xarray.Dataset:
+        match self.border:
+            case 'south':
+                return xarray.Dataset(
+                    {
+                        'lon': self.hgrid['x'].isel(nyp=0),
+                        'lat': self.hgrid['y'].isel(nyp=0),
+                        'angle': self.hgrid['angle_dx'].isel(nyp=0),
+                    }
+                )
+            case 'north':
+                return xarray.Dataset(
+                    {
+                        'lon': self.hgrid['x'].isel(nyp=-1),
+                        'lat': self.hgrid['y'].isel(nyp=-1),
+                        'angle': self.hgrid['angle_dx'].isel(nyp=-1),
+                    }
+                )
+            case 'west':
+                return xarray.Dataset(
+                    {
+                        'lon': self.hgrid['x'].isel(nxp=0),
+                        'lat': self.hgrid['y'].isel(nxp=0),
+                        'angle': self.hgrid['angle_dx'].isel(nxp=0),
+                    }
+                )
+            case 'east':
+                return xarray.Dataset(
+                    {
+                        'lon': self.hgrid['x'].isel(nxp=-1),
+                        'lat': self.hgrid['y'].isel(nxp=-1),
+                        'angle': self.hgrid['angle_dx'].isel(nxp=-1),
+                    }
+                )
+            case _:
+                raise ValueError(f'Unexpected border direction: {self.border}')
 
     @property
-    def nx(self):
+    def nx(self) -> int:
         """Number of data points in the x-direction"""
         if self.border in ['south', 'north']:
             return len(self.coords['lon'])
         elif self.border in ['west', 'east']:
             return 1
+        else:
+            raise ValueError(f'Unexpected border direction: {self.border}')
 
     @property
-    def ny(self):
+    def ny(self) -> int:
         """Number of data points in the y-direction"""
         if self.border in ['south', 'north']:
             return 1
         elif self.border in ['west', 'east']:
             return len(self.coords['lat'])
+        else:
+            raise ValueError(f'Unexpected border direction: {self.border}')
 
-    def to_netcdf(self, ds, varnames, suffix=None, additional_encoding=None):
+    def to_netcdf(
+        self, ds: xarray.Dataset, varnames: str, suffix: str | None = None
+    ) -> None:
         """Write data for the segment to file.
-
         Args:
-            ds (xarray.Dataset): Segment dataset.
-            varnames (str): Name to give the file (e.g. 'temp', 'salt').
-            suffix (str, optional): Optional suffix to append to the filename
-                (before .nc). Defaults to None.
+            ds: Segment dataset.
+            varname: Name to give the file (e.g. 'temp', 'salt').
+            suffix: Optional suffix to append to the filename (before .nc).
+                Defaults to None.
         """
         for v in ds:
             ds[v].encoding['_FillValue'] = 1.0e20
@@ -422,8 +465,6 @@ class Segment:
             ds.time.encoding['calendar'] = 'gregorian'
             ds.time.encoding['dtype'] = 'float64'
             ds.time.encoding['_FillValue'] = 1.0e20
-        # if additional_encoding is not None:
-        #     encoding.update(additional_encoding)
 
         ds.to_netcdf(
             path.join(self.output_dir, fname),
@@ -433,7 +474,15 @@ class Segment:
             unlimited_dims='time',
         )
 
-    def expand_dims(self, ds):
+    @overload
+    def expand_dims(self, ds: xarray.Dataset) -> xarray.Dataset: ...
+
+    @overload
+    def expand_dims(self, ds: xarray.DataArray) -> xarray.DataArray: ...
+
+    def expand_dims(
+        self, ds: xarray.Dataset | xarray.DataArray
+    ) -> xarray.Dataset | xarray.DataArray:
         """Add a length-1 dimension to the variables in a boundary dataset or array.
         Named 'ny_segment_{self.segstr}' if the border runs west to east
             (a south or north boundary),
@@ -456,16 +505,25 @@ class Segment:
             return ds.expand_dims(f'ny_{self.segstr}', 2 - offset)
         elif self.border in ['west', 'east']:
             return ds.expand_dims(f'nx_{self.segstr}', 3 - offset)
+        else:
+            raise ValueError(f'Unexpected border direction: {self.border}')
 
-    def rename_dims(self, ds):
+    @overload
+    def rename_dims(self, ds: xarray.Dataset) -> xarray.Dataset: ...
+
+    @overload
+    def rename_dims(self, ds: xarray.DataArray) -> xarray.DataArray: ...
+
+    def rename_dims(
+        self, ds: xarray.Dataset | xarray.DataArray
+    ) -> xarray.Dataset | xarray.DataArray:
         """Rename dimensions to be unique to the segment.
 
         Args:
-            ds (xarray.Dataset): Dataset that might contain 'lon', 'lat', 'z',
-                and/or 'locations'.
+            ds: Dataset that might contain 'lon', 'lat', 'z', and/or 'locations'.
 
         Returns:
-            xarray.Dataset: Dataset with dimensions renamed to include the segment
+            xarray.Dataset with dimensions renamed to include the segment
             identifier and to match MOM6 expectations.
         """
         ds = ds.rename({'lon': f'lon_{self.segstr}', 'lat': f'lat_{self.segstr}'})
@@ -475,24 +533,32 @@ class Segment:
             return ds.rename({'locations': f'nx_{self.segstr}'})
         elif self.border in ['west', 'east']:
             return ds.rename({'locations': f'ny_{self.segstr}'})
+        else:
+            raise ValueError(f'Unexpected border direction: {self.border}')
 
-    def zeros(self, time, nz=0):
+    def zeros(self, time: ArrayLike, nz: int = 0) -> xarray.DataArray:
         """Create an appropriately shaped DataArray of zeros.
         Useful for things where the boundary is set to a constant.
 
         Args:
             time: Time coordinate to give the array.
-            nz (int, optional): Length of the vertical dimension to give the array,
-                if greater than 0. Defaults to 0.
+            nz Length of the vertical dimension to give the array, if greater than 0.
+                Defaults to 0.
 
         Returns:
-            xarray.DataArray: Array of zeros.
+            DataArray of zeros.
         """
-        nt = len(time)
+        time_arr = np.asarray(time)
+        nt = len(time_arr)
         if nz > 0:
             return xarray.DataArray(
                 np.zeros((nt, nz, self.ny, self.nx)),
-                coords=[time, np.arange(nz), np.arange(self.ny), np.arange(self.nx)],
+                coords=[
+                    time_arr,
+                    np.arange(nz),
+                    np.arange(self.ny),
+                    np.arange(self.nx),
+                ],
                 dims=[
                     'time',
                     f'nz_{self.segstr}',
@@ -503,11 +569,13 @@ class Segment:
         else:
             return xarray.DataArray(
                 np.zeros((nt, self.ny, self.nx)),
-                coords=[time, np.arange(self.ny), np.arange(self.nx)],
+                coords=[time_arr, np.arange(self.ny), np.arange(self.nx)],
                 dims=['time', f'ny_{self.segstr}', f'nx_{self.segstr}'],
             )
 
-    def add_coords(self, ds):
+    def add_coords(
+        self, ds: xarray.Dataset | xarray.DataArray
+    ) -> xarray.Dataset | xarray.DataArray:
         """Add segment lat and lon coordinates to a dataset."""
         if self.border in ['south', 'north']:
             ds[f'lon_{self.segstr}'] = ((f'nx_{self.segstr}',), self.coords['lon'].data)
@@ -515,49 +583,51 @@ class Segment:
         elif self.border in ['west', 'east']:
             ds[f'lon_{self.segstr}'] = ((f'ny_{self.segstr}',), self.coords['lon'].data)
             ds[f'lat_{self.segstr}'] = ((f'ny_{self.segstr}',), self.coords['lat'].data)
+        else:
+            raise ValueError(f'Unexpected border direction: {self.border}')
         return ds
 
     def regrid_velocity(
         self,
-        usource,
-        vsource,
-        method='nearest_s2d',
-        periodic=False,
-        write=True,
-        flood=False,
-        fill='b',
-        xdim='lon',
-        ydim='lat',
-        zdim='z',
-        rotate=True,
-        time_attrs=None,
-        time_encoding=None,
+        usource: xarray.DataArray,
+        vsource: xarray.DataArray,
+        method: str = 'nearest_s2d',
+        periodic: bool = False,
+        write: bool = True,
+        flood: bool = False,
+        fill: Literal['b', 'f'] = 'b',
+        xdim: str = 'lon',
+        ydim: str = 'lat',
+        zdim: str = 'z',
+        rotate: bool = True,
+        time_attrs: dict | None = None,
+        time_encoding: dict | None = None,
         **kwargs,
-    ):
+    ) -> xarray.Dataset:
         """Interpolate velocity onto segment and (optionally) write to file.
 
         Args:
-            usource (xarray.DataArray): Earth-relative u velocity on source grid.
-            vsource (xarray.DataArray): Earth-relative v velocity on source grid.
-            method (str, optional): Method recognized by xesmf to use to regrid.
+            usource: Earth-relative u velocity on source grid.
+            vsource: Earth-relative v velocity on source grid.
+            method: Method recognized by xesmf to use to regrid.
                 Defaults to 'nearest_s2d'.
-            periodic (bool, optional): Whether the source grid is periodic
+            periodic: Whether the source grid is periodic
                 (passed to xesmf). Defaults to False.
-            write (bool, optional): After regridding, write the results to file.
+            write: After regridding, write the results to file.
                 Defaults to True.
-            flood (bool, optional): As the first step of regridding, horizontally flood
+            flood: As the first step of regridding, horizontally flood
                 the source data. Defaults to False.
-            fill (str, optional): Method to use for filling data horizontally
+            fill: Method to use for filling data horizontally
                 (b for bfill or f for ffill).
-            xdim (str, optional): Name of the x dimension, needed if flooding.
+            xdim: Name of the x dimension, needed if flooding.
                 Defaults to 'lon'.
-            ydim (str, optional): Name of the y dimension, needed if flooding.
+            ydim: Name of the y dimension, needed if flooding.
                 Defaults to 'lat'.
-            zdim (str, optional): Name of the vertical dimension, needed if flooding.
+            zdim: Name of the vertical dimension, needed if flooding.
                 Defaults to 'z'.
 
         Returns:
-            xarray.Dataset: Dataset of regridded boundary data.
+            xarray.Dataset of regridded boundary data.
         """
         if flood:
             usource = flood_missing(usource, xdim=xdim, ydim=ydim, zdim=zdim).load()
@@ -642,11 +712,11 @@ class Segment:
 
         # Check if 'lon' is not present, then add it
         if 'lon' not in ds_uv.variables:
-            ds_uv = ds_uv.update({'lon': ('locations', self.coords['lon'].values)})
+            ds_uv.update({'lon': ('locations', self.coords['lon'].values)})
 
         # Check if 'lat' is not present, then add it
         if 'lat' not in ds_uv.variables:
-            ds_uv = ds_uv.update({'lat': ('locations', self.coords['lat'].values)})
+            ds_uv.update({'lat': ('locations', self.coords['lat'].values)})
 
         ds_uv = self.rename_dims(ds_uv)
 
@@ -663,21 +733,21 @@ class Segment:
 
     def regrid_tracer(
         self,
-        tsource,
-        method='nearest_s2d',
-        periodic=False,
-        write=True,
-        flood=False,
-        fill='b',
-        xdim='lon',
-        ydim='lat',
-        zdim='z',
-        regrid_suffix='t',
-        source_var=None,
-        time_attrs=None,
-        time_encoding=None,
+        tsource: xarray.DataArray,
+        method: str = 'nearest_s2d',
+        periodic: bool = False,
+        write: bool = True,
+        flood: bool = False,
+        fill: Literal['b', 'f'] = 'b',
+        xdim: str = 'lon',
+        ydim: str = 'lat',
+        zdim: str = 'z',
+        regrid_suffix: str = 't',
+        source_var: str | None = None,
+        time_attrs: dict | None = None,
+        time_encoding: dict | None = None,
         **kwargs,
-    ):
+    ) -> xarray.Dataset:
         """Regrid a tracer onto segment and (optionally) write to file.
 
         Args:
@@ -705,7 +775,7 @@ class Segment:
             xarray.Dataset: Dataset of regridded boundary data.
         """
         if source_var is None:
-            name = tsource.name
+            name = str(tsource.name)
             if flood:
                 tsource = flood_missing(tsource, xdim=xdim, ydim=ydim, zdim=zdim).load()
         else:
@@ -770,17 +840,17 @@ class Segment:
 
     def regrid_tidal_elevation(
         self,
-        resource,
-        imsource,
-        time,
-        method='nearest_s2d',
-        periodic=False,
-        write=True,
-        flood=False,
-        xdim='nx',
-        ydim='ny',
+        resource: xarray.Dataset,
+        imsource: xarray.Dataset,
+        time: xarray.DataArray,
+        method: str = 'nearest_s2d',
+        periodic: bool = False,
+        write: bool = True,
+        flood: bool = False,
+        xdim: str = 'nx',
+        ydim: str = 'ny',
         **kwargs,
-    ):
+    ) -> xarray.Dataset:
         """Regrid tidal elevation onto segment and (optionally) write to file.
         It is assumed that real (resource) and imaginary (imsource) components of the
         constituents have the same coordinates.
@@ -878,19 +948,19 @@ class Segment:
 
     def regrid_tidal_velocity(
         self,
-        uresource,
-        uimsource,
-        vresource,
-        vimsource,
-        time,
-        method='nearest_s2d',
-        periodic=False,
-        write=True,
-        flood=False,
-        xdim='nx',
-        ydim='ny',
+        uresource: xarray.Dataset,
+        uimsource: xarray.Dataset,
+        vresource: xarray.Dataset,
+        vimsource: xarray.Dataset,
+        time: xarray.DataArray,
+        method: str = 'nearest_s2d',
+        periodic: bool = False,
+        write: bool = True,
+        flood: bool = False,
+        xdim: str = 'nx',
+        ydim: str = 'ny',
         **kwargs,
-    ):
+    ) -> xarray.Dataset:
         """Regrid tidal velocity onto segment and (optionally) write to file.
         It is assumed that real and imaginary components of the
         individual u or v velocities have the same coordinates,
@@ -942,7 +1012,6 @@ class Segment:
                     uimsource[uimname], xdim=xdim, ydim=ydim, tdim='constituent'
                 ).values,
             )
-            # TODO: BUG: should be vresource and vimsource
             vresource[vrename] = (
                 vresource[vrename].dims,
                 flood_missing(
