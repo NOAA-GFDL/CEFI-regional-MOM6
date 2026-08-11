@@ -6,7 +6,7 @@ import sys
 import copy
 import warnings
 
-from cefi_kit.grid import mom_center_area
+from cefi_kit.grid import hgrid_to_xesmf, mom_center_area
 
 warnings.filterwarnings("ignore")
 
@@ -75,7 +75,7 @@ def get_glofas_pour_points():
 def get_mom_mask_for_glofas():
     # eliminate pour points outside of nep domain so they won't be mapped on the boundary in the d2s phase
     mom_to_glofas = xesmf.Regridder(
-        {'lat': lat, 'lon': lon, 'lat_b': latb, 'lon_b': lonb},
+        mom_grid,
         {'lon': glofas_lon, 'lat': glofas_lat, 'lon_b': glofas_lonb , 'lat_b': glofas_latb },
         method='conservative',
         periodic=True,
@@ -227,10 +227,9 @@ if __name__ == '__main__':
 
     # Load regional ocean hgrid
     hgrid = xarray.open_dataset( '/work/Liz.Drenkard/mom6/nep_10km/setup/grid/ocean_hgrid.nc')
-    lon = hgrid.x[1::2, 1::2].values
-    lonb = hgrid.x[::2, ::2].values
-    lat = hgrid.y[1::2, 1::2].values
-    latb = hgrid.y[::2, ::2].values
+    mom_grid = hgrid_to_xesmf(hgrid)
+    lat = mom_grid['lat']
+    lon = mom_grid['lon']
 
     # Load GloFAS local drain direction map
     ldd = xarray.open_dataset('/work/Liz.Drenkard/mom6/nep_10km/setup/runoff/ncks_glofas/ldd_v4.0_NEP_subset.nc').ldd.values
