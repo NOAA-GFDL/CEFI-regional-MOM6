@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.13,<3.14"
 dependencies = [
+    "bottleneck>=1.6.0",
     "esmpy==8.8.1",
     "netcdf4>=1.7.4",
     "numpy>=2.4.6",
