@@ -1,5 +1,4 @@
 import errno
-import logging
 import os
 import re
 from collections.abc import Iterable
@@ -13,10 +12,9 @@ from typing import Any
 
 import xarray
 import yaml
+from loguru import logger
 
 from .types import PathLike
-
-logger = logging.getLogger(__name__)
 
 
 # hsmget, available on GFDL PPAN, will make it faster, easier, and safer
@@ -36,11 +34,16 @@ class HSMGet:
             if possible_hsmget.exists():
                 # This seems to be the only way to get the module to stick
                 res = f'module load hsm/1.3.0 && {possible_hsmget}'
+                logger.debug('Using hsmget with command {cmd}', cmd=res)
             else:
                 logger.info(
                     'Not using hsmget. If running on GFDL analysis, run '
                     '`module load hsm/1.3.0` to enable using hsmget. '
                 )
+        else:
+            logger.debug('hsmget found in path')
+        # Check if hsmget was found, or found with a module load,
+        # but the expected archive, ptmp, or tmp directories don't exist.
         if res is not None and not self._dirs_exist():
             logger.warning(
                 'hsmget was found but archive, ptmp, and/or tmp were not. '
@@ -58,6 +61,7 @@ class HSMGet:
         # This will escape things like (1) in the file name
         # so that it can be run as a shell command.
         esc = re.sub(r'([\(\)])', r'\\\1', cmd)
+        logger.trace('Running command: {cmd}', cmd=esc)
         return run(esc, shell=True, check=True, stdout=stdout, stderr=stderr)
 
     @singledispatchmethod
@@ -122,6 +126,7 @@ def _open_var_pathlike(
 ) -> xarray.DataArray:
     freq = 'daily' if 'daily' in kind else 'monthly'
     pp_dir = Path(pp_root) / 'pp' / kind / 'ts' / freq
+    logger.info('Looking for {var} in {pp_dir}', var=var, pp_dir=pp_dir)
     if not pp_dir.is_dir():
         raise FileNotFoundError(
             errno.ENOENT, 'Could not find post-processed directory', str(pp_dir)
@@ -141,6 +146,9 @@ def _open_var_pathlike(
         # Look through the available chunks and return for the
         # largest chunk that has file(s).
         matching_files = list(chunk.glob(f'{kind}.*.{var}.nc'))
+        logger.info(
+            'Found {nf} files in {name} chunks', nf=len(matching_files), name=chunk.name
+        )
         # Treat 1 and > 1 files separately, though the > 1 case
         # could probably handle both.
         if len(matching_files) > 1:
