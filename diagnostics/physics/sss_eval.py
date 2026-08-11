@@ -105,7 +105,7 @@ def plot_sss_eval(pp_root,config):
     cbar0.ax.set_xlabel('Mean SSS')
 
     # Regional climatologies
-    grid[1].pcolormes(regional_grid['lon']), center_to_outer(regional_grid['lat']), combined, transform=proj, **common)
+    grid[1].pcolormesh(center_to_outer(regional_grid['lon']), center_to_outer(regional_grid['lat']), combined, transform=proj, **common)
     grid[1].set_title('(b) Regional climatologies')
 
     # Model - regional
