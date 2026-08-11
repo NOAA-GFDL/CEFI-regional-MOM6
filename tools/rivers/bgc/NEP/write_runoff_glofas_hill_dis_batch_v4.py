@@ -6,7 +6,7 @@ import sys
 import copy
 import warnings
 
-from cefi_kit.grid import hgrid_to_xesmf, mom_center_area
+from cefi_kit.grids import hgrid_to_xesmf, mom_center_area
 
 warnings.filterwarnings("ignore")
 
