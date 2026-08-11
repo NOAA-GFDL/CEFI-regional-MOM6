@@ -4,7 +4,7 @@ import os
 import re
 from collections.abc import Iterable
 from dataclasses import dataclass
-from functools import singledispatchmethod
+from functools import singledispatch, singledispatchmethod
 from getpass import getuser
 from pathlib import Path
 from shutil import which
@@ -109,7 +109,15 @@ class HSMGet:
 _hsmget = HSMGet()
 
 
+@singledispatch
 def open_var(
+    pp_root: Any, kind: str, var: str, hsmget: HSMGet = _hsmget
+) -> xarray.DataArray:
+    raise TypeError('Unsupported type for pp_root. Expected Path or Iterable[Path]')
+
+
+@open_var.register
+def _open_var_pathlike(
     pp_root: PathLike | str, kind: str, var: str, hsmget: HSMGet = _hsmget
 ) -> xarray.DataArray:
     freq = 'daily' if 'daily' in kind else 'monthly'
@@ -148,6 +156,20 @@ def open_var(
     raise FileNotFoundError(
         errno.ENOENT,
         'Could not find any post-processed files. Check if frepp failed.',
+    )
+
+
+@open_var.register(Iterable)
+def _open_var_pathiterable(
+    pp_root: Iterable[PathLike],
+    kind: str,
+    var: str,
+    hsmget: HSMGet = _hsmget,
+    concat_dim: str = 'time',
+) -> xarray.DataArray:
+    """For an iterable of post-processed paths, open each separately and concat."""
+    return xarray.concat(
+        [open_var(p, kind, var, hsmget=hsmget) for p in pp_root], dim=concat_dim
     )
 
 
