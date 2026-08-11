@@ -2,20 +2,12 @@ import numpy as np
 import xarray
 import xesmf
 
-from cefi_kit.grids import mom_center_area
+from cefi_kit.grids import hgrid_to_xesmf, mom_center_area
 
 from HCtFlood import kara as flood
 
 hgrid = xarray.open_dataset('../../datasets/grid/ocean_hgrid.nc')
-
-mom_grid = {
-    'lon': hgrid.x[1::2, 1::2],
-    'lon_b': hgrid.x[::2, ::2],
-    'lat': hgrid.y[1::2, 1::2],
-    'lat_b': hgrid.y[::2, ::2]
-}
-
-# From Alistair
+mom_grid = hgrid_to_xesmf(hgrid)
 mom_area = mom_center_area(hgrid.area)
 
 # https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/ocn/mom/tx0.25v1/
