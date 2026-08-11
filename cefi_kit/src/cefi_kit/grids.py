@@ -38,6 +38,15 @@ def mom_center_area(supergrid_area):
     return (supergrid_area[::2, ::2] + supergrid_area[1::2, 1::2]) + (supergrid_area[1::2, ::2] + supergrid_area[::2, 1::2])
 
 
+def hgrid_to_xesmf(hgrid):
+    return {
+        'lon': hgrid.x[1::2, 1::2],
+        'lon_b': hgrid.x[::2, ::2],
+        'lat': hgrid.y[1::2, 1::2],
+        'lat_b': hgrid.y[::2, ::2]
+    }
+
+
 def vgrid_to_interfaces(vgrid, max_depth=6500.0):
     if isinstance(vgrid, xarray.DataArray):
         vgrid = vgrid.data

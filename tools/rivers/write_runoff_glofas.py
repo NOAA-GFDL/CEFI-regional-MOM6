@@ -11,7 +11,7 @@ import argparse
 import xarray
 
 from cefi_kit.io import load_config
-from cefi_kit.grids import mom_center_area, reuse_regrid
+from cefi_kit.grids import hgrid_to_xesmf, mom_center_area, reuse_regrid
 
 
 def parse_arguments():
@@ -63,10 +63,7 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     glofas_latb = np.arange(glofas['lat'][0]+.05, glofas['lat'][-1]-.051, -.1)
     glofas_lonb = np.arange(glofas['lon'][0]-.05, glofas['lon'][-1]+.051, .1)
 
-    lon = hgrid.x[1::2, 1::2]
-    lonb = hgrid.x[::2, ::2]
-    lat = hgrid.y[1::2, 1::2]
-    latb = hgrid.y[::2, ::2]
+    mom_grid = hgrid_to_xesmf(hgrid)
     area = mom_center_area(hgrid.area)
 
     # Convert m3/s to kg/m2/s
@@ -81,7 +78,7 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     # Conservatively interpolate runoff onto MOM grid
     glofas_to_mom_con = reuse_regrid(
         {'lon': glofas.lon, 'lat': glofas.lat, 'lon_b': glofas_lonb, 'lat_b': glofas_latb},
-        {'lat': lat, 'lon': lon, 'lat_b': latb, 'lon_b': lonb},
+        mom_grid,
         method='conservative',
         periodic=True,
         reuse_weights=True,
@@ -125,15 +122,15 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
 
     # Flatten mask and coordinates to 1D
     flat_mask = coast_mask.ravel().astype('bool')
-    coast_lon = lon.values.ravel()[flat_mask]
-    coast_lat = lat.values.ravel()[flat_mask]
+    coast_lon = mom_grid['lon'].values.ravel()[flat_mask]
+    coast_lat = mom_grid['lat'].values.ravel()[flat_mask]
     mom_id = np.arange(np.prod(coast_mask.shape))
 
     # Use xesmf to find the index of the nearest coastal cell
     # for every grid cell in the MOM domain
     coast_to_mom = reuse_regrid(
         {'lat': coast_lat, 'lon': coast_lon},
-        {'lat': lat, 'lon': lon},
+        mom_grid,
         method='nearest_s2d',
         locstream_in=True,
         reuse_weights=True,
@@ -171,8 +168,8 @@ def write_runoff(glofas, glofas_mask, hgrid, coast_mask, out_file):
     ds = xarray.Dataset({
         'runoff': (['time', 'y', 'x'], filled_reshape),
         'area': (['y', 'x'], area.data),
-        'lat': (['y', 'x'], lat.data),
-        'lon': (['y', 'x'], lon.data)
+        'lat': (['y', 'x'], mom_grid['lat'].data),
+        'lon': (['y', 'x'], mom_grid['lon'].data)
         },
         coords={'time': glofas['time'].data, 'y': np.arange(filled_reshape.shape[1]), 'x': np.arange(filled_reshape.shape[2])}
     )
