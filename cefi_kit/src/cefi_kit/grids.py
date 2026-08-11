@@ -4,6 +4,7 @@ from typing import overload
 import numpy as np
 import xarray
 import xesmf
+from loguru import logger
 
 from .types import ArrayLike, NDArray
 
@@ -87,11 +88,13 @@ def reuse_regrid(*args, **kwargs) -> xesmf.Regridder:
 
     if reuse_weights:
         if path.isfile(filename):
+            logger.info('Reusing weights from {f}', f=filename)
             return xesmf.Regridder(
                 *args, reuse_weights=True, filename=filename, **kwargs
             )
         else:
             regrid = xesmf.Regridder(*args, **kwargs)
+            logger.info('Saving new weights to {f}', f=filename)
             regrid.to_netcdf(filename)
             return regrid
     else:
