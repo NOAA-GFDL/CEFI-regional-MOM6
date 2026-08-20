@@ -149,9 +149,9 @@ ALTERNATE_FIRST_DIRECTION = False !   [Boolean] default = False
                                 ! first direction can not be found in the restart file.
 CHECK_BAD_SURFACE_VALS = False  !   [Boolean] default = False
                                 ! If true, check the surface state for ridiculous values.
-DEFAULT_ANSWER_DATE = 99991231  ! default = 99991231
+DEFAULT_ANSWER_DATE = 20260703  ! default = 99991231
                                 ! This sets the default value for the various _ANSWER_DATE parameters.
-SURFACE_ANSWER_DATE = 99991231  ! default = 99991231
+SURFACE_ANSWER_DATE = 20260703  ! default = 99991231
                                 ! The vintage of the expressions for the surface properties.  Values below
                                 ! 20190101 recover the answers from the end of 2018, while higher values use
                                 ! updated and more robust forms of the same expressions.
@@ -373,7 +373,7 @@ OBC_REMAPPING_SCHEME = "PPM_H4" ! default = "PPM_H4"
                                 ! PQM_IH6IH5  (5th-order accurate)
 BRUSHCUTTER_MODE = True         !   [Boolean] default = False
                                 ! If true, read external OBC data on the supergrid.
-REMAPPING_ANSWER_DATE = 99991231 ! default = 99991231
+REMAPPING_ANSWER_DATE = 20260703 ! default = 99991231
                                 ! The vintage of the expressions and order of arithmetic to use for remapping.
                                 ! Values below 20190101 result in the use of older, less accurate expressions
                                 ! that were in use at the end of 2018.  Higher values result in the use of more
@@ -918,7 +918,7 @@ USE_QG_LEITH_GM = False         !   [Boolean] default = False
                                 ! If true, use the QG Leith viscosity as the GM coefficient.
 
 ! === module MOM_set_visc ===
-SET_VISC_ANSWER_DATE = 99991231 ! default = 99991231
+SET_VISC_ANSWER_DATE = 20260703 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the set viscosity
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
@@ -1378,7 +1378,7 @@ FRICTWORK_BUG = False           !   [Boolean] default = True
                                 ! recommended.
 
 ! === module MOM_vert_friction ===
-VERT_FRICTION_ANSWER_DATE = 99991231 ! default = 99991231
+VERT_FRICTION_ANSWER_DATE = 20260703 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the viscous
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use expressions that do not use an arbitrary hard-coded
@@ -1500,7 +1500,7 @@ CONST_DYN_PSURF = 0.9           !   [nondim] default = 0.9
                                 ! DYNAMIC_SURFACE_PRESSURE is true.  Stable values are < ~1.0.
 BT_CORIOLIS_SCALE = 1.0         !   [nondim] default = 1.0
                                 ! A factor by which the barotropic Coriolis anomaly terms are scaled.
-BAROTROPIC_ANSWER_DATE = 99991231 ! default = 99991231
+BAROTROPIC_ANSWER_DATE = 20260703 ! default = 99991231
                                 ! The vintage of the expressions in the barotropic solver. Values below 20190101
                                 ! recover the answers from the end of 2018, while higher values use more
                                 ! efficient or general expressions.
@@ -1733,7 +1733,7 @@ FLUX_RI_MAX = 0.2               !   [nondim] default = 0.2
                                 ! The flux Richardson number where the stratification is large enough that N2 >
                                 ! omega2.  The full expression for the Flux Richardson number is usually
                                 ! FLUX_RI_MAX*N2/(N2+OMEGA2).
-SET_DIFF_ANSWER_DATE = 99991231 ! default = 99991231
+SET_DIFF_ANSWER_DATE = 20260703 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the set diffusivity
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
@@ -2137,7 +2137,7 @@ BLUE_FRAC_SW = 0.5              !   [nondim] default = 0.5
                                 ! The fraction of the penetrating shortwave radiation that is in the blue band.
 PEN_SW_NBANDS = 3               ! default = 1
                                 ! The number of bands of penetrating shortwave radiation.
-OPTICS_ANSWER_DATE = 99991231   ! default = 99991231
+OPTICS_ANSWER_DATE = 20260703   ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the optics
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
@@ -2352,7 +2352,7 @@ READ_GUST_2D = False            !   [Boolean] default = False
                                 ! If true, use a 2-dimensional gustiness supplied from an input file
 GUST_CONST = 0.0                !   [Pa] default = 0.0
                                 ! The background gustiness in the winds.
-SURFACE_FORCING_ANSWER_DATE = 99991231 ! default = 99991231
+SURFACE_FORCING_ANSWER_DATE = 20260703 ! default = 99991231
                                 ! The vintage of the order of arithmetic and expressions in the gustiness
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use a simpler expression to calculate gustiness.
