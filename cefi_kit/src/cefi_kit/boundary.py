@@ -63,8 +63,6 @@ def fill_missing(arr, xdim='locations', zdim='z', fill='b'):
 
 def flood_missing(arr, **kwargs):
     """Flood missing data (over land) using HCtFlood.
-    Had some trouble installing HCtFlood on analysis, so it is
-    imported by adding it to the path.
     Import is done inside this function so that
     everything else still works if HCtFlood is unavailable.
 
@@ -76,8 +74,6 @@ def flood_missing(arr, **kwargs):
         xarray.DataArray: Flooded array.
     """
     # https://github.com/raphaeldussin/HCtFlood
-    import sys
-    sys.path.append('/home/Andrew.C.Ross/git/HCtFlood')
     from HCtFlood import kara as hct
     flooded = hct.flood_kara(arr, **kwargs)
 
