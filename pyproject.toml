@@ -1,7 +1,7 @@
 [project]
 name = "cefi-kit"
 version = "0.1.0"
-description = "Tools for setting up and evaluationg regional MOM6 models for CEFI"
+description = "Tools for setting up and evaluating regional MOM6 models for CEFI"
 readme = "README.md"
 authors = [
     { name = "NOAA/GFDL CEFI", email = "oar.gfdl.cefi-support@noaa.gov" }

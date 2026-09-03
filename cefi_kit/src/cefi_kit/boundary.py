@@ -112,8 +112,9 @@ def flood_missing(arr: xarray.DataArray, **kwargs) -> xarray.DataArray:
         xarray.DataArray: Flooded array.
     """
     # https://github.com/raphaeldussin/HCtFlood
-    from HCtFlood import kara as hct
     import warnings  # noqa: PLC0415
+
+    from HCtFlood import kara as hct  # noqa: PLC0415
 
     flooded = hct.flood_kara(arr, **kwargs)
 
