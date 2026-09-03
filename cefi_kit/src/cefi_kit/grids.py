@@ -69,6 +69,11 @@ def vgrid_to_interfaces(vgrid: ArrayLike, max_depth: float = 6500.0) -> NDArray:
     if isinstance(vgrid, xarray.DataArray):
         vgrid = vgrid.data
     zi = np.concatenate([[0], np.cumsum(vgrid)])
+    # Check if the total thickness of the vertical grid exceeds the
+    # set maximum depth. If it does it's treated as fatal, although it would also be
+    # reasonable to just skip setting the bottom interface to max_depth.
+    if zi[-1] > max_depth:
+        raise ValueError('Sum of grid layers exceeds specified bottom depth')
     zi[-1] = max_depth
     return zi
 
