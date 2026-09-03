@@ -31,6 +31,9 @@ diagnostics = [
     "gsw>=3.6.23",
     "h5py>=3.16.0",
 ]
+flooding = [
+    "hctflood>=0.1.0",
+]
 
 [build-system]
 requires = ["uv_build>=0.11.14,<0.12.0"]
@@ -47,3 +50,4 @@ module-root = "cefi_kit/src"
 
 [tool.uv.sources]
 esmpy = { git = "https://github.com/esmf-org/esmf", subdirectory = "src/addon/esmpy", tag = "v8.8.1" }
+HCtFlood = { git = "https://github.com/andrew-c-ross/HCtFlood" }
