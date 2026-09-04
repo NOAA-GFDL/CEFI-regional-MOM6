@@ -405,6 +405,11 @@ RESTART_CHECKSUMS_REQUIRED = True !   [Boolean] default = True
                                 ! may want to avoid this comparison if for example the restarts are made from a
                                 ! run with a different mask_table than the current run, in which case the
                                 ! checksums will not match and cause crash.
+ENSEMBLE_APPENDIX_PREFIX = ""   ! default = ""
+                                ! If set to a non-empty string, this value specifies the substring after which
+                                ! the ensemble appendix is inserted in restart, initial conditions, and ocean
+                                ! geometry file names. If the specified substring is not found in any of those
+                                ! output file names, the model terminates with an error.
 RESTART_SYMMETRIC_CHECKSUMS = False !   [Boolean] default = False
                                 ! If true, do the restart checksums on all the edge points for a non-reentrant
                                 ! grid.  This requires that SYMMETRIC_MEMORY_ is defined at compile time.
@@ -833,10 +838,12 @@ USE_QG_LEITH_GM = False         !   [Boolean] default = False
                                 ! If true, use the QG Leith viscosity as the GM coefficient.
 
 ! === module MOM_set_visc ===
-SET_VISC_ANSWER_DATE = 99991231 ! default = 99991231
+SET_VISC_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the set viscosity
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
+                                ! Values below 20260704 use the non-reproducible power operator in place of
+                                ! cuberoot() when finding the open distances with CHANNEL_DRAG.
 BOTTOMDRAGLAW = True            !   [Boolean] default = True
                                 ! If true, the bottom stress is calculated with a drag law of the form
                                 ! c_drag*|u|*u. The velocity magnitude may be an assumed value or it may be
@@ -953,8 +960,11 @@ USE_GME = False                 !   [Boolean] default = False
 USE_GM_WORK_BUG = False         !   [Boolean] default = False
                                 ! If true, compute the top-layer work tendency on the u-grid with the incorrect
                                 ! sign, for legacy reproducibility.
+
+! === module MOM_stoch_eos ===
 STOCH_EOS = False               !   [Boolean] default = False
-                                ! If true, stochastic perturbations are applied to the EOS in the PGF.
+                                ! If true, computes stochastic perturbations that can be applied to the EOS in
+                                ! various places.
 STANLEY_COEFF = -1.0            !   [nondim] default = -1.0
                                 ! Coefficient correlating the temperature gradient and SGS T variance.
 
@@ -1047,7 +1057,8 @@ CONT_PPM_MARGINAL_FACE_AREAS = True !   [Boolean] default = True
                                 ! weights in the barotropic solver. Otherwise use the transport averaged areas.
 CONT_USE_H_MARG_MIN = False     !   [Boolean] default = False
                                 ! If true, the marginal thickness used and returned from continuity is bounded
-                                ! from below by a sub-roundoff value. Otherwise the minimum is 0.
+                                ! from below by a sub-roundoff value.  Otherwise the minimum is a large negative
+                                ! value to recreate previous answers.
 
 ! === module MOM_CoriolisAdv ===
 NOSLIP = False                  !   [Boolean] default = False
@@ -1097,11 +1108,6 @@ RHO_PGF_REF = 1035.0            !   [kg m-3] default = 1035.0
                                 ! The reference density that is subtracted off when calculating pressure
                                 ! gradient forces.  Its inverse is subtracted off of specific volumes when in
                                 ! non-Boussinesq mode.  The default is RHO_0.
-RHO_PGF_REF_BUG = True          !   [Boolean] default = True
-                                ! If true, recover a bug that RHO_0 (the mean seawater density in Boussinesq
-                                ! mode) and RHO_PGF_REF (the subtracted reference density in finite volume
-                                ! pressure gradient forces) are incorrectly interchanged in several instances in
-                                ! Boussinesq mode.
 SSH_IN_EOS_PRESSURE_FOR_PGF = False !   [Boolean] default = False
                                 ! If true, include contributions from the sea surface height in the height-based
                                 ! pressure used in the equation of state calculations for the Boussinesq
@@ -1196,9 +1202,6 @@ FRICTWORK_BUG = True            !   [Boolean] default = False
                                 ! If true, retain an answer-changing bug in calculating the FrictWork, which
                                 ! cancels the h in thickness flux and the h at velocity point. This is not
                                 ! recommended.
-OBC_SPECIFIED_STRAIN_BUG = True !   [Boolean] default = True
-                                ! If true, recover a bug that specified shear strain option at open boundaries
-                                ! cannot be applied.
 
 ! === module MOM_vert_friction ===
 VERT_FRICTION_ANSWER_DATE = 99991231 ! default = 99991231
@@ -1325,9 +1328,6 @@ VISC_REM_BT_WEIGHT_BUG = True   !   [Boolean] default = True
                                 ! If true, recover a bug in barotropic solver that uses an unnormalized weight
                                 ! function for vertical averages of baroclinic velocity and forcing. Default of
                                 ! this flag is set by VISC_REM_BUG.
-DTBT_RESTART_BUG = True         !   [Boolean] default = True
-                                ! If true, recover a bug where the barotropic timestep DTBT read from a restart
-                                ! file is immediately overridden by a recalculation on the first dynamics step.
 TIDAL_SAL_FLATHER = False       !   [Boolean] default = False
                                 ! If true, then apply adjustments to the external gravity wave speed used with
                                 ! the Flather OBC routine consistent with the barotropic solver. This applies to
@@ -1393,6 +1393,9 @@ DTBT = -0.9                     !   [s or nondim] default = -0.98
                                 ! use 0, or a negative value gives the fraction of the stable value. Setting
                                 ! DTBT to 0 is the same as setting it to -0.98. The value of DTBT that will
                                 ! actually be used is an integer fraction of DT, rounding down.
+DTBT_RESTART_BUG = True         !   [Boolean] default = True
+                                ! If true, recover a bug where the barotropic timestep DTBT read from a restart
+                                ! file is immediately overridden by a recalculation on the first dynamics step.
 BT_USE_OLD_CORIOLIS_BRACKET_BUG = True !   [Boolean] default = False
                                 ! If True, use an order of operations that is not bitwise rotationally symmetric
                                 ! in the meridional Coriolis term of the barotropic solver.
@@ -2059,6 +2062,10 @@ PERT_EPBL = False               !   [Boolean] default = False
                                 ! If true, then stochastically perturb the kinetic energy production and
                                 ! dissipation terms.  Amplitude and correlations are controlled by the nam_stoch
                                 ! namelist in the UFS model only.
+STOCHASTICS_ANSWER_DATE = 20250101 ! default = 20250101
+                                ! The vintage of the order of arithmetic in the stochastics calculations.
+                                ! Values below 20250701 recover the answers from early in 2025, while higher
+                                ! values use expressions that have been refactored for rotational symmetry.
 
 ! === module ocean_model_init ===
 SINGLE_STEPPING_CALL = True     !   [Boolean] default = True

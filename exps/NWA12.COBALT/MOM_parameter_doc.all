@@ -158,9 +158,9 @@ ALTERNATE_FIRST_DIRECTION = False !   [Boolean] default = False
                                 ! first direction can not be found in the restart file.
 CHECK_BAD_SURFACE_VALS = False  !   [Boolean] default = False
                                 ! If true, check the surface state for ridiculous values.
-DEFAULT_ANSWER_DATE = 99991231  ! default = 99991231
+DEFAULT_ANSWER_DATE = 20260703  ! default = 99991231
                                 ! This sets the default value for the various _ANSWER_DATE parameters.
-SURFACE_ANSWER_DATE = 99991231  ! default = 99991231
+SURFACE_ANSWER_DATE = 20260703  ! default = 20260703
                                 ! The vintage of the expressions for the surface properties.  Values below
                                 ! 20190101 recover the answers from the end of 2018, while higher values use
                                 ! updated and more robust forms of the same expressions.
@@ -331,6 +331,16 @@ OBC_HOR_INDEXING_BUG = True     !   [Boolean] default = True
 OBC_TEMP_SALT_NEEDED_BUG = True !   [Boolean] default = True
                                 ! If true, recover a bug that OBC temperature and salinity can be ignored even
                                 ! if they are registered tracers in the rest of the model.
+IGNORE_DT_OBC_SEG_UPDATE_OBGC = False !   [Boolean] default = False
+                                ! If true, DT_OBC_SEG_UPDATE_OBGC is ignored and all OBC segment tracer data
+                                ! (T/S and BGC) is updated every tracer advection step.  If false, T/S is
+                                ! updated every dynamic step, which is unnecessary, while BGC follows its own
+                                ! update schedule, which may not reproduce across restarts. Once
+                                ! DT_OBC_SEG_UPDATE_OBGC is deprecated, only the 'true' path will be needed.
+OBC_TRACER_DZ_BUG = True        !   [Boolean] default = True
+                                ! If true, recover a bug that OBC tracer segment data is read without
+                                ! recomputing segment layer thicknesses from the current layer thicknesses and
+                                ! thermodynamic state.
 OBC_SEGMENT_001 = "J=0,I=0:N,FLATHER,ORLANSKI,NUDGED,ORLANSKI_TAN,NUDGED_TAN" !
                                 ! Documentation needs to be dynamic?????
 OBC_SEGMENT_001_VELOCITY_NUDGING_TIMESCALES = 3.0, 360.0 !   [days]
@@ -359,19 +369,15 @@ OBC_RAD_VEL_WT = 0.3            !   [nondim] default = 0.3
                                 ! velocities. Valid values range from 0 to 1. This is only used if one of the
                                 ! open boundary segments is using Orlanski.
 OBC_TRACER_RESERVOIR_LENGTH_SCALE_OUT = 9000.0 !   [m] default = 0.0
-                                ! An effective length scale for the tracer reservoir update when the flow is
-                                ! exiting the domain. If positive, the reservoir relaxes toward the interior
-                                ! concentration with this length scale. If zero (default), the length scale is
-                                ! truly zero: the reservoir is set instantly to the interior concentration on
-                                ! outflow. If negative, the length scale is effectively infinite: the reservoir
-                                ! is never updated on outflow.
+                                ! The length scale for updating the tracer reservoir toward the interior
+                                ! concentration where flow exits the domain: >0 relaxes over this distance, 0
+                                ! resets the reservoir to that concentration immediately, and <0 (infinite
+                                ! length scale) leaves the reservoir unchanged.  This applies to all tracers on
+                                ! every open boundary segment.
 OBC_TRACER_RESERVOIR_LENGTH_SCALE_IN = 9000.0 !   [m] default = 0.0
-                                ! An effective length scale for the tracer reservoir update when the flow is
-                                ! entering the domain. If positive, the reservoir relaxes toward the external
-                                ! OBC concentration with this length scale. If zero (default), the length scale
-                                ! is truly zero: the reservoir is set instantly to the external OBC
-                                ! concentration on inflow. If negative, the length scale is effectively
-                                ! infinite: the reservoir is never updated on inflow.
+                                ! The length scale for updating the tracer reservoir toward the external OBC
+                                ! concentration where flow enters the domain, following the sign convention of
+                                ! OBC_TRACER_RESERVOIR_LENGTH_SCALE_OUT.
 OBC_THICKNESS_RESERVOIR_LENGTH_SCALE_OUT = 0.0 !   [m] default = 0.0
                                 ! An effective length scale for restoring the layer thickness at the boundaries
                                 ! to externally imposed values when the flow is exiting the domain.
@@ -392,7 +398,7 @@ OBC_REMAPPING_SCHEME = "PPM_H4" ! default = "PPM_H4"
                                 ! PQM_IH6IH5  (5th-order accurate)
 BRUSHCUTTER_MODE = True         !   [Boolean] default = False
                                 ! If true, read external OBC data on the supergrid.
-REMAPPING_ANSWER_DATE = 99991231 ! default = 99991231
+REMAPPING_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the expressions and order of arithmetic to use for remapping.
                                 ! Values below 20190101 result in the use of older, less accurate expressions
                                 ! that were in use at the end of 2018.  Higher values result in the use of more
@@ -548,6 +554,11 @@ RESTART_CHECKSUMS_REQUIRED = False !   [Boolean] default = True
                                 ! may want to avoid this comparison if for example the restarts are made from a
                                 ! run with a different mask_table than the current run, in which case the
                                 ! checksums will not match and cause crash.
+ENSEMBLE_APPENDIX_PREFIX = ""   ! default = ""
+                                ! If set to a non-empty string, this value specifies the substring after which
+                                ! the ensemble appendix is inserted in restart, initial conditions, and ocean
+                                ! geometry file names. If the specified substring is not found in any of those
+                                ! output file names, the model terminates with an error.
 RESTART_SYMMETRIC_CHECKSUMS = False !   [Boolean] default = False
                                 ! If true, do the restart checksums on all the edge points for a non-reentrant
                                 ! grid.  This requires that SYMMETRIC_MEMORY_ is defined at compile time.
@@ -609,8 +620,6 @@ TRACERS_MAY_REINIT = True       !   [Boolean] default = False
 OBC_VALUE_UPDATE_BUG = True     !   [Boolean] default = True
                                 ! If true, recover a bug that OBC segment data does not update if all segments
                                 ! use 'value' and none uses 'file'.
-USE_FILE_OBC = False            !   [Boolean] default = False
-                                ! If true, use external files for the open boundary.
 USE_TIDAL_BAY_OBC = False       !   [Boolean] default = False
                                 ! If true, use the tidal_bay open boundary.
 USE_KELVIN_WAVE_OBC = False     !   [Boolean] default = False
@@ -974,10 +983,12 @@ USE_QG_LEITH_GM = False         !   [Boolean] default = False
                                 ! If true, use the QG Leith viscosity as the GM coefficient.
 
 ! === module MOM_set_visc ===
-SET_VISC_ANSWER_DATE = 99991231 ! default = 99991231
+SET_VISC_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the set viscosity
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
+                                ! Values below 20260704 use the non-reproducible power operator in place of
+                                ! cuberoot() when finding the open distances with CHANNEL_DRAG.
 BOTTOMDRAGLAW = True            !   [Boolean] default = True
                                 ! If true, the bottom stress is calculated with a drag law of the form
                                 ! c_drag*|u|*u. The velocity magnitude may be an assumed value or it may be
@@ -1112,8 +1123,11 @@ USE_GME = False                 !   [Boolean] default = False
 USE_GM_WORK_BUG = False         !   [Boolean] default = False
                                 ! If true, compute the top-layer work tendency on the u-grid with the incorrect
                                 ! sign, for legacy reproducibility.
+
+! === module MOM_stoch_eos ===
 STOCH_EOS = False               !   [Boolean] default = False
-                                ! If true, stochastic perturbations are applied to the EOS in the PGF.
+                                ! If true, computes stochastic perturbations that can be applied to the EOS in
+                                ! various places.
 STANLEY_COEFF = -1.0            !   [nondim] default = -1.0
                                 ! Coefficient correlating the temperature gradient and SGS T variance.
 
@@ -1206,7 +1220,8 @@ CONT_PPM_MARGINAL_FACE_AREAS = True !   [Boolean] default = True
                                 ! weights in the barotropic solver. Otherwise use the transport averaged areas.
 CONT_USE_H_MARG_MIN = False     !   [Boolean] default = False
                                 ! If true, the marginal thickness used and returned from continuity is bounded
-                                ! from below by a sub-roundoff value. Otherwise the minimum is 0.
+                                ! from below by a sub-roundoff value.  Otherwise the minimum is a large negative
+                                ! value to recreate previous answers.
 
 ! === module MOM_CoriolisAdv ===
 NOSLIP = False                  !   [Boolean] default = False
@@ -1380,12 +1395,7 @@ RHO_PGF_REF = 1035.0            !   [kg m-3] default = 1035.0
                                 ! The reference density that is subtracted off when calculating pressure
                                 ! gradient forces.  Its inverse is subtracted off of specific volumes when in
                                 ! non-Boussinesq mode.  The default is RHO_0.
-RHO_PGF_REF_BUG = False         !   [Boolean] default = True
-                                ! If true, recover a bug that RHO_0 (the mean seawater density in Boussinesq
-                                ! mode) and RHO_PGF_REF (the subtracted reference density in finite volume
-                                ! pressure gradient forces) are incorrectly interchanged in several instances in
-                                ! Boussinesq mode.
-TIDES_ANSWER_DATE = 20230630    ! default = 99991231
+TIDES_ANSWER_DATE = 20230630    ! default = 20260703
                                 ! The vintage of self-attraction and loading (SAL) and tidal forcing
                                 ! calculations.  Setting dates before 20230701 recovers old answers (Boussinesq
                                 ! and non-Boussinesq modes) when SAL is part of the tidal forcing calculation.
@@ -1506,7 +1516,7 @@ OBC_SPECIFIED_STRAIN_BUG = True !   [Boolean] default = True
                                 ! cannot be applied.
 
 ! === module MOM_vert_friction ===
-VERT_FRICTION_ANSWER_DATE = 99991231 ! default = 99991231
+VERT_FRICTION_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the viscous
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use expressions that do not use an arbitrary hard-coded
@@ -1624,7 +1634,7 @@ CONST_DYN_PSURF = 0.9           !   [nondim] default = 0.9
                                 ! DYNAMIC_SURFACE_PRESSURE is true.  Stable values are < ~1.0.
 BT_CORIOLIS_SCALE = 1.0         !   [nondim] default = 1.0
                                 ! A factor by which the barotropic Coriolis anomaly terms are scaled.
-BAROTROPIC_ANSWER_DATE = 99991231 ! default = 99991231
+BAROTROPIC_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the expressions in the barotropic solver. Values below 20190101
                                 ! recover the answers from the end of 2018, while higher values use more
                                 ! efficient or general expressions.
@@ -1632,9 +1642,6 @@ VISC_REM_BT_WEIGHT_BUG = False  !   [Boolean] default = False
                                 ! If true, recover a bug in barotropic solver that uses an unnormalized weight
                                 ! function for vertical averages of baroclinic velocity and forcing. Default of
                                 ! this flag is set by VISC_REM_BUG.
-DTBT_RESTART_BUG = True         !   [Boolean] default = True
-                                ! If true, recover a bug where the barotropic timestep DTBT read from a restart
-                                ! file is immediately overridden by a recalculation on the first dynamics step.
 BAROTROPIC_TIDAL_SAL_BUG = False !   [Boolean] default = False
                                 ! If true, the tidal self-attraction and loading anomaly in the barotropic
                                 ! solver has the wrong sign, replicating a long-standing bug with a scalar
@@ -1709,6 +1716,9 @@ DTBT = -0.9                     !   [s or nondim] default = -0.98
                                 ! use 0, or a negative value gives the fraction of the stable value. Setting
                                 ! DTBT to 0 is the same as setting it to -0.98. The value of DTBT that will
                                 ! actually be used is an integer fraction of DT, rounding down.
+DTBT_RESTART_BUG = True         !   [Boolean] default = True
+                                ! If true, recover a bug where the barotropic timestep DTBT read from a restart
+                                ! file is immediately overridden by a recalculation on the first dynamics step.
 BT_USE_OLD_CORIOLIS_BRACKET_BUG = False !   [Boolean] default = False
                                 ! If True, use an order of operations that is not bitwise rotationally symmetric
                                 ! in the meridional Coriolis term of the barotropic solver.
@@ -1723,6 +1733,8 @@ MIXEDLAYER_RESTRAT = True       !   [Boolean] default = False
                                 ! If true, a density-gradient dependent re-stratifying flow is imposed in the
                                 ! mixed layer. Can be used in ALE mode without restriction but in layer mode can
                                 ! only be used if BULKMIXEDLAYER is true.
+USE_STANLEY_ML = False          !   [Boolean] default = False
+                                ! If true, turn on Stanley SGS T variance parameterization in ML restrat code.
 MLE%
 USE_BODNER23 = False            !   [Boolean] default = False
                                 ! If true, use the Bodner et al., 2023, formulation of the re-stratifying
@@ -1735,8 +1747,6 @@ FOX_KEMPER_ML_RESTRAT_COEF = 1.0 !   [nondim] default = 0.0
                                 ! energy to the large-scale geostrophic kinetic energy or 1 plus the square of
                                 ! the grid spacing over the deformation radius, as detailed by Fox-Kemper et al.
                                 ! (2011)
-USE_STANLEY_ML = False          !   [Boolean] default = False
-                                ! If true, turn on Stanley SGS T variance parameterization in ML restrat code.
 FOX_KEMPER_ML_RESTRAT_COEF2 = 0.0 !   [nondim] default = 0.0
                                 ! As for FOX_KEMPER_ML_RESTRAT_COEF but used in a second application of the MLE
                                 ! restratification parameterization.
@@ -1872,7 +1882,7 @@ FLUX_RI_MAX = 0.2               !   [nondim] default = 0.2
                                 ! The flux Richardson number where the stratification is large enough that N2 >
                                 ! omega2.  The full expression for the Flux Richardson number is usually
                                 ! FLUX_RI_MAX*N2/(N2+OMEGA2).
-SET_DIFF_ANSWER_DATE = 99991231 ! default = 99991231
+SET_DIFF_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the set diffusivity
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
@@ -2112,7 +2122,7 @@ ML_OMEGA_FRAC = 0.001           !   [nondim] default = 0.0
 EKMAN_SCALE_COEF = 1.0          !   [nondim] default = 1.0
                                 ! A nondimensional scaling factor controlling the inhibition of the diffusive
                                 ! length scale by rotation. Making this larger decreases the PBL diffusivity.
-EPBL_ANSWER_DATE = 20231231     ! default = 99991231
+EPBL_ANSWER_DATE = 20231231     ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the energetic PBL
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
@@ -2287,7 +2297,7 @@ BLUE_FRAC_SW = 0.5              !   [nondim] default = 0.5
                                 ! The fraction of the penetrating shortwave radiation that is in the blue band.
 PEN_SW_NBANDS = 3               ! default = 1
                                 ! The number of bands of penetrating shortwave radiation.
-OPTICS_ANSWER_DATE = 99991231   ! default = 99991231
+OPTICS_ANSWER_DATE = 20260703   ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the optics
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use updated and more robust forms of the same expressions.
@@ -2434,6 +2444,10 @@ PERT_EPBL = False               !   [Boolean] default = False
                                 ! If true, then stochastically perturb the kinetic energy production and
                                 ! dissipation terms.  Amplitude and correlations are controlled by the nam_stoch
                                 ! namelist in the UFS model only.
+STOCHASTICS_ANSWER_DATE = 20250101 ! default = 20250101
+                                ! The vintage of the order of arithmetic in the stochastics calculations.
+                                ! Values below 20250701 recover the answers from early in 2025, while higher
+                                ! values use expressions that have been refactored for rotational symmetry.
 
 ! === module ocean_model_init ===
 SINGLE_STEPPING_CALL = True     !   [Boolean] default = True
@@ -2509,7 +2523,7 @@ READ_GUST_2D = False            !   [Boolean] default = False
                                 ! If true, use a 2-dimensional gustiness supplied from an input file
 GUST_CONST = 0.0                !   [Pa] default = 0.0
                                 ! The background gustiness in the winds.
-SURFACE_FORCING_ANSWER_DATE = 99991231 ! default = 99991231
+SURFACE_FORCING_ANSWER_DATE = 20260703 ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the gustiness
                                 ! calculations.  Values below 20190101 recover the answers from the end of 2018,
                                 ! while higher values use a simpler expression to calculate gustiness.
@@ -2540,7 +2554,7 @@ ALLOW_FLUX_ADJUSTMENTS = False  !   [Boolean] default = False
 ! === module MOM_restart ===
 USE_WAVES = False               !   [Boolean] default = False
                                 ! If true, enables surface wave modules.
-WAVE_INTERFACE_ANSWER_DATE = 20221231 ! default = 99991231
+WAVE_INTERFACE_ANSWER_DATE = 20221231 ! default = 20260703
                                 ! The vintage of the order of arithmetic and expressions in the surface wave
                                 ! calculations.  Values below 20230101 recover the answers from the end of 2022,
                                 ! while higher values use updated and more robust forms of the same expressions:
