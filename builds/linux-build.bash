@@ -2,7 +2,7 @@
 
 # Default configurations
 machine_name="gaea"
-platform="ncrc5.intel23"
+platform="ncrc6.intel25"
 target="repro"  # Options: repro, debug-openmp, prod, avx512, etc.
 flavor="mom6sis2"  # Options: mom6sis2, fms1_mom6sis2, mom6solo
 
