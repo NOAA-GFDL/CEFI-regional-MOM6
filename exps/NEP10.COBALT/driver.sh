@@ -89,6 +89,11 @@ if $USE_PROJ_SHARED; then
 fi
 #srun --ntasks ${ntasks1} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp --writable-tmpfs $img bash ./execrunscript.sh > out1 2>err1
 srun --ntasks ${ntasks1} ../../builds/build/gaea-ncrc6.intel25/ocean_ice/repro/MOM6SIS2 > out1 2>err1
+STATUS=$?
+if [ ${STATUS} -ne 0 ] then
+    echo "ERROR: 48hr test returned ${STATUS}."
+    exit ${STATUS}
+fi
 mv RESTART RESTART_48hrs
 mv ocean.stats RESTART_48hrs
 
@@ -100,6 +105,11 @@ if $USE_PROJ_SHARED; then
 fi
 #-srun --ntasks ${ntasks1} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp --writable-tmpfs $img bash ./execrunscript.sh > out2 2>err2
 srun --ntasks ${ntasks1} ../../builds/build/gaea-ncrc6.intel25/ocean_ice/repro/MOM6SIS2 > out2 2>err2
+STATUS=$?
+if [ ${STATUS} -ne 0 ] then
+    echo "ERROR: 24hrs test returned ${STATUS}."
+    exit ${STATUS}
+fi
 mv RESTART RESTART_24hrs
 mv ocean.stats RESTART_24hrs
 
@@ -117,6 +127,11 @@ if $USE_PROJ_SHARED; then
 fi
 #-srun --ntasks ${ntasks1} --export=ALL apptainer exec -B $HOME:$HOME -B /autofs/ncrc-svm1_home1/role.medgrp:/autofs/ncrc-svm1_home1/role.medgrp --writable-tmpfs $img bash ./execrunscript.sh > out3 2>err3
 srun --ntasks ${ntasks1} ../../builds/build/gaea-ncrc6.intel25/ocean_ice/repro/MOM6SIS2 > out3 2>err3
+STATUS=$?
+if [ ${STATUS} -ne 0 ] then
+    echo "ERROR: 24hrs_rst test returned ${STATUS}."
+    exit ${STATUS}
+fi
 mv RESTART RESTART_24hrs_rst
 mv ocean.stats RESTART_24hrs_rst
 
