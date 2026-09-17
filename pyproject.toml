@@ -10,6 +10,7 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
     "bottleneck>=1.6.0",
     "esmpy==8.8.1",
+    "loguru>=0.7.3",
     "netcdf4>=1.7.4",
     "numpy>=2.4.6",
     "pandas<3.0", # < 3 needed for read_excel date_parser in hypoxic area
@@ -35,6 +36,7 @@ flooding = [
     "hctflood>=0.1.0",
 ]
 dev = [
+    "pytest>=9.1.1",
     "ruff>=0.16.1",
     "ty>=0.0.69",
 ]
@@ -55,6 +57,9 @@ module-root = "cefi_kit/src"
 [tool.uv.sources]
 esmpy = { git = "https://github.com/esmf-org/esmf", subdirectory = "src/addon/esmpy", tag = "v8.8.1" }
 HCtFlood = { git = "https://github.com/andrew-c-ross/HCtFlood" }
+
+[tool.pytest]
+testpaths = ["cefi_kit/tests"]
 
 [tool.ruff]
 line-length = 88
