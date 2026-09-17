@@ -76,7 +76,7 @@ if $USE_PROJ_SHARED; then
 fi
 srun --ntasks ${ntasks1} ../../builds/build/gaea-ncrc6.intel25/ocean_ice/repro/MOM6SIS2 > out1 2>err1
 STATUS=$?
-if [ ${STATUS} -ne 0 ] then
+if [ ${STATUS} -ne 0 ] ; then
     echo "ERROR: 48hr test returned ${STATUS}."
     exit ${STATUS}
 fi
@@ -91,7 +91,7 @@ if $USE_PROJ_SHARED; then
 fi
 srun --ntasks ${ntasks1} ../../builds/build/gaea-ncrc6.intel25/ocean_ice/repro/MOM6SIS2 > out2 2>err2
 STATUS=$?
-if [ ${STATUS} -ne 0 ] then
+if [ ${STATUS} -ne 0 ] ; then
     echo "ERROR: 24hrs test returned ${STATUS}."
     exit ${STATUS}
 fi
@@ -112,7 +112,7 @@ if $USE_PROJ_SHARED; then
 fi
 srun --ntasks ${ntasks1} ../../builds/build/gaea-ncrc6.intel25/ocean_ice/repro/MOM6SIS2 > out3 2>err3
 STATUS=$?
-if [ ${STATUS} -ne 0 ] then
+if [ ${STATUS} -ne 0 ] ; then
     echo "ERROR: 24hrs_rst test returned ${STATUS}."
     exit ${STATUS}
 fi
