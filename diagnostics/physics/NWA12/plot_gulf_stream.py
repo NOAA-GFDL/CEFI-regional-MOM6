@@ -11,16 +11,13 @@ import pandas as pd
 import numpy as np
 import cartopy.feature as feature
 import cartopy.crs as ccrs
-from cartopy.mpl.geoaxes import GeoAxes
 import matplotlib.gridspec as gridspec
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import AxesGrid
 
-# Need to append physics dir to path to access plot common
-import sys
-sys.path.append("..")
-from plot_common import open_var, add_ticks, save_figure
+from cefi_kit.io import open_var
+from cefi_kit.plots import add_ticks, save_figure
+
 
 def compute_gs(ssh, data_grid=None):
     lons = np.arange(360-72, 360-51.9, 1)
@@ -80,15 +77,15 @@ def plot_gulf_stream(pp_root, label):
     except:
         print('Using zos')
         model_ssh = open_var(pp_root, 'ocean_monthly', 'zos')
-        
+
     model_ssh_index, model_ssh_points = compute_gs(
         model_ssh,
         data_grid=model_grid[['geolon', 'geolat']].rename({'geolon': 'lon', 'geolat': 'lat'})
     )
-    
+
     # Get Glorys data
     glorys_t200 = xarray.open_dataarray('../../data/diagnostics/glorys_T200.nc')
-    
+
     # Get satellite points
     # satellite = xarray.open_dataset('/work/acr/cmems/cmems_obs-sl_glo_phy-ssh_my_allsat-l4-duacs-0.125deg_P1D/monthly_averaged/obs-sl_glo_phy-ssh_my_allsat-l4-duacs-0.125deg.nc')
     # satellite = satellite.rename({'longitude': 'lon', 'latitude': 'lat'})

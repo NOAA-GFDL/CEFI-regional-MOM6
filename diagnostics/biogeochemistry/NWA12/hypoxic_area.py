@@ -1,6 +1,6 @@
 """
 Compare monthly climatologies of hypoxic area (area with a July
-mean bottom oxygen concentration below 2 mg L-1 over over the LA-TX Shelf between the model and geostatistical estimates from Matli et al. (2020)  
+mean bottom oxygen concentration below 2 mg L-1 over over the LA-TX Shelf between the model and geostatistical estimates from Matli et al. (2020)
 How to use:
 python hypoxic_area.py /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coastatten-physics/gfdl.ncrc5-intel22-prod --daily
 """
@@ -16,13 +16,8 @@ import xskillscore as skill
 
 PC = ccrs.PlateCarree()
 
-import os
-import sys
-
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../../physics'))
-from plot_common import open_var, save_figure
+from cefi_kit.io import open_var
+from cefi_kit.plots import save_figure
 
 
 def date_parser(x):
@@ -40,8 +35,8 @@ def plot_hypoxic_area(pp_root, label, use_daily):
         o2 = open_var(pp_root, 'ocean_cobalt_btm', 'btm_o2') * 32 * 1035
     mask = (
         (mom_grid.geolon >= -94.605) &
-        (mom_grid.geolon <= -89.512) & 
-        (mom_grid.geolat >= 28.219) & 
+        (mom_grid.geolon <= -89.512) &
+        (mom_grid.geolat >= 28.219) &
         (mom_grid.geolat <= 29.717) &
         (mom_grid.deptho <= 100)
     )
@@ -88,7 +83,7 @@ def plot_hypoxic_area(pp_root, label, use_daily):
     p0 = ax.plot(plot_df.index, plot_df.Mean, c='k')
     p1 = ax.plot(plot_df.index, plot_df.Model, c='r')
     ax.legend(
-        [(p0[0], p2), p1[0]], ['Matli et al.', 'Model'], 
+        [(p0[0], p2), p1[0]], ['Matli et al.', 'Model'],
         handler_map={tuple: HandlerTuple(ndivide=None)},
         frameon=False,
         loc='upper left'

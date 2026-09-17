@@ -17,13 +17,8 @@ from cartopy.mpl.geoaxes import GeoAxes
 
 PC = ccrs.PlateCarree()
 
-import os
-import sys
-
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../physics'))
-from plot_common import autoextend_colorbar, get_map_norm, annotate_skill, open_var, save_figure
+from cefi_kit.io import open_var
+from cefi_kit.plots import autoextend_colorbar, get_map_norm, annotate_skill, save_figure
 
 def plot_oa_metrics(pp_root, label, dev):
     mom_grid = xarray.open_dataset('../data/geography/ocean_static.nc')
@@ -75,7 +70,7 @@ def plot_oa_metrics(pp_root, label, dev):
         cbar_mode='each',
         cbar_pad=0.01,
         cbar_size='5%',
-        label_mode=''
+        label_mode='keep'
     )
 
     levels = np.arange(1800, 2501, 50)
@@ -162,7 +157,7 @@ def plot_oa_metrics(pp_root, label, dev):
         ax.set_facecolor('#cccccc')
         for s in ax.spines.values():
             s.set_visible(False)
-    
+
     save_figure('alk_dic_omega', label=label)
 
 
