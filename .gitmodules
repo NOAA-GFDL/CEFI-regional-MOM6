@@ -44,5 +44,5 @@
 	branch = 2025.03
 [submodule "src/coupler"]
 	path = src/coupler
-	url = https://github.com/NOAA-GFDL/FMScoupler.git
-	branch = 2025.03
+	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/FMScoupler.git
+	branch = feature/wind_current_coef
