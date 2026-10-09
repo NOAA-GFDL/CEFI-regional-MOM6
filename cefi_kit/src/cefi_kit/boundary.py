@@ -3,6 +3,7 @@ from typing import Any, Literal, overload
 
 import numpy as np
 import xarray
+from loguru import logger
 
 from .grids import reuse_regrid
 from .types import ArrayLike, PathLike
@@ -11,6 +12,7 @@ from .types import ArrayLike, PathLike
 def check_angle_range(angle: ArrayLike) -> None:
     amax = float(np.asarray(angle).max())
     amin = float(np.asarray(angle).min())
+    logger.trace('Angle range: {lo} to {hi}', lo=amin, hi=amax)
     if amax > (2 * np.pi) or amin < (-2 * np.pi):
         raise ValueError(
             f'Grid angle ranges from [{amin}, {amax}]. Expected from [-2pi, 2pi]. '
@@ -90,11 +92,13 @@ def fill_missing(
     Returns:
         Filled DataArray or Dataset.
     """
+    logger.debug('Filling missing data along {dim} using {dir}fill', dim=xdim, dir=fill)
     if fill == 'f':
         filled = arr.ffill(dim=xdim, limit=None)
     elif fill == 'b':
         filled = arr.bfill(dim=xdim, limit=None)
     if zdim is not None:
+        logger.debug('Also filling along {dim} using {dir}fill', dim=zdim, dir=fill)
         filled = filled.ffill(dim=zdim, limit=None).fillna(0)
     return filled
 
@@ -159,7 +163,9 @@ def find_datavar(ds: xarray.Dataset) -> Any:
     names = [x for x in ds if x not in ['lon', 'lat']]
     if len(names) > 1:
         raise Exception('Found multiple potential data variables')
-    return names[0]
+    res = names[0]
+    logger.trace('Found variable: {name}', name=res)
+    return res
 
 
 def ap2ep[T: (np.typing.NDArray, xarray.DataArray)](uc: T, vc: T) -> tuple[T, T, T, T]:
@@ -362,7 +368,7 @@ class Segment:
         # If the units attribute is degrees, or degrees were manually specified,
         # convert to radians
         if angle_units == 'degrees' or in_degrees:
-            print('Converting grid angle from degrees to radians')
+            logger.info('Converting grid angle from degrees to radians')
             self.hgrid['angle_dx'] = np.radians(self.hgrid['angle_dx'])
         check_angle_range(self.hgrid['angle_dx'])
         self.segstr = f'segment_{self.num:03d}'
@@ -467,6 +473,7 @@ class Segment:
             ds.time.encoding['dtype'] = 'float64'
             ds.time.encoding['_FillValue'] = 1.0e20
 
+        logger.info('Writing to file: {f}', f=path.join(self.output_dir, fname))
         ds.to_netcdf(
             path.join(self.output_dir, fname),
             format='NETCDF3_64BIT',
@@ -996,7 +1003,7 @@ class Segment:
         vimname = find_datavar(vimsource)
 
         if flood:
-            print('Flooding')
+            logger.info('Flooding')
             # Don't want to do this lazily, but there is a weird dimension mismatch
             # error when using .compute() or .load(), so use .values.
             # Use "constituent" as the time dimension.
@@ -1025,7 +1032,6 @@ class Segment:
                 ).values,
             )
 
-        print('Setting up regridders')
         regrid_u = reuse_regrid(
             uresource,
             self.coords,
@@ -1046,7 +1052,7 @@ class Segment:
             reuse_weights=False,
         )
 
-        print('Regridding')
+        logger.info('Regridding')
         # Interpolate each real and imaginary parts to segment.
         uredest = regrid_u(uresource)[urename]
         uimdest = regrid_u(uimsource)[uimname]
@@ -1060,7 +1066,7 @@ class Segment:
         vredest = vredest.rename({xname: 'locations'})
         vimdest = vimdest.rename({xname: 'locations'})
 
-        print('Refilling missing data')
+        logger.info('Refilling missing data')
         # Fill missing data.
         # Need to do this first because complex would get converted to real
         uredest = fill_missing(uredest, zdim=None)
@@ -1072,7 +1078,7 @@ class Segment:
         ucplex = uredest + 1j * uimdest
         vcplex = vredest + 1j * vimdest
 
-        print('Rotating')
+        logger.info('Rotating')
         # Convert complex u and v to ellipse,
         # rotate ellipse from earth-relative to model-relative,
         # and convert ellipse back to amplitude and phase.
@@ -1111,7 +1117,6 @@ class Segment:
         ds_ap = self.rename_dims(ds_ap)
 
         if write:
-            print('Writing')
             self.to_netcdf(ds_ap, 'tu', **kwargs)
 
         return ds_ap
