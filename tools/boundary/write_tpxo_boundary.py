@@ -9,9 +9,10 @@ import numpy as np
 from os import path
 import pandas as pd
 import xarray
-import yaml
 import os
-from boundary import Segment
+
+from cefi_kit.boundary import Segment
+from cefi_kit.io import load_config
 
 def write_tpxo(constituents, tpxo_dir, horizontal_subset):
     tpxo_h = (
@@ -110,8 +111,7 @@ if __name__ == '__main__':
     }
 
     # Load user-specified configuration from YAML file
-    with open(args.config, 'r') as file:
-        user_config = yaml.safe_load(file)
+    user_config = load_config(args.config)
 
     # Update default configuration with user-specified values
     config = {**default_config, **user_config}

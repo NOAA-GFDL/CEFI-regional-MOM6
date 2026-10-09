@@ -10,13 +10,8 @@ import numpy as np
 from string import ascii_lowercase
 import xarray
 
-import os
-import sys
-
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../'))
-from plot_common import open_var, save_figure
+from cefi_kit.io import open_var
+from cefi_kit.plots import save_figure
 
 long_names = {
     'SS': 'Scotian Shelf--Eastern Gulf of Maine',
@@ -24,7 +19,7 @@ long_names = {
     'GB': 'Georges Bank',
     'MAB': 'Mid-Atlantic Bight'
 }
-season_colors = {'DJF': '#377eb8', 'MAM': '#4daf4a', 'JJA': '#e41a1c', 'SON': '#ff7f00'} 
+season_colors = {'DJF': '#377eb8', 'MAM': '#4daf4a', 'JJA': '#e41a1c', 'SON': '#ff7f00'}
 
 def plot_temp_profile(pp_root, label):
     mod_temp = open_var(pp_root, 'ocean_monthly_z', 'thetao')
@@ -40,15 +35,15 @@ def plot_temp_profile(pp_root, label):
     for epu, ax, letter in zip(long_names.keys(), axs.flat, ascii_lowercase):
         glorys_epu = glorys_climo.sel(region=epu)
         mod_epu = mod_climo.weighted(masks['areacello'].where(masks[epu]).fillna(0)).mean(['yh', 'xh']).load()
-        
+
         for s, c in season_colors.items():
             y = mod_epu.sel(season=s).thetao
             ax.plot(y, mod_epu.z_l, c=c, label=s)
-            
+
             #
             y = glorys_epu.sel(season=s).thetao
             ax.plot(y, glorys_epu.depth, c=c, linestyle=':')
-        
+
         name = long_names[epu]
         ax.set_title(f'({letter}) {name} EPU', fontsize=10)
         ax.set_xlabel('Potential temperature (℃)')
@@ -61,7 +56,7 @@ def plot_temp_profile(pp_root, label):
         ax.set_yticks(np.arange(0, 151, 10))
         ax.set_yticklabels([t if t % 20 == 0 else '' for t in np.arange(0, 151, 10)])
         ax.invert_yaxis()
-        
+
     f.subplots_adjust(hspace=0.3)
 
     handles = [Line2D([0], [0], color=c) for c in season_colors.values()]

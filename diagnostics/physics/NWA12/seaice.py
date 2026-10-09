@@ -20,13 +20,9 @@ from shapely.prepared import prep
 from string import ascii_lowercase
 import xarray
 import xesmf
-import os
-import sys
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../'))
-from plot_common import annotate_skill, autoextend_colorbar, add_ticks, open_var, get_map_norm, save_figure 
+from cefi_kit.io import open_var
+from cefi_kit.plots import annotate_skill, autoextend_colorbar, add_ticks, get_map_norm, save_figure
 
 PC = ccrs.PlateCarree()
 
@@ -45,8 +41,8 @@ def plot_seaice(pp_root, label):
             obs_ice[:, i] = obs_mat['data'][nused, :]
             nused += 1
     obs_ice = xarray.DataArray(
-        obs_ice.reshape((nt, ny, nx), order='F'), 
-        dims=['time', 'y', 'x'], 
+        obs_ice.reshape((nt, ny, nx), order='F'),
+        dims=['time', 'y', 'x'],
         coords={
             'time': pd.date_range('1979-01', freq='1MS', periods=nt),
         }
@@ -59,8 +55,8 @@ def plot_seaice(pp_root, label):
             obs_area[i] = obs_mat['w'][nused, 0]
             nused += 1
     obs_area = xarray.DataArray(
-        obs_area.reshape((ny, nx), order='F'), 
-        dims=['y', 'x'], 
+        obs_area.reshape((ny, nx), order='F'),
+        dims=['y', 'x'],
     )
 
     # Model climatology
@@ -72,8 +68,8 @@ def plot_seaice(pp_root, label):
     obs_conc = obs_ice.sel(time=slice('1993', '2019')).groupby('time.month').mean('time')
 
     obs_to_mod = xesmf.Regridder(
-        {'lon': obs_mat['x'], 'lat': obs_mat['y']}, 
-        {'lon': model_grid.geolon, 'lat': model_grid.geolat}, 
+        {'lon': obs_mat['x'], 'lat': obs_mat['y']},
+        {'lon': model_grid.geolon, 'lat': model_grid.geolat},
         method='bilinear'
     )
     obs_interp = obs_to_mod(obs_conc)
@@ -94,7 +90,7 @@ def plot_seaice(pp_root, label):
         cbar_mode='edge',
         cbar_pad=0.3,
         cbar_size='10%',
-        label_mode=''
+        label_mode='keep'
     )
     for i, m in enumerate([12, 1, 2, 3, 4]):
         month = month_name[m]
@@ -105,18 +101,18 @@ def plot_seaice(pp_root, label):
         ax = grid[i*ncols +1]
         p = ax.pcolormesh(obs_mat['x'], obs_mat['y'], obs_conc.sel(month=m), transform=PC, cmap=cmap, norm=norm)
         ax.set_title(f'({ascii_lowercase[i*ncols+1]}) Observed {month}')
-        
+
         ax = grid[i*ncols + 2]
         p2 = ax.pcolormesh(model_grid.geolon_c, model_grid.geolat_c, delta.sel(month=m), transform=PC, cmap=diff_cmap, norm=diff_norm)
         ax.set_title(f'({ascii_lowercase[i*ncols+2]}) Difference {month}')
-        
+
         sub = (model_grid.geolon >= -74) & (model_grid.geolon <= -46) & (model_grid.geolat >= 43) & (model_grid.geolat <= 56)
         annotate_skill(
-            model_conc.rename({'yT': 'yh', 'xT': 'xh'}).sel(month=m).where(sub)*100, 
-            obs_interp.sel(month=m).where(sub), 
-            ax, 
-            dim=['yh', 'xh'], 
-            weights=model_grid.areacello.where(sub).fillna(0), 
+            model_conc.rename({'yT': 'yh', 'xT': 'xh'}).sel(month=m).where(sub)*100,
+            obs_interp.sel(month=m).where(sub),
+            ax,
+            dim=['yh', 'xh'],
+            weights=model_grid.areacello.where(sub).fillna(0),
             fontsize=8,
             x0=1.5,
             y0=55,
@@ -126,7 +122,7 @@ def plot_seaice(pp_root, label):
         if i <= 1:
             cbar= grid.cbar_axes[i].colorbar(p)
             cbar.ax.set_xlabel('Mean sea ice concentration (%)')
-            
+
         if i == 2:
             cbar = autoextend_colorbar(grid.cbar_axes[i], p2)
             cbar.ax.set_xlabel('Model - observed (%)')
@@ -169,7 +165,7 @@ def plot_seaice(pp_root, label):
     obs_points = MultiPoint([(x, y) for x, y in zip(xvals, yvals)])
     obs_gsl_mask = np.fromiter((polyp.contains(p) for p in obs_points.geoms), bool, count=len(obs_points.geoms)).reshape(obs_mat['x'].shape)
     obs_total = ((obs_ice > 15).where(obs_gsl_mask)*obs_area).sum(['y', 'x'])
-    
+
     plot_df = pd.concat((model_total.to_series().resample('1MS').first(), obs_total.to_series()), axis=1, keys=['Model', 'Observed'])
     f, axs = plt.subplots(3, 1, figsize=(10, 8))
     f.subplots_adjust(hspace=0.35)
@@ -181,9 +177,9 @@ def plot_seaice(pp_root, label):
         axs[i].set_xlim(1979, 2021)
         axs[i].set_ylim(0, 300000)
         axs[i].legend(loc='lower left', frameon=False, ncol=2)
-        axs[i].set_title(f'({ascii_lowercase[i]}) {month_name[mon]} sea ice extent in Gulf of St. Lawrence') 
+        axs[i].set_title(f'({ascii_lowercase[i]}) {month_name[mon]} sea ice extent in Gulf of St. Lawrence')
         axs[i].set_ylabel('Ice extent (km$^2$)')
-    
+
     save_figure('gsl_extent', label=label, pdf=True, output_dir='../figures')
 
 

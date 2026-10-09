@@ -15,14 +15,16 @@ import xarray
 import xesmf # only used to calculate cell areas
 import logging
 
-from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config, process_oisst, process_glorys
+from cefi_kit.io import open_var, load_config
+from cefi_kit.plots import annotate_skill, autoextend_colorbar, get_map_norm
+from plot_common import process_oisst, process_glorys
 
 # Configure logging for sst_eval
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="sst_eval.log", format='%(asctime)s %(levelname)s:%(name)s: %(message)s',level=logging.INFO)
 
 def plot_sst_eval(pp_root, config):
-    
+
     model = open_var(pp_root, config['domain'], 'tos')
     model_grid = xarray.open_dataset( config['model_grid'] )
     target_grid = model_grid[config['rename_map'].keys()].rename(config['rename_map'])
@@ -91,7 +93,7 @@ def plot_sst_eval(pp_root, config):
     else:
         proj = ccrs.PlateCarree()
 
-    # Model 
+    # Model
     p0 = grid[0].pcolormesh(model_grid.geolon_c, model_grid.geolat_c, model_ave, cmap=cmap, norm=norm, transform=proj)
     grid[0].set_title('(a) Model')
     cbar1 = grid.cbar_axes[0].colorbar(p0)

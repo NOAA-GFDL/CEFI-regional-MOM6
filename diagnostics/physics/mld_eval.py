@@ -16,7 +16,8 @@ import xarray
 import xesmf
 import logging
 
-from plot_common import annotate_skill, autoextend_colorbar, get_map_norm, open_var, load_config
+from cefi_kit.plots import annotate_skill, autoextend_colorbar, get_map_norm
+from cefi_kit.io import open_var, load_config
 
 # Configure logging for mld_eval
 logger = logging.getLogger(__name__)
@@ -70,7 +71,7 @@ def plot_mld_eval(pp_root, config):
         p = ccrs.PlateCarree()
 
     fig = plt.figure(figsize=(8, 6))
-    grid = AxesGrid(fig, 111, 
+    grid = AxesGrid(fig, 111,
         nrows_ncols=(2, 3),
         axes_class = (GeoAxes, dict(projection = p)),
         axes_pad=0.3,
@@ -78,7 +79,7 @@ def plot_mld_eval(pp_root, config):
         cbar_mode='edge',
         cbar_pad=0.2,
         cbar_size='15%',
-        label_mode=''
+        label_mode='keep'
     )
     logger.info("Successfully created grid")
 
