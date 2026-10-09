@@ -1,7 +1,7 @@
 [project]
 name = "cefi-kit"
 version = "0.1.0"
-description = "Tools for setting up and evaluationg regional MOM6 models for CEFI"
+description = "Tools for setting up and evaluating regional MOM6 models for CEFI"
 readme = "README.md"
 authors = [
     { name = "NOAA/GFDL CEFI", email = "oar.gfdl.cefi-support@noaa.gov" }
@@ -34,6 +34,10 @@ diagnostics = [
 flooding = [
     "hctflood>=0.1.0",
 ]
+dev = [
+    "ruff>=0.16.1",
+    "ty>=0.0.69",
+]
 
 [build-system]
 requires = ["uv_build>=0.11.14,<0.12.0"]
@@ -51,3 +55,31 @@ module-root = "cefi_kit/src"
 [tool.uv.sources]
 esmpy = { git = "https://github.com/esmf-org/esmf", subdirectory = "src/addon/esmpy", tag = "v8.8.1" }
 HCtFlood = { git = "https://github.com/andrew-c-ross/HCtFlood" }
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+exclude = [
+    "*.ipynb"
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "B", "C4", "UP", "PL", "RUF"]
+ignore = ["E741", "PLR0913", "PLR0915", "PLR0917", "PLR2004"]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["cefi_kit"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.ty.environment]
+root = ["./cefi_kit"]
