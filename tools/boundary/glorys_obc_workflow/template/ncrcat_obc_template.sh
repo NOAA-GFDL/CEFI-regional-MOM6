@@ -13,9 +13,8 @@
 echo "Running ncrcat_obc.sh with arguments: $@"
 
 source $MODULESHOME/init/bash
-module load miniforge
-conda activate /nbhome/role.medgrp/.conda/envs/medpy311
-module load cdo nco gcp
+source "{{ _VIRTUAL_ENV }}/bin/activate"
+module load cdo nco gcp esmf
 
 # Configuration variables
 REGIONAL_GLORYS_ARCHIVE={{ _REGIONAL_GLORYS_ARCHIVE }}

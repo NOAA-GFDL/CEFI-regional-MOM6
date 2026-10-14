@@ -268,7 +268,6 @@ def z_to_dz(ds, max_depth=6500.):
     return da_dz
 
 
-
 class Segment():
     """One segment of a MOM6 open boundary.
 
@@ -540,10 +539,11 @@ class Segment():
         vdest = vregrid(vsource)
 
         # if lat and lon are variables in u/vsource, u/vdest will be dataset
+        # .to_array() will add length-1 "variable", so drop that. 
         if isinstance(udest, xarray.Dataset):
-            udest = udest.to_array().squeeze()
+            udest = udest.to_array().squeeze('variable', drop=True)
         if isinstance(vdest, xarray.Dataset):
-            vdest = vdest.to_array().squeeze()
+            vdest = vdest.to_array().squeeze('variable', drop=True)
 
         # Rotate velocities to be model-relative.
         if rotate:

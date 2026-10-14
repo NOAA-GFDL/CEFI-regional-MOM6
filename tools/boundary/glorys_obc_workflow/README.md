@@ -129,6 +129,15 @@ Run the workflow for a specific year or date range:
 ./mom6_obc_workflow.sh 2023-01-01 2023-12-31
 ```
 
+The workflow uses the environment named by `VIRTUAL_ENV` by default. To select a
+different Python virtual environment, pass `--venv PATH` after the date range:
+
+```bash
+./mom6_obc_workflow.sh 2022-01-01 2022-12-31 --venv /path/to/venv
+```
+
+If `VIRTUAL_ENV` is unset, `--venv PATH` is required.
+
 ## Step 3: Concatenate Multiple Years of OBC Files
 To merge OBC files from multiple years into a single file, use the `--ncrcat` option. Ensure the dates in the command match the range for which you generated OBC files:
 
