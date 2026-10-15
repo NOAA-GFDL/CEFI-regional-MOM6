@@ -57,7 +57,7 @@ def write_initial(config):
     ))
 
     # flood zos separately to avoid the extra z=0 added by flood_kara.
-    flooded[ssh_var] = flood.flood_kara(revert[ssh_var]).isel(z=0).drop('z')
+    flooded[ssh_var] = flood.flood_kara(revert[ssh_var]).isel(z=0).drop_vars('z')
 
     # Horizontally interpolate the vertically interpolated and flooded data onto the MOM grid.
     target_grid = xarray.open_dataset(grid_file)
