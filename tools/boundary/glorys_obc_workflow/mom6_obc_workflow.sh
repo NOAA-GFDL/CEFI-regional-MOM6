@@ -1,19 +1,15 @@
 #!/bin/bash
 
-# Load required modules and environments
-source $MODULESHOME/init/bash
-module load miniforge
-conda activate /nbhome/role.medgrp/.conda/envs/uwtools || { echo "Error activating conda environment. Exiting."; exit 1; }
-
 set -eu
 
 # Helper functions
 print_usage() {
-    echo "Usage: $0 START_DATE END_DATE [--ncrcat] [--adjust-timestamps] [--convert-lon]"
+    echo "Usage: $0 START_DATE END_DATE [--ncrcat] [--adjust-timestamps] [--convert-lon] [--venv PATH]"
     echo "  START_DATE and END_DATE must be in YYYY-MM-DD format."
     echo "  --ncrcat: Enable ncrcat step (skips subset, fill, and submit_python steps)."
     echo "  --adjust-timestamps: Adjust timestamps during ncrcat step."
     echo "  --convert-lon: Enable longitude conversion in the subsetting step."
+    echo "  --venv PATH: Python virtual environment to use (defaults to VIRTUAL_ENV)."
 }
 
 validate_date_format() {
@@ -31,6 +27,7 @@ log_message() {
 DO_NCRCAT=false
 ADJUST_TIMESTAMPS=false
 CONVERT_LON=false
+VENV_PATH="${VIRTUAL_ENV:-}"
 PYTHON_SCRIPT="../write_glorys_boundary_daily.py"
 
 # Parse arguments
@@ -46,9 +43,18 @@ while [[ $# -gt 0 ]]; do
         --adjust-timestamps)
             ADJUST_TIMESTAMPS=true
             ;;
-	--convert-lon)
-	    CONVERT_LON=true
-	    ;;
+	    --convert-lon)
+	        CONVERT_LON=true
+	        ;;
+        --venv)
+            if [[ $# -lt 2 || -z "$2" ]]; then
+                echo "Error: --venv requires a virtual environment path."
+                print_usage
+                exit 1
+            fi
+            VENV_PATH="$2"
+            shift
+            ;;
         *)
             echo "Unknown argument: $1"
             print_usage
@@ -57,6 +63,22 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
+
+if [[ -z "$VENV_PATH" ]]; then
+    echo "Error: No Python virtual environment specified. Set VIRTUAL_ENV or pass --venv PATH."
+    exit 1
+fi
+
+if [[ ! -f "$VENV_PATH/bin/activate" ]]; then
+    echo "Error: Virtual environment activation script not found: $VENV_PATH/bin/activate"
+    exit 1
+fi
+
+source "$VENV_PATH/bin/activate"
+if ! command -v uw >/dev/null 2>&1; then
+    echo "Error: uw command is not available in the selected virtual environment. Install the optional automation dependencies."
+    exit 1
+fi
 
 validate_date_format "$START_DATE"
 validate_date_format "$END_DATE"
@@ -104,6 +126,7 @@ _LON_MAX: "-30.0"
 _LAT_MIN: "5.0"
 _LAT_MAX: "60.0"
 _PYTHON_SCRIPT: "$PYTHON_SCRIPT"
+_VIRTUAL_ENV: "$VENV_PATH"
 first_date: "$START_DATE"
 last_date: "$END_DATE"
 glorys_dir: "/archive/$USER/datasets/glorys/NWA12/filled"

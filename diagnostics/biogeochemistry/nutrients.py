@@ -6,7 +6,7 @@ python nutrients.py /archive/acr/fre/NWA/2023_04/NWA12_COBALT_2023_04_kpo4-coast
 from calendar import month_abbr
 import cartopy.crs as ccrs
 from cartopy.mpl.geoaxes import GeoAxes
-import cmcrameri.cm as cmc
+import colorcet
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 import numpy as np
@@ -14,13 +14,8 @@ from string import ascii_lowercase
 import xarray
 import xesmf
 
-import os
-import sys
-
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(script_dir, '../physics'))
-from plot_common import open_var, autoextend_colorbar, get_map_norm, annotate_skill, save_figure
+from cefi_kit.io import open_var
+from cefi_kit.plots import get_map_norm, autoextend_colorbar, annotate_skill, save_figure
 
 PC = ccrs.PlateCarree()
 
@@ -45,7 +40,7 @@ def load_woa():
         )
         ds['month'] = month
         woa.append(ds)
-        
+
     woa_climo = xarray.concat(woa, dim='month').isel(z=0)
     return woa_climo
 
@@ -71,8 +66,8 @@ def plot_nutrients(pp_root, label):
         'lon_b': grid.geolon_c
     }
     mom_to_woa = xesmf.Regridder(
-        mom_grid, 
-        woa_grid, 
+        mom_grid,
+        woa_grid,
         method='conservative_normed',
         unmapped_to_nan=True,
         reuse_weights=False
@@ -81,8 +76,8 @@ def plot_nutrients(pp_root, label):
     delta = mom_rg - woa_climo
 
     var = 'no3'
-    cmap, norm = get_map_norm('cmc.davos', np.arange(0, 14, 1), no_offset=True)
-    bias_cmap, bias_norm = get_map_norm('cmc.vik', np.arange(-4, 4.1, .5), no_offset=True)
+    cmap, norm = get_map_norm('cet_CET_CBL1', np.arange(0, 14, 1), no_offset=True)
+    bias_cmap, bias_norm = get_map_norm('cet_CET_D1', np.arange(-4, 4.1, .5), no_offset=True)
     common = dict(norm=norm, cmap=cmap)
 
     fig = plt.figure(figsize=(10, 6))
@@ -94,7 +89,7 @@ def plot_nutrients(pp_root, label):
         cbar_mode='edge',
         cbar_pad=0.2,
         cbar_size='8%',
-        label_mode=''
+        label_mode='keep'
     )
 
     for i, m in enumerate(mod_climo.month):
@@ -128,13 +123,13 @@ def plot_nutrients(pp_root, label):
         ax.set_facecolor('#bbbbbb')
         for s in ax.spines.values():
             s.set_visible(False)
-            
+
     plt.suptitle('Surface NO$_3$', y=0.95, fontweight='bold')
     save_figure('surface_no3_woa', label=label)
 
     var = 'po4'
-    cmap, norm = get_map_norm('cmc.davos', np.arange(0, 1.21, .1), no_offset=True)
-    bias_cmap, bias_norm = get_map_norm('cmc.vik', np.arange(-.3, .31, .05), no_offset=True)
+    cmap, norm = get_map_norm('cet_CET_CBL1', np.arange(0, 1.21, .1), no_offset=True)
+    bias_cmap, bias_norm = get_map_norm('cet_CET_D1', np.arange(-.3, .31, .05), no_offset=True)
     common = dict(norm=norm, cmap=cmap)
 
     fig = plt.figure(figsize=(10, 6))
@@ -146,7 +141,7 @@ def plot_nutrients(pp_root, label):
         cbar_mode='edge',
         cbar_pad=0.2,
         cbar_size='8%',
-        label_mode=''
+        label_mode='keep'
     )
 
     for i, m in enumerate(mod_climo.month):
@@ -179,7 +174,7 @@ def plot_nutrients(pp_root, label):
         ax.set_facecolor('#bbbbbb')
         for s in ax.spines.values():
             s.set_visible(False)
-            
+
     plt.suptitle('Surface PO$_4$', y=0.95, fontweight='bold')
     save_figure('surface_po4_woa', label=label)
 

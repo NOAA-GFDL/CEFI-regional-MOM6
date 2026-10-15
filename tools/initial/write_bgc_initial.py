@@ -6,17 +6,17 @@ How to use
 """
 import datetime as dt
 from functools import partial
-import sys
 import os
 import argparse
-import yaml
 
 import numpy as np
 import xarray
 import xesmf
 
 from HCtFlood import kara as flood
-from depths import vgrid_to_layers 
+
+from cefi_kit.io import load_config
+from cefi_kit.grids import vgrid_to_layers
 
 
 def interpolate_flood(target_grid, ztarget, ds, xdim=None, ydim=None, periodic=True):
@@ -30,9 +30,9 @@ def interpolate_flood(target_grid, ztarget, ds, xdim=None, ydim=None, periodic=T
             flood.flood_kara(revert[v], xdim=xdim, ydim=ydim, zdim='zl') for v in revert.data_vars
         )).squeeze().drop('time')
     ds_to_mom = xesmf.Regridder(
-        ds, 
-        target_grid, 
-        method='nearest_s2d', 
+        ds,
+        target_grid,
+        method='nearest_s2d',
         periodic=periodic
     )
     interped = ds_to_mom(flooded).load()
@@ -62,30 +62,30 @@ def write_bgc(woa_file, esper_file, cobalt_file, time0, interpolator, output_fil
     cobalt_vars = [
         'cadet_arag',
         'cadet_calc',
-        'fed', 
+        'fed',
         'fedi',
         'felg',
         'fedet',
         'fesm',
         'ldon',
-        'ldop', 
-        'lith', 
-        'lithdet', 
-        'nbact', 
-        'ndet', 
-        'ndi', 
-        'nlg', 
-        'nsm', 
-        'nh4', 
-        'pdet', 
-        'srdon', 
-        'srdop', 
-        'sldon', 
-        'sldop', 
-        'sidet', 
-        'silg', 
-        'nsmz', 
-        'nmdz', 
+        'ldop',
+        'lith',
+        'lithdet',
+        'nbact',
+        'ndet',
+        'ndi',
+        'nlg',
+        'nsm',
+        'nh4',
+        'pdet',
+        'srdon',
+        'srdop',
+        'sldon',
+        'sldop',
+        'sidet',
+        'silg',
+        'nsmz',
+        'nmdz',
         'nlgz'
     ]
     cobalt = (
@@ -115,16 +115,16 @@ def write_bgc(woa_file, esper_file, cobalt_file, time0, interpolator, output_fil
     # Copy xh and yh from the target grid
     for v in ['xh', 'yh']:
         interped[v] = interpolator.args[0][v]
-        
+
     interped['Time'] = ('Time', [time0])
 
     # Make sure each variable has Time as a dimension
     for v in interped.data_vars:
         interped[v] = interped[v].expand_dims('Time', 0)
-        
+
     interped = interped.set_coords('Time')
 
-    # The model expects these variables in the initial conditions, but we don't have initial 
+    # The model expects these variables in the initial conditions, but we don't have initial
     # condition data for them, so set them to a very small value everywhere.
     print('Constant')
     zero_vars = [
@@ -139,7 +139,7 @@ def write_bgc(woa_file, esper_file, cobalt_file, time0, interpolator, output_fil
         'irr_aclm',
         'fedet_btf',
         'sidet_btf',
-        'pdet_btf', 
+        'pdet_btf',
         'ndet_btf',
         'lithdet_btf',
         'cadet_calc_btf',
@@ -177,13 +177,13 @@ def write_bgc(woa_file, esper_file, cobalt_file, time0, interpolator, output_fil
         else:
             val = 1e-10
         interped[v] = (
-            ('Time', 'zl', 'yh', 'xh'), 
+            ('Time', 'zl', 'yh', 'xh'),
             np.zeros((nt, nz, ny, nx))+val
         )
 
     # set pH
     interped['htotal'] = (
-        ('Time', 'zl', 'yh', 'xh'), 
+        ('Time', 'zl', 'yh', 'xh'),
         np.zeros((nt, nz, ny, nx))+1e-8
     )
 
@@ -220,9 +220,8 @@ def main():
     parser.add_argument('--config_file', type=str, default='bgc_ic.yaml', help='Path to the YAML config file')
     args = parser.parse_args()
 
-    
-    with open(args.config_file, 'r') as yaml_file:
-        config = yaml.safe_load(yaml_file)
+
+    config = load_config(args.config_file)
 
     # Vertical grid to interpolate data to:
     vgrid = xarray.open_dataarray(config['vgrid_file'])
@@ -244,7 +243,7 @@ def main():
 
     # Partial function to flood and horizontally and vertically interpolate
     # data onto the target horizontal and vertical grids:
-    global interpolator 
+    global interpolator
     interpolator = partial(interpolate_flood, target_grid, ztarget)
 
     # Time of the model initialization:
