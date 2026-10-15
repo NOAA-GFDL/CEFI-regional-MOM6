@@ -1,0 +1,21 @@
+name: Check .gitmodules
+
+# Fail if the branch field of a submodule in .gitmodules does not describe
+# the commit that is actually pinned (see .github/scripts/check-gitmodules.sh).
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  check-gitmodules:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check .gitmodules against the pinned submodule commits
+        run: .github/scripts/check-gitmodules.sh --report-updates
