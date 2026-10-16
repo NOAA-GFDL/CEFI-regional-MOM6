@@ -9,7 +9,7 @@
 [submodule "src/Icepack"]
 	path = src/Icepack
 	url = https://github.com/CICE-Consortium/Icepack.git
-	branch = Icepack1.3.3
+	branch = Icepack1.5.1
 [submodule "src/libyaml"]
 	path = src/libyaml
 	url = https://github.com/yaml/libyaml.git
@@ -21,15 +21,15 @@
 [submodule "src/mkmf"]
 	path = src/mkmf
 	url = https://github.com/NOAA-GFDL/mkmf.git
-	branch = 2025.01
+	branch = 2026.01
 [submodule "src/atmos_null"]
 	path = src/atmos_null
 	url = https://github.com/NOAA-GFDL/atmos_null.git
-	branch = 2025.02
+	branch = 2025.03
 [submodule "src/land_null"]
 	path = src/land_null
 	url = https://github.com/NOAA-GFDL/land_null.git
-	branch = 2025.02
+	branch = 2025.03
 [submodule "src/ocean_BGC"]
 	path = src/ocean_BGC
 	url = https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/ocean_BGC.git
@@ -41,8 +41,8 @@
 [submodule "src/FMS"]
 	path = src/FMS
 	url = https://github.com/NOAA-GFDL/FMS.git
-	branch = 2025.03
+	branch = 2026.03
 [submodule "src/coupler"]
 	path = src/coupler
 	url = https://github.com/NOAA-GFDL/FMScoupler.git
-	branch = 2025.03
+	branch = 2026.03

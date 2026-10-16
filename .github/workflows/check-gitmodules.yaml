@@ -1,0 +1,31 @@
+name: Check .gitmodules
+
+# Fail if the branch field of a submodule in .gitmodules does not describe
+# the commit that is actually pinned (see .github/scripts/check-gitmodules.sh).
+# On pull requests, also warn if a submodule's url or branch changes but its
+# pinned commit does not.
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-gitmodules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check .gitmodules against the pinned submodule commits
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: .github/scripts/check-gitmodules.sh --report-updates ${BASE_SHA:+--base "$BASE_SHA"}
