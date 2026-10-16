@@ -13,7 +13,7 @@
 # submodule updates before they are committed.
 #
 # Usage: .github/scripts/check-gitmodules.sh [--report-updates]
-#   --report-updates  also report newer upstream release tags, and how far
+#   --report-updates  also report the latest upstream release tag, and how far
 #                     branch-tracked submodules are behind their branch tip
 
 report_updates=false
@@ -69,11 +69,13 @@ for name in $names; do
       error "$path: .gitmodules says tag $branch (${tag_sha:0:10}) but the pinned commit is ${pin:0:10}"
     fi
     if $report_updates; then
-      # Newest release tag with the same naming scheme, skipping alpha/beta/rc
+      # Highest release tag with the same naming scheme, skipping alpha/beta/rc
+      # and local suffixes. It is not necessarily newer than the pinned tag
+      # (e.g. 2026.03 vs 2026.03-cefi1), so only report it.
       prefix=${branch%%[0-9]*}
       latest=$(git ls-remote --tags --refs "$url" | awk '{sub("refs/tags/", "", $2); print $2}' \
                | grep -E "^${prefix}[0-9][0-9.]*$" | sort -V | tail -1)
-      [[ -n "$latest" && "$latest" != "$branch" ]] && info "$path: newer release tag available: $latest"
+      [[ -n "$latest" && "$latest" != "$branch" ]] && info "$path: latest upstream release tag is $latest"
     fi
   elif [[ -n "$head_sha" ]]; then
     # Fetch only the commit graph of the branch to check ancestry
