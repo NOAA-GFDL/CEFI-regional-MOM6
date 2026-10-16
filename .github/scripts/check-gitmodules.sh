@@ -12,22 +12,50 @@
 # The pinned commits are read from the index, so this also checks staged
 # submodule updates before they are committed.
 #
-# Usage: .github/scripts/check-gitmodules.sh [--report-updates]
+# A pinned commit anywhere on the branch passes, so a forgotten pointer
+# update after switching a submodule to a new branch or fork is not an error
+# by itself. With --base, such a change is reported as a warning.
+#
+# Usage: .github/scripts/check-gitmodules.sh [--report-updates] [--base <commit>]
 #   --report-updates  also report the latest upstream release tag, and how far
 #                     branch-tracked submodules are behind their branch tip
+#   --base <commit>   warn when the url or branch of a branch-tracked submodule
+#                     changed since <commit> (e.g. origin/main) but its pinned
+#                     commit did not
 
 report_updates=false
-[[ "${1:-}" == "--report-updates" ]] && report_updates=true
+base=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --report-updates) report_updates=true ;;
+    --base) base=$2; shift ;;
+    *) echo "unknown option: $1" >&2; exit 2 ;;
+  esac
+  shift
+done
 
-cd "$(git rev-parse --show-toplevel)" || exit 1
+top=$(git rev-parse --show-toplevel) || exit 1
+cd "$top" || exit 1
 tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
 
 nerr=0
 report=()
 error() { report+=("FAIL  $1"); nerr=$((nerr+1)); }
+warn()  { report+=("WARN  $1"); [[ "${GITHUB_ACTIONS:-}" == true ]] && echo "::warning::$1"; }
 ok()    { report+=("ok    $1"); }
 info()  { report+=("      $1"); }
+
+if [[ -n "$base" ]]; then
+  # A shallow CI checkout does not have the base commit yet
+  git cat-file -e "$base^{commit}" 2>/dev/null || git fetch -q --depth=1 origin "$base" 2>/dev/null
+  if git cat-file -e "$base^{commit}" 2>/dev/null; then
+    info "checking url/branch changes since $(git rev-parse --short "$base^{commit}")"
+  else
+    info "cannot find base commit $base, skipping the url/branch change check"
+    base=""
+  fi
+fi
 
 # Every gitlink must have a .gitmodules entry
 names=$(git config -f .gitmodules --name-only --get-regexp '^submodule\..*\.path$' \
@@ -88,9 +116,17 @@ for name in $names; do
     fi
     if git -C "$repo" merge-base --is-ancestor "$pin" tip 2>/dev/null; then
       ok "$path: pinned commit ${pin:0:10} is on branch $branch"
+      if [[ -n "$base" ]]; then
+        old_pin=$(git ls-tree "$base" -- "$path" | awk '{print $3}')
+        old_url=$(git config --blob "$base:.gitmodules" "submodule.$name.url" 2>/dev/null)
+        old_branch=$(git config --blob "$base:.gitmodules" "submodule.$name.branch" 2>/dev/null)
+        if [[ "$old_pin" == "$pin" && ( "$old_url" != "$url" || "$old_branch" != "$branch" ) ]]; then
+          warn "$path: url or branch changed in .gitmodules but the pinned commit did not move (still ${pin:0:10})"
+        fi
+      fi
       if $report_updates; then
         behind=$(git -C "$repo" rev-list --count "$pin..tip")
-        [[ "$behind" -gt 0 ]] && info "$path: $behind commits behind the tip of $branch"
+        [[ "$behind" -gt 0 ]] && info "$path: $behind commit(s) behind the tip of $branch"
       fi
     else
       error "$path: pinned commit ${pin:0:10} is not on branch $branch of $url"
