@@ -13,9 +13,8 @@
 # Setup environment
 setup_environment() {
     source $MODULESHOME/init/bash
-    module load miniforge
-    conda activate /nbhome/role.medgrp/.conda/envs/medpy311
-    module load cdo nco gcp
+    source "{{ _VIRTUAL_ENV }}/bin/activate"
+    module load cdo nco gcp esmf
 }
 
 # Check if the combined file exists
