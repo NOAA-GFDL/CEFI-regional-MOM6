@@ -1710,6 +1710,11 @@ DTBT_RESTART_BUG = True         !   [Boolean] default = True
 BT_USE_OLD_CORIOLIS_BRACKET_BUG = False !   [Boolean] default = False
                                 ! If True, use an order of operations that is not bitwise rotationally symmetric
                                 ! in the meridional Coriolis term of the barotropic solver.
+NONLIN_BT_COR_INDEX_BUG = True  !   [Boolean] default = True
+                                ! If True, use a horizontal indexing bug in the contribution of free surface
+                                ! height anomalies to the thicknesses used to calculate the barotropic Coriolis
+                                ! term.  This only applies in Boussinesq mode when LINEARIZED_BT_CORIOLIS is
+                                ! false.
 MASK_COASTAL_PRESSURE_FORCE = False !   [Boolean] default = False
                                 ! If true, use the land masks to zero out the diagnosed barotropic pressure
                                 ! gradient accelerations at coastal or land points.  This changes diagnostics
@@ -2338,6 +2343,14 @@ OPACITY_LAND_VALUE = 10.0       !   [m-1] default = 10.0
                                 ! muddy water.
 
 ! === module MOM_tracer_advect ===
+TRACER_ADVECT_RESIDUAL_BUG = True !   [Boolean] default = True
+                                ! If true, recover a bug that online tracer advection can discard remaining
+                                ! transports and interpret tracer concentrations on inconsistent layer
+                                ! thicknesses.
+TRACER_ADVECT_HALO_TRANSPORT_BUG = True !   [Boolean] default = True
+                                ! If true, recover a bug that meridional-first tracer advection can skip
+                                ! transports in halo columns, leaving inconsistent tracer fluxes at processor
+                                ! boundaries.
 TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "PLM"
                                 ! The horizontal transport scheme for tracers:
                                 !   PLM    - Piecewise Linear Method
