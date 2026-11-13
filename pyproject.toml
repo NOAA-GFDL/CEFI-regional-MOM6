@@ -51,8 +51,13 @@ build-backend = "uv_build"
 # On ppan, the initial uv sync should happen with the module python/3.13 loaded.
 # After that, unload python, source .venv/bin/activate[.csh], module load esmf.
 # This is necessary for xesmf and esmpy to load the right libs and work correctly.
+#
+# Setting constraint-dependencies controls the versions of modules that are
+# installed as dependencies for other modules. Here we require >= specific
+# versions that fix vulnerabilities.
 [tool.uv]
 python-preference = "system"
+constraint-dependencies = ["certifi>=2026.10.18", "pillow>=13.0.0", "setuptools>=84.1.0"]
 
 [tool.uv.build-backend]
 module-root = "cefi_kit/src"
