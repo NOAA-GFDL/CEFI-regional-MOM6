@@ -10,6 +10,7 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
     "bottleneck>=1.6.0",
     "esmpy==8.8.1",
+    "loguru>=0.7.3",
     "netcdf4>=1.7.4",
     "numpy>=2.4.6",
     "pandas<3.0", # < 3 needed for read_excel date_parser in hypoxic area
@@ -38,6 +39,7 @@ automation = [
     "unified-workflow-tools>=2.21.0",
 ]
 dev = [
+    "pytest>=9.1.1",
     "ruff>=0.16.1",
     "ty>=0.0.69",
 ]
@@ -49,8 +51,13 @@ build-backend = "uv_build"
 # On ppan, the initial uv sync should happen with the module python/3.13 loaded.
 # After that, unload python, source .venv/bin/activate[.csh], module load esmf.
 # This is necessary for xesmf and esmpy to load the right libs and work correctly.
+#
+# Setting constraint-dependencies controls the versions of modules that are
+# installed as dependencies for other modules. Here we require >= specific
+# versions that fix vulnerabilities.
 [tool.uv]
 python-preference = "system"
+constraint-dependencies = ["certifi>=2026.10.18", "pillow>=13.0.0", "setuptools>=84.1.0"]
 
 [tool.uv.build-backend]
 module-root = "cefi_kit/src"
@@ -58,6 +65,9 @@ module-root = "cefi_kit/src"
 [tool.uv.sources]
 esmpy = { git = "https://github.com/esmf-org/esmf", subdirectory = "src/addon/esmpy", tag = "v8.8.1" }
 HCtFlood = { git = "https://github.com/andrew-c-ross/HCtFlood" }
+
+[tool.pytest]
+testpaths = ["cefi_kit/tests"]
 
 [tool.ruff]
 line-length = 88
