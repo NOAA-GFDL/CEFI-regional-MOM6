@@ -1,0 +1,98 @@
+[project]
+name = "cefi-kit"
+version = "0.1.0"
+description = "Tools for setting up and evaluating regional MOM6 models for CEFI"
+readme = "README.md"
+authors = [
+    { name = "NOAA/GFDL CEFI", email = "oar.gfdl.cefi-support@noaa.gov" }
+]
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "bottleneck>=1.6.0",
+    "esmpy==8.8.1",
+    "loguru>=0.7.3",
+    "netcdf4>=1.7.4",
+    "numpy>=2.4.6",
+    "pandas<3.0", # < 3 needed for read_excel date_parser in hypoxic area
+    "pyyaml>=6.0.3",
+    "xarray>=2026.7.0",
+    "xesmf>=0.9.2",
+]
+
+[project.optional-dependencies]
+diagnostics = [
+    "cartopy>=0.25.0",
+    "colorcet>=3.2.1",
+    "cmcrameri>=1.10",
+    "matplotlib<3.11", # need to preserve plt.cm.get_cmap for now
+    "openpyxl>=3.1.5",
+    "utide>=0.3.1",
+    "xskillscore>=0.0.29",
+    "shapely>=2.1.2",
+    "gsw>=3.6.23",
+    "h5py>=3.16.0",
+]
+flooding = [
+    "hctflood>=0.1.0",
+]
+automation = [
+    "unified-workflow-tools>=2.21.0",
+]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.1",
+    "ty>=0.0.69",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.14,<0.12.0"]
+build-backend = "uv_build"
+
+# On ppan, the initial uv sync should happen with the module python/3.13 loaded.
+# After that, unload python, source .venv/bin/activate[.csh], module load esmf.
+# This is necessary for xesmf and esmpy to load the right libs and work correctly.
+#
+# Setting constraint-dependencies controls the versions of modules that are
+# installed as dependencies for other modules. Here we require >= specific
+# versions that fix vulnerabilities.
+[tool.uv]
+python-preference = "system"
+constraint-dependencies = ["certifi>=2026.10.18", "pillow>=13.0.0", "setuptools>=84.1.0"]
+
+[tool.uv.build-backend]
+module-root = "cefi_kit/src"
+
+[tool.uv.sources]
+esmpy = { git = "https://github.com/esmf-org/esmf", subdirectory = "src/addon/esmpy", tag = "v8.8.1" }
+HCtFlood = { git = "https://github.com/andrew-c-ross/HCtFlood" }
+
+[tool.pytest]
+testpaths = ["cefi_kit/tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+exclude = [
+    "*.ipynb"
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "B", "C4", "UP", "PL", "RUF"]
+ignore = ["E741", "PLR0913", "PLR0915", "PLR0917", "PLR2004"]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["cefi_kit"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.ty.environment]
+root = ["./cefi_kit"]

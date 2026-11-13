@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-This script processes daily GLORYS data to generate ocean boundary conditions (OBC) for specified segments and variables. 
-It supports regridding of velocity (u, v) and tracer fields (e.g., temperature, salinity, sea surface height) for a single day or concatenating multiple days of outputs. 
+This script processes daily GLORYS data to generate ocean boundary conditions (OBC) for specified segments and variables.
+It supports regridding of velocity (u, v) and tracer fields (e.g., temperature, salinity, sea surface height) for a single day or concatenating multiple days of outputs.
 
 Key Features:
 1. Processes single-day outputs: Generates regridded NetCDF files for each specified segment and variable.
@@ -32,17 +32,15 @@ from os import path
 
 import xarray
 import numpy as np
-import yaml
-from boundary import Segment
+
+from cefi_kit.boundary import Segment
+from cefi_kit.io import load_config
 
 # Suppress xarray warnings
 import warnings
 warnings.filterwarnings('ignore')
 
-def load_config(config_file):
-    """Load configuration from a YAML file."""
-    with open(config_file, 'r') as file:
-        return yaml.safe_load(file)
+
 
 def write_day(date, glorys_dir, segments, variables, output_prefix):
     """Process and regrid data for a specific day."""
@@ -131,7 +129,7 @@ def adjust_file_timestamps(file_path):
             # Assign the new time variable back to the dataset
             ds = ds.assign_coords(time=new_time)
 
-            # Reapply the original encoding to ensure consistency 
+            # Reapply the original encoding to ensure consistency
             ds['time'].encoding = time_encoding
 
             # Save the updated dataset
@@ -161,7 +159,7 @@ def concatenate_annual_files(config, adjust_timestamps):
     last_date = datetime.strptime(config['last_date'], '%Y-%m-%d')
 
     print(f"Concatenating files from {first_date} to {last_date}...")
-    
+
     concatenate_files(
         len(config['segments']),
         config['output_dir'],
